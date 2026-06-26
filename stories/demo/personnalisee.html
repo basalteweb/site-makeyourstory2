@@ -22,6 +22,7 @@
     :root{
       --ocean:#1b6680;
       --ocean-deep:#123d4f;
+      --ocean-dark:#0b2b38;
       --ocean-soft:#dceff1;
       --sun:#f7bd42;
       --coral:#dc7157;
@@ -43,8 +44,8 @@
     }
 
     body{
-      margin:0;
       min-width:320px;
+      margin:0;
       overflow-x:hidden;
       color:var(--ink);
       background:
@@ -55,10 +56,24 @@
       line-height:1.55;
     }
 
-    a{color:inherit;text-decoration:none}
-    button{font:inherit}
-    button,a{-webkit-tap-highlight-color:transparent}
-    ::selection{color:var(--cream);background:var(--ocean)}
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    button{
+      font:inherit;
+    }
+
+    button,
+    a{
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    ::selection{
+      color:var(--cream);
+      background:var(--ocean);
+    }
 
     .progress{
       position:fixed;
@@ -90,7 +105,7 @@
       padding:22px;
       overflow:hidden;
       background:#1a647d;
-      transition:opacity .8s ease,visibility .8s ease;
+      transition:opacity .9s ease,visibility .9s ease;
     }
 
     .entry.is-hidden{
@@ -146,9 +161,9 @@
       bottom:10%;
       width:85px;
       height:52px;
-      opacity:.75;
       border-top:3px solid var(--cream);
       border-right:3px solid var(--cream);
+      opacity:.75;
       transform:rotate(-31deg);
       animation:planeFloat 5s ease-in-out infinite alternate;
       pointer-events:none;
@@ -157,10 +172,10 @@
     .paper-plane::before{
       content:"";
       position:absolute;
-      width:48px;
-      height:3px;
       top:20px;
       left:18px;
+      width:48px;
+      height:3px;
       background:var(--cream);
       transform:rotate(34deg);
       transform-origin:left center;
@@ -169,8 +184,8 @@
     .paper-plane::after{
       content:"";
       position:absolute;
-      left:-80px;
       bottom:-23px;
+      left:-80px;
       width:94px;
       height:44px;
       border-top:2px dashed rgba(255,250,242,.78);
@@ -208,7 +223,7 @@
       width:100%;
       min-height:345px;
       transform-style:preserve-3d;
-      transition:transform 1s cubic-bezier(.2,.82,.2,1);
+      transition:transform 2.8s cubic-bezier(.2,.82,.2,1);
     }
 
     .entry.is-revealed .postcard{
@@ -220,9 +235,9 @@
       position:absolute;
       inset:0;
       overflow:hidden;
-      backface-visibility:hidden;
       border:10px solid var(--cream);
       box-shadow:0 28px 75px rgba(0,0,0,.35);
+      backface-visibility:hidden;
     }
 
     .postcard-front{
@@ -276,7 +291,7 @@
     .postcard-front h1{
       margin:10px 0 0;
       color:#fffdf8;
-      font:400 clamp(46px,9vw,75px)/.83 "DM Serif Display",Georgia,serif;
+      font:400 clamp(46px,9vw,75px)/.9 "DM Serif Display",Georgia,serif;
       letter-spacing:-.055em;
     }
 
@@ -314,15 +329,15 @@
     .postcard-back-left h2{
       margin:10px 0 0;
       color:var(--ocean-deep);
-      font:400 clamp(51px,10vw,78px)/.76 "DM Serif Display",Georgia,serif;
+      font:400 clamp(51px,10vw,78px)/.9 "DM Serif Display",Georgia,serif;
       letter-spacing:-.06em;
     }
 
     .postcard-back-left h2 span{
       display:block;
-      margin-top:12px;
+      margin-top:.58em;
       color:var(--terracotta);
-      font:600 20px/1 "Caveat",cursive;
+      font:600 20px/1.25 "Caveat",cursive;
       letter-spacing:.02em;
     }
 
@@ -370,6 +385,7 @@
       color:#f5fbfb;
       font-size:14px;
       line-height:1.72;
+      transition:opacity .25s ease;
     }
 
     .entry-action,
@@ -401,6 +417,12 @@
       color:var(--cream);
       background:var(--terracotta);
       box-shadow:0 21px 45px rgba(0,0,0,.38);
+    }
+
+    .entry-action:disabled{
+      cursor:default;
+      opacity:.7;
+      transform:none;
     }
 
     .entry-note{
@@ -599,7 +621,7 @@
 
     .hero-sun::after{
       inset:37%;
-      background:rgba(255,230,167,.7);
+      background:rgba(255,226,167,.7);
       box-shadow:0 0 22px rgba(255,226,167,.6);
     }
 
@@ -661,16 +683,16 @@
       max-width:850px;
       margin:17px 0 0;
       color:#fffaf2;
-      font:400 clamp(70px,11vw,150px)/.72 "DM Serif Display",Georgia,serif;
+      font:400 clamp(70px,11vw,150px)/.86 "DM Serif Display",Georgia,serif;
       letter-spacing:-.07em;
       text-shadow:0 12px 36px rgba(9,35,45,.28);
     }
 
     .hero-title span{
       display:block;
-      margin-top:18px;
+      margin-top:.55em;
       color:#ffe5af;
-      font:600 clamp(20px,3vw,35px)/.95 "Caveat",cursive;
+      font:600 clamp(20px,3vw,35px)/1.25 "Caveat",cursive;
       letter-spacing:.02em;
     }
 
@@ -730,7 +752,9 @@
 
     /* BASE */
 
-    .section{padding:124px 0}
+    .section{
+      padding:124px 0;
+    }
 
     .reveal{
       opacity:0;
@@ -775,15 +799,15 @@
       max-width:710px;
       margin:20px 0 0;
       color:var(--ocean-deep);
-      font:400 clamp(49px,7vw,85px)/.84 "DM Serif Display",Georgia,serif;
+      font:400 clamp(49px,7vw,85px)/.92 "DM Serif Display",Georgia,serif;
       letter-spacing:-.055em;
     }
 
     .title span{
       display:block;
-      margin-top:13px;
+      margin-top:.58em;
       color:var(--terracotta);
-      font:600 clamp(19px,3vw,30px)/1 "Caveat",cursive;
+      font:600 clamp(19px,3vw,30px)/1.25 "Caveat",cursive;
       letter-spacing:.02em;
     }
 
@@ -879,7 +903,7 @@
       max-width:260px;
       margin:0;
       color:#fffaf2;
-      font:600 27px/1.05 "Caveat",cursive;
+      font:600 27px/1.2 "Caveat",cursive;
       text-align:right;
       text-shadow:0 3px 16px rgba(10,38,48,.4);
     }
@@ -1006,16 +1030,16 @@
     .destination h2{
       margin:19px 0 0;
       color:#fffaf2;
-      font:400 clamp(72px,12vw,155px)/.69 "DM Serif Display",Georgia,serif;
+      font:400 clamp(72px,12vw,155px)/.84 "DM Serif Display",Georgia,serif;
       letter-spacing:-.08em;
       text-shadow:0 15px 39px rgba(8,34,43,.36);
     }
 
     .destination h2 span{
       display:block;
-      margin-top:22px;
+      margin-top:.6em;
       color:#ffe4a9;
-      font:600 clamp(20px,3vw,35px)/1 "Caveat",cursive;
+      font:600 clamp(20px,3vw,35px)/1.25 "Caveat",cursive;
       letter-spacing:.02em;
     }
 
@@ -1095,7 +1119,7 @@
     .timeline-content h3{
       margin:0;
       color:var(--ocean-deep);
-      font:400 34px/.9 "DM Serif Display",Georgia,serif;
+      font:400 34px/.98 "DM Serif Display",Georgia,serif;
       letter-spacing:-.04em;
     }
 
@@ -1154,15 +1178,15 @@
       width:min(900px,calc(100% - 40px));
       margin:auto;
       color:#fffaf2;
-      font:400 clamp(42px,6.6vw,80px)/.96 "DM Serif Display",Georgia,serif;
+      font:400 clamp(42px,6.6vw,80px)/1.02 "DM Serif Display",Georgia,serif;
       letter-spacing:-.05em;
     }
 
     .quote span{
       display:block;
-      margin-top:23px;
+      margin-top:.7em;
       color:#ffe3a8;
-      font:600 clamp(18px,3vw,29px)/1 "Caveat",cursive;
+      font:600 clamp(18px,3vw,29px)/1.3 "Caveat",cursive;
     }
 
     /* GALERIE */
@@ -1223,21 +1247,26 @@
       opacity:1;
     }
 
-    .gallery-card.tall{grid-row:span 2}
-    .gallery-card.wide{grid-column:span 2}
+    .gallery-card.tall{
+      grid-row:span 2;
+    }
+
+    .gallery-card.wide{
+      grid-column:span 2;
+    }
 
     .gallery-label{
       position:absolute;
       z-index:3;
-      left:23px;
       right:23px;
       bottom:19px;
+      left:23px;
       color:#fffaf2;
     }
 
     .gallery-label strong{
       display:block;
-      font:400 31px/.94 "DM Serif Display",Georgia,serif;
+      font:400 31px/.98 "DM Serif Display",Georgia,serif;
       letter-spacing:-.04em;
     }
 
@@ -1298,16 +1327,16 @@
     .video-inner h2{
       margin:17px 0 0;
       color:#fffaf2;
-      font:400 clamp(56px,9vw,118px)/.75 "DM Serif Display",Georgia,serif;
+      font:400 clamp(56px,9vw,118px)/.86 "DM Serif Display",Georgia,serif;
       letter-spacing:-.065em;
       text-shadow:0 12px 35px rgba(8,34,43,.34);
     }
 
     .video-inner h2 span{
       display:block;
-      margin-top:18px;
+      margin-top:.7em;
       color:#ffe3a8;
-      font:600 clamp(18px,3vw,32px)/1 "Caveat",cursive;
+      font:600 clamp(18px,3vw,32px)/1.3 "Caveat",cursive;
     }
 
     .video-copy{
@@ -1414,16 +1443,16 @@
     .finale h2{
       margin:18px 0 0;
       color:#fffaf2;
-      font:400 clamp(63px,10vw,130px)/.72 "DM Serif Display",Georgia,serif;
+      font:400 clamp(63px,10vw,130px)/.86 "DM Serif Display",Georgia,serif;
       letter-spacing:-.075em;
       text-shadow:0 12px 35px rgba(8,34,43,.34);
     }
 
     .finale h2 span{
       display:block;
-      margin-top:20px;
+      margin-top:.65em;
       color:#ffe3a8;
-      font:600 clamp(19px,3vw,34px)/1 "Caveat",cursive;
+      font:600 clamp(19px,3vw,34px)/1.3 "Caveat",cursive;
     }
 
     .finale-copy{
@@ -1498,7 +1527,9 @@
       backdrop-filter:blur(14px);
     }
 
-    .modal.open{display:grid}
+    .modal.open{
+      display:grid;
+    }
 
     .modal-dialog{
       position:relative;
@@ -1538,15 +1569,15 @@
     .guide-modal h2{
       margin:18px 0 0;
       color:var(--ocean-deep);
-      font:400 clamp(46px,7vw,76px)/.8 "DM Serif Display",Georgia,serif;
+      font:400 clamp(46px,7vw,76px)/.9 "DM Serif Display",Georgia,serif;
       letter-spacing:-.055em;
     }
 
     .guide-modal h2 span{
       display:block;
-      margin-top:13px;
+      margin-top:.62em;
       color:var(--terracotta);
-      font:600 clamp(18px,3vw,28px)/1 "Caveat",cursive;
+      font:600 clamp(18px,3vw,28px)/1.3 "Caveat",cursive;
     }
 
     .guide-modal > p{
@@ -1659,15 +1690,15 @@
     .video-modal-content h2{
       margin:15px 0 0;
       color:#fffaf2;
-      font:400 clamp(47px,7vw,76px)/.79 "DM Serif Display",Georgia,serif;
+      font:400 clamp(47px,7vw,76px)/.9 "DM Serif Display",Georgia,serif;
       letter-spacing:-.06em;
     }
 
     .video-modal-content h2 span{
       display:block;
-      margin-top:14px;
+      margin-top:.65em;
       color:#ffe3a8;
-      font:600 clamp(18px,3vw,28px)/1 "Caveat",cursive;
+      font:600 clamp(18px,3vw,28px)/1.3 "Caveat",cursive;
     }
 
     .video-modal-content p{
@@ -1732,8 +1763,16 @@
     }
 
     @media(max-width:900px){
-      .story-name{display:none}
-      .hero-sun{width:48vw;right:-3%;top:18%}
+      .story-name{
+        display:none;
+      }
+
+      .hero-sun{
+        width:48vw;
+        right:-3%;
+        top:18%;
+      }
+
       .travel-intro,
       .itinerary-head,
       .gallery-head{
@@ -1749,7 +1788,9 @@
     }
 
     @media(max-width:720px){
-      .guide-grid{grid-template-columns:1fr 1fr}
+      .guide-grid{
+        grid-template-columns:1fr 1fr;
+      }
     }
 
     @media(max-width:580px){
@@ -1780,7 +1821,9 @@
         display:none;
       }
 
-      .nav-actions{gap:6px}
+      .nav-actions{
+        gap:6px;
+      }
 
       .round-button{
         width:34px;
@@ -1836,6 +1879,7 @@
 
       .postcard-back-left h2 span{
         font-size:17px;
+        line-height:1.25;
       }
 
       .postcard-back-left p{
@@ -1876,6 +1920,7 @@
 
       .hero-title span{
         font-size:24px;
+        line-height:1.25;
       }
 
       .hero-copy{
@@ -1889,7 +1934,9 @@
         right:-20%;
       }
 
-      .scroll-word{display:none}
+      .scroll-word{
+        display:none;
+      }
 
       .section,
       .itinerary,
@@ -1899,6 +1946,10 @@
 
       .title{
         font-size:51px;
+      }
+
+      .title span{
+        line-height:1.3;
       }
 
       .travel-photo{
@@ -1921,6 +1972,11 @@
 
       .destination h2{
         font-size:71px;
+      }
+
+      .destination h2 span{
+        font-size:25px;
+        line-height:1.3;
       }
 
       .timeline-item{
@@ -1952,14 +2008,23 @@
         font-size:47px;
       }
 
+      .quote span{
+        line-height:1.3;
+      }
+
       .gallery{
         grid-template-columns:1fr 1fr;
         grid-auto-rows:180px;
         gap:9px;
       }
 
-      .gallery-card.tall{grid-row:span 2}
-      .gallery-card.wide{grid-column:span 2}
+      .gallery-card.tall{
+        grid-row:span 2;
+      }
+
+      .gallery-card.wide{
+        grid-column:span 2;
+      }
 
       .gallery-label strong{
         font-size:25px;
@@ -1973,8 +2038,18 @@
         font-size:65px;
       }
 
+      .video-inner h2 span{
+        font-size:25px;
+        line-height:1.3;
+      }
+
       .finale h2{
         font-size:72px;
+      }
+
+      .finale h2 span{
+        font-size:26px;
+        line-height:1.3;
       }
 
       .actions,
@@ -2008,7 +2083,9 @@
     }
 
     @media(prefers-reduced-motion:reduce){
-      html{scroll-behavior:auto}
+      html{
+        scroll-behavior:auto;
+      }
 
       *,
       *::before,
@@ -2037,7 +2114,12 @@
       <article class="postcard-back">
         <div class="postcard-back-left">
           <small>Destination révélée</small>
-          <h2>Lisbonne<span>Du soleil, des ruelles et nous deux.</span></h2>
+
+          <h2>
+            Lisbonne
+            <span>Du soleil, des ruelles et nous deux.</span>
+          </h2>
+
           <p>Départ le vendredi 14 mai. Trois jours pour oublier l’heure, marcher sans but et collectionner les bons souvenirs.</p>
         </div>
 
@@ -2055,7 +2137,7 @@
     </div>
   </div>
 
-  <p class="entry-copy">Tourne la carte et découvre où cette histoire va commencer.</p>
+  <p class="entry-copy" data-entry-copy>Tourne la carte tranquillement pour découvrir la destination.</p>
 
   <button class="entry-action" type="button" data-enter>
     Retourner la carte <span aria-hidden="true">→</span>
@@ -2067,15 +2149,19 @@
   </section>  <header class="topbar" data-header>
     <nav class="nav">
       <a class="brand" href="../../index.html" aria-label="Retour à MakeYourStory">
-        <span class="brand-mark" aria-hidden="true">M</span>
-        <span>
-          <span class="brand-title">MAKE YOUR STORY</span>
-          <span class="brand-sub">CARNET DE VOYAGE SURPRISE</span>
-        </span>
-      </a>  <div class="nav-actions">
+        <span class="brand-mark" aria-hidden="true">M</span>    <span>
+      <span class="brand-title">MAKE YOUR STORY</span>
+      <span class="brand-sub">CARNET DE VOYAGE SURPRISE</span>
+    </span>
+  </a>
+
+  <div class="nav-actions">
     <span class="story-name">Emma · Lisbonne</span>
+
     <button class="round-button" type="button" aria-label="Couper ou remettre la musique" aria-pressed="false" data-sound>♪</button>
+
     <button class="round-button" type="button" aria-label="Partager cette surprise" data-share>↗</button>
+
     <a class="back" href="../../demande-personnalisee.html">Retour</a>
   </div>
 </nav>
@@ -2087,7 +2173,10 @@
       <div class="hero-sun" aria-hidden="true"></div>  <div class="shell">
     <p class="hero-label">La surprise est officiellement révélée</p>
 
-    <h1 class="hero-title">Lisbonne<span>Une parenthèse au soleil vient de commencer.</span></h1>
+    <h1 class="hero-title">
+      Lisbonne
+      <span>Une parenthèse au soleil vient de commencer.</span>
+    </h1>
 
     <p class="hero-copy">Trois jours pour se perdre dans les ruelles, goûter à tout, monter dans les tramways et garder juste assez de place dans la valise pour les souvenirs.</p>
 
@@ -2109,7 +2198,10 @@
     <article class="travel-card reveal" style="--delay:.12s">
       <p class="chapter" data-n="01">Le départ</p>
 
-      <h2 class="title">Cette fois,<span>on part vraiment.</span></h2>
+      <h2 class="title">
+        Cette fois,
+        <span>on part vraiment.</span>
+      </h2>
 
       <p class="copy">Il y aura une alarme un peu trop tôt, un café dans un gobelet à l’aéroport, puis cette sensation très particulière : celle où l’on comprend que le quotidien est resté derrière soi.</p>
 
@@ -2147,7 +2239,10 @@
   <div class="destination-inner reveal">
     <p class="destination-tag">38.7223° N · 9.1393° W</p>
 
-    <h2>Lisbonne<span>Une ville à regarder, à goûter et à vivre doucement.</span></h2>
+    <h2>
+      Lisbonne
+      <span>Une ville à regarder, à goûter et à vivre doucement.</span>
+    </h2>
 
     <p>Une lumière dorée, des façades qui racontent mille histoires, des collines, le Tage et des soirées où l’on oublie très vite quel jour on est.</p>
   </div>
@@ -2158,7 +2253,11 @@
     <div class="itinerary-head">
       <div class="reveal">
         <p class="chapter" data-n="02">Le petit programme</p>
-        <h2 class="title">Quelques repères.<span>Et beaucoup de place pour l’imprévu.</span></h2>
+
+        <h2 class="title">
+          Quelques repères.
+          <span>Et beaucoup de place pour l’imprévu.</span>
+        </h2>
       </div>
 
       <p class="copy reveal" style="--delay:.12s">Ce carnet ne donne pas un emploi du temps. Il donne simplement assez d’indices pour avoir envie de partir dès maintenant.</p>
@@ -2211,7 +2310,11 @@
 </section>
 
 <section class="quote-block">
-  <p class="quote reveal">« Certaines surprises ne tiennent pas dans une boîte.<span>Elles commencent par un billet et deviennent un souvenir. »</span></p>
+  <p class="quote reveal">
+    « Certaines surprises ne tiennent pas dans une boîte.
+    <span>Elles commencent par un billet et deviennent un souvenir.</span>
+    »
+  </p>
 </section>
 
 <section class="gallery-section">
@@ -2219,7 +2322,11 @@
     <div class="gallery-head">
       <div class="reveal">
         <p class="chapter" data-n="03">À ne pas oublier</p>
-        <h2 class="title">Une valise légère.<span>Et de la place pour tout ce qui arrivera.</span></h2>
+
+        <h2 class="title">
+          Une valise légère.
+          <span>Et de la place pour tout ce qui arrivera.</span>
+        </h2>
       </div>
 
       <p class="copy reveal" style="--delay:.12s">Le passeport, de bonnes chaussures, un téléphone chargé et l’envie de suivre les rues les plus belles plutôt que les plus rapides.</p>
@@ -2261,7 +2368,10 @@
   <div class="video-inner reveal">
     <p class="hero-label">La surprise peut continuer</p>
 
-    <h2>Le voyage,<span>avant même le départ.</span></h2>
+    <h2>
+      Le voyage,
+      <span>avant même le départ.</span>
+    </h2>
 
     <p class="video-copy">Une création personnalisée peut aussi intégrer une vidéo, un message caché, des photos, une musique, des indices ou un carnet à rouvrir pendant le séjour.</p>
 
@@ -2275,7 +2385,10 @@
   <div class="finale-inner reveal">
     <p class="hero-label">Destination révélée · Lisbonne</p>
 
-    <h2>Prépare ta valise.<span>On part bientôt.</span></h2>
+    <h2>
+      Prépare ta valise.
+      <span>On part bientôt.</span>
+    </h2>
 
     <p class="finale-copy">Ajoute la date au calendrier, garde cette carte précieusement et prépare-toi à vivre une surprise qui ne ressemble à aucune autre.</p>
 
@@ -2295,7 +2408,10 @@
       <button class="modal-close" type="button" data-close-guide aria-label="Fermer">×</button>  <div class="guide-modal">
     <p class="chapter" data-n="LIS">Carnet de voyage</p>
 
-    <h2 id="guide-title">Quelques essentiels,<span>pour partir légère et profiter à fond.</span></h2>
+    <h2 id="guide-title">
+      Quelques essentiels,
+      <span>pour partir légère et profiter à fond.</span>
+    </h2>
 
     <p>Tout est ici : les informations pratiques, les petites consignes utiles et suffisamment de mystère pour ne pas gâcher la surprise.</p>
 
@@ -2343,7 +2459,10 @@
 
       <p class="hero-label">Une surprise en mouvement</p>
 
-      <h2 id="video-title">Le départ,<span>avant même d’être à l’aéroport.</span></h2>
+      <h2 id="video-title">
+        Le départ,
+        <span>avant même d’être à l’aéroport.</span>
+      </h2>
 
       <p>Quelques secondes de vidéo peuvent révéler la destination, montrer des souvenirs, cacher un message ou donner une dimension encore plus forte à la surprise.</p>
 
@@ -2357,6 +2476,7 @@
     (() => {
       const entry = document.querySelector("[data-entry]");
       const enter = document.querySelector("[data-enter]");
+      const entryCopy = document.querySelector("[data-entry-copy]");
       const audio = document.getElementById("story-audio");
       const sound = document.querySelector("[data-sound]");
       const header = document.querySelector("[data-header]");
@@ -2506,22 +2626,30 @@
         if (openingStarted) return;
 
         openingStarted = true;
+        enter.disabled = true;
+        enter.textContent = "La carte se retourne…";
+
         entry.classList.add("is-revealed");
+        entryCopy.textContent = "Lisbonne apparaît doucement. Prenez le temps de lire la carte.";
         playMusic();
+
+        window.setTimeout(() => {
+          entryCopy.textContent = "Lisbonne. Trois jours au soleil, loin du quotidien.";
+        }, 2900);
 
         window.setTimeout(() => {
           entry.classList.add("is-opening");
           document.body.classList.add("story-open");
-        }, 1050);
+        }, 5200);
 
         window.setTimeout(() => {
           entry.classList.add("is-hidden");
           document.body.style.overflow = "";
-        }, 1740);
+        }, 6000);
 
         window.setTimeout(() => {
           entry.remove();
-        }, 2550);
+        }, 6900);
       });
 
       sound.addEventListener("click", async () => {
@@ -2590,6 +2718,7 @@
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((item) => {
           if (!item.isIntersecting) return;
+
           item.target.classList.add("show");
           observer.unobserve(item.target);
         });
@@ -2612,4 +2741,4 @@
       });
     })();
   </script></body>
-                                                                                                                                                         </html>
+  </html>
