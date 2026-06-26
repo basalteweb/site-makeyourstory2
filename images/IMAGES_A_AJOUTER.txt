@@ -1,0 +1,39 @@
+MAKE YOUR STORY — IMAGES À AJOUTER
+
+Le site est prêt avec des emplacements visuels et les noms exacts ci-dessous.
+Dépose les fichiers .webp dans ce dossier. Les images se fondront automatiquement avec les dégradés du site.
+Évite de mettre du texte dans les images : les titres sont déjà écrits dans le HTML.
+
+PAGE D’ACCUEIL
+- hero-couple.webp              1600 × 1400 min — photo de couple / image principale, visages plutôt au centre-droite
+- hero-screen.webp              1400 × 900 min — mockup ou capture d’une histoire sur ordinateur
+- hero-phone.webp               800 × 1400 min — mockup ou capture de l’histoire sur téléphone
+- gift-box.webp                 900 × 1300 min — cadeau, boîte, carte ou ambiance premium
+- a-propos.webp                 1400 × 1600 min — ambiance douce/premium pour la page À propos
+- og-makeyourstory.webp         1200 × 630 — image partage Facebook / WhatsApp / réseaux
+- favicon.webp                  carré 512 × 512
+- apple-touch-icon.webp         carré 512 × 512
+
+CATÉGORIES — 1000 × 750 min (sujets décalés si possible pour laisser la zone de texte lisible en bas)
+- cat-amour-couple.webp
+- cat-mariage.webp
+- cat-naissance-bebe.webp
+- cat-famille.webp
+- cat-anniversaire.webp
+- cat-hommage.webp
+- cat-animaux.webp
+- cat-autres-evenements.webp
+
+DÉMO
+- demo-cover.webp               1600 × 1100 min
+- demo-phone.webp               800 × 1400 min
+- demo-01.webp                  1200 × 900 min
+- demo-02.webp                  1200 × 900 min
+- demo-03.webp                  1200 × 900 min
+- demo-04.webp                  1200 × 900 min
+
+CONSEILS DE QUALITÉ
+- WebP qualité 78 à 88, pas d’image trop compressée.
+- Pour la page d’accueil, vise 250 à 550 Ko par image selon le format.
+- Pour les portraits, ne coupe pas les visages tout en haut : le site applique une fusion sombre en bas.
+- Ne mets jamais de photo client dans une démo publique sans accord écrit.

@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#070506">
+  <meta name="robots" content="noindex,follow">
+
+  <title>Arnaud & Angélique — Notre histoire | MakeYourStory.fr</title>
+  <meta name="description" content="Démo immersive MakeYourStory : une histoire en photos, musique et vidéo.">
+  <link rel="canonical" href="https://makeyourstory.fr/stories/demo/index.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MakeYourStory">
+  <meta property="og:title" content="Arnaud & Angélique — Notre histoire">
+  <meta property="og:description" content="Une histoire à ouvrir, à ressentir, à garder.">
+  <meta property="og:url" content="https://makeyourstory.fr/stories/demo/index.html">
+  <meta property="og:image" content="https://makeyourstory.fr/images/demo-hero.webp">
+
+  <link rel="icon" href="../../images/favicon.webp" type="image/webp">
+  <link rel="apple-touch-icon" href="../../images/apple-touch-icon.webp">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --ink:#070506;
+      --wine:#451121;
+      --rose:#ed7897;
+      --rose-soft:#ffcbd6;
+      --cream:#fff8f5;
+      --muted:#d3bec4;
+      --line:rgba(255,211,221,.16);
+      --max:1240px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-width:320px;
+      overflow-x:hidden;
+      color:var(--cream);
+      background:
+        radial-gradient(1100px 800px at 100% 0%,rgba(170,39,75,.19),transparent 65%),
+        radial-gradient(900px 700px at 0% 45%,rgba(83,14,35,.18),transparent 68%),
+        var(--ink);
+      font-family:"DM Sans",Arial,sans-serif;
+      line-height:1.5;
+    }
+
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    ::selection{background:rgba(239,127,157,.52);color:#fff}
+    .hidden{display:none!important}
+
+    /* Progress */
+    .progress{position:fixed;z-index:1000;top:0;left:0;width:100%;height:2px;background:rgba(255,255,255,.08);pointer-events:none}
+    .progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--rose),var(--rose-soft));box-shadow:0 0 16px rgba(255,130,163,.95)}
+
+    /* ENTRY */
+    .entry{
+      position:fixed;inset:0;z-index:900;display:grid;place-items:center;overflow:hidden;background:var(--ink);
+      transition:opacity .95s ease,visibility .95s ease;
+    }
+    .entry.is-open{opacity:0;visibility:hidden;pointer-events:none}
+    .entry::before{
+      content:"";position:absolute;inset:0;
+      background:
+        linear-gradient(180deg,rgba(7,4,5,.20),rgba(7,4,5,.86)),
+        linear-gradient(90deg,rgba(7,4,5,.55),transparent 50%,rgba(7,4,5,.38)),
+        url("../../images/demo-intro.webp") center/cover;
+      transform:scale(1.08);animation:entryZoom 16s ease-in-out infinite alternate;
+    }
+    .entry::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,transparent 0 15%,rgba(7,4,5,.16) 48%,rgba(7,4,5,.80) 100%)}
+    @keyframes entryZoom{from{transform:scale(1.08)}to{transform:scale(1.18)}}
+
+    .entry-inner{position:relative;z-index:1;width:min(660px,calc(100% - 36px));text-align:center}
+    .eyebrow{margin:0;color:var(--rose-soft);font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase}
+    .entry h1{margin:18px 0 0;font:500 clamp(72px,12vw,144px)/.72 "Cormorant Garamond",Georgia,serif;letter-spacing:-.058em}
+    .entry h1 span,.script{display:block;color:var(--rose-soft);font:400 .69em/.72 "Allura","Brush Script MT",cursive;letter-spacing:0}
+    .entry-copy{max-width:455px;margin:25px auto 29px;color:#f6e8ec;font-size:14px;line-height:1.72}
+    .button-main{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 30px;border:1px solid transparent;border-radius:999px;
+      color:#fff;background:linear-gradient(135deg,#f28da5,#b83a5a);box-shadow:0 20px 44px rgba(223,88,123,.38);
+      font-size:12px;font-weight:700;cursor:pointer;transition:.22s ease;
+    }
+    .button-main:hover{transform:translateY(-3px);box-shadow:0 26px 52px rgba(238,105,141,.54)}
+    .entry-note{margin:20px 0 0;color:rgba(255,235,240,.66);font-size:9px;letter-spacing:.13em;text-transform:uppercase}
+
+    /* HEADER */
+    .topbar{position:fixed;z-index:100;top:0;left:0;width:100%;transition:.3s ease}
+    .topbar.solid{background:rgba(7,5,6,.91);border-bottom:1px solid rgba(255,255,255,.07);backdrop-filter:blur(15px)}
+    .nav{width:min(var(--max),calc(100% - 42px));min-height:76px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:15px}
+    .brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .brand-mark{width:39px;height:39px;display:grid;place-items:center;position:relative;font:600 32px/1 "Cormorant Garamond",Georgia,serif}
+    .brand-mark::after{content:"♡";position:absolute;right:-5px;bottom:-6px;color:var(--rose);font:400 18px/1 Arial,sans-serif}
+    .brand-title{display:block;font:500 16px/1 "Cormorant Garamond",Georgia,serif;letter-spacing:.23em}
+    .brand-sub{display:block;margin-top:4px;color:var(--rose-soft);font-size:7px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}
+    .nav-actions{display:flex;align-items:center;gap:10px}
+    .names{color:#f5dfe5;font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+    .sound{width:39px;height:39px;display:grid;place-items:center;border:1px solid rgba(255,188,205,.45);border-radius:50%;background:rgba(7,4,5,.22);color:var(--rose-soft);cursor:pointer;transition:.2s ease}
+    .sound.on,.sound:hover{background:linear-gradient(135deg,#ef849f,#b83b5b);color:#fff;box-shadow:0 0 22px rgba(244,120,154,.38)}
+    .back{border:1px solid rgba(255,205,216,.43);border-radius:999px;padding:9px 14px;color:#fff;font-size:10px;transition:.2s ease}
+    .back:hover{background:rgba(239,127,157,.14)}
+
+    /* HERO */
+    .hero{min-height:100svh;position:relative;display:grid;align-items:end;isolation:isolate;overflow:hidden;padding:122px 0 58px}
+    .hero::before{
+      content:"";position:absolute;inset:0;z-index:-2;
+      background:
+        linear-gradient(180deg,rgba(7,4,5,.08),rgba(7,4,5,.16) 38%,rgba(7,4,5,.93) 100%),
+        linear-gradient(90deg,rgba(7,4,5,.66),transparent 53%,rgba(7,4,5,.23)),
+        url("../../images/demo-hero.webp") center/cover;
+      transform:scale(1.04);animation:heroMove 24s ease-in-out infinite alternate;
+    }
+    .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 58% 7%,rgba(255,145,175,.17),transparent 45%),radial-gradient(circle at 80% 33%,rgba(245,120,153,.18),transparent 19%);mix-blend-mode:screen}
+    @keyframes heroMove{from{transform:scale(1.04)}to{transform:scale(1.13) translate3d(-1.2%,1%,0)}}
+    .heart-ring{position:absolute;right:6%;top:16%;width:min(40vw,550px);aspect-ratio:1.06;opacity:.75;filter:drop-shadow(0 0 17px rgba(245,110,146,.5));pointer-events:none}
+    .heart-ring::before,.heart-ring::after{content:"";position:absolute;top:18%;width:49%;height:70%;border:4px solid rgba(255,144,172,.86);border-bottom:0;border-radius:50% 50% 0 0}
+    .heart-ring::before{left:10%;transform:rotate(-43deg);transform-origin:100% 100%}
+    .heart-ring::after{right:10%;transform:rotate(43deg);transform-origin:0 100%}
+    .shell{width:min(var(--max),calc(100% - 44px));margin:auto}
+    .hero-title{margin:13px 0 0;max-width:830px;font:500 clamp(84px,12vw,164px)/.67 "Cormorant Garamond",Georgia,serif;letter-spacing:-.062em}
+    .hero-title span{display:block;margin-top:16px;color:var(--rose-soft);font:400 .67em/.71 "Allura","Brush Script MT",cursive;letter-spacing:0}
+    .hero-copy{max-width:420px;margin:30px 0 0;color:#f4e6e9;font-size:14px;line-height:1.68}
+    .hero-meta{display:flex;flex-wrap:wrap;gap:16px;margin-top:28px;color:#f5dfe5;font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+    .hero-meta span{display:inline-flex;align-items:center;gap:9px}.hero-meta span::before{content:"";width:25px;height:1px;background:var(--rose)}
+    .scroll-word{position:absolute;right:32px;bottom:42px;display:flex;align-items:center;gap:10px;color:rgba(255,233,239,.82);font-size:10px;letter-spacing:.14em;text-transform:uppercase;writing-mode:vertical-rl;transform:rotate(180deg)}
+    .scroll-word::before{content:"";width:1px;height:44px;background:linear-gradient(var(--rose),transparent)}
+
+    /* SHARED */
+    .section{padding:128px 0}
+    .reveal{opacity:0;transform:translateY(36px);transition:opacity .86s cubic-bezier(.2,.75,.2,1),transform .86s cubic-bezier(.2,.75,.2,1)}
+    .reveal.show{opacity:1;transform:none}
+    .chapter{display:flex;align-items:center;gap:12px;color:var(--rose-soft);font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+    .chapter::before{content:attr(data-n);display:grid;place-items:center;width:43px;height:43px;border:1px solid rgba(246,141,165,.60);border-radius:50%;font:500 19px/1 "Cormorant Garamond",Georgia,serif;letter-spacing:0}
+    .title{margin:21px 0 0;font:500 clamp(49px,6vw,80px)/.89 "Cormorant Garamond",Georgia,serif;letter-spacing:-.045em}
+    .title span{display:block;margin-top:7px;color:var(--rose-soft);font:400 .77em/.74 "Allura","Brush Script MT",cursive;letter-spacing:0}
+    .copy{max-width:500px;margin:22px 0 0;color:var(--muted);font-size:14px;line-height:1.78}
+    .date{display:inline-flex;align-items:center;gap:11px;margin-top:27px;color:#fff0f3;font-size:10px;letter-spacing:.16em;text-transform:uppercase}
+    .date::before{content:"";width:43px;height:1px;background:var(--rose)}
+
+    /* OPENING */
+    .opening{display:grid;grid-template-columns:.84fr 1.16fr;gap:clamp(28px,6vw,92px);align-items:center}
+    .photo-tall{min-height:650px;position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(7,3,4,.02),rgba(7,3,4,.61)),url("../../images/demo-01.webp") center/cover;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+    .photo-tall::after{content:"";position:absolute;left:-33px;bottom:-33px;width:54%;aspect-ratio:1;border:1px solid rgba(247,145,169,.52);border-radius:50%}
+    .photo-caption{position:absolute;right:27px;bottom:24px;max-width:260px;color:#fff;font:400 40px/1 "Allura","Brush Script MT",cursive;text-align:right;text-shadow:0 5px 22px rgba(0,0,0,.44)}
+
+    /* CINEMATIC BEACH PANEL */
+    .cinema{min-height:95svh;position:relative;display:grid;place-items:center;overflow:hidden;isolation:isolate;text-align:center}
+    .cinema::before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,rgba(7,3,4,.22),rgba(7,3,4,.83)),url("../../images/demo-02.webp") center/cover;transform:scale(1.04);animation:cinemaMove 22s ease-in-out infinite alternate}
+    .cinema::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 50% 44%,rgba(239,125,155,.24),transparent 37%)}
+    @keyframes cinemaMove{from{transform:scale(1.04)}to{transform:scale(1.14) translateY(-1%)}}
+    .cinema-inner{width:min(850px,calc(100% - 44px))}
+    .cinema h2{margin:19px 0 0;font:500 clamp(56px,8vw,115px)/.77 "Cormorant Garamond",Georgia,serif;letter-spacing:-.058em}
+    .cinema h2 span{display:block;margin-top:13px;color:var(--rose-soft);font:400 .66em/.72 "Allura","Brush Script MT",cursive;letter-spacing:0}
+    .cinema p{max-width:540px;margin:24px auto 0;color:#f8e5ea;font-size:14px;line-height:1.68}
+
+    /* STREET MONTAGE */
+    .street-section{padding:124px 0;background:linear-gradient(180deg,rgba(44,13,25,.90),rgba(8,5,7,.98))}
+    .street-head{display:grid;grid-template-columns:.88fr 1.12fr;gap:clamp(28px,6vw,80px);align-items:end;margin-bottom:42px}
+    .montage{display:grid;grid-template-columns:1.06fr .94fr .94fr;grid-auto-rows:255px;gap:14px}
+    .card{position:relative;overflow:hidden;background:var(--img) center/cover;isolation:isolate;transition:transform .3s ease}
+    .card::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(7,3,4,.04),rgba(7,3,4,.72))}
+    .card:hover{transform:translateY(-5px)}
+    .card.tall{grid-row:span 2}.card.wide{grid-column:span 2}
+    .card .label{position:absolute;z-index:2;left:22px;right:22px;bottom:18px}
+    .card strong{display:block;color:#fff;font:500 34px/1 "Cormorant Garamond",Georgia,serif}
+    .card span{display:block;margin-top:6px;color:#f6dce2;font-size:10px;letter-spacing:.11em;text-transform:uppercase}
+
+    /* QUOTE */
+    .quote-block{padding:148px 0;position:relative;overflow:hidden;text-align:center;background:radial-gradient(circle at 50% 44%,rgba(190,43,80,.25),transparent 42%),linear-gradient(180deg,rgba(49,14,26,.93),rgba(8,5,7,.98));border-top:1px solid rgba(255,199,211,.09);border-bottom:1px solid rgba(255,199,211,.09)}
+    .quote-block::before,.quote-block::after{content:"♡";position:absolute;color:rgba(248,129,159,.14);font:400 clamp(200px,26vw,380px)/1 "Cormorant Garamond",Georgia,serif;pointer-events:none}
+    .quote-block::before{top:8%;left:-6%}.quote-block::after{right:-7%;bottom:-4%;transform:rotate(18deg)}
+    .quote{position:relative;z-index:1;width:min(900px,calc(100% - 44px));margin:auto;font:500 clamp(42px,6.7vw,86px)/.97 "Cormorant Garamond",Georgia,serif;letter-spacing:-.04em}
+    .quote span{display:block;margin-top:23px;color:var(--rose-soft);font:400 clamp(53px,6vw,82px)/.7 "Allura","Brush Script MT",cursive}
+
+    /* LETTER */
+    .letter{display:grid;grid-template-columns:1fr 1fr;overflow:hidden;background:var(--cream);color:#351720}
+    .letter-photo{min-height:670px;background:linear-gradient(180deg,rgba(7,3,4,.02),rgba(7,3,4,.32)),url("../../images/demo-04.webp") center/cover}
+    .letter-copy{align-self:center;padding:clamp(38px,6vw,82px);background:radial-gradient(circle at 80% 11%,rgba(239,142,163,.24),transparent 38%),var(--cream)}
+    .letter-copy small{color:#aa405e;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+    .letter-copy h2{margin:18px 0 0;font:500 clamp(49px,6vw,78px)/.82 "Cormorant Garamond",Georgia,serif;letter-spacing:-.045em}
+    .letter-copy h2 span{display:block;margin-top:10px;color:#c04d6b;font:400 .76em/.73 "Allura","Brush Script MT",cursive;letter-spacing:0}
+    .letter-copy p{max-width:480px;margin:24px 0 0;color:#5f414a;font-size:14px;line-height:1.8}
+    .signature{margin-top:29px!important;color:#b34563!important;font:400 55px/.7 "Allura","Brush Script MT",cursive!important}
+
+    /* VIDEO ENDING */
+    .video-chapter{position:relative;min-height:96svh;display:grid;place-items:center;overflow:hidden;isolation:isolate;padding:100px 20px}
+    .video-chapter::before{
+      content:"";position:absolute;inset:0;z-index:-2;
+      background:
+        linear-gradient(180deg,rgba(7,3,4,.34),rgba(7,3,4,.83)),
+        url("../../images/demo-03.webp") center/cover;
+      transform:scale(1.05);animation:videoBackgroundMove 22s ease-in-out infinite alternate;
+    }
+    .video-chapter::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 50% 44%,rgba(239,120,155,.22),transparent 38%)}
+    @keyframes videoBackgroundMove{from{transform:scale(1.05)}to{transform:scale(1.14) translateY(-1%)}}
+    .video-inner{width:min(890px,100%);text-align:center}
+    .video-inner h2{margin:18px 0 0;font:500 clamp(55px,8vw,110px)/.78 "Cormorant Garamond",Georgia,serif;letter-spacing:-.055em}
+    .video-inner h2 span{display:block;margin-top:13px;color:var(--rose-soft);font:400 .67em/.72 "Allura","Brush Script MT",cursive;letter-spacing:0}
+    .video-copy{max-width:540px;margin:23px auto 0;color:#f7e4e9;font-size:14px;line-height:1.68}
+    .video-play{
+      width:90px;height:90px;display:grid;place-items:center;margin:34px auto 0;border:1px solid rgba(255,225,231,.85);border-radius:50%;
+      background:rgba(255,255,255,.08);color:#fff;font-size:28px;cursor:pointer;transition:.25s ease;box-shadow:0 18px 46px rgba(0,0,0,.28);
+    }
+    .video-play:hover{transform:scale(1.08);background:rgba(239,127,157,.38);box-shadow:0 22px 58px rgba(228,101,137,.38)}
+    .video-note{margin:18px auto 0;color:#f5dfe5;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+
+    /* FINALE */
+    .finale{min-height:100svh;position:relative;display:grid;place-items:center;overflow:hidden;text-align:center;isolation:isolate}
+    .finale::before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,rgba(7,3,4,.65),rgba(7,3,4,.82)),url("../../images/demo-intro.webp") center/cover;transform:scale(1.05);animation:finalMove 22s ease-in-out infinite alternate}
+    .finale::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 50% 46%,rgba(232,97,133,.23),transparent 37%)}
+    @keyframes finalMove{from{transform:scale(1.05)}to{transform:scale(1.14) translateY(-1%)}}
+    .finale-inner{width:min(880px,calc(100% - 44px))}
+    .finale h2{margin:20px 0 0;font:500 clamp(59px,9vw,125px)/.76 "Cormorant Garamond",Georgia,serif;letter-spacing:-.057em}
+    .finale h2 span{display:block;margin-top:14px;color:var(--rose-soft);font:400 .66em/.72 "Allura","Brush Script MT",cursive;letter-spacing:0}
+    .finale-copy{max-width:550px;margin:27px auto 0;color:#f7e4e9;font-size:14px;line-height:1.68}
+    .actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:31px}
+    .ghost{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 23px;border:1px solid rgba(255,207,217,.56);border-radius:999px;color:#fff;font-size:12px;transition:.2s ease}
+    .ghost:hover{background:rgba(239,127,157,.14)}
+    .footer{padding:40px 20px;background:#070506;text-align:center}
+    .footer p{margin:0;color:#bfaab1;font-size:10px;letter-spacing:.13em;text-transform:uppercase}
+    .footer a{display:inline-flex;margin-top:17px;color:var(--rose-soft);font-size:12px;font-weight:700}
+
+    /* VIDEO MODAL */
+    .video-modal{position:fixed;z-index:1100;inset:0;display:none;place-items:center;padding:24px;background:rgba(4,3,4,.95);backdrop-filter:blur(14px)}
+    .video-modal.open{display:grid}
+    .video-frame{position:relative;width:min(1080px,100%);max-height:82svh;background:#000;box-shadow:0 34px 90px rgba(0,0,0,.65)}
+    .video-frame video{display:block;width:100%;max-height:82svh;object-fit:contain;background:#000}
+    .video-close{position:absolute;top:-52px;right:0;width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(255,205,216,.55);border-radius:50%;background:rgba(255,255,255,.06);color:#fff;font-size:24px;cursor:pointer}
+    .video-placeholder{padding:70px 30px;text-align:center;color:#fff;background:linear-gradient(135deg,#1a0b11,#090607)}
+    .video-placeholder h3{margin:12px 0 0;font:500 clamp(38px,5vw,66px)/.85 "Cormorant Garamond",Georgia,serif}
+    .video-placeholder h3 span{display:block;margin-top:8px;color:var(--rose-soft);font:400 .72em/.72 "Allura","Brush Script MT",cursive}
+    .video-placeholder p{max-width:520px;margin:20px auto 0;color:#ead7dc;font-size:13px;line-height:1.68}
+
+    @media(max-width:900px){
+      .names{display:none}.heart-ring{width:61vw;right:-3%;top:17%}
+      .opening,.street-head{grid-template-columns:1fr}
+      .photo-tall{min-height:500px;max-width:650px;width:100%;margin:0 auto}
+      .letter{grid-template-columns:1fr}.letter-photo{min-height:430px}
+    }
+
+    @media(max-width:580px){
+      .nav{width:min(100% - 26px,var(--max));min-height:65px}.brand-title{font-size:13px;letter-spacing:.17em}.brand-sub{font-size:6px}.back{padding:8px 11px;font-size:9px}.sound{width:35px;height:35px}
+      .hero{padding:105px 0 48px}.shell,.hero-content{width:min(100% - 28px,var(--max))}.hero-title{font-size:80px}.hero-copy{max-width:315px;font-size:13px}.heart-ring{top:27%;right:-13%;width:84vw}.scroll-word{display:none}
+      .section{padding:82px 0}.title{font-size:49px}.photo-tall{min-height:420px}.photo-tall::after{left:-15px;bottom:-15px}.cinema{min-height:78svh}.cinema h2{font-size:67px}
+      .street-section{padding:82px 0}.montage{grid-template-columns:1fr 1fr;grid-auto-rows:185px;gap:9px}.card.tall{grid-row:span 2}.card.wide{grid-column:span 2}.card strong{font-size:24px}
+      .quote-block{padding:92px 0}.quote{font-size:46px}.letter-copy{padding:36px 26px}.letter-copy h2{font-size:55px}
+      .video-chapter{min-height:78svh}.video-inner h2{font-size:68px}.finale h2{font-size:70px}.entry h1{font-size:78px}.entry-copy{font-size:13px}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="progress" aria-hidden="true"><span data-progress></span></div>
+
+  <section class="entry" data-entry>
+    <div class="entry-inner">
+      <p class="eyebrow">Pour Angélique · de la part d’Arnaud</p>
+      <h1>Pour nous,<span>j’ai gardé ces moments.</span></h1>
+      <p class="entry-copy">Pas un cadeau qu’on pose sur une étagère. Une histoire à ouvrir, en images, en musique, et avec tout ce qu’on a encore à vivre.</p>
+      <button class="button-main" type="button" data-enter>Entrer dans notre histoire <span aria-hidden="true">♡</span></button>
+      <p class="entry-note">Prends ton temps. Cette histoire est pour toi, Angélique.</p>
+    </div>
+  </section>
+
+  <header class="topbar" data-header>
+    <nav class="nav">
+      <a class="brand" href="../../index.html" aria-label="Retour à MakeYourStory">
+        <span class="brand-mark" aria-hidden="true">M</span>
+        <span><span class="brand-title">MAKE YOUR STORY</span><span class="brand-sub">HISTOIRE DÉMONSTRATION</span></span>
+      </a>
+      <div class="nav-actions">
+        <span class="names">Arnaud & Angélique</span>
+        <button class="sound" type="button" aria-label="Couper ou remettre la musique" aria-pressed="false" data-sound>♪</button>
+        <a class="back" href="../../index.html">Retour au site</a>
+      </div>
+    </nav>
+  </header>
+
+  <audio id="story-audio" preload="auto" loop>
+    <source src="../../audio/demo-love.mp3" type="audio/mpeg">
+  </audio>
+
+  <main>
+    <section class="hero">
+      <div class="heart-ring" aria-hidden="true"></div>
+      <div class="hero-content shell">
+        <p class="eyebrow">Notre histoire · depuis le premier jour</p>
+        <h1 class="hero-title">Arnaud<span>& Angélique</span></h1>
+        <p class="hero-copy">Il y a des rencontres qui changent une journée. Et puis il y a celles qui changent tout ce qui vient après.</p>
+        <div class="hero-meta"><span>Une histoire à deux</span><span>À découvrir sans se presser</span></div>
+      </div>
+      <div class="scroll-word">Faire défiler</div>
+    </section>
+
+    <section class="section">
+      <div class="shell opening">
+        <div class="reveal">
+          <p class="chapter" data-n="01">Le début</p>
+          <h2 class="title">Tout a commencé<span>sans qu’on le sache.</span></h2>
+          <p class="copy">Un regard un peu trop long. Un rire au bon moment. Puis cette impression étrange d’avoir envie de raconter les jours à venir avec la même personne.</p>
+          <p class="date">Le premier de beaucoup de souvenirs</p>
+        </div>
+        <div class="photo-tall reveal"><p class="photo-caption">Le début de tout.</p></div>
+      </div>
+    </section>
+
+    <section class="cinema">
+      <div class="cinema-inner reveal">
+        <p class="eyebrow">Les couchers de soleil n’étaient jamais vraiment les mêmes</p>
+        <h2>Mais avec toi,<span>ils avaient toujours la même lumière.</span></h2>
+        <p>Les plages, le vent, les fins de journée, les silences qui ne sont jamais vides. C’est peut-être ça, le bonheur : reconnaître un endroit parce que tu y es.</p>
+      </div>
+    </section>
+
+    <section class="street-section">
+      <div class="shell">
+        <div class="street-head">
+          <div class="reveal">
+            <p class="chapter" data-n="02">Nos escapades</p>
+            <h2 class="title">Des rues, des détours,<span>et toujours nous deux.</span></h2>
+          </div>
+          <p class="copy reveal">Les plus beaux souvenirs ne préviennent pas. Ils commencent souvent par “on va juste marcher un peu” et finissent par devenir des soirées qu’on voudrait garder entières.</p>
+        </div>
+
+        <div class="montage">
+          <div class="card tall reveal" style="--img:url('../../images/demo-03.webp')">
+            <div class="label"><strong>Nos rues.</strong><span>Quelques lumières et beaucoup de nous.</span></div>
+          </div>
+          <div class="card reveal" style="--img:url('../../images/demo-04.webp')">
+            <div class="label"><strong>Sans plan.</strong><span>Mais toujours ensemble.</span></div>
+          </div>
+          <div class="card reveal" style="--img:url('../../images/demo-02.webp')">
+            <div class="label"><strong>Le monde autour.</strong><span>Un peu moins important.</span></div>
+          </div>
+          <div class="card wide reveal" style="--img:url('../../images/demo-intro.webp')">
+            <div class="label"><strong>Nous deux, juste là.</strong><span>Et c’était largement suffisant.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="quote-block">
+      <p class="quote reveal">« Ce n’est pas le nombre de jours.<span>C’est tout ce qu’ils ont rempli. »</span></p>
+    </section>
+
+    <section class="section">
+      <div class="shell letter reveal">
+        <div class="letter-photo" role="img" aria-label="Arnaud et Angélique lors d’un souvenir au bord de la mer"></div>
+        <div class="letter-copy">
+          <small>Ce que je voulais te dire</small>
+          <h2>Pour Angélique,<span>encore et toujours.</span></h2>
+          <p>Je ne savais pas comment t’offrir tout ce que tu représentes. Alors j’ai gardé quelques morceaux de nous : les photos, les détails, les endroits, les moments qu’on aurait pu laisser filer.</p>
+          <p>Parce que tu mérites de savoir que je me souviens. Et que, parmi toutes les choses que je choisirais encore, il y a toi.</p>
+          <p>Je veux qu’on garde cette histoire comme on garde une main, une odeur, une chanson : sans jamais avoir besoin de l’expliquer.</p>
+          <p class="signature">Arnaud ♡</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="video-chapter">
+      <div class="video-inner reveal">
+        <p class="eyebrow">Le souvenir en mouvement</p>
+        <h2>Et si notre histoire<span>avait une bande-annonce ?</span></h2>
+        <p class="video-copy">Ici, tu peux terminer l’expérience avec une vraie vidéo : un montage de vacances, une séquence de plage, une vidéo de votre mariage, ou simplement quelques secondes où vous riez ensemble.</p>
+        <button class="video-play" type="button" data-open-video aria-label="Lancer la vidéo souvenir">▷</button>
+        <p class="video-note">Vidéo finale à ajouter dans le dossier videos</p>
+      </div>
+    </section>
+
+    <section class="finale">
+      <div class="finale-inner reveal">
+        <p class="eyebrow">La suite ne tient pas encore dans une photo</p>
+        <h2>Mais je sais<span>avec qui je veux la vivre.</span></h2>
+        <p class="finale-copy">Cette page est une démo. Mais le principe, lui, est réel : une histoire personnalisée, une ambiance, une musique, vos images et une émotion qu’on n’oublie pas.</p>
+        <div class="actions">
+          <a class="button-main" href="../../commander.html">Créer une histoire comme celle-ci <span aria-hidden="true">♡</span></a>
+          <a class="ghost" href="../../index.html">Découvrir MakeYourStory</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Démo MakeYourStory · Une marque BASALTE-WEB</p>
+    <a href="../../contact.html">Parler de votre propre histoire</a>
+  </footer>
+
+  <section class="video-modal" data-video-modal aria-label="Vidéo souvenir">
+    <div class="video-frame">
+      <button class="video-close" type="button" data-close-video aria-label="Fermer la vidéo">×</button>
+
+      <!-- Dépose ton fichier à cet emplacement : videos/arnaud-angelique.mp4 -->
+      <video controls playsinline preload="metadata" poster="../../images/demo-03.webp" data-video>
+        <source src="../../videos/arnaud-angelique.mp4" type="video/mp4">
+      </video>
+
+      <div class="video-placeholder hidden" data-video-placeholder>
+        <p class="eyebrow">Votre vidéo finale</p>
+        <h3>Ici se lance<span>votre plus beau souvenir.</span></h3>
+        <p>Crée le dossier <strong>videos</strong> à la racine du dépôt, puis ajoute une vidéo nommée <strong>arnaud-angelique.mp4</strong>. Dès qu’elle est en ligne, cette fenêtre la lira automatiquement.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (() => {
+      const entry = document.querySelector("[data-entry]");
+      const enter = document.querySelector("[data-enter]");
+      const audio = document.getElementById("story-audio");
+      const sound = document.querySelector("[data-sound]");
+      const header = document.querySelector("[data-header]");
+      const progress = document.querySelector("[data-progress]");
+      const openVideo = document.querySelector("[data-open-video]");
+      const closeVideo = document.querySelector("[data-close-video]");
+      const videoModal = document.querySelector("[data-video-modal]");
+      const video = document.querySelector("[data-video]");
+      const videoPlaceholder = document.querySelector("[data-video-placeholder]");
+
+      document.body.style.overflow = "hidden";
+
+      const playMusic = async () => {
+        try {
+          audio.volume = 0;
+          await audio.play();
+          sound.classList.add("on");
+          sound.setAttribute("aria-pressed", "true");
+          sound.textContent = "❚❚";
+
+          let volume = 0;
+          const fade = window.setInterval(() => {
+            volume += 0.04;
+            audio.volume = Math.min(volume, 0.55);
+            if (volume >= 0.55) window.clearInterval(fade);
+          }, 110);
+        } catch {
+          sound.textContent = "♪";
+        }
+      };
+
+      enter.addEventListener("click", () => {
+        entry.classList.add("is-open");
+        document.body.style.overflow = "";
+        playMusic();
+        window.setTimeout(() => entry.remove(), 900);
+      });
+
+      sound.addEventListener("click", async () => {
+        try {
+          if (audio.paused) {
+            await audio.play();
+            audio.volume = 0.55;
+            sound.classList.add("on");
+            sound.setAttribute("aria-pressed", "true");
+            sound.textContent = "❚❚";
+          } else {
+            audio.pause();
+            sound.classList.remove("on");
+            sound.setAttribute("aria-pressed", "false");
+            sound.textContent = "♪";
+          }
+        } catch {
+          sound.textContent = "!";
+          sound.title = "Vérifie que audio/demo-love.mp3 est bien présent.";
+        }
+      });
+
+      window.addEventListener("scroll", () => {
+        header.classList.toggle("solid", window.scrollY > 25);
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.width = (max ? window.scrollY / max * 100 : 0) + "%";
+      }, { passive:true });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold:0.16 });
+
+      document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+      const openVideoModal = () => {
+        videoModal.classList.add("open");
+        document.body.style.overflow = "hidden";
+        video.currentTime = 0;
+        video.play().catch(() => {
+          video.classList.add("hidden");
+          videoPlaceholder.classList.remove("hidden");
+        });
+      };
+
+      const closeVideoModal = () => {
+        video.pause();
+        videoModal.classList.remove("open");
+        document.body.style.overflow = "";
+      };
+
+      openVideo.addEventListener("click", openVideoModal);
+      closeVideo.addEventListener("click", closeVideoModal);
+
+      video.addEventListener("error", () => {
+        video.classList.add("hidden");
+        videoPlaceholder.classList.remove("hidden");
+      });
+
+      videoModal.addEventListener("click", (event) => {
+        if (event.target === videoModal) closeVideoModal();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && videoModal.classList.contains("open")) closeVideoModal();
+      });
+    })();
+  </script>
+</body>
+</html>

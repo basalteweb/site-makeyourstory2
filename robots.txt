@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /access.html
+Disallow: /merci.html
+Disallow: /stories/
+Sitemap: https://makeyourstory.fr/sitemap.xml
