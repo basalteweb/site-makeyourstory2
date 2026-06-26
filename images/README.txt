@@ -1,9 +1,3 @@
-Images manquantes converties en WebP pour la démo actuelle.
-À déposer dans le dossier images/ du dépôt GitHub.
+Lot 3 — visuels décoratifs MakeYourStory
 
-Fichiers inclus :
-demo-intro.webp
-demo-01.webp
-demo-02.webp
-demo-03.webp
-demo-04.webp
+10 images WebP prêtes à être déposées dans le dossier images/ du site.
