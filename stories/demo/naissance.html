@@ -1,1 +1,1579 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#110c10">
+  <meta name="robots" content="noindex,follow">
 
+  <title>Louise est arrivée | MakeYourStory</title>
+  <meta name="description" content="Une annonce de naissance à ouvrir, ressentir et partager.">
+  <link rel="canonical" href="https://makeyourstory.fr/stories/demo/naissance.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MakeYourStory">
+  <meta property="og:title" content="Louise est arrivée">
+  <meta property="og:description" content="Une grande nouvelle à découvrir avec douceur.">
+  <meta property="og:url" content="https://makeyourstory.fr/stories/demo/naissance.html">
+  <meta property="og:image" content="https://makeyourstory.fr/images/demo-naissance-og.webp">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Louise est arrivée">
+  <meta name="twitter:description" content="Une grande nouvelle à découvrir avec douceur.">
+  <meta name="twitter:image" content="https://makeyourstory.fr/images/demo-naissance-og.webp">
+
+  <link rel="icon" href="../../images/favicon.webp" type="image/webp">
+  <link rel="apple-touch-icon" href="../../images/apple-touch-icon.webp">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="../../assets/analytics.js" defer></script>
+
+  <style>
+    :root{
+      --ink:#110c10;
+      --ink-soft:#1d1118;
+      --plum:#442536;
+      --rose:#efafc2;
+      --rose-soft:#ffe0e8;
+      --cream:#fff9f6;
+      --paper:#f6e8ec;
+      --muted:#cbb8bf;
+      --line:rgba(255,227,234,.17);
+      --max:1240px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-width:320px;
+      overflow-x:hidden;
+      color:var(--cream);
+      background:
+        radial-gradient(1000px 720px at 100% 0%,rgba(197,96,134,.18),transparent 66%),
+        radial-gradient(850px 680px at 0% 42%,rgba(106,46,76,.17),transparent 68%),
+        var(--ink);
+      font-family:"DM Sans",Arial,sans-serif;
+      line-height:1.5;
+    }
+
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    button,a{-webkit-tap-highlight-color:transparent}
+    ::selection{background:rgba(239,175,194,.55);color:#fff}
+
+    .hidden{display:none!important}
+
+    .progress{
+      position:fixed;
+      z-index:1200;
+      top:0;
+      left:0;
+      width:100%;
+      height:2px;
+      pointer-events:none;
+      background:rgba(255,255,255,.08);
+    }
+
+    .progress span{
+      display:block;
+      width:0;
+      height:100%;
+      background:linear-gradient(90deg,var(--rose),var(--rose-soft));
+      box-shadow:0 0 16px rgba(255,173,198,.95);
+    }
+
+    .entry{
+      position:fixed;
+      inset:0;
+      z-index:1100;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      background:var(--ink);
+      transition:opacity .9s ease,visibility .9s ease;
+    }
+
+    .entry.is-open{
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
+
+    .entry::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg,rgba(17,12,16,.16),rgba(17,12,16,.86)),
+        linear-gradient(90deg,rgba(17,12,16,.54),transparent 55%,rgba(17,12,16,.35)),
+        url("../../images/demo-naissance-intro.webp") center/cover;
+      transform:scale(1.07);
+      animation:entryZoom 17s ease-in-out infinite alternate;
+    }
+
+    .entry::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 50% 37%,transparent 0 14%,rgba(17,12,16,.12) 45%,rgba(17,12,16,.82) 100%);
+    }
+
+    @keyframes entryZoom{
+      from{transform:scale(1.07)}
+      to{transform:scale(1.17) translate3d(-1.1%,1%,0)}
+    }
+
+    .entry-inner{
+      position:relative;
+      z-index:1;
+      width:min(670px,calc(100% - 38px));
+      text-align:center;
+    }
+
+    .eyebrow{
+      margin:0;
+      color:var(--rose-soft);
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+    }
+
+    .entry h1{
+      margin:18px 0 0;
+      font:500 clamp(73px,12vw,146px)/.72 "Cormorant Garamond",Georgia,serif;
+      letter-spacing:-.06em;
+    }
+
+    .entry h1 span,
+    .script{
+      display:block;
+      color:var(--rose-soft);
+      font:400 .69em/.72 "Allura","Brush Script MT",cursive;
+      letter-spacing:0;
+    }
+
+    .entry-copy{
+      max-width:470px;
+      margin:27px auto 30px;
+      color:#f8e9ed;
+      font-size:14px;
+      line-height:1.72;
+    }
+
+    .button-main,
+    .button-ghost{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      min-height:54px;
+      padding:0 28px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.22s ease;
+    }
+
+    .button-main{
+      border:1px solid transparent;
+      color:#fff;
+      background:linear-gradient(135deg,#f2a7ba,#ba5575);
+      box-shadow:0 20px 44px rgba(206,92,126,.36);
+    }
+
+    .button-main:hover{
+      transform:translateY(-3px);
+      box-shadow:0 26px 52px rgba(230,113,150,.52);
+    }
+
+    .button-ghost{
+      border:1px solid rgba(255,220,229,.58);
+      color:#fff;
+      background:rgba(255,255,255,.04);
+    }
+
+    .button-ghost:hover{
+      transform:translateY(-3px);
+      background:rgba(239,175,194,.14);
+    }
+
+    .entry-note{
+      margin:20px 0 0;
+      color:rgba(255,235,240,.68);
+      font-size:9px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .topbar{
+      position:fixed;
+      z-index:100;
+      top:0;
+      left:0;
+      width:100%;
+      transition:.3s ease;
+    }
+
+    .topbar.solid{
+      background:rgba(17,12,16,.91);
+      border-bottom:1px solid rgba(255,255,255,.07);
+      backdrop-filter:blur(15px);
+    }
+
+    .nav{
+      width:min(var(--max),calc(100% - 42px));
+      min-height:78px;
+      margin:auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+
+    .brand-mark{
+      width:39px;
+      height:39px;
+      position:relative;
+      display:grid;
+      place-items:center;
+      font:600 31px/1 "Cormorant Garamond",Georgia,serif;
+    }
+
+    .brand-mark::after{
+      content:"♡";
+      position:absolute;
+      right:-5px;
+      bottom:-6px;
+      color:var(--rose);
+      font:400 18px/1 Arial,sans-serif;
+    }
+
+    .brand-title{
+      display:block;
+      font:500 16px/1 "Cormorant Garamond",Georgia,serif;
+      letter-spacing:.22em;
+    }
+
+    .brand-sub{
+      display:block;
+      margin-top:4px;
+      color:var(--rose-soft);
+      font-size:7px;
+      font-weight:700;
+      letter-spacing:.21em;
+      text-transform:uppercase;
+    }
+
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .story-name{
+      color:#f6e3e8;
+      font-size:10px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .round-button{
+      width:39px;
+      height:39px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,202,217,.46);
+      border-radius:50%;
+      background:rgba(17,12,16,.24);
+      color:var(--rose-soft);
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .round-button:hover,
+    .round-button.on{
+      color:#fff;
+      background:linear-gradient(135deg,#ef9db4,#b34c6d);
+      box-shadow:0 0 22px rgba(244,148,177,.36);
+    }
+
+    .back{
+      padding:9px 14px;
+      border:1px solid rgba(255,205,218,.43);
+      border-radius:999px;
+      color:#fff;
+      font-size:10px;
+      transition:.2s ease;
+    }
+
+    .back:hover{
+      background:rgba(239,175,194,.14);
+    }
+
+    .hero{
+      min-height:100svh;
+      position:relative;
+      display:grid;
+      align-items:end;
+      isolation:isolate;
+      overflow:hidden;
+      padding:125px 0 60px;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-2;
+      background:
+        linear-gradient(180deg,rgba(17,12,16,.07),rgba(17,12,16,.14) 38%,rgba(17,12,16,.95) 100%),
+        linear-gradient(90deg,rgba(17,12,16,.63),transparent 55%,rgba(17,12,16,.23)),
+        url("../../images/demo-naissance-hero.webp") center/cover;
+      transform:scale(1.04);
+      animation:heroMove 25s ease-in-out infinite alternate;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      background:
+        radial-gradient(ellipse at 65% 11%,rgba(255,196,211,.18),transparent 45%),
+        radial-gradient(circle at 79% 38%,rgba(245,157,185,.17),transparent 18%);
+      mix-blend-mode:screen;
+    }
+
+    @keyframes heroMove{
+      from{transform:scale(1.04)}
+      to{transform:scale(1.13) translate3d(-1%,1%,0)}
+    }
+
+    .moon-ring{
+      position:absolute;
+      top:16%;
+      right:7%;
+      width:min(35vw,490px);
+      aspect-ratio:1;
+      border:2px solid rgba(255,194,211,.56);
+      border-left-color:transparent;
+      border-bottom-color:transparent;
+      border-radius:50%;
+      filter:drop-shadow(0 0 18px rgba(255,175,198,.37));
+      transform:rotate(28deg);
+      pointer-events:none;
+    }
+
+    .moon-ring::before{
+      content:"";
+      position:absolute;
+      top:12%;
+      left:12%;
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--rose-soft);
+      box-shadow:
+        85px 41px 0 -2px rgba(255,222,232,.8),
+        164px 4px 0 -3px rgba(255,222,232,.72),
+        220px 107px 0 -3px rgba(255,222,232,.72);
+    }
+
+    .shell{
+      width:min(var(--max),calc(100% - 44px));
+      margin:auto;
+    }
+
+    .hero-title{
+      max-width:835px;
+      margin:13px 0 0;
+      font:500 clamp(85px,12vw,164px)/.67 "Cormorant Garamond",Georgia,serif;
+      letter-spacing:-.062em;
+    }
+
+    .hero-title span{
+      display:block;
+      margin-top:16px;
+      color:var(--rose-soft);
+      font:400 .67em/.71 "Allura","Brush Script MT",cursive;
+      letter-spacing:0;
+    }
+
+    .hero-copy{
+      max-width:430px;
+      margin:31px 0 0;
+      color:#f5e7eb;
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .hero-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:16px;
+      margin-top:29px;
+      color:#f4dfe6;
+      font-size:10px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .hero-meta span{
+      display:inline-flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .hero-meta span::before{
+      content:"";
+      width:25px;
+      height:1px;
+      background:var(--rose);
+    }
+
+    .scroll-word{
+      position:absolute;
+      right:32px;
+      bottom:42px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:rgba(255,235,240,.84);
+      font-size:10px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      writing-mode:vertical-rl;
+      transform:rotate(180deg);
+    }
+
+    .scroll-word::before{
+      content:"";
+      width:1px;
+      height:44px;
+      background:linear-gradient(var(--rose),transparent);
+    }
+
+    .section{padding:128px 0}
+
+    .reveal{
+      opacity:0;
+      transform:translateY(36px);
+      transition:
+        opacity .86s cubic-bezier(.2,.75,.2,1) var(--delay,0s),
+        transform .86s cubic-bezier(.2,.75,.2,1) var(--delay,0s);
+    }
+
+    .reveal.show{
+      opacity:1;
+      transform:none;
+    }
+
+    .chapter{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:var(--rose-soft);
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.2em;
+      text-transform:uppercase;
+    }
+
+    .chapter::before{
+      content:attr(data-n);
+      width:43px;
+      height:43px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(246,163,187,.62);
+      border-radius:50%;
+      font:500 19px/1 "Cormorant Garamond",Georgia,serif;
+      letter-spacing:0;
+    }
+
+    .title{
+      margin:21px 0 0;
+      font:500 clamp(49px,6vw,80px)/.89 "Cormorant Garamond",Georgia,serif;
+      letter-spacing:-.045em;
+    }
+
+    .title span{
+      display:block;
+      margin-top:7px;
+      color:var(--rose-soft);
+      font:400 .77em/.74 "Allura","Brush Script MT",cursive;
+      letter-spacing:0;
+    }
+
+    .copy{
+      max-width:505px;
+      margin:22px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.78;
+    }
+
+    .date{
+      display:inline-flex;
+      align-items:center;
+      gap:11px;
+      margin-top:27px;
+      color:#fff0f4;
+      font-size:10px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+    }
+
+    .date::before{
+      content:"";
+      width:43px;
+      height:1px;
+      background:var(--rose);
+    }
+
+    .opening{
+      display:grid;
+      grid-template-columns:.84fr 1.16fr;
+      gap:clamp(28px,6vw,92px);
+      align-items:center;
+    }
+
+    .photo-tall{
+      min-height:650px;
+      position:relative;
+      overflow:hidden;
+      background:
+        linear-gradient(180deg,rgba(17,12,16,.03),rgba(17,12,16,.64)),
+        url("../../images/demo-naissance-01.webp") center/cover;
+      box-shadow:0 30px 80px rgba(0,0,0,.35);
+    }
+
+    .photo-tall::after{
+      content:"";
+      position:absolute;
+      left:-33px;
+      bottom:-33px;
+      width:54%;
+      aspect-ratio:1;
+      border:1px solid rgba(250,181,201,.52);
+      border-radius:50%;
+    }
+
+    .photo-caption{
+      position:absolute;
+      right:27px;
+      bottom:24px;
+      max-width:270px;
+      margin:0;
+      color:#fff;
+      font:400 42px/1 "Allura","Brush Script MT",cursive;
+      text-align:right;
+      text-shadow:0 5px 22px rgba(0,0,0,.44);
+    }
+
+    .cinema{
+      min-height:95svh;
+      position:relative;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      isolation:isolate;
+      text-align:center;
+    }
+
+    .cinema::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-2;
+      background:
+        linear-gradient(180deg,rgba(17,12,16,.2),rgba(17,12,16,.86)),
+        url("../../images/demo-naissance-02.webp") center/cover;
+      transform:scale(1.04);
+      animation:cinemaMove 22s ease-in-out infinite alternate;
+    }
+
+    .cinema::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      background:radial-gradient(circle at 50% 44%,rgba(250,179,202,.22),transparent 37%);
+    }
+
+    @keyframes cinemaMove{
+      from{transform:scale(1.04)}
+      to{transform:scale(1.14) translateY(-1%)}
+    }
+
+    .cinema-inner{
+      width:min(860px,calc(100% - 44px));
+    }
+
+    .cinema h2{
+      margin:19px 0 0;
+      font:500 clamp(56px,8vw,115px)/.77 "Cormorant Garamond",Georgia,serif;
+      letter-spacing:-.058em;
+    }
+
+    .cinema h2 span{
+      display:block;
+      margin-top:13px;
+      color:var(--rose-soft);
+      font:400 .66em/.72 "Allura","Brush Script MT",cursive;
+      letter-spacing:0;
+    }
+
+    .cinema p{
+      max-width:550px;
+      margin:24px auto 0;
+      color:#f8e7ec;
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .moments{
+      padding:124px 0;
+      background:linear-gradient(180deg,rgba(63,34,49,.9),rgba(17,12,16,.98));
+    }
+
+    .moments-head{
+      display:grid;
+      grid-template-columns:.88fr 1.12fr;
+      gap:clamp(28px,6vw,80px);
+      align-items:end;
+      margin-bottom:42px;
+    }
+
+    .montage{
+      display:grid;
+      grid-template-columns:1.06fr .94fr .94fr;
+      grid-auto-rows:255px;
+      gap:14px;
+    }
+
+    .card{
+      position:relative;
+      overflow:hidden;
+      isolation:isolate;
+      background:var(--img) center/cover;
+      transition:transform .32s ease;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:1;
+      background:linear-gradient(180deg,rgba(17,12,16,.04),rgba(17,12,16,.74));
+    }
+
+    .card:hover{
+      transform:translateY(-5px);
+    }
+
+    .card.tall{grid-row:span 2}
+    .card.wide{grid-column:span 2}
+
+    .card .label{
+      position:absolute;
+      z-index:2;
+      left:22px;
+      right:22px;
+      bottom:18px;
+    }
+
+    .card strong{
+      display:block;
+      color:#fff;
+      font:500 34px/1 "Cormorant Garamond",Georgia,serif;
+    }
+
+    .card span{
+      display:block;
+      margin-top:6px;
+      color:#f7dfe7;
+      font-size:10px;
+      letter-spacing:.11em;
+      text-transform:uppercase;
+    }
+
+    .quote-block{
+      position:relative;
+      overflow:hidden;
+      padding:148px 0;
+      text-align:center;
+      background:
+        radial-gradient(circle at 50% 44%,rgba(190,82,121,.26),transparent 42%),
+        linear-gradient(180deg,rgba(60,28,44,.93),rgba(17,12,16,.98));
+      border-top:1px solid rgba(255,205,219,.09);
+      border-bottom:1px solid rgba(255,205,219,.09);
+    }
+
+    .quote-block::before,
+    .quote-block::after{
+      content:"♡";
+      position:absolute;
+      color:rgba(249,173,198,.13);
+      font:400 clamp(200px,26vw,380px)/1 "Cormorant Garamond",Georgia,serif;
+      pointer-events:none;
+    }
+
+    .quote-block::before{
+      top:8%;
+      left:-6%;
+    }
+
+    .quote-block::after{
+      right:-7%;
+      bottom:-4%;
+      transform:rotate(18deg);
+    }
+
+    .quote{
+      position:relative;
+      z-index:1;
+      width:min(900px,calc(100% - 44px));
+      margin:auto;
+      font:500 clamp(42px,6.7vw,86px)/.97 "Cormorant Garamond",Georgia,serif;
+      letter-spacing:-.04em;
+    }
+
+    .quote span{
+      display:block;
+      margin-top:23px;
+      color:var(--rose-soft);
+      font:400 clamp(53px,6vw,82px)/.7 "Allura","Brush Script MT",cursive;
+    }
+
+    .letter{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      overflow:hidden;
+      color:#3a202b;
+      background:var(--cream);
+    }
+
+    .letter-photo{
+      min-height:670px;
+      background:
+        linear-gradient(180deg,rgba(17,12,16,.02),rgba(17,12,16,.32)),
+        url("../../images/demo-naissance-03.webp") center/cover;
+    }
+
+    .letter-copy{
+      align-self:center;
+      padding:clamp(38px,6vw,82px);
+      background:
+        radial-gradient(circle at 80% 11%,rgba(244,176,196,.27),transparent 38%),
+        var(--cream);
+    }
+
+    .letter-copy small{
+      color:#a75370;
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+
+    .letter-copy h2{
+      margin:18px 0 0;
+      font:500 clamp(49px,6vw,78px)/.82 "Cormorant Garamond",Georgia,serif;
+      letter-spacing:-.045em;
+    }
+
+    .letter-copy h2 span{
+      display:block;
+      margin-top:10px;
+      color:#c35c7a;
+      font:400 .76em/.73 "Allura","Brush Script MT",cursive;
+      letter-spacing:0;
+    }
+
+    .letter-copy p{
+      max-width:480px;
+      margin:24px 0 0;
+      color:#694b55;
+      font-size:14px;
+      line-height:1.8;
+    }
+
+    .signature{
+      margin-top:31px!important;
+      color:#b94f70!important;
+      font:400 56px/.7 "Allura","Brush Script MT",cursive!important;
+    }
+
+    .video-chapter{
+      position:relative;
+      min-height:96svh;
+      display:grid;
+      place-items:center;
+      isolation:isolate;
+      overflow:hidden;
+      padding:100px 20px;
+    }
+
+    .video-chapter::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-2;
+      background:
+        linear-gradient(180deg,rgba(17,12,16,.3),rgba(17,12,16,.85)),
+        url("../../images/demo-naissance-04.webp") center/cover;
+      transform:scale(1.05);
+      animation:videoMove 22s ease-in-out infinite alternate;
+    }
+
+    .video-chapter::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      background:radial-gradient(circle at 50% 44%,rgba(244,163,190,.24),transparent 38%);
+    }
+
+    @keyframes videoMove{
+      from{transform:scale(1.05)}
+      to{transform:scale(1.14) translateY(-1%)}
+    }
+
+    .video-inner{
+      width:min(890px,100%);
+      text-align:center;
+    }
+
+    .video-inner h2{
+      margin:18px 0 0;
+      font:500 clamp(55px,8vw,110px)/.78 "Cormorant Garamond",Georgia,serif;
+      letter-spacing:-.055em;
+    }
+
+    .video-inner h2 span{
+      display:block;
+      margin-top:13px;
+      color:var(--rose-soft);
+      font:400 .67em/.72 "Allura","Brush Script MT",cursive;
+      letter-spacing:0;
+    }
+
+    .video-copy{
+      max-width:550px;
+      margin:23px auto 0;
+      color:#f7e6eb;
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .video-play{
+      width:90px;
+      height:90px;
+      display:grid;
+      place-items:center;
+      margin:34px auto 0;
+      border:1px solid rgba(255,228,233,.88);
+      border-radius:50%;
+      background:rgba(255,255,255,.08);
+      color:#fff;
+      font-size:28px;
+      cursor:pointer;
+      transition:.25s ease;
+      box-shadow:0 18px 46px rgba(0,0,0,.28);
+    }
+
+    .video-play:hover{
+      transform:scale(1.08);
+      background:rgba(239,157,184,.36);
+      box-shadow:0 22px 58px rgba(222,109,146,.4);
+    }
+
+    .video-note{
+      margin:18px auto 0;
+      color:#f7e0e8;
+      font-size:10px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .finale{
+      min-height:100svh;
+      position:relative;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      isolation:isolate;
+      text-align:center;
+    }
+
+    .finale::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-2;
+      background:
+        linear-gradient(180deg,rgba(17,12,16,.6),rgba(17,12,16,.85)),
+        url("../../images/demo-naissance-intro.webp") center/cover;
+      transform:scale(1.05);
+      animation:finalMove 22s ease-in-out infinite alternate;
+    }
+
+    .finale::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      background:radial-gradient(circle at 50% 46%,rgba(237,146,179,.23),transparent 37%);
+    }
+
+    @keyframes finalMove{
+      from{transform:scale(1.05)}
+      to{transform:scale(1.14) translateY(-1%)}
+    }
+
+    .finale-inner{
+      width:min(880px,calc(100% - 44px));
+    }
+
+    .finale h2{
+      margin:20px 0 0;
+      font:500 clamp(59px,9vw,125px)/.76 "Cormorant Garamond",Georgia,serif;
+      letter-spacing:-.057em;
+    }
+
+    .finale h2 span{
+      display:block;
+      margin-top:14px;
+      color:var(--rose-soft);
+      font:400 .66em/.72 "Allura","Brush Script MT",cursive;
+      letter-spacing:0;
+    }
+
+    .finale-copy{
+      max-width:550px;
+      margin:27px auto 0;
+      color:#f7e4e9;
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .actions{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:32px;
+    }
+
+    .footer{
+      padding:40px 20px;
+      background:#110c10;
+      text-align:center;
+    }
+
+    .footer p{
+      margin:0;
+      color:#cbb2bb;
+      font-size:10px;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+    }
+
+    .footer a{
+      display:inline-flex;
+      margin-top:17px;
+      color:var(--rose-soft);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .video-modal{
+      position:fixed;
+      z-index:1300;
+      inset:0;
+      display:none;
+      place-items:center;
+      padding:24px;
+      background:rgba(8,5,7,.95);
+      backdrop-filter:blur(14px);
+    }
+
+    .video-modal.open{
+      display:grid;
+    }
+
+    .video-frame{
+      position:relative;
+      width:min(1080px,100%);
+      max-height:82svh;
+      background:#000;
+      box-shadow:0 34px 90px rgba(0,0,0,.65);
+    }
+
+    .video-frame video{
+      display:block;
+      width:100%;
+      max-height:82svh;
+      object-fit:contain;
+      background:#000;
+    }
+
+    .video-close{
+      position:absolute;
+      top:-52px;
+      right:0;
+      width:42px;
+      height:42px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,210,222,.55);
+      border-radius:50%;
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      font-size:24px;
+      cursor:pointer;
+    }
+
+    .video-fallback{
+      padding:70px 30px;
+      color:#fff;
+      text-align:center;
+      background:linear-gradient(135deg,#2c1721,#110b10);
+    }
+
+    .video-fallback h3{
+      margin:12px 0 0;
+      font:500 clamp(38px,5vw,66px)/.85 "Cormorant Garamond",Georgia,serif;
+    }
+
+    .video-fallback h3 span{
+      display:block;
+      margin-top:8px;
+      color:var(--rose-soft);
+      font:400 .72em/.72 "Allura","Brush Script MT",cursive;
+    }
+
+    .video-fallback p{
+      max-width:510px;
+      margin:20px auto 0;
+      color:#ecdbe0;
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    .toast{
+      position:fixed;
+      z-index:1500;
+      left:50%;
+      bottom:26px;
+      max-width:calc(100% - 34px);
+      padding:12px 17px;
+      border:1px solid rgba(255,220,230,.28);
+      border-radius:999px;
+      color:#fff;
+      background:rgba(33,18,26,.93);
+      box-shadow:0 18px 48px rgba(0,0,0,.35);
+      font-size:12px;
+      transform:translate(-50%,24px);
+      opacity:0;
+      pointer-events:none;
+      transition:.28s ease;
+    }
+
+    .toast.show{
+      transform:translate(-50%,0);
+      opacity:1;
+    }
+
+    @media(max-width:900px){
+      .story-name{display:none}
+      .moon-ring{width:59vw;right:-3%;top:17%}
+      .opening,.moments-head{grid-template-columns:1fr}
+      .photo-tall{width:100%;max-width:650px;min-height:500px;margin:0 auto}
+      .letter{grid-template-columns:1fr}
+      .letter-photo{min-height:430px}
+    }
+
+    @media(max-width:580px){
+      .nav{
+        width:min(100% - 26px,var(--max));
+        min-height:66px;
+      }
+
+      .brand-title{
+        font-size:13px;
+        letter-spacing:.17em;
+      }
+
+      .brand-sub{font-size:6px}
+      .back{padding:8px 11px;font-size:9px}
+      .round-button{width:35px;height:35px}
+
+      .hero{padding:105px 0 48px}
+      .hero-title{font-size:80px}
+      .hero-copy{max-width:315px;font-size:13px}
+      .moon-ring{top:27%;right:-13%;width:84vw}
+      .scroll-word{display:none}
+
+      .section{padding:82px 0}
+      .title{font-size:49px}
+      .photo-tall{min-height:420px}
+      .photo-tall::after{left:-15px;bottom:-15px}
+
+      .cinema{min-height:78svh}
+      .cinema h2{font-size:67px}
+
+      .moments{padding:82px 0}
+
+      .montage{
+        grid-template-columns:1fr 1fr;
+        grid-auto-rows:185px;
+        gap:9px;
+      }
+
+      .card.tall{grid-row:span 2}
+      .card.wide{grid-column:span 2}
+      .card strong{font-size:24px}
+
+      .quote-block{padding:92px 0}
+      .quote{font-size:46px}
+
+      .letter-copy{padding:36px 26px}
+      .letter-copy h2{font-size:55px}
+
+      .video-chapter{min-height:78svh}
+      .video-inner h2{font-size:68px}
+      .finale h2{font-size:70px}
+
+      .entry h1{font-size:78px}
+      .entry-copy{font-size:13px}
+
+      .actions{
+        width:100%;
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .actions .button-main,
+      .actions .button-ghost{
+        width:100%;
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      *,
+      *::before,
+      *::after{
+        animation-duration:.01ms!important;
+        animation-iteration-count:1!important;
+        transition-duration:.01ms!important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="progress" aria-hidden="true"><span data-progress></span></div>
+
+  <section class="entry" data-entry>
+    <div class="entry-inner">
+      <p class="eyebrow">Une grande nouvelle à partager</p>
+      <h1>Louise,<span>notre petit miracle.</span></h1>
+      <p class="entry-copy">Il y a des jours qui changent une famille pour toujours. Celui-ci restera gravé dans nos cœurs, avec son premier souffle, ses petits doigts et toute la douceur qu’elle a apportée.</p>
+      <button class="button-main" type="button" data-enter>Ouvrir l’annonce <span aria-hidden="true">♡</span></button>
+      <p class="entry-note">Une histoire à découvrir avec le son</p>
+    </div>
+  </section>
+
+  <header class="topbar" data-header>
+    <nav class="nav">
+      <a class="brand" href="../../index.html" aria-label="Retour à MakeYourStory">
+        <span class="brand-mark" aria-hidden="true">M</span>
+        <span>
+          <span class="brand-title">MAKE YOUR STORY</span>
+          <span class="brand-sub">FAIRE-PART DE NAISSANCE</span>
+        </span>
+      </a>
+
+      <div class="nav-actions">
+        <span class="story-name">Louise est arrivée</span>
+        <button class="round-button" type="button" aria-label="Couper ou remettre la musique" aria-pressed="false" data-sound>♪</button>
+        <button class="round-button" type="button" aria-label="Partager cette annonce" data-share>↗</button>
+        <a class="back" href="../../faire-part-naissance.html">Faire-part</a>
+      </div>
+    </nav>
+  </header>
+
+  <audio id="story-audio" preload="auto" loop>
+    <source src="../../audio/demo-naissance.mp3" type="audio/mpeg">
+  </audio>
+
+  <main>
+    <section class="hero">
+      <div class="moon-ring" aria-hidden="true"></div>
+
+      <div class="shell">
+        <p class="eyebrow">Nous avons une grande nouvelle</p>
+        <h1 class="hero-title">Louise<span>est arrivée dans nos vies.</span></h1>
+        <p class="hero-copy">Le 12 juin 2026, à 04 h 17, notre monde est devenu plus doux. Nous sommes heureux de vous présenter notre petite merveille.</p>
+
+        <div class="hero-meta">
+          <span>3,420 kg de bonheur</span>
+          <span>50 cm d’amour</span>
+        </div>
+      </div>
+
+      <div class="scroll-word">Faire défiler</div>
+    </section>
+
+    <section class="section">
+      <div class="shell opening">
+        <div class="reveal">
+          <p class="chapter" data-n="01">Le premier jour</p>
+          <h2 class="title">Quelques grammes,<span>et tout notre monde a changé.</span></h2>
+          <p class="copy">On attend ce moment pendant si longtemps. Puis il arrive, presque doucement, et plus rien n’est pareil. Il y a désormais une petite main à tenir, une voix à reconnaître, une vie entière à aimer.</p>
+          <p class="date">12 juin 2026 · 04 h 17</p>
+        </div>
+
+        <div class="photo-tall reveal" style="--delay:.14s">
+          <p class="photo-caption">Le début d’une immense histoire.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cinema">
+      <div class="cinema-inner reveal">
+        <p class="eyebrow">Les premières heures</p>
+        <h2>Depuis ton premier regard,<span>le temps a une autre lumière.</span></h2>
+        <p>Les nuits seront peut-être plus courtes, les journées parfois imprévisibles. Mais déjà, chaque minute près de toi ressemble à quelque chose que l’on n’oubliera jamais.</p>
+      </div>
+    </section>
+
+    <section class="moments">
+      <div class="shell">
+        <div class="moments-head">
+          <div class="reveal">
+            <p class="chapter" data-n="02">Nos premiers souvenirs</p>
+            <h2 class="title">De tout petits instants,<span>pour une immense place.</span></h2>
+          </div>
+
+          <p class="copy reveal" style="--delay:.12s">Un bâillement, un doigt qui s’accroche, un sommeil paisible, un regard qui semble déjà connaître le nôtre. Les premiers souvenirs ont cette douceur que le temps ne pourra jamais effacer.</p>
+        </div>
+
+        <div class="montage">
+          <div class="card tall reveal" style="--img:url('../../images/demo-naissance-03.webp')">
+            <div class="label">
+              <strong>Tout près.</strong>
+              <span>Un monde entier dans les bras.</span>
+            </div>
+          </div>
+
+          <div class="card reveal" style="--img:url('../../images/demo-naissance-01.webp');--delay:.08s">
+            <div class="label">
+              <strong>Si petite.</strong>
+              <span>Déjà tellement aimée.</span>
+            </div>
+          </div>
+
+          <div class="card reveal" style="--img:url('../../images/demo-naissance-02.webp');--delay:.16s">
+            <div class="label">
+              <strong>Un souffle.</strong>
+              <span>Et une famille transformée.</span>
+            </div>
+          </div>
+
+          <div class="card wide reveal" style="--img:url('../../images/demo-naissance-04.webp');--delay:.12s">
+            <div class="label">
+              <strong>Notre plus belle nouveauté.</strong>
+              <span>Bienvenue dans notre histoire, Louise.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="quote-block">
+      <p class="quote reveal">« Il y a des bonheurs qui ne tiennent<span>dans aucun mot. »</span></p>
+    </section>
+
+    <section class="section">
+      <div class="shell letter reveal">
+        <div class="letter-photo" role="img" aria-label="Une petite fille dans les bras de ses parents"></div>
+
+        <div class="letter-copy">
+          <small>Pour ceux qui nous aiment</small>
+          <h2>Notre petite Louise,<span>notre grand bonheur.</span></h2>
+          <p>Nous avions imaginé ce moment tellement de fois. Pourtant, rien ne nous avait préparés à la douceur de te rencontrer, à la force de cet amour, ni à cette impression que tu étais attendue depuis toujours.</p>
+          <p>Nous sommes heureux de partager cette nouvelle avec les personnes qui comptent pour nous. Merci d’être là, de près ou de loin, pour accompagner les premiers pas de cette belle aventure.</p>
+          <p class="signature">Camille &amp; Julien</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="video-chapter">
+      <div class="video-inner reveal">
+        <p class="eyebrow">Un souvenir en mouvement</p>
+        <h2>Quelques secondes,<span>pour revivre le début.</span></h2>
+        <p class="video-copy">Parfois, une image ne suffit pas. Une courte vidéo permet de garder un premier regard, un petit mouvement, un sourire ou un instant que l’on voudra revoir encore longtemps.</p>
+        <button class="video-play" type="button" data-open-video aria-label="Lire la vidéo souvenir">▷</button>
+        <p class="video-note">Un instant à garder près du cœur</p>
+      </div>
+    </section>
+
+    <section class="finale">
+      <div class="finale-inner reveal">
+        <p class="eyebrow">Notre famille s’agrandit</p>
+        <h2>Bienvenue Louise,<span>tu étais déjà tellement attendue.</span></h2>
+        <p class="finale-copy">Merci de partager avec nous ce tout premier chapitre. Cette annonce peut être envoyée facilement par message, WhatsApp, e-mail ou simple lien.</p>
+
+        <div class="actions">
+          <button class="button-main" type="button" data-share>Partager l’annonce <span aria-hidden="true">♡</span></button>
+          <button class="button-ghost" type="button" data-whatsapp>Envoyer sur WhatsApp</button>
+          <button class="button-ghost" type="button" data-copy-link>Copier le lien</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Une histoire créée avec MakeYourStory</p>
+    <a href="../../faire-part-naissance.html">Découvrir les faire-parts digitaux</a>
+  </footer>
+
+  <section class="video-modal" data-video-modal aria-label="Vidéo souvenir">
+    <div class="video-frame">
+      <button class="video-close" type="button" data-close-video aria-label="Fermer la vidéo">×</button>
+
+      <video controls playsinline preload="metadata" poster="../../images/demo-naissance-04.webp" data-video>
+        <source src="../../videos/demo-naissance.mp4" type="video/mp4">
+      </video>
+
+      <div class="video-fallback hidden" data-video-fallback>
+        <p class="eyebrow">Un souvenir en mouvement</p>
+        <h3>Les premières images,<span>pour ne rien oublier.</span></h3>
+        <p>Chaque histoire peut garder une place pour les moments que l’on souhaite revoir encore et encore.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="toast" data-toast role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      const entry = document.querySelector("[data-entry]");
+      const enter = document.querySelector("[data-enter]");
+      const audio = document.getElementById("story-audio");
+      const sound = document.querySelector("[data-sound]");
+      const header = document.querySelector("[data-header]");
+      const progress = document.querySelector("[data-progress]");
+      const shareButtons = document.querySelectorAll("[data-share]");
+      const whatsappButton = document.querySelector("[data-whatsapp]");
+      const copyButton = document.querySelector("[data-copy-link]");
+      const toast = document.querySelector("[data-toast]");
+      const openVideo = document.querySelector("[data-open-video]");
+      const closeVideo = document.querySelector("[data-close-video]");
+      const videoModal = document.querySelector("[data-video-modal]");
+      const video = document.querySelector("[data-video]");
+      const fallback = document.querySelector("[data-video-fallback]");
+
+      let toastTimer;
+
+      document.body.style.overflow = "hidden";
+
+      const showToast = (message) => {
+        toast.textContent = message;
+        toast.classList.add("show");
+        window.clearTimeout(toastTimer);
+
+        toastTimer = window.setTimeout(() => {
+          toast.classList.remove("show");
+        }, 2600);
+      };
+
+      const pageUrl = () => window.location.href.split("#")[0];
+
+      const copyLink = async () => {
+        const url = pageUrl();
+
+        try {
+          await navigator.clipboard.writeText(url);
+          showToast("Lien copié");
+          return;
+        } catch {}
+
+        const input = document.createElement("textarea");
+        input.value = url;
+        input.setAttribute("readonly", "");
+        input.style.position = "fixed";
+        input.style.opacity = "0";
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        input.remove();
+        showToast("Lien copié");
+      };
+
+      const shareStory = async () => {
+        const data = {
+          title: "Louise est arrivée",
+          text: "Nous sommes heureux de vous présenter Louise.",
+          url: pageUrl()
+        };
+
+        if (navigator.share) {
+          try {
+            await navigator.share(data);
+            return;
+          } catch (error) {
+            if (error.name === "AbortError") return;
+          }
+        }
+
+        copyLink();
+      };
+
+      const playMusic = async () => {
+        try {
+          audio.volume = 0;
+          await audio.play();
+
+          sound.classList.add("on");
+          sound.setAttribute("aria-pressed", "true");
+          sound.textContent = "❚❚";
+
+          let volume = 0;
+
+          const fade = window.setInterval(() => {
+            volume += 0.04;
+            audio.volume = Math.min(volume, 0.55);
+
+            if (volume >= 0.55) {
+              window.clearInterval(fade);
+            }
+          }, 100);
+        } catch {
+          sound.textContent = "♪";
+        }
+      };
+
+      enter.addEventListener("click", () => {
+        entry.classList.add("is-open");
+        document.body.style.overflow = "";
+        playMusic();
+
+        window.setTimeout(() => {
+          entry.remove();
+        }, 950);
+      });
+
+      sound.addEventListener("click", async () => {
+        try {
+          if (audio.paused) {
+            await audio.play();
+            audio.volume = 0.55;
+            sound.classList.add("on");
+            sound.setAttribute("aria-pressed", "true");
+            sound.textContent = "❚❚";
+          } else {
+            audio.pause();
+            sound.classList.remove("on");
+            sound.setAttribute("aria-pressed", "false");
+            sound.textContent = "♪";
+          }
+        } catch {
+          showToast("Le son sera disponible dans quelques instants.");
+        }
+      });
+
+      shareButtons.forEach((button) => {
+        button.addEventListener("click", shareStory);
+      });
+
+      whatsappButton.addEventListener("click", () => {
+        const text = encodeURIComponent("Nous sommes heureux de vous présenter Louise. " + pageUrl());
+        window.open("https://wa.me/?text=" + text, "_blank", "noopener");
+      });
+
+      copyButton.addEventListener("click", copyLink);
+
+      window.addEventListener("scroll", () => {
+        header.classList.toggle("solid", window.scrollY > 25);
+
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.width = (max ? (window.scrollY / max) * 100 : 0) + "%";
+      }, { passive:true });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((item) => {
+          if (item.isIntersecting) {
+            item.target.classList.add("show");
+            observer.unobserve(item.target);
+          }
+        });
+      }, { threshold:0.16 });
+
+      document.querySelectorAll(".reveal").forEach((element) => {
+        observer.observe(element);
+      });
+
+      const openVideoModal = () => {
+        videoModal.classList.add("open");
+        document.body.style.overflow = "hidden";
+        video.currentTime = 0;
+
+        video.play()
+          .then(() => {
+            video.classList.remove("hidden");
+            fallback.classList.add("hidden");
+          })
+          .catch(() => {
+            video.classList.add("hidden");
+            fallback.classList.remove("hidden");
+          });
+      };
+
+      const closeVideoModal = () => {
+        video.pause();
+        videoModal.classList.remove("open");
+        document.body.style.overflow = "";
+      };
+
+      openVideo.addEventListener("click", openVideoModal);
+      closeVideo.addEventListener("click", closeVideoModal);
+
+      video.addEventListener("error", () => {
+        video.classList.add("hidden");
+        fallback.classList.remove("hidden");
+      });
+
+      videoModal.addEventListener("click", (event) => {
+        if (event.target === videoModal) {
+          closeVideoModal();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && videoModal.classList.contains("open")) {
+          closeVideoModal();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
