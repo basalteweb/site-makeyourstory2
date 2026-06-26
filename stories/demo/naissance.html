@@ -1,35 +1,48 @@
 <!doctype html>
-
 <html lang="fr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#24201b">
-  <meta name="robots" content="noindex,follow">  <title>Louise est arrivée | MakeYourStory</title>
-  <meta name="description" content="Une annonce de naissance à ouvrir, ressentir et partager.">
-  <link rel="canonical" href="https://makeyourstory.fr/stories/demo/naissance.html">  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#2a0718">
+  <meta name="robots" content="noindex,follow">
+
+  <title>Louise est arrivée | MakeYourStory</title>
+  <meta name="description" content="Une grande nouvelle à ouvrir, ressentir et partager.">
+  <link rel="canonical" href="https://makeyourstory.fr/stories/demo/naissance.html">
+
+  <meta property="og:type" content="website">
   <meta property="og:site_name" content="MakeYourStory">
   <meta property="og:title" content="Louise est arrivée">
   <meta property="og:description" content="Une grande nouvelle à découvrir avec douceur.">
   <meta property="og:url" content="https://makeyourstory.fr/stories/demo/naissance.html">
-  <meta property="og:image" content="https://makeyourstory.fr/images/demo-naissance-og.webp">  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://makeyourstory.fr/images/demo-naissance-og.webp">
+
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Louise est arrivée">
   <meta name="twitter:description" content="Une grande nouvelle à découvrir avec douceur.">
-  <meta name="twitter:image" content="https://makeyourstory.fr/images/demo-naissance-og.webp">  <link rel="icon" href="../../images/favicon.webp" type="image/webp">
-  <link rel="apple-touch-icon" href="../../images/apple-touch-icon.webp">  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <meta name="twitter:image" content="https://makeyourstory.fr/images/demo-naissance-og.webp">
+
+  <link rel="icon" href="../../images/favicon.webp" type="image/webp">
+  <link rel="apple-touch-icon" href="../../images/apple-touch-icon.webp">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">  <script src="../../assets/analytics.js" defer></script>  <style>
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="../../assets/analytics.js" defer></script>
+
+  <style>
     :root{
-      --ink:#24201b;
-      --ink-deep:#171411;
-      --ink-soft:#302a23;
-      --linen:#d5c6ae;
-      --milk:#fffdf8;
-      --cloud:#d9e4e6;
-      --sage:#c4cbb7;
-      --warm:#f2dfc4;
-      --muted:#d7cec0;
-      --line:rgba(255,250,240,.18);
+      --ink:#250714;
+      --ink-soft:#48102a;
+      --wine:#7c173f;
+      --pink:#ff6d9f;
+      --pink-light:#ffc2d4;
+      --pink-pale:#ffe7ef;
+      --peach:#ffd2bb;
+      --cream:#fff9f7;
+      --muted:#e9c6d2;
+      --line:rgba(255,225,236,.2);
       --max:1240px;
     }
 
@@ -41,60 +54,52 @@
       margin:0;
       min-width:320px;
       overflow-x:hidden;
-      color:var(--milk);
+      color:var(--cream);
       background:
-        radial-gradient(1100px 760px at 100% 0%,rgba(205,217,213,.12),transparent 66%),
-        radial-gradient(900px 700px at 0% 48%,rgba(221,201,169,.11),transparent 68%),
-        var(--ink-deep);
+        radial-gradient(1000px 700px at 100% 0%,rgba(255,69,133,.25),transparent 67%),
+        radial-gradient(900px 700px at 0% 45%,rgba(250,172,197,.14),transparent 68%),
+        linear-gradient(180deg,#250714,#12040b);
       font-family:"DM Sans",Arial,sans-serif;
       line-height:1.5;
     }
 
-    body.story-open .hero .hero-eyebrow,
-    body.story-open .hero-title,
-    body.story-open .hero-copy,
-    body.story-open .hero-meta{
-      animation:heroTextIn .95s cubic-bezier(.2,.8,.2,1) forwards;
-    }
-
-    body.story-open .hero-title{animation-delay:.14s}
-    body.story-open .hero-copy{animation-delay:.28s}
-    body.story-open .hero-meta{animation-delay:.4s}
-
     a{color:inherit;text-decoration:none}
     button{font:inherit}
     button,a{-webkit-tap-highlight-color:transparent}
-    ::selection{background:rgba(212,194,165,.65);color:#171411}
+    ::selection{background:var(--pink);color:#fff}
 
     .hidden{display:none!important}
 
     .progress{
       position:fixed;
-      z-index:1400;
-      inset:0 auto auto 0;
+      z-index:1500;
+      top:0;
+      left:0;
       width:100%;
-      height:2px;
+      height:3px;
+      background:rgba(255,255,255,.1);
       pointer-events:none;
-      background:rgba(255,255,255,.08);
     }
 
     .progress span{
       display:block;
       width:0;
       height:100%;
-      background:linear-gradient(90deg,var(--sage),var(--warm),var(--cloud));
-      box-shadow:0 0 18px rgba(246,225,197,.8);
+      background:linear-gradient(90deg,#ff8ab2,#ff3f7a,#ffd4bd);
+      box-shadow:0 0 18px rgba(255,104,158,.95);
     }
+
+    /* Entrée */
 
     .entry{
       position:fixed;
-      z-index:1300;
+      z-index:1400;
       inset:0;
       display:grid;
       place-items:center;
       overflow:hidden;
-      background:var(--ink-deep);
-      transition:opacity .9s ease,visibility .9s ease;
+      background:#250714;
+      transition:opacity 1s ease,visibility 1s ease;
     }
 
     .entry.is-open{
@@ -108,11 +113,11 @@
       position:absolute;
       inset:0;
       background:
-        linear-gradient(180deg,rgba(23,20,17,.12),rgba(23,20,17,.84)),
-        linear-gradient(90deg,rgba(23,20,17,.57),transparent 56%,rgba(23,20,17,.32)),
+        linear-gradient(180deg,rgba(34,5,17,.08),rgba(34,5,17,.85)),
+        linear-gradient(90deg,rgba(34,5,17,.57),transparent 56%,rgba(34,5,17,.3)),
         url("../../images/demo-naissance-intro.webp") center/cover;
       transform:scale(1.08);
-      animation:entryMove 17s ease-in-out infinite alternate;
+      animation:entryZoom 16s ease-in-out infinite alternate;
     }
 
     .entry::after{
@@ -120,15 +125,15 @@
       position:absolute;
       inset:0;
       background:
-        radial-gradient(circle at 50% 36%,transparent 0 13%,rgba(23,20,17,.1) 46%,rgba(23,20,17,.82) 100%);
+        radial-gradient(circle at 50% 37%,transparent 0 14%,rgba(38,4,18,.08) 46%,rgba(38,4,18,.82) 100%);
     }
 
-    @keyframes entryMove{
+    @keyframes entryZoom{
       from{transform:scale(1.08)}
-      to{transform:scale(1.19) translate3d(-1.2%,1.2%,0)}
+      to{transform:scale(1.2) translate3d(-1.2%,1%,0)}
     }
 
-    .atmosphere{
+    .bubble-field{
       position:absolute;
       z-index:1;
       inset:0;
@@ -136,44 +141,61 @@
       pointer-events:none;
     }
 
-    .particle{
+    .bubble{
       position:absolute;
       left:var(--x);
       top:var(--y);
       width:var(--size);
       height:var(--size);
+      border:1px solid rgba(255,255,255,.38);
       border-radius:50%;
-      background:rgba(255,253,248,.8);
+      background:
+        radial-gradient(circle at 30% 25%,rgba(255,255,255,.84),rgba(255,205,222,.25) 30%,rgba(255,90,149,.12) 58%,transparent 70%);
+      box-shadow:
+        inset 0 0 14px rgba(255,255,255,.28),
+        0 0 20px rgba(255,102,157,.22);
       opacity:0;
-      filter:blur(.2px);
-      animation:floatParticle var(--duration) ease-in-out var(--delay) infinite;
+      animation:floatBubble var(--duration) ease-in-out var(--delay) infinite;
     }
 
-    .particle:nth-child(3n){
-      background:rgba(218,228,230,.88);
+    .bubble::after{
+      content:"";
+      position:absolute;
+      top:17%;
+      left:23%;
+      width:20%;
+      height:12%;
+      border-radius:50%;
+      background:rgba(255,255,255,.72);
+      filter:blur(1px);
     }
 
-    .particle:nth-child(4n){
-      background:rgba(242,223,196,.88);
-    }
+    @keyframes floatBubble{
+      0%{
+        opacity:0;
+        transform:translate3d(0,32px,0) scale(.65) rotate(0deg);
+      }
 
-    @keyframes floatParticle{
-      0%{opacity:0;transform:translate3d(0,16px,0) scale(.55)}
-      16%{opacity:.8}
-      55%{opacity:.38}
-      100%{opacity:0;transform:translate3d(var(--drift),-88px,0) scale(1.15)}
+      15%{opacity:.9}
+
+      60%{opacity:.52}
+
+      100%{
+        opacity:0;
+        transform:translate3d(var(--drift),-135px,0) scale(1.12) rotate(18deg);
+      }
     }
 
     .entry-inner{
       position:relative;
       z-index:2;
-      width:min(680px,calc(100% - 38px));
+      width:min(690px,calc(100% - 38px));
       text-align:center;
     }
 
     .eyebrow{
       margin:0;
-      color:#f5ead8;
+      color:#ffe0ea;
       font-size:10px;
       font-weight:700;
       letter-spacing:.24em;
@@ -182,22 +204,23 @@
 
     .entry h1{
       margin:18px 0 0;
-      font:500 clamp(73px,12vw,146px)/.72 "Cormorant Garamond",Georgia,serif;
-      letter-spacing:-.06em;
+      font:500 clamp(74px,12vw,150px)/.71 "Cormorant Garamond",Georgia,serif;
+      letter-spacing:-.065em;
+      text-shadow:0 10px 40px rgba(0,0,0,.22);
     }
 
     .entry h1 span,
     .script{
       display:block;
-      color:var(--warm);
-      font:400 .69em/.72 "Allura","Brush Script MT",cursive;
+      color:#ffd2bd;
+      font:400 .68em/.72 "Allura","Brush Script MT",cursive;
       letter-spacing:0;
     }
 
     .entry-copy{
-      max-width:465px;
-      margin:27px auto 30px;
-      color:#f7f0e5;
+      max-width:470px;
+      margin:28px auto 31px;
+      color:#fff0f4;
       font-size:14px;
       line-height:1.72;
     }
@@ -218,35 +241,37 @@
     }
 
     .button-main{
-      border:1px solid rgba(255,253,248,.18);
-      color:#2a251f;
-      background:linear-gradient(135deg,#f6e6c9,#c8d4ce);
-      box-shadow:0 20px 48px rgba(11,10,8,.36);
+      border:1px solid rgba(255,255,255,.22);
+      color:#fff;
+      background:linear-gradient(135deg,#ff8ab2,#e92b6a);
+      box-shadow:0 20px 50px rgba(241,47,111,.45);
     }
 
     .button-main:hover{
-      transform:translateY(-3px) scale(1.015);
-      box-shadow:0 26px 58px rgba(11,10,8,.46);
+      transform:translateY(-3px) scale(1.02);
+      box-shadow:0 28px 62px rgba(255,59,129,.58);
     }
 
     .button-ghost{
-      border:1px solid rgba(255,249,237,.52);
-      color:#fffdf8;
-      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,224,236,.58);
+      color:#fff;
+      background:rgba(255,255,255,.05);
     }
 
     .button-ghost:hover{
       transform:translateY(-3px);
-      background:rgba(255,253,248,.13);
+      background:rgba(255,126,171,.15);
     }
 
     .entry-note{
       margin:20px 0 0;
-      color:rgba(255,246,231,.68);
+      color:rgba(255,235,242,.7);
       font-size:9px;
       letter-spacing:.14em;
       text-transform:uppercase;
     }
+
+    /* Header */
 
     .topbar{
       position:fixed;
@@ -258,9 +283,9 @@
     }
 
     .topbar.solid{
-      background:rgba(23,20,17,.9);
+      background:rgba(37,7,20,.88);
       border-bottom:1px solid rgba(255,255,255,.08);
-      backdrop-filter:blur(16px);
+      backdrop-filter:blur(17px);
     }
 
     .nav{
@@ -286,7 +311,7 @@
       height:39px;
       display:grid;
       place-items:center;
-      font:600 31px/1 "Cormorant Garamond",Georgia,serif;
+      font:600 32px/1 "Cormorant Garamond",Georgia,serif;
     }
 
     .brand-mark::after{
@@ -294,7 +319,7 @@
       position:absolute;
       right:-5px;
       bottom:-5px;
-      color:var(--warm);
+      color:#ffb5cc;
       font:400 17px/1 Arial,sans-serif;
     }
 
@@ -307,7 +332,7 @@
     .brand-sub{
       display:block;
       margin-top:4px;
-      color:#efe0c8;
+      color:#ffd4bd;
       font-size:7px;
       font-weight:700;
       letter-spacing:.21em;
@@ -321,7 +346,7 @@
     }
 
     .story-name{
-      color:#f2e9dd;
+      color:#ffe5ed;
       font-size:10px;
       letter-spacing:.14em;
       text-transform:uppercase;
@@ -332,31 +357,33 @@
       height:39px;
       display:grid;
       place-items:center;
-      border:1px solid rgba(255,242,218,.44);
+      border:1px solid rgba(255,205,224,.48);
       border-radius:50%;
-      color:#f4eadb;
-      background:rgba(23,20,17,.24);
+      color:#ffe1eb;
+      background:rgba(40,5,20,.25);
       cursor:pointer;
       transition:.2s ease;
     }
 
     .round-button:hover,
     .round-button.on{
-      color:#28231d;
-      background:linear-gradient(135deg,#f4e5ca,#c7d6d1);
-      box-shadow:0 0 25px rgba(242,223,196,.32);
+      color:#fff;
+      background:linear-gradient(135deg,#ff98ba,#e82c6a);
+      box-shadow:0 0 26px rgba(255,105,160,.42);
     }
 
     .back{
       padding:9px 14px;
-      border:1px solid rgba(255,241,220,.43);
+      border:1px solid rgba(255,215,229,.45);
       border-radius:999px;
-      color:#fffdf8;
+      color:#fff;
       font-size:10px;
       transition:.2s ease;
     }
 
-    .back:hover{background:rgba(255,253,248,.13)}
+    .back:hover{background:rgba(255,113,164,.16)}
+
+    /* Hero */
 
     .hero{
       --hero-shift:0px;
@@ -375,10 +402,10 @@
       z-index:-2;
       inset:0;
       background:
-        linear-gradient(180deg,rgba(23,20,17,.04),rgba(23,20,17,.14) 38%,rgba(23,20,17,.94) 100%),
-        linear-gradient(90deg,rgba(23,20,17,.63),transparent 55%,rgba(23,20,17,.23)),
+        linear-gradient(180deg,rgba(39,4,19,.04),rgba(39,4,19,.13) 38%,rgba(39,4,19,.95) 100%),
+        linear-gradient(90deg,rgba(39,4,19,.63),transparent 55%,rgba(39,4,19,.2)),
         url("../../images/demo-naissance-hero.webp") center/cover;
-      transform:scale(1.07) translate3d(0,var(--hero-shift),0);
+      transform:scale(1.08) translate3d(0,var(--hero-shift),0);
       transition:transform .1s linear;
     }
 
@@ -388,45 +415,45 @@
       z-index:-1;
       inset:0;
       background:
-        radial-gradient(ellipse at 67% 12%,rgba(214,230,231,.17),transparent 46%),
-        radial-gradient(circle at 80% 37%,rgba(241,222,193,.14),transparent 20%);
+        radial-gradient(ellipse at 67% 12%,rgba(255,180,206,.24),transparent 45%),
+        radial-gradient(circle at 81% 37%,rgba(255,210,188,.18),transparent 20%);
       mix-blend-mode:screen;
     }
 
-    .moon-ring{
+    .hero-glow{
       position:absolute;
       top:16%;
       right:7%;
-      width:min(35vw,490px);
+      width:min(39vw,520px);
       aspect-ratio:1;
-      border:2px solid rgba(243,229,204,.56);
+      border:2px solid rgba(255,200,219,.58);
       border-left-color:transparent;
       border-bottom-color:transparent;
       border-radius:50%;
-      filter:drop-shadow(0 0 20px rgba(244,229,205,.34));
+      filter:drop-shadow(0 0 23px rgba(255,111,166,.55));
       transform:rotate(28deg);
-      animation:moonFloat 7s ease-in-out infinite alternate;
+      animation:glowFloat 6s ease-in-out infinite alternate;
       pointer-events:none;
     }
 
-    .moon-ring::before{
+    .hero-glow::before{
       content:"";
       position:absolute;
       top:12%;
       left:12%;
-      width:8px;
-      height:8px;
+      width:9px;
+      height:9px;
       border-radius:50%;
-      background:var(--milk);
+      background:#fff6fa;
       box-shadow:
-        85px 41px 0 -2px rgba(255,253,248,.8),
-        164px 4px 0 -3px rgba(220,231,232,.8),
-        220px 107px 0 -3px rgba(243,224,195,.8);
+        82px 42px 0 -2px rgba(255,221,232,.9),
+        162px 1px 0 -3px rgba(255,203,220,.86),
+        221px 107px 0 -3px rgba(255,226,206,.86);
     }
 
-    @keyframes moonFloat{
+    @keyframes glowFloat{
       from{transform:rotate(28deg) translateY(0)}
-      to{transform:rotate(33deg) translateY(-14px)}
+      to{transform:rotate(34deg) translateY(-16px)}
     }
 
     .shell{
@@ -439,8 +466,19 @@
     .hero-copy,
     .hero-meta{
       opacity:0;
-      transform:translateY(25px);
+      transform:translateY(32px);
     }
+
+    body.story-open .hero-eyebrow,
+    body.story-open .hero-title,
+    body.story-open .hero-copy,
+    body.story-open .hero-meta{
+      animation:heroTextIn .9s cubic-bezier(.2,.82,.2,1) forwards;
+    }
+
+    body.story-open .hero-title{animation-delay:.12s}
+    body.story-open .hero-copy{animation-delay:.25s}
+    body.story-open .hero-meta{animation-delay:.38s}
 
     @keyframes heroTextIn{
       to{
@@ -452,22 +490,23 @@
     .hero-title{
       max-width:840px;
       margin:13px 0 0;
-      font:500 clamp(85px,12vw,164px)/.67 "Cormorant Garamond",Georgia,serif;
-      letter-spacing:-.062em;
+      font:500 clamp(85px,12vw,166px)/.67 "Cormorant Garamond",Georgia,serif;
+      letter-spacing:-.063em;
+      text-shadow:0 10px 40px rgba(0,0,0,.22);
     }
 
     .hero-title span{
       display:block;
       margin-top:16px;
-      color:var(--warm);
+      color:#ffd3bd;
       font:400 .67em/.71 "Allura","Brush Script MT",cursive;
       letter-spacing:0;
     }
 
     .hero-copy{
-      max-width:435px;
+      max-width:440px;
       margin:31px 0 0;
-      color:#f5eee3;
+      color:#fff0f4;
       font-size:14px;
       line-height:1.7;
     }
@@ -477,7 +516,7 @@
       flex-wrap:wrap;
       gap:16px;
       margin-top:29px;
-      color:#f2e7d8;
+      color:#ffe1ea;
       font-size:10px;
       letter-spacing:.14em;
       text-transform:uppercase;
@@ -493,7 +532,7 @@
       content:"";
       width:25px;
       height:1px;
-      background:var(--warm);
+      background:#ff9ab9;
     }
 
     .scroll-word{
@@ -503,7 +542,7 @@
       display:flex;
       align-items:center;
       gap:10px;
-      color:rgba(255,246,232,.84);
+      color:rgba(255,235,242,.86);
       font-size:10px;
       letter-spacing:.14em;
       text-transform:uppercase;
@@ -515,15 +554,17 @@
       content:"";
       width:1px;
       height:44px;
-      background:linear-gradient(var(--warm),transparent);
+      background:linear-gradient(#ff9abb,transparent);
     }
+
+    /* Contenu */
 
     .section{padding:128px 0}
 
     .reveal{
       opacity:0;
-      filter:blur(8px);
-      transform:translateY(48px) scale(.97);
+      filter:blur(9px);
+      transform:translateY(52px) scale(.96);
       transition:
         opacity .9s cubic-bezier(.2,.75,.2,1) var(--delay,0s),
         filter .9s cubic-bezier(.2,.75,.2,1) var(--delay,0s),
@@ -540,7 +581,7 @@
       display:flex;
       align-items:center;
       gap:12px;
-      color:#f2e1c7;
+      color:#ffd1bf;
       font-size:10px;
       font-weight:700;
       letter-spacing:.2em;
@@ -553,7 +594,7 @@
       height:43px;
       display:grid;
       place-items:center;
-      border:1px solid rgba(239,222,190,.65);
+      border:1px solid rgba(255,189,210,.7);
       border-radius:50%;
       font:500 19px/1 "Cormorant Garamond",Georgia,serif;
       letter-spacing:0;
@@ -568,7 +609,7 @@
     .title span{
       display:block;
       margin-top:7px;
-      color:var(--warm);
+      color:#ffccba;
       font:400 .77em/.74 "Allura","Brush Script MT",cursive;
       letter-spacing:0;
     }
@@ -586,7 +627,7 @@
       align-items:center;
       gap:11px;
       margin-top:27px;
-      color:#fff5e6;
+      color:#fff0f4;
       font-size:10px;
       letter-spacing:.16em;
       text-transform:uppercase;
@@ -596,7 +637,7 @@
       content:"";
       width:43px;
       height:1px;
-      background:var(--warm);
+      background:#ff9abb;
     }
 
     .opening{
@@ -611,19 +652,21 @@
       position:relative;
       overflow:hidden;
       background:
-        linear-gradient(180deg,rgba(23,20,17,.03),rgba(23,20,17,.64)),
+        linear-gradient(180deg,rgba(38,5,18,.03),rgba(38,5,18,.67)),
         url("../../images/demo-naissance-01.webp") center/cover;
-      box-shadow:0 30px 80px rgba(0,0,0,.35);
+      box-shadow:0 34px 86px rgba(0,0,0,.38);
     }
 
     .photo-tall::before{
       content:"";
       position:absolute;
-      inset:-12%;
-      background:inherit;
-      filter:blur(12px);
-      opacity:.45;
-      transform:scale(1.08);
+      inset:-15%;
+      background:
+        linear-gradient(180deg,rgba(38,5,18,.03),rgba(38,5,18,.67)),
+        url("../../images/demo-naissance-01.webp") center/cover;
+      filter:blur(11px);
+      opacity:.4;
+      transform:scale(1.1);
     }
 
     .photo-tall::after{
@@ -633,14 +676,14 @@
       bottom:-33px;
       width:54%;
       aspect-ratio:1;
-      border:1px solid rgba(242,226,195,.55);
+      border:1px solid rgba(255,189,209,.65);
       border-radius:50%;
-      animation:ringBreath 5s ease-in-out infinite alternate;
+      animation:ringBreath 4.8s ease-in-out infinite alternate;
     }
 
     @keyframes ringBreath{
-      from{transform:scale(.92);opacity:.45}
-      to{transform:scale(1.08);opacity:.9}
+      from{transform:scale(.92);opacity:.42}
+      to{transform:scale(1.1);opacity:1}
     }
 
     .photo-caption{
@@ -672,9 +715,9 @@
       z-index:-2;
       inset:0;
       background:
-        linear-gradient(180deg,rgba(23,20,17,.18),rgba(23,20,17,.88)),
+        linear-gradient(180deg,rgba(38,5,18,.18),rgba(38,5,18,.88)),
         url("../../images/demo-naissance-02.webp") center/cover;
-      transform:scale(1.05);
+      transform:scale(1.06);
       animation:cinemaMove 19s ease-in-out infinite alternate;
     }
 
@@ -683,12 +726,14 @@
       position:absolute;
       z-index:-1;
       inset:0;
-      background:radial-gradient(circle at 50% 44%,rgba(225,235,232,.18),transparent 37%);
+      background:
+        radial-gradient(circle at 50% 44%,rgba(255,174,204,.22),transparent 37%),
+        linear-gradient(90deg,rgba(255,80,142,.08),transparent,rgba(255,207,184,.08));
     }
 
     @keyframes cinemaMove{
-      from{transform:scale(1.05)}
-      to{transform:scale(1.16) translateY(-1.4%)}
+      from{transform:scale(1.06)}
+      to{transform:scale(1.17) translateY(-1.4%)}
     }
 
     .cinema-inner{
@@ -704,7 +749,7 @@
     .cinema h2 span{
       display:block;
       margin-top:13px;
-      color:var(--warm);
+      color:#ffd0bd;
       font:400 .66em/.72 "Allura","Brush Script MT",cursive;
       letter-spacing:0;
     }
@@ -712,14 +757,16 @@
     .cinema p{
       max-width:550px;
       margin:24px auto 0;
-      color:#f8f0e5;
+      color:#fff0f4;
       font-size:14px;
       line-height:1.7;
     }
 
     .moments{
       padding:124px 0;
-      background:linear-gradient(180deg,rgba(50,44,37,.94),rgba(23,20,17,.99));
+      background:
+        radial-gradient(circle at 80% 20%,rgba(255,64,127,.15),transparent 36%),
+        linear-gradient(180deg,#55132f,#210612);
     }
 
     .moments-head{
@@ -750,7 +797,7 @@
       position:absolute;
       z-index:1;
       inset:0;
-      background:linear-gradient(180deg,rgba(23,20,17,.03),rgba(23,20,17,.76));
+      background:linear-gradient(180deg,rgba(38,5,18,.03),rgba(38,5,18,.76));
     }
 
     .card::after{
@@ -758,13 +805,13 @@
       position:absolute;
       z-index:2;
       inset:0;
-      border:1px solid rgba(255,252,245,.18);
+      border:1px solid rgba(255,229,239,.26);
       opacity:0;
       transition:.4s ease;
     }
 
     .card:hover{
-      transform:translateY(-8px) scale(1.015);
+      transform:translateY(-9px) scale(1.018);
     }
 
     .card:hover::after{opacity:1}
@@ -782,14 +829,14 @@
 
     .card strong{
       display:block;
-      color:#fffdf8;
+      color:#fff;
       font:500 34px/1 "Cormorant Garamond",Georgia,serif;
     }
 
     .card span{
       display:block;
       margin-top:6px;
-      color:#f5e8d6;
+      color:#ffe1ea;
       font-size:10px;
       letter-spacing:.11em;
       text-transform:uppercase;
@@ -801,18 +848,18 @@
       padding:148px 0;
       text-align:center;
       background:
-        radial-gradient(circle at 50% 44%,rgba(199,215,207,.18),transparent 42%),
-        linear-gradient(180deg,rgba(57,49,41,.95),rgba(23,20,17,.98));
-      border-top:1px solid rgba(255,244,224,.09);
-      border-bottom:1px solid rgba(255,244,224,.09);
+        radial-gradient(circle at 50% 44%,rgba(255,88,147,.21),transparent 42%),
+        linear-gradient(180deg,#58142f,#250714);
+      border-top:1px solid rgba(255,220,234,.1);
+      border-bottom:1px solid rgba(255,220,234,.1);
     }
 
     .quote-block::before,
     .quote-block::after{
       content:"✦";
       position:absolute;
-      color:rgba(245,229,200,.12);
-      font:400 clamp(220px,28vw,400px)/1 "Cormorant Garamond",Georgia,serif;
+      color:rgba(255,192,215,.12);
+      font:400 clamp(230px,28vw,400px)/1 "Cormorant Garamond",Georgia,serif;
       pointer-events:none;
     }
 
@@ -839,7 +886,7 @@
     .quote span{
       display:block;
       margin-top:23px;
-      color:var(--warm);
+      color:#ffd0bd;
       font:400 clamp(53px,6vw,82px)/.7 "Allura","Brush Script MT",cursive;
     }
 
@@ -847,14 +894,14 @@
       display:grid;
       grid-template-columns:1fr 1fr;
       overflow:hidden;
-      color:#3c352d;
-      background:var(--milk);
+      color:#4d2433;
+      background:var(--cream);
     }
 
     .letter-photo{
       min-height:670px;
       background:
-        linear-gradient(180deg,rgba(23,20,17,.02),rgba(23,20,17,.32)),
+        linear-gradient(180deg,rgba(38,5,18,.02),rgba(38,5,18,.31)),
         url("../../images/demo-naissance-03.webp") center/cover;
     }
 
@@ -862,13 +909,13 @@
       align-self:center;
       padding:clamp(38px,6vw,82px);
       background:
-        radial-gradient(circle at 80% 11%,rgba(203,219,213,.42),transparent 38%),
-        radial-gradient(circle at 10% 88%,rgba(244,225,194,.36),transparent 33%),
-        var(--milk);
+        radial-gradient(circle at 80% 11%,rgba(255,189,211,.5),transparent 38%),
+        radial-gradient(circle at 10% 88%,rgba(255,207,185,.45),transparent 33%),
+        var(--cream);
     }
 
     .letter-copy small{
-      color:#798976;
+      color:#d15680;
       font-size:10px;
       font-weight:700;
       letter-spacing:.18em;
@@ -884,7 +931,7 @@
     .letter-copy h2 span{
       display:block;
       margin-top:10px;
-      color:#9a8063;
+      color:#dc7c78;
       font:400 .76em/.73 "Allura","Brush Script MT",cursive;
       letter-spacing:0;
     }
@@ -892,16 +939,18 @@
     .letter-copy p{
       max-width:480px;
       margin:24px 0 0;
-      color:#665e54;
+      color:#765563;
       font-size:14px;
       line-height:1.8;
     }
 
     .signature{
       margin-top:31px!important;
-      color:#718873!important;
+      color:#d34b79!important;
       font:400 56px/.7 "Allura","Brush Script MT",cursive!important;
     }
+
+    /* Vidéo */
 
     .video-chapter{
       position:relative;
@@ -919,7 +968,7 @@
       z-index:-2;
       inset:0;
       background:
-        linear-gradient(180deg,rgba(23,20,17,.29),rgba(23,20,17,.87)),
+        linear-gradient(180deg,rgba(38,5,18,.28),rgba(38,5,18,.88)),
         url("../../images/demo-naissance-04.webp") center/cover;
       transform:scale(1.06);
       animation:videoMove 22s ease-in-out infinite alternate;
@@ -930,12 +979,12 @@
       position:absolute;
       z-index:-1;
       inset:0;
-      background:radial-gradient(circle at 50% 44%,rgba(216,230,231,.18),transparent 38%);
+      background:radial-gradient(circle at 50% 44%,rgba(255,178,205,.21),transparent 38%);
     }
 
     @keyframes videoMove{
       from{transform:scale(1.06)}
-      to{transform:scale(1.15) translateY(-1%)}
+      to{transform:scale(1.16) translateY(-1%)}
     }
 
     .video-inner{
@@ -952,7 +1001,7 @@
     .video-inner h2 span{
       display:block;
       margin-top:13px;
-      color:var(--warm);
+      color:#ffd0bd;
       font:400 .67em/.72 "Allura","Brush Script MT",cursive;
       letter-spacing:0;
     }
@@ -960,56 +1009,57 @@
     .video-copy{
       max-width:550px;
       margin:23px auto 0;
-      color:#f8f1e6;
+      color:#fff0f4;
       font-size:14px;
       line-height:1.7;
     }
 
     .video-play{
-      width:92px;
-      height:92px;
+      width:94px;
+      height:94px;
       position:relative;
       display:grid;
       place-items:center;
       margin:34px auto 0;
-      border:1px solid rgba(255,244,224,.86);
+      border:1px solid rgba(255,231,240,.86);
       border-radius:50%;
       color:#fff;
       background:rgba(255,255,255,.08);
       font-size:28px;
       cursor:pointer;
       transition:.25s ease;
-      box-shadow:0 18px 46px rgba(0,0,0,.28);
+      box-shadow:0 18px 46px rgba(0,0,0,.3);
     }
 
     .video-play::before{
       content:"";
       position:absolute;
-      inset:-9px;
-      border:1px solid rgba(255,242,219,.34);
+      inset:-10px;
+      border:1px solid rgba(255,220,233,.36);
       border-radius:50%;
-      animation:playPulse 2.2s ease-out infinite;
+      animation:playPulse 2.1s ease-out infinite;
     }
 
     @keyframes playPulse{
       0%{transform:scale(.76);opacity:1}
-      100%{transform:scale(1.25);opacity:0}
+      100%{transform:scale(1.28);opacity:0}
     }
 
     .video-play:hover{
-      transform:scale(1.08);
-      color:#2a251f;
-      background:linear-gradient(135deg,#f4e4ca,#c7d7d1);
-      box-shadow:0 22px 58px rgba(11,10,8,.4);
+      transform:scale(1.09);
+      background:linear-gradient(135deg,#ff9dbe,#f1407b);
+      box-shadow:0 24px 62px rgba(255,59,128,.43);
     }
 
     .video-note{
       margin:18px auto 0;
-      color:#f4e7d7;
+      color:#ffe1e9;
       font-size:10px;
       letter-spacing:.12em;
       text-transform:uppercase;
     }
+
+    /* Final */
 
     .finale{
       position:relative;
@@ -1027,7 +1077,7 @@
       z-index:-2;
       inset:0;
       background:
-        linear-gradient(180deg,rgba(23,20,17,.58),rgba(23,20,17,.86)),
+        linear-gradient(180deg,rgba(38,5,18,.57),rgba(38,5,18,.88)),
         url("../../images/demo-naissance-intro.webp") center/cover;
       transform:scale(1.06);
       animation:finalMove 22s ease-in-out infinite alternate;
@@ -1038,12 +1088,12 @@
       position:absolute;
       z-index:-1;
       inset:0;
-      background:radial-gradient(circle at 50% 46%,rgba(219,232,230,.18),transparent 37%);
+      background:radial-gradient(circle at 50% 46%,rgba(255,163,195,.2),transparent 37%);
     }
 
     @keyframes finalMove{
       from{transform:scale(1.06)}
-      to{transform:scale(1.15) translateY(-1%)}
+      to{transform:scale(1.16) translateY(-1%)}
     }
 
     .finale-inner{
@@ -1059,7 +1109,7 @@
     .finale h2 span{
       display:block;
       margin-top:14px;
-      color:var(--warm);
+      color:#ffd1bd;
       font:400 .66em/.72 "Allura","Brush Script MT",cursive;
       letter-spacing:0;
     }
@@ -1067,7 +1117,7 @@
     .finale-copy{
       max-width:550px;
       margin:27px auto 0;
-      color:#f8efe4;
+      color:#fff0f4;
       font-size:14px;
       line-height:1.7;
     }
@@ -1082,13 +1132,13 @@
 
     .footer{
       padding:40px 20px;
-      background:#171411;
+      background:#18040c;
       text-align:center;
     }
 
     .footer p{
       margin:0;
-      color:#c9c0b3;
+      color:#dbafbe;
       font-size:10px;
       letter-spacing:.13em;
       text-transform:uppercase;
@@ -1097,10 +1147,12 @@
     .footer a{
       display:inline-flex;
       margin-top:17px;
-      color:#f2dfc4;
+      color:#ffd0bd;
       font-size:12px;
       font-weight:700;
     }
+
+    /* Fenêtre vidéo */
 
     .video-modal{
       position:fixed;
@@ -1109,7 +1161,7 @@
       display:none;
       place-items:center;
       padding:24px;
-      background:rgba(11,10,8,.94);
+      background:rgba(18,2,9,.94);
       backdrop-filter:blur(16px);
     }
 
@@ -1119,24 +1171,24 @@
       position:relative;
       width:min(940px,100%);
       overflow:hidden;
-      border:1px solid rgba(255,247,234,.19);
-      background:#211d18;
-      box-shadow:0 34px 100px rgba(0,0,0,.68);
+      border:1px solid rgba(255,226,237,.23);
+      background:#370b20;
+      box-shadow:0 38px 110px rgba(0,0,0,.72);
     }
 
     .video-close{
       position:absolute;
-      z-index:4;
+      z-index:5;
       top:18px;
       right:18px;
       width:42px;
       height:42px;
       display:grid;
       place-items:center;
-      border:1px solid rgba(255,246,228,.48);
+      border:1px solid rgba(255,235,243,.5);
       border-radius:50%;
-      color:#fffdf8;
-      background:rgba(22,19,16,.44);
+      color:#fff;
+      background:rgba(37,4,18,.48);
       font-size:24px;
       cursor:pointer;
       backdrop-filter:blur(10px);
@@ -1148,10 +1200,10 @@
       display:grid;
       place-items:center;
       overflow:hidden;
-      padding:76px 28px 48px;
+      padding:78px 28px 48px;
       text-align:center;
       background:
-        linear-gradient(135deg,rgba(26,23,19,.48),rgba(26,23,19,.82)),
+        linear-gradient(135deg,rgba(43,3,20,.34),rgba(43,3,20,.84)),
         url("../../images/demo-naissance-04.webp") center/cover;
     }
 
@@ -1160,63 +1212,58 @@
       position:absolute;
       inset:0;
       background:
-        radial-gradient(circle at 50% 42%,rgba(230,240,239,.22),transparent 36%),
-        linear-gradient(180deg,rgba(15,13,11,.12),rgba(15,13,11,.76));
+        radial-gradient(circle at 50% 42%,rgba(255,189,213,.27),transparent 36%),
+        linear-gradient(180deg,rgba(18,2,10,.08),rgba(18,2,10,.76));
     }
 
     .video-placeholder-inner{
       position:relative;
       z-index:1;
-      width:min(610px,100%);
+      width:min(620px,100%);
     }
 
     .film-window{
       position:relative;
-      width:min(380px,100%);
+      width:min(390px,100%);
       aspect-ratio:16/9;
       margin:0 auto 34px;
       overflow:hidden;
-      border:1px solid rgba(255,246,229,.42);
-      background:rgba(255,255,255,.08);
-      box-shadow:0 24px 60px rgba(0,0,0,.3);
+      border:1px solid rgba(255,231,241,.44);
+      background:rgba(255,255,255,.09);
+      box-shadow:0 25px 65px rgba(0,0,0,.33);
     }
 
-    .film-window::before,
-    .film-window::after{
+    .film-window::before{
       content:"";
       position:absolute;
       z-index:1;
-      inset:auto 0 0;
-      height:28%;
-      background:linear-gradient(180deg,transparent,rgba(17,15,12,.62));
-    }
-
-    .film-window::after{
       inset:0;
-      height:auto;
       background:
-        linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px) 0 0/22px 100%,
-        linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px) 0 0/100% 22px;
-      mask-image:linear-gradient(90deg,transparent,black 20%,black 80%,transparent);
+        linear-gradient(90deg,rgba(255,255,255,.09) 1px,transparent 1px) 0 0/24px 100%,
+        linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px) 0 0/100% 24px;
       animation:filmGrid 2.2s linear infinite;
+      opacity:.65;
     }
 
     @keyframes filmGrid{
       from{transform:translateX(0)}
-      to{transform:translateX(-22px)}
+      to{transform:translateX(-24px)}
     }
 
     .film-orb{
       position:absolute;
+      z-index:2;
       top:50%;
       left:50%;
-      width:88px;
-      height:88px;
-      border:1px solid rgba(255,251,239,.72);
+      width:90px;
+      height:90px;
+      border:1px solid rgba(255,246,249,.76);
       border-radius:50%;
       transform:translate(-50%,-50%);
-      box-shadow:0 0 0 12px rgba(255,255,255,.05),0 0 40px rgba(234,222,194,.32);
-      animation:loaderPulse 2.1s ease-in-out infinite;
+      box-shadow:
+        0 0 0 12px rgba(255,255,255,.05),
+        0 0 44px rgba(255,113,163,.45);
+      animation:loaderPulse 2s ease-in-out infinite;
     }
 
     .film-orb::before{
@@ -1226,18 +1273,18 @@
       left:55%;
       border-top:11px solid transparent;
       border-bottom:11px solid transparent;
-      border-left:17px solid #fffaf0;
+      border-left:17px solid #fff;
       transform:translate(-50%,-50%);
     }
 
     @keyframes loaderPulse{
-      0%,100%{transform:translate(-50%,-50%) scale(.92);opacity:.7}
+      0%,100%{transform:translate(-50%,-50%) scale(.92);opacity:.72}
       50%{transform:translate(-50%,-50%) scale(1.1);opacity:1}
     }
 
     .video-placeholder h2{
       margin:17px 0 0;
-      color:#fffdf8;
+      color:#fff;
       font:500 clamp(50px,7vw,83px)/.8 "Cormorant Garamond",Georgia,serif;
       letter-spacing:-.052em;
     }
@@ -1245,33 +1292,33 @@
     .video-placeholder h2 span{
       display:block;
       margin-top:11px;
-      color:var(--warm);
+      color:#ffd2bd;
       font:400 .7em/.72 "Allura","Brush Script MT",cursive;
       letter-spacing:0;
     }
 
     .video-placeholder p{
-      max-width:520px;
+      max-width:525px;
       margin:22px auto 0;
-      color:#f1e9dc;
+      color:#fff0f4;
       font-size:14px;
       line-height:1.72;
     }
 
     .loading-line{
-      width:min(310px,100%);
+      width:min(315px,100%);
       height:3px;
       overflow:hidden;
       margin:29px auto 0;
-      background:rgba(255,255,255,.16);
+      background:rgba(255,255,255,.18);
     }
 
     .loading-line span{
       display:block;
       width:42%;
       height:100%;
-      background:linear-gradient(90deg,transparent,#fff5df,transparent);
-      animation:loadingSweep 1.6s ease-in-out infinite;
+      background:linear-gradient(90deg,transparent,#fff4f7,#ff82ab,transparent);
+      animation:loadingSweep 1.5s ease-in-out infinite;
     }
 
     @keyframes loadingSweep{
@@ -1281,7 +1328,7 @@
 
     .loading-label{
       margin-top:13px!important;
-      color:#f3dfc4!important;
+      color:#ffd3df!important;
       font-size:10px!important;
       font-weight:700;
       letter-spacing:.16em;
@@ -1295,11 +1342,11 @@
       bottom:26px;
       max-width:calc(100% - 34px);
       padding:12px 17px;
-      border:1px solid rgba(255,245,225,.3);
+      border:1px solid rgba(255,228,238,.3);
       border-radius:999px;
-      color:#fffdf8;
-      background:rgba(36,32,27,.94);
-      box-shadow:0 18px 48px rgba(0,0,0,.35);
+      color:#fff;
+      background:rgba(57,9,28,.94);
+      box-shadow:0 18px 48px rgba(0,0,0,.4);
       font-size:12px;
       transform:translate(-50%,24px);
       opacity:0;
@@ -1314,7 +1361,7 @@
 
     @media(max-width:900px){
       .story-name{display:none}
-      .moon-ring{width:59vw;right:-3%;top:17%}
+      .hero-glow{width:61vw;right:-3%;top:17%}
       .opening,.moments-head{grid-template-columns:1fr}
       .photo-tall{width:100%;max-width:650px;min-height:500px;margin:0 auto}
       .letter{grid-template-columns:1fr}
@@ -1339,7 +1386,7 @@
       .hero{padding:105px 0 48px}
       .hero-title{font-size:80px}
       .hero-copy{max-width:315px;font-size:13px}
-      .moon-ring{top:27%;right:-13%;width:84vw}
+      .hero-glow{top:27%;right:-13%;width:84vw}
       .scroll-word{display:none}
 
       .section{padding:82px 0}
@@ -1400,17 +1447,25 @@
         transition-duration:.01ms!important;
       }
     }
-  </style></head><body>
-  <div class="progress" aria-hidden="true"><span data-progress></span></div>  <section class="entry" data-entry>
-    <div class="atmosphere" data-particles aria-hidden="true"></div><div class="entry-inner">
-  <p class="eyebrow">Une grande nouvelle à partager</p>
-  <h1>Louise,<span>notre petit miracle.</span></h1>
-  <p class="entry-copy">Il y a des jours qui changent une famille pour toujours. Celui-ci restera gravé dans nos cœurs, avec son premier souffle, ses petits doigts et toute la douceur qu’elle a apportée.</p>
-  <button class="button-main" type="button" data-enter>Ouvrir l’annonce <span aria-hidden="true">✦</span></button>
-  <p class="entry-note">Une histoire à découvrir avec le son</p>
-</div>
+  </style>
+</head>
 
-  </section>  <header class="topbar" data-header>
+<body>
+  <div class="progress" aria-hidden="true"><span data-progress></span></div>
+
+  <section class="entry" data-entry>
+    <div class="bubble-field" data-bubbles aria-hidden="true"></div>
+
+    <div class="entry-inner">
+      <p class="eyebrow">Une grande nouvelle à partager</p>
+      <h1>Louise,<span>notre petit miracle.</span></h1>
+      <p class="entry-copy">Il y a des jours qui changent une famille pour toujours. Celui-ci restera gravé dans nos cœurs, avec son premier souffle, ses petits doigts et toute la douceur qu’elle a apportée.</p>
+      <button class="button-main" type="button" data-enter>Ouvrir l’annonce <span aria-hidden="true">✦</span></button>
+      <p class="entry-note">Une histoire à découvrir avec le son</p>
+    </div>
+  </section>
+
+  <header class="topbar" data-header>
     <nav class="nav">
       <a class="brand" href="../../index.html" aria-label="Retour à MakeYourStory">
         <span class="brand-mark" aria-hidden="true">M</span>
@@ -1418,162 +1473,177 @@
           <span class="brand-title">MAKE YOUR STORY</span>
           <span class="brand-sub">FAIRE-PART DE NAISSANCE</span>
         </span>
-      </a>  <div class="nav-actions">
-    <span class="story-name">Louise est arrivée</span>
-    <button class="round-button" type="button" aria-label="Couper ou remettre la musique" aria-pressed="false" data-sound>♪</button>
-    <button class="round-button" type="button" aria-label="Partager cette annonce" data-share>↗</button>
-    <a class="back" href="../../faire-part-naissance.html">Faire-part</a>
-  </div>
-</nav>
+      </a>
 
-  </header>  <audio id="story-audio" preload="auto" loop>
+      <div class="nav-actions">
+        <span class="story-name">Louise est arrivée</span>
+        <button class="round-button" type="button" aria-label="Couper ou remettre la musique" aria-pressed="false" data-sound>♪</button>
+        <button class="round-button" type="button" aria-label="Partager cette annonce" data-share>↗</button>
+        <a class="back" href="../../faire-part-naissance.html">Faire-part</a>
+      </div>
+    </nav>
+  </header>
+
+  <audio id="story-audio" preload="auto" loop>
     <source src="../../audio/demo-naissance.mp3" type="audio/mpeg">
-  </audio>  <main>
+  </audio>
+
+  <main>
     <section class="hero" data-hero>
-      <div class="moon-ring" aria-hidden="true"></div>  <div class="shell">
-    <p class="eyebrow hero-eyebrow">Nous avons une grande nouvelle</p>
-    <h1 class="hero-title">Louise<span>est arrivée dans nos vies.</span></h1>
-    <p class="hero-copy">Le 12 juin 2026, à 04 h 17, notre monde est devenu plus doux. Nous sommes heureux de vous présenter notre petite merveille.</p>
+      <div class="hero-glow" aria-hidden="true"></div>
 
-    <div class="hero-meta">
-      <span>3,420 kg de bonheur</span>
-      <span>50 cm d’amour</span>
-    </div>
-  </div>
+      <div class="shell">
+        <p class="eyebrow hero-eyebrow">Nous avons une grande nouvelle</p>
+        <h1 class="hero-title">Louise<span>est arrivée dans nos vies.</span></h1>
+        <p class="hero-copy">Le 12 juin 2026, à 04 h 17, notre monde est devenu plus doux. Nous sommes heureux de vous présenter notre petite merveille.</p>
 
-  <div class="scroll-word">Faire défiler</div>
-</section>
-
-<section class="section">
-  <div class="shell opening">
-    <div class="reveal">
-      <p class="chapter" data-n="01">Le premier jour</p>
-      <h2 class="title">Quelques grammes,<span>et tout notre monde a changé.</span></h2>
-      <p class="copy">On attend ce moment pendant si longtemps. Puis il arrive, presque doucement, et plus rien n’est pareil. Il y a désormais une petite main à tenir, une voix à reconnaître, une vie entière à aimer.</p>
-      <p class="date">12 juin 2026 · 04 h 17</p>
-    </div>
-
-    <div class="photo-tall reveal" style="--delay:.14s">
-      <p class="photo-caption">Le début d’une immense histoire.</p>
-    </div>
-  </div>
-</section>
-
-<section class="cinema">
-  <div class="cinema-inner reveal">
-    <p class="eyebrow">Les premières heures</p>
-    <h2>Depuis ton premier regard,<span>le temps a une autre lumière.</span></h2>
-    <p>Les nuits seront peut-être plus courtes, les journées parfois imprévisibles. Mais déjà, chaque minute près de toi ressemble à quelque chose que l’on n’oubliera jamais.</p>
-  </div>
-</section>
-
-<section class="moments">
-  <div class="shell">
-    <div class="moments-head">
-      <div class="reveal">
-        <p class="chapter" data-n="02">Nos premiers souvenirs</p>
-        <h2 class="title">De tout petits instants,<span>pour une immense place.</span></h2>
-      </div>
-
-      <p class="copy reveal" style="--delay:.12s">Un bâillement, un doigt qui s’accroche, un sommeil paisible, un regard qui semble déjà connaître le nôtre. Les premiers souvenirs ont cette douceur que le temps ne pourra jamais effacer.</p>
-    </div>
-
-    <div class="montage">
-      <div class="card tall reveal" style="--img:url('../../images/demo-naissance-03.webp')">
-        <div class="label">
-          <strong>Tout près.</strong>
-          <span>Un monde entier dans les bras.</span>
+        <div class="hero-meta">
+          <span>3,420 kg de bonheur</span>
+          <span>50 cm d’amour</span>
         </div>
       </div>
 
-      <div class="card reveal" style="--img:url('../../images/demo-naissance-01.webp');--delay:.08s">
-        <div class="label">
-          <strong>Si petite.</strong>
-          <span>Déjà tellement aimée.</span>
+      <div class="scroll-word">Faire défiler</div>
+    </section>
+
+    <section class="section">
+      <div class="shell opening">
+        <div class="reveal">
+          <p class="chapter" data-n="01">Le premier jour</p>
+          <h2 class="title">Quelques grammes,<span>et tout notre monde a changé.</span></h2>
+          <p class="copy">On attend ce moment pendant si longtemps. Puis il arrive, presque doucement, et plus rien n’est pareil. Il y a désormais une petite main à tenir, une voix à reconnaître, une vie entière à aimer.</p>
+          <p class="date">12 juin 2026 · 04 h 17</p>
+        </div>
+
+        <div class="photo-tall reveal" style="--delay:.14s">
+          <p class="photo-caption">Le début d’une immense histoire.</p>
         </div>
       </div>
+    </section>
 
-      <div class="card reveal" style="--img:url('../../images/demo-naissance-02.webp');--delay:.16s">
-        <div class="label">
-          <strong>Un souffle.</strong>
-          <span>Et une famille transformée.</span>
+    <section class="cinema">
+      <div class="cinema-inner reveal">
+        <p class="eyebrow">Les premières heures</p>
+        <h2>Depuis ton premier regard,<span>le temps a une autre lumière.</span></h2>
+        <p>Les nuits seront peut-être plus courtes, les journées parfois imprévisibles. Mais déjà, chaque minute près de toi ressemble à quelque chose que l’on n’oubliera jamais.</p>
+      </div>
+    </section>
+
+    <section class="moments">
+      <div class="shell">
+        <div class="moments-head">
+          <div class="reveal">
+            <p class="chapter" data-n="02">Nos premiers souvenirs</p>
+            <h2 class="title">De tout petits instants,<span>pour une immense place.</span></h2>
+          </div>
+
+          <p class="copy reveal" style="--delay:.12s">Un bâillement, un doigt qui s’accroche, un sommeil paisible, un regard qui semble déjà connaître le nôtre. Les premiers souvenirs ont cette douceur que le temps ne pourra jamais effacer.</p>
+        </div>
+
+        <div class="montage">
+          <div class="card tall reveal" style="--img:url('../../images/demo-naissance-03.webp')">
+            <div class="label">
+              <strong>Tout près.</strong>
+              <span>Un monde entier dans les bras.</span>
+            </div>
+          </div>
+
+          <div class="card reveal" style="--img:url('../../images/demo-naissance-01.webp');--delay:.08s">
+            <div class="label">
+              <strong>Si petite.</strong>
+              <span>Déjà tellement aimée.</span>
+            </div>
+          </div>
+
+          <div class="card reveal" style="--img:url('../../images/demo-naissance-02.webp');--delay:.16s">
+            <div class="label">
+              <strong>Un souffle.</strong>
+              <span>Et une famille transformée.</span>
+            </div>
+          </div>
+
+          <div class="card wide reveal" style="--img:url('../../images/demo-naissance-04.webp');--delay:.12s">
+            <div class="label">
+              <strong>Notre plus belle nouveauté.</strong>
+              <span>Bienvenue dans notre histoire, Louise.</span>
+            </div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="card wide reveal" style="--img:url('../../images/demo-naissance-04.webp');--delay:.12s">
-        <div class="label">
-          <strong>Notre plus belle nouveauté.</strong>
-          <span>Bienvenue dans notre histoire, Louise.</span>
+    <section class="quote-block">
+      <p class="quote reveal">« Il y a des bonheurs qui ne tiennent<span>dans aucun mot. »</span></p>
+    </section>
+
+    <section class="section">
+      <div class="shell letter reveal">
+        <div class="letter-photo" role="img" aria-label="Un nouveau-né dans les bras de ses parents"></div>
+
+        <div class="letter-copy">
+          <small>Pour ceux qui nous aiment</small>
+          <h2>Notre petite Louise,<span>notre grand bonheur.</span></h2>
+          <p>Nous avions imaginé ce moment tellement de fois. Pourtant, rien ne nous avait préparés à la douceur de te rencontrer, à la force de cet amour, ni à cette impression que tu étais attendue depuis toujours.</p>
+          <p>Nous sommes heureux de partager cette nouvelle avec les personnes qui comptent pour nous. Merci d’être là, de près ou de loin, pour accompagner les premiers pas de cette belle aventure.</p>
+          <p class="signature">Camille &amp; Julien</p>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<section class="quote-block">
-  <p class="quote reveal">« Il y a des bonheurs qui ne tiennent<span>dans aucun mot. »</span></p>
-</section>
+    <section class="video-chapter">
+      <div class="video-inner reveal">
+        <p class="eyebrow">Un souvenir en mouvement</p>
+        <h2>Quelques secondes,<span>pour garder le début.</span></h2>
+        <p class="video-copy">Quelques images en mouvement suffisent parfois à ramener un instant entier : un premier regard, une petite main, un sourire ou un moment contre un cœur.</p>
+        <button class="video-play" type="button" data-open-video aria-label="Découvrir l’espace vidéo personnel">▷</button>
+        <p class="video-note">Un souvenir à revivre autrement</p>
+      </div>
+    </section>
 
-<section class="section">
-  <div class="shell letter reveal">
-    <div class="letter-photo" role="img" aria-label="Un nouveau-né dans les bras de ses parents"></div>
+    <section class="finale">
+      <div class="finale-inner reveal">
+        <p class="eyebrow">Notre famille s’agrandit</p>
+        <h2>Bienvenue Louise,<span>tu étais déjà tellement attendue.</span></h2>
+        <p class="finale-copy">Merci de partager avec nous ce tout premier chapitre. Cette annonce peut être envoyée facilement par message, WhatsApp, e-mail ou simple lien.</p>
 
-    <div class="letter-copy">
-      <small>Pour ceux qui nous aiment</small>
-      <h2>Notre petite Louise,<span>notre grand bonheur.</span></h2>
-      <p>Nous avions imaginé ce moment tellement de fois. Pourtant, rien ne nous avait préparés à la douceur de te rencontrer, à la force de cet amour, ni à cette impression que tu étais attendue depuis toujours.</p>
-      <p>Nous sommes heureux de partager cette nouvelle avec les personnes qui comptent pour nous. Merci d’être là, de près ou de loin, pour accompagner les premiers pas de cette belle aventure.</p>
-      <p class="signature">Camille &amp; Julien</p>
-    </div>
-  </div>
-</section>
+        <div class="actions">
+          <button class="button-main" type="button" data-share>Partager l’annonce <span aria-hidden="true">✦</span></button>
+          <button class="button-ghost" type="button" data-whatsapp>Envoyer sur WhatsApp</button>
+          <button class="button-ghost" type="button" data-copy-link>Copier le lien</button>
+        </div>
+      </div>
+    </section>
+  </main>
 
-<section class="video-chapter">
-  <div class="video-inner reveal">
-    <p class="eyebrow">Un souvenir en mouvement</p>
-    <h2>Quelques secondes,<span>pour garder le début.</span></h2>
-    <p class="video-copy">Quelques images en mouvement suffisent parfois à ramener un instant entier : un premier regard, une petite main, un sourire ou un moment contre un cœur.</p>
-    <button class="video-play" type="button" data-open-video aria-label="Découvrir l’espace vidéo personnel">▷</button>
-    <p class="video-note">Un souvenir à revivre autrement</p>
-  </div>
-</section>
-
-<section class="finale">
-  <div class="finale-inner reveal">
-    <p class="eyebrow">Notre famille s’agrandit</p>
-    <h2>Bienvenue Louise,<span>tu étais déjà tellement attendue.</span></h2>
-    <p class="finale-copy">Merci de partager avec nous ce tout premier chapitre. Cette annonce peut être envoyée facilement par message, WhatsApp, e-mail ou simple lien.</p>
-
-    <div class="actions">
-      <button class="button-main" type="button" data-share>Partager l’annonce <span aria-hidden="true">✦</span></button>
-      <button class="button-ghost" type="button" data-whatsapp>Envoyer sur WhatsApp</button>
-      <button class="button-ghost" type="button" data-copy-link>Copier le lien</button>
-    </div>
-  </div>
-</section>
-
-  </main>  <footer class="footer">
+  <footer class="footer">
     <p>Une histoire créée avec MakeYourStory</p>
     <a href="../../faire-part-naissance.html">Découvrir les faire-parts digitaux</a>
-  </footer>  <section class="video-modal" data-video-modal aria-label="Votre vidéo personnelle">
+  </footer>
+
+  <section class="video-modal" data-video-modal aria-label="Votre vidéo personnelle">
     <div class="video-dialog" role="dialog" aria-modal="true" aria-labelledby="video-title">
-      <button class="video-close" type="button" data-close-video aria-label="Fermer">×</button>  <div class="video-placeholder">
-    <div class="video-placeholder-inner">
-      <div class="film-window" aria-hidden="true">
-        <div class="film-orb"></div>
+      <button class="video-close" type="button" data-close-video aria-label="Fermer">×</button>
+
+      <div class="video-placeholder">
+        <div class="video-placeholder-inner">
+          <div class="film-window" aria-hidden="true">
+            <div class="film-orb"></div>
+          </div>
+
+          <p class="eyebrow">Votre vidéo personnelle</p>
+          <h2 id="video-title">Un instant,<span>qui reste vivant.</span></h2>
+          <p>Ici, quelques secondes de votre histoire peuvent prendre place : un premier regard, un mouvement, un sourire, ou un souvenir précieux à revivre encore longtemps.</p>
+
+          <div class="loading-line" aria-hidden="true"><span></span></div>
+          <p class="loading-label">Préparation du souvenir</p>
+        </div>
       </div>
-
-      <p class="eyebrow">Votre vidéo personnelle</p>
-      <h2 id="video-title">Un instant,<span>qui reste vivant.</span></h2>
-      <p>Ici, quelques secondes de votre histoire peuvent prendre place : un premier regard, un mouvement, un sourire, ou un souvenir précieux à revivre encore longtemps.</p>
-
-      <div class="loading-line" aria-hidden="true"><span></span></div>
-      <p class="loading-label">Préparation du souvenir</p>
     </div>
-  </div>
-</div>
+  </section>
 
-  </section>  <div class="toast" data-toast role="status" aria-live="polite"></div>  <script>
+  <div class="toast" data-toast role="status" aria-live="polite"></div>
+
+  <script>
     (() => {
       const entry = document.querySelector("[data-entry]");
       const enter = document.querySelector("[data-enter]");
@@ -1589,22 +1659,22 @@
       const openVideo = document.querySelector("[data-open-video]");
       const closeVideo = document.querySelector("[data-close-video]");
       const videoModal = document.querySelector("[data-video-modal]");
-      const particles = document.querySelector("[data-particles]");
+      const bubbles = document.querySelector("[data-bubbles]");
 
       let toastTimer;
 
       document.body.style.overflow = "hidden";
 
-      for (let i = 0; i < 26; i += 1) {
-        const particle = document.createElement("span");
-        particle.className = "particle";
-        particle.style.setProperty("--x", `${Math.random() * 100}%`);
-        particle.style.setProperty("--y", `${Math.random() * 110}%`);
-        particle.style.setProperty("--size", `${2 + Math.random() * 5}px`);
-        particle.style.setProperty("--duration", `${5 + Math.random() * 8}s`);
-        particle.style.setProperty("--delay", `${Math.random() * -10}s`);
-        particle.style.setProperty("--drift", `${-28 + Math.random() * 56}px`);
-        particles.appendChild(particle);
+      for (let i = 0; i < 34; i += 1) {
+        const bubble = document.createElement("span");
+        bubble.className = "bubble";
+        bubble.style.setProperty("--x", `${Math.random() * 100}%`);
+        bubble.style.setProperty("--y", `${Math.random() * 120}%`);
+        bubble.style.setProperty("--size", `${12 + Math.random() * 54}px`);
+        bubble.style.setProperty("--duration", `${6 + Math.random() * 9}s`);
+        bubble.style.setProperty("--delay", `${Math.random() * -12}s`);
+        bubble.style.setProperty("--drift", `${-45 + Math.random() * 90}px`);
+        bubbles.appendChild(bubble);
       }
 
       const showToast = (message) => {
@@ -1672,9 +1742,9 @@
 
           const fade = window.setInterval(() => {
             volume += 0.04;
-            audio.volume = Math.min(volume, 0.54);
+            audio.volume = Math.min(volume, 0.55);
 
-            if (volume >= 0.54) {
+            if (volume >= 0.55) {
               window.clearInterval(fade);
             }
           }, 100);
@@ -1691,14 +1761,14 @@
 
         window.setTimeout(() => {
           entry.remove();
-        }, 930);
+        }, 1000);
       });
 
       sound.addEventListener("click", async () => {
         try {
           if (audio.paused) {
             await audio.play();
-            audio.volume = 0.54;
+            audio.volume = 0.55;
             sound.classList.add("on");
             sound.setAttribute("aria-pressed", "true");
             sound.textContent = "❚❚";
@@ -1771,5 +1841,6 @@
         }
       });
     })();
-  </script></body>
-      </html>
+  </script>
+</body>
+</html>
