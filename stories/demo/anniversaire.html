@@ -1,0 +1,2312 @@
+<!doctype html>
+
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#090613">
+  <meta name="robots" content="noindex,follow">  <title>Camille fête ses 30 ans | MakeYourStory</title>
+  <meta name="description" content="Une invitation anniversaire à ouvrir, ressentir et partager.">
+  <link rel="canonical" href="https://makeyourstory.fr/stories/demo/anniversaire.html">  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MakeYourStory">
+  <meta property="og:title" content="Camille fête ses 30 ans">
+  <meta property="og:description" content="Une soirée. Une date. Aucune excuse valable.">
+  <meta property="og:url" content="https://makeyourstory.fr/stories/demo/anniversaire.html">
+  <meta property="og:image" content="https://makeyourstory.fr/images/demo-anniversaire-og.webp">  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Camille fête ses 30 ans">
+  <meta name="twitter:description" content="Une soirée. Une date. Aucune excuse valable.">
+  <meta name="twitter:image" content="https://makeyourstory.fr/images/demo-anniversaire-og.webp">  <link rel="icon" href="../../images/favicon.webp" type="image/webp">
+  <link rel="apple-touch-icon" href="../../images/apple-touch-icon.webp">  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">  <script src="../../assets/analytics.js" defer></script>  <style>
+    :root{
+      --night:#090613;
+      --night-soft:#12102a;
+      --violet:#6d42ff;
+      --electric:#19d9ff;
+      --acid:#dfff1d;
+      --orange:#ff8d3a;
+      --white:#f8f8ff;
+      --muted:#b8b9cf;
+      --line:rgba(248,248,255,.16);
+      --max:1240px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      min-width:320px;
+      overflow-x:hidden;
+      color:var(--white);
+      background:
+        radial-gradient(950px 720px at 105% -5%,rgba(109,66,255,.33),transparent 65%),
+        radial-gradient(850px 650px at -5% 45%,rgba(25,217,255,.16),transparent 68%),
+        var(--night);
+      font-family:"Space Grotesk",Arial,sans-serif;
+      line-height:1.5;
+    }
+
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    button,a{-webkit-tap-highlight-color:transparent}
+    ::selection{color:#101013;background:var(--acid)}
+    .hidden{display:none!important}
+
+    .progress{
+      position:fixed;
+      z-index:2500;
+      top:0;
+      left:0;
+      width:100%;
+      height:4px;
+      background:rgba(255,255,255,.08);
+      pointer-events:none;
+    }
+
+    .progress span{
+      display:block;
+      width:0;
+      height:100%;
+      background:linear-gradient(90deg,var(--electric),var(--violet),var(--acid));
+      box-shadow:0 0 18px rgba(25,217,255,.9);
+    }
+
+    /* OUVERTURE */
+
+    .entry{
+      position:fixed;
+      z-index:2200;
+      inset:0;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      background:#090613;
+      transition:opacity .85s ease,visibility .85s ease;
+    }
+
+    .entry.is-hidden{
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
+
+    .entry::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg,rgba(9,6,19,.12),rgba(9,6,19,.86)),
+        linear-gradient(90deg,rgba(9,6,19,.72),transparent 54%,rgba(9,6,19,.28)),
+        url("../../images/demo-anniversaire-intro.webp") center/cover;
+      transform:scale(1.09);
+      animation:entryZoom 16s ease-in-out infinite alternate;
+    }
+
+    .entry::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      opacity:.66;
+      background:
+        repeating-linear-gradient(90deg,transparent 0 42px,rgba(255,255,255,.04) 43px 44px),
+        repeating-linear-gradient(0deg,transparent 0 42px,rgba(255,255,255,.025) 43px 44px);
+      mix-blend-mode:screen;
+    }
+
+    @keyframes entryZoom{
+      from{transform:scale(1.09)}
+      to{transform:scale(1.21) translate3d(-1.4%,1%,0)}
+    }
+
+    .light-beam{
+      position:absolute;
+      z-index:2;
+      width:70vw;
+      height:140vh;
+      top:-42vh;
+      left:-30vw;
+      opacity:.5;
+      background:linear-gradient(90deg,transparent,rgba(25,217,255,.28),transparent);
+      filter:blur(14px);
+      transform:rotate(23deg);
+      animation:beamOne 8s ease-in-out infinite alternate;
+      pointer-events:none;
+    }
+
+    .light-beam.two{
+      top:-36vh;
+      left:auto;
+      right:-38vw;
+      background:linear-gradient(90deg,transparent,rgba(223,255,29,.22),transparent);
+      transform:rotate(-28deg);
+      animation-name:beamTwo;
+    }
+
+    @keyframes beamOne{
+      from{transform:rotate(23deg) translateX(-8%)}
+      to{transform:rotate(35deg) translateX(17%)}
+    }
+
+    @keyframes beamTwo{
+      from{transform:rotate(-28deg) translateX(10%)}
+      to{transform:rotate(-38deg) translateX(-16%)}
+    }
+
+    .confetti{
+      position:absolute;
+      z-index:3;
+      inset:0;
+      overflow:hidden;
+      pointer-events:none;
+    }
+
+    .confetti i{
+      position:absolute;
+      top:var(--y);
+      left:var(--x);
+      width:var(--w);
+      height:var(--h);
+      border-radius:2px;
+      background:var(--color);
+      box-shadow:0 0 12px color-mix(in srgb, var(--color) 65%, transparent);
+      opacity:0;
+      transform:rotate(var(--r));
+      animation:confettiFall var(--duration) linear var(--delay) infinite;
+    }
+
+    @keyframes confettiFall{
+      0%{
+        opacity:0;
+        transform:translate3d(0,-35px,0) rotate(var(--r)) scale(.7);
+      }
+
+      10%{opacity:1}
+
+      78%{opacity:.72}
+
+      100%{
+        opacity:0;
+        transform:translate3d(var(--drift),118vh,0) rotate(calc(var(--r) + 640deg)) scale(1.1);
+      }
+    }
+
+    .entry-stage{
+      position:relative;
+      z-index:5;
+      width:min(840px,calc(100% - 38px));
+      text-align:center;
+    }
+
+    .level{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 13px;
+      border:1px solid rgba(223,255,29,.62);
+      color:var(--acid);
+      background:rgba(9,6,19,.36);
+      box-shadow:0 0 26px rgba(223,255,29,.14);
+      font:500 10px/1 "DM Mono",monospace;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+
+    .level::before{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--acid);
+      box-shadow:0 0 15px var(--acid);
+      animation:blink 1.1s ease-in-out infinite;
+    }
+
+    @keyframes blink{
+      50%{opacity:.25}
+    }
+
+    .entry-age{
+      margin:12px 0 0;
+      color:var(--white);
+      font:400 clamp(170px,34vw,390px)/.65 "Anton",Arial,sans-serif;
+      letter-spacing:-.08em;
+      text-shadow:
+        6px 0 var(--violet),
+        -6px 0 var(--electric),
+        0 20px 54px rgba(0,0,0,.34);
+      animation:agePulse 2.8s ease-in-out infinite alternate;
+    }
+
+    @keyframes agePulse{
+      from{transform:scale(1)}
+      to{transform:scale(1.035)}
+    }
+
+    .entry-title{
+      margin:18px 0 0;
+      color:var(--acid);
+      font:500 clamp(18px,3vw,31px)/1 "Space Grotesk",Arial,sans-serif;
+      letter-spacing:.28em;
+      text-transform:uppercase;
+    }
+
+    .entry-copy{
+      max-width:505px;
+      margin:24px auto 0;
+      color:#f2f2fb;
+      font-size:14px;
+      line-height:1.72;
+    }
+
+    .entry-action,
+    .button-main,
+    .button-ghost{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      min-height:54px;
+      padding:0 27px;
+      border-radius:0;
+      font-size:12px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.23s ease;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .entry-action{
+      margin-top:26px;
+      border:1px solid rgba(255,255,255,.16);
+      color:#101013;
+      background:var(--acid);
+      box-shadow:7px 7px 0 var(--violet),0 18px 42px rgba(0,0,0,.34);
+    }
+
+    .entry-action:hover{
+      transform:translate(-3px,-3px);
+      box-shadow:11px 11px 0 var(--electric),0 24px 50px rgba(0,0,0,.42);
+    }
+
+    .entry-note{
+      margin:20px 0 0;
+      color:rgba(248,248,255,.64);
+      font:400 9px/1.3 "DM Mono",monospace;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+    }
+
+    .entry.is-opening .entry-stage{
+      animation:stageOut .8s cubic-bezier(.2,.75,.2,1) forwards;
+    }
+
+    @keyframes stageOut{
+      to{
+        opacity:0;
+        transform:scale(1.14);
+        filter:blur(12px);
+      }
+    }
+
+    /* HEADER */
+
+    .topbar{
+      position:fixed;
+      z-index:100;
+      top:0;
+      left:0;
+      width:100%;
+      transition:.3s ease;
+    }
+
+    .topbar.solid{
+      border-bottom:1px solid rgba(255,255,255,.1);
+      background:rgba(9,6,19,.86);
+      backdrop-filter:blur(16px);
+    }
+
+    .nav{
+      width:min(var(--max),calc(100% - 42px));
+      min-height:76px;
+      margin:auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+
+    .brand-mark{
+      width:41px;
+      height:41px;
+      display:grid;
+      place-items:center;
+      color:#111017;
+      background:var(--acid);
+      box-shadow:4px 4px 0 var(--violet);
+      font:400 19px/1 "Anton",Arial,sans-serif;
+      letter-spacing:-.05em;
+    }
+
+    .brand-title{
+      display:block;
+      font:700 13px/1 "Space Grotesk",Arial,sans-serif;
+      letter-spacing:.17em;
+    }
+
+    .brand-sub{
+      display:block;
+      margin-top:4px;
+      color:var(--electric);
+      font:500 7px/1 "DM Mono",monospace;
+      letter-spacing:.2em;
+      text-transform:uppercase;
+    }
+
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .story-name{
+      color:#e7e8f7;
+      font:500 10px/1 "DM Mono",monospace;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .round-button{
+      width:39px;
+      height:39px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(25,217,255,.56);
+      border-radius:50%;
+      color:var(--electric);
+      background:rgba(9,6,19,.2);
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .round-button:hover,
+    .round-button.on{
+      color:#101013;
+      background:var(--electric);
+      box-shadow:0 0 25px rgba(25,217,255,.48);
+    }
+
+    .back{
+      padding:9px 13px;
+      border:1px solid rgba(223,255,29,.56);
+      color:var(--acid);
+      font:500 9px/1 "DM Mono",monospace;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      transition:.2s ease;
+    }
+
+    .back:hover{
+      color:#101013;
+      background:var(--acid);
+    }
+
+    /* HERO */
+
+    .hero{
+      --hero-shift:0px;
+      position:relative;
+      min-height:100svh;
+      display:grid;
+      align-items:end;
+      isolation:isolate;
+      overflow:hidden;
+      padding:122px 0 58px;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      z-index:-2;
+      inset:0;
+      background:
+        linear-gradient(180deg,rgba(9,6,19,.04),rgba(9,6,19,.16) 40%,rgba(9,6,19,.96) 100%),
+        linear-gradient(90deg,rgba(9,6,19,.7),transparent 55%,rgba(9,6,19,.2)),
+        url("../../images/demo-anniversaire-hero.webp") center/cover;
+      transform:scale(1.08) translate3d(0,var(--hero-shift),0);
+      transition:transform .1s linear;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      z-index:-1;
+      inset:0;
+      background:
+        radial-gradient(circle at 68% 17%,rgba(25,217,255,.22),transparent 35%),
+        radial-gradient(circle at 82% 42%,rgba(109,66,255,.24),transparent 24%),
+        linear-gradient(90deg,rgba(223,255,29,.06),transparent 45%,rgba(255,141,58,.08));
+      mix-blend-mode:screen;
+    }
+
+    .hero-disc{
+      position:absolute;
+      top:12%;
+      right:7%;
+      width:min(39vw,520px);
+      aspect-ratio:1;
+      border:2px solid rgba(25,217,255,.55);
+      border-radius:50%;
+      background:
+        repeating-radial-gradient(circle,transparent 0 19px,rgba(223,255,29,.18) 20px 21px),
+        conic-gradient(from 0deg,transparent 0 12%,rgba(25,217,255,.36) 14% 19%,transparent 21% 38%,rgba(109,66,255,.4) 40% 46%,transparent 48% 69%,rgba(223,255,29,.35) 71% 76%,transparent 78%);
+      box-shadow:
+        0 0 42px rgba(25,217,255,.18),
+        inset 0 0 34px rgba(109,66,255,.25);
+      animation:spinDisc 22s linear infinite;
+      pointer-events:none;
+    }
+
+    .hero-disc::before{
+      content:"";
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:30%;
+      aspect-ratio:1;
+      border:2px solid var(--acid);
+      border-radius:50%;
+      background:#11101e;
+      box-shadow:0 0 28px rgba(223,255,29,.28);
+      transform:translate(-50%,-50%);
+    }
+
+    .hero-disc::after{
+      content:"";
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:7%;
+      aspect-ratio:1;
+      border-radius:50%;
+      background:var(--white);
+      box-shadow:0 0 20px var(--white);
+      transform:translate(-50%,-50%);
+    }
+
+    @keyframes spinDisc{
+      to{transform:rotate(360deg)}
+    }
+
+    .shell{
+      width:min(var(--max),calc(100% - 44px));
+      margin:auto;
+    }
+
+    .hero-label,
+    .hero-title,
+    .hero-copy,
+    .hero-meta{
+      opacity:0;
+      transform:translateY(32px);
+    }
+
+    body.story-open .hero-label,
+    body.story-open .hero-title,
+    body.story-open .hero-copy,
+    body.story-open .hero-meta{
+      animation:heroIn .85s cubic-bezier(.2,.82,.2,1) forwards;
+    }
+
+    body.story-open .hero-title{animation-delay:.1s}
+    body.story-open .hero-copy{animation-delay:.23s}
+    body.story-open .hero-meta{animation-delay:.36s}
+
+    @keyframes heroIn{
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    .hero-label{
+      display:inline-flex;
+      gap:9px;
+      align-items:center;
+      margin:0;
+      color:var(--acid);
+      font:500 10px/1 "DM Mono",monospace;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+
+    .hero-label::before{
+      content:"";
+      width:9px;
+      height:9px;
+      background:var(--acid);
+      box-shadow:0 0 15px var(--acid);
+    }
+
+    .hero-title{
+      max-width:900px;
+      margin:15px 0 0;
+      color:var(--white);
+      font:400 clamp(92px,15vw,195px)/.64 "Anton",Arial,sans-serif;
+      letter-spacing:-.075em;
+      text-transform:uppercase;
+      text-shadow:
+        6px 0 var(--violet),
+        -6px 0 var(--electric),
+        0 22px 60px rgba(0,0,0,.35);
+    }
+
+    .hero-title span{
+      display:block;
+      margin-top:24px;
+      color:var(--acid);
+      font:700 clamp(24px,4vw,47px)/.9 "Space Grotesk",Arial,sans-serif;
+      letter-spacing:.16em;
+    }
+
+    .hero-copy{
+      max-width:460px;
+      margin:31px 0 0;
+      color:#eceefa;
+      font-size:14px;
+      line-height:1.72;
+    }
+
+    .hero-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:15px;
+      margin-top:28px;
+      color:#e9eaf4;
+      font:500 10px/1.4 "DM Mono",monospace;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .hero-meta span{
+      display:inline-flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .hero-meta span::before{
+      content:"";
+      width:20px;
+      height:2px;
+      background:var(--acid);
+    }
+
+    .scroll-word{
+      position:absolute;
+      right:32px;
+      bottom:41px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:rgba(248,248,255,.78);
+      font:500 9px/1 "DM Mono",monospace;
+      letter-spacing:.15em;
+      text-transform:uppercase;
+      writing-mode:vertical-rl;
+      transform:rotate(180deg);
+    }
+
+    .scroll-word::before{
+      content:"";
+      width:2px;
+      height:45px;
+      background:linear-gradient(var(--electric),transparent);
+    }
+
+    /* REVEAL */
+
+    .section{padding:126px 0}
+
+    .reveal{
+      opacity:0;
+      filter:blur(9px);
+      transform:translateY(52px) scale(.96);
+      transition:
+        opacity .82s cubic-bezier(.2,.75,.2,1) var(--delay,0s),
+        filter .82s cubic-bezier(.2,.75,.2,1) var(--delay,0s),
+        transform .82s cubic-bezier(.2,.75,.2,1) var(--delay,0s);
+    }
+
+    .reveal.show{
+      opacity:1;
+      filter:none;
+      transform:none;
+    }
+
+    .section-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:var(--electric);
+      font:500 10px/1 "DM Mono",monospace;
+      letter-spacing:.17em;
+      text-transform:uppercase;
+    }
+
+    .section-tag::before{
+      content:attr(data-n);
+      width:39px;
+      height:39px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(25,217,255,.64);
+      color:var(--acid);
+    }
+
+    .title{
+      max-width:690px;
+      margin:21px 0 0;
+      font:400 clamp(56px,8vw,106px)/.78 "Anton",Arial,sans-serif;
+      letter-spacing:-.05em;
+      text-transform:uppercase;
+    }
+
+    .title span{
+      display:block;
+      margin-top:14px;
+      color:var(--electric);
+      font:700 clamp(18px,3vw,34px)/.9 "Space Grotesk",Arial,sans-serif;
+      letter-spacing:.13em;
+    }
+
+    .copy{
+      max-width:510px;
+      margin:22px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.8;
+    }
+
+    /* PREMIÈRE SECTION */
+
+    .intro{
+      display:grid;
+      grid-template-columns:.82fr 1.18fr;
+      gap:clamp(28px,6vw,92px);
+      align-items:center;
+    }
+
+    .photo-frame{
+      min-height:660px;
+      position:relative;
+      overflow:hidden;
+      background:
+        linear-gradient(180deg,rgba(9,6,19,.03),rgba(9,6,19,.68)),
+        url("../../images/demo-anniversaire-01.webp") center/cover;
+      box-shadow:0 32px 84px rgba(0,0,0,.38);
+    }
+
+    .photo-frame::before{
+      content:"30";
+      position:absolute;
+      z-index:1;
+      top:15px;
+      right:17px;
+      color:rgba(223,255,29,.92);
+      font:400 102px/.75 "Anton",Arial,sans-serif;
+      letter-spacing:-.08em;
+      text-shadow:5px 5px 0 rgba(109,66,255,.7);
+    }
+
+    .photo-frame::after{
+      content:"";
+      position:absolute;
+      z-index:1;
+      bottom:-45px;
+      left:-45px;
+      width:195px;
+      height:195px;
+      border:2px solid var(--electric);
+      border-radius:50%;
+      box-shadow:0 0 26px rgba(25,217,255,.34);
+      animation:circlePulse 3.6s ease-in-out infinite alternate;
+    }
+
+    @keyframes circlePulse{
+      from{transform:scale(.9);opacity:.45}
+      to{transform:scale(1.12);opacity:1}
+    }
+
+    .photo-caption{
+      position:absolute;
+      z-index:2;
+      right:22px;
+      bottom:21px;
+      max-width:250px;
+      margin:0;
+      color:#fff;
+      font:700 14px/1.14 "Space Grotesk",Arial,sans-serif;
+      letter-spacing:.08em;
+      text-align:right;
+      text-transform:uppercase;
+    }
+
+    .detail-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+      margin-top:31px;
+    }
+
+    .detail{
+      min-height:112px;
+      padding:17px;
+      border:1px solid rgba(255,255,255,.13);
+      background:
+        linear-gradient(145deg,rgba(109,66,255,.12),transparent),
+        rgba(255,255,255,.035);
+    }
+
+    .detail b{
+      display:block;
+      color:var(--acid);
+      font:500 10px/1 "DM Mono",monospace;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+    }
+
+    .detail span{
+      display:block;
+      margin-top:11px;
+      color:#f5f5fd;
+      font-size:14px;
+      font-weight:700;
+      line-height:1.35;
+    }
+
+    /* FULL SCREEN */
+
+    .flash{
+      min-height:91svh;
+      position:relative;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      isolation:isolate;
+      text-align:center;
+    }
+
+    .flash::before{
+      content:"";
+      position:absolute;
+      z-index:-2;
+      inset:0;
+      background:
+        linear-gradient(180deg,rgba(9,6,19,.18),rgba(9,6,19,.88)),
+        url("../../images/demo-anniversaire-02.webp") center/cover;
+      transform:scale(1.06);
+      animation:flashZoom 19s ease-in-out infinite alternate;
+    }
+
+    .flash::after{
+      content:"";
+      position:absolute;
+      z-index:-1;
+      inset:0;
+      background:
+        radial-gradient(circle at 50% 43%,rgba(25,217,255,.2),transparent 35%),
+        linear-gradient(90deg,rgba(109,66,255,.18),transparent,rgba(223,255,29,.12));
+    }
+
+    @keyframes flashZoom{
+      from{transform:scale(1.06)}
+      to{transform:scale(1.16) translateY(-1.3%)}
+    }
+
+    .flash-inner{
+      width:min(920px,calc(100% - 44px));
+    }
+
+    .flash-kicker{
+      margin:0;
+      color:var(--acid);
+      font:500 10px/1 "DM Mono",monospace;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+    }
+
+    .flash h2{
+      margin:21px 0 0;
+      color:#fff;
+      font:400 clamp(68px,11vw,151px)/.69 "Anton",Arial,sans-serif;
+      letter-spacing:-.07em;
+      text-transform:uppercase;
+      text-shadow:6px 0 var(--violet),-6px 0 var(--electric),0 18px 50px rgba(0,0,0,.32);
+    }
+
+    .flash h2 span{
+      display:block;
+      margin-top:20px;
+      color:var(--acid);
+      font:700 clamp(18px,3vw,37px)/.92 "Space Grotesk",Arial,sans-serif;
+      letter-spacing:.14em;
+    }
+
+    .flash p{
+      max-width:540px;
+      margin:25px auto 0;
+      color:#eff0fb;
+      font-size:14px;
+      line-height:1.72;
+    }
+
+    /* PROGRAMME */
+
+    .schedule{
+      padding:126px 0;
+      color:#11111a;
+      background:
+        radial-gradient(circle at 84% 13%,rgba(25,217,255,.35),transparent 32%),
+        radial-gradient(circle at 7% 89%,rgba(223,255,29,.26),transparent 29%),
+        #f5f5fa;
+    }
+
+    .schedule .section-tag{color:#5032c0}
+    .schedule .section-tag::before{
+      border-color:rgba(80,50,192,.55);
+      color:#5032c0;
+    }
+
+    .schedule .title{color:#11111a}
+    .schedule .title span{color:#5639ca}
+    .schedule .copy{color:#5f6070}
+
+    .schedule-head{
+      display:grid;
+      grid-template-columns:.9fr 1.1fr;
+      gap:clamp(28px,6vw,86px);
+      align-items:end;
+      margin-bottom:49px;
+    }
+
+    .agenda{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+    }
+
+    .agenda-card{
+      min-height:268px;
+      position:relative;
+      overflow:hidden;
+      padding:23px;
+      background:#11111a;
+      color:#fff;
+      transition:.25s ease;
+    }
+
+    .agenda-card:nth-child(2){
+      color:#11111a;
+      background:var(--acid);
+    }
+
+    .agenda-card:nth-child(3){
+      background:var(--violet);
+    }
+
+    .agenda-card:nth-child(4){
+      color:#11111a;
+      background:var(--electric);
+    }
+
+    .agenda-card:hover{
+      transform:translateY(-9px) rotate(-1deg);
+      box-shadow:10px 10px 0 rgba(17,17,26,.18);
+    }
+
+    .agenda-card::before{
+      content:attr(data-index);
+      position:absolute;
+      top:-13px;
+      right:13px;
+      opacity:.18;
+      font:400 112px/.8 "Anton",Arial,sans-serif;
+      letter-spacing:-.08em;
+    }
+
+    .agenda-card time{
+      position:relative;
+      z-index:1;
+      display:block;
+      color:currentColor;
+      font:500 11px/1 "DM Mono",monospace;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+    }
+
+    .agenda-card h3{
+      position:relative;
+      z-index:1;
+      margin:31px 0 0;
+      font:400 39px/.84 "Anton",Arial,sans-serif;
+      letter-spacing:-.04em;
+      text-transform:uppercase;
+    }
+
+    .agenda-card p{
+      position:relative;
+      z-index:1;
+      margin:14px 0 0;
+      color:currentColor;
+      font-size:12px;
+      line-height:1.6;
+      opacity:.86;
+    }
+
+    .schedule-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:38px;
+    }
+
+    .button-main{
+      border:1px solid transparent;
+      color:#11111a;
+      background:var(--acid);
+      box-shadow:6px 6px 0 var(--violet);
+    }
+
+    .button-main:hover{
+      transform:translate(-3px,-3px);
+      box-shadow:10px 10px 0 var(--electric);
+    }
+
+    .button-ghost{
+      border:1px solid rgba(17,17,26,.34);
+      color:#171723;
+      background:rgba(255,255,255,.5);
+    }
+
+    .button-ghost:hover{
+      transform:translateY(-3px);
+      color:#fff;
+      background:#171723;
+    }
+
+    /* CITATION */
+
+    .quote-block{
+      position:relative;
+      overflow:hidden;
+      padding:148px 0;
+      text-align:center;
+      background:
+        radial-gradient(circle at 50% 44%,rgba(109,66,255,.3),transparent 42%),
+        linear-gradient(180deg,#1b123b,#090613);
+      border-top:1px solid rgba(255,255,255,.1);
+      border-bottom:1px solid rgba(255,255,255,.1);
+    }
+
+    .quote-block::before,
+    .quote-block::after{
+      content:"✦";
+      position:absolute;
+      color:rgba(223,255,29,.13);
+      font:400 clamp(210px,28vw,400px)/1 "Anton",Arial,sans-serif;
+      pointer-events:none;
+    }
+
+    .quote-block::before{
+      top:4%;
+      left:-8%;
+    }
+
+    .quote-block::after{
+      right:-8%;
+      bottom:-6%;
+      color:rgba(25,217,255,.13);
+      transform:rotate(18deg);
+    }
+
+    .quote{
+      position:relative;
+      z-index:1;
+      width:min(940px,calc(100% - 44px));
+      margin:auto;
+      color:#fff;
+      font:400 clamp(46px,7vw,92px)/.88 "Anton",Arial,sans-serif;
+      letter-spacing:-.055em;
+      text-transform:uppercase;
+    }
+
+    .quote span{
+      display:block;
+      margin-top:22px;
+      color:var(--acid);
+      font:700 clamp(18px,3vw,34px)/.92 "Space Grotesk",Arial,sans-serif;
+      letter-spacing:.12em;
+    }
+
+    /* GALERIE */
+
+    .gallery-section{
+      padding:126px 0;
+      background:#0d0a1b;
+    }
+
+    .gallery-head{
+      display:grid;
+      grid-template-columns:.87fr 1.13fr;
+      gap:clamp(28px,6vw,84px);
+      align-items:end;
+      margin-bottom:42px;
+    }
+
+    .gallery{
+      display:grid;
+      grid-template-columns:1.1fr .9fr .9fr;
+      grid-auto-rows:250px;
+      gap:14px;
+    }
+
+    .gallery-card{
+      position:relative;
+      overflow:hidden;
+      background:var(--image) center/cover;
+      isolation:isolate;
+      transition:.35s cubic-bezier(.2,.75,.2,1);
+    }
+
+    .gallery-card::before{
+      content:"";
+      position:absolute;
+      z-index:1;
+      inset:0;
+      background:linear-gradient(180deg,rgba(9,6,19,.03),rgba(9,6,19,.76));
+    }
+
+    .gallery-card::after{
+      content:"";
+      position:absolute;
+      z-index:2;
+      inset:0;
+      border:2px solid transparent;
+      border-image:linear-gradient(135deg,var(--electric),var(--acid),var(--violet)) 1;
+      opacity:0;
+      transition:.3s ease;
+    }
+
+    .gallery-card:hover{
+      transform:translateY(-8px) scale(1.015);
+    }
+
+    .gallery-card:hover::after{opacity:1}
+
+    .gallery-card.tall{grid-row:span 2}
+    .gallery-card.wide{grid-column:span 2}
+
+    .gallery-label{
+      position:absolute;
+      z-index:3;
+      left:21px;
+      right:21px;
+      bottom:18px;
+    }
+
+    .gallery-label strong{
+      display:block;
+      color:#fff;
+      font:400 36px/.84 "Anton",Arial,sans-serif;
+      letter-spacing:-.04em;
+      text-transform:uppercase;
+    }
+
+    .gallery-label span{
+      display:block;
+      margin-top:7px;
+      color:var(--acid);
+      font:500 9px/1.35 "DM Mono",monospace;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+    }
+
+    /* VIDEO */
+
+    .video-section{
+      min-height:94svh;
+      position:relative;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      isolation:isolate;
+      padding:100px 20px;
+      text-align:center;
+    }
+
+    .video-section::before{
+      content:"";
+      position:absolute;
+      z-index:-2;
+      inset:0;
+      background:
+        linear-gradient(180deg,rgba(9,6,19,.31),rgba(9,6,19,.89)),
+        url("../../images/demo-anniversaire-04.webp") center/cover;
+      transform:scale(1.06);
+      animation:videoZoom 22s ease-in-out infinite alternate;
+    }
+
+    .video-section::after{
+      content:"";
+      position:absolute;
+      z-index:-1;
+      inset:0;
+      background:
+        radial-gradient(circle at 50% 44%,rgba(25,217,255,.2),transparent 38%),
+        linear-gradient(90deg,rgba(109,66,255,.12),transparent,rgba(223,255,29,.1));
+    }
+
+    @keyframes videoZoom{
+      from{transform:scale(1.06)}
+      to{transform:scale(1.16) translateY(-1%)}
+    }
+
+    .video-inner{
+      width:min(900px,100%);
+    }
+
+    .video-inner h2{
+      margin:18px 0 0;
+      color:#fff;
+      font:400 clamp(62px,9vw,126px)/.7 "Anton",Arial,sans-serif;
+      letter-spacing:-.06em;
+      text-transform:uppercase;
+      text-shadow:5px 0 var(--violet),-5px 0 var(--electric);
+    }
+
+    .video-inner h2 span{
+      display:block;
+      margin-top:19px;
+      color:var(--acid);
+      font:700 clamp(17px,3vw,35px)/.92 "Space Grotesk",Arial,sans-serif;
+      letter-spacing:.14em;
+    }
+
+    .video-copy{
+      max-width:560px;
+      margin:24px auto 0;
+      color:#eff0fb;
+      font-size:14px;
+      line-height:1.72;
+    }
+
+    .video-play{
+      width:94px;
+      height:94px;
+      position:relative;
+      display:grid;
+      place-items:center;
+      margin:35px auto 0;
+      border:2px solid var(--acid);
+      border-radius:50%;
+      color:var(--acid);
+      background:rgba(9,6,19,.28);
+      box-shadow:0 0 32px rgba(223,255,29,.24);
+      font-size:28px;
+      cursor:pointer;
+      transition:.25s ease;
+    }
+
+    .video-play::before{
+      content:"";
+      position:absolute;
+      inset:-11px;
+      border:1px solid rgba(25,217,255,.48);
+      border-radius:50%;
+      animation:playPulse 2.1s ease-out infinite;
+    }
+
+    @keyframes playPulse{
+      0%{transform:scale(.75);opacity:1}
+      100%{transform:scale(1.29);opacity:0}
+    }
+
+    .video-play:hover{
+      transform:scale(1.1);
+      color:#11111a;
+      background:var(--acid);
+      box-shadow:0 0 42px rgba(223,255,29,.45);
+    }
+
+    .video-note{
+      margin:18px auto 0;
+      color:#e2e4f1;
+      font:500 9px/1.3 "DM Mono",monospace;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    /* FINALE */
+
+    .finale{
+      position:relative;
+      min-height:100svh;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      isolation:isolate;
+      text-align:center;
+    }
+
+    .finale::before{
+      content:"";
+      position:absolute;
+      z-index:-2;
+      inset:0;
+      background:
+        linear-gradient(180deg,rgba(9,6,19,.55),rgba(9,6,19,.92)),
+        url("../../images/demo-anniversaire-05.webp") center/cover;
+      transform:scale(1.06);
+      animation:finalZoom 23s ease-in-out infinite alternate;
+    }
+
+    .finale::after{
+      content:"";
+      position:absolute;
+      z-index:-1;
+      inset:0;
+      background:
+        radial-gradient(circle at 50% 46%,rgba(109,66,255,.22),transparent 38%),
+        radial-gradient(circle at 65% 30%,rgba(25,217,255,.14),transparent 30%);
+    }
+
+    @keyframes finalZoom{
+      from{transform:scale(1.06)}
+      to{transform:scale(1.16) translateY(-1%)}
+    }
+
+    .finale-inner{
+      width:min(900px,calc(100% - 44px));
+    }
+
+    .finale .hero-label{
+      justify-content:center;
+    }
+
+    .finale h2{
+      margin:18px 0 0;
+      color:#fff;
+      font:400 clamp(72px,11vw,146px)/.69 "Anton",Arial,sans-serif;
+      letter-spacing:-.07em;
+      text-transform:uppercase;
+      text-shadow:6px 0 var(--violet),-6px 0 var(--electric);
+    }
+
+    .finale h2 span{
+      display:block;
+      margin-top:22px;
+      color:var(--acid);
+      font:700 clamp(18px,3vw,37px)/.92 "Space Grotesk",Arial,sans-serif;
+      letter-spacing:.15em;
+    }
+
+    .finale-copy{
+      max-width:560px;
+      margin:28px auto 0;
+      color:#eff0fb;
+      font-size:14px;
+      line-height:1.72;
+    }
+
+    .actions{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:33px;
+    }
+
+    .finale .button-main{
+      color:#11111a;
+      background:var(--acid);
+    }
+
+    .finale .button-ghost{
+      border-color:rgba(248,248,255,.46);
+      color:#fff;
+      background:rgba(255,255,255,.06);
+    }
+
+    .finale .button-ghost:hover{
+      color:#11111a;
+      background:#fff;
+    }
+
+    .footer{
+      padding:40px 20px;
+      background:#05040b;
+      text-align:center;
+    }
+
+    .footer p{
+      margin:0;
+      color:#999bad;
+      font:500 9px/1.35 "DM Mono",monospace;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .footer a{
+      display:inline-flex;
+      margin-top:17px;
+      color:var(--electric);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    /* MODALES */
+
+    .modal{
+      position:fixed;
+      z-index:2300;
+      inset:0;
+      display:none;
+      place-items:center;
+      padding:24px;
+      background:rgba(4,3,10,.93);
+      backdrop-filter:blur(16px);
+    }
+
+    .modal.open{display:grid}
+
+    .modal-dialog{
+      position:relative;
+      width:min(940px,100%);
+      overflow:hidden;
+      border:1px solid rgba(25,217,255,.3);
+      background:#121023;
+      box-shadow:0 38px 110px rgba(0,0,0,.74);
+    }
+
+    .modal-close{
+      position:absolute;
+      z-index:5;
+      top:18px;
+      right:18px;
+      width:42px;
+      height:42px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,255,255,.45);
+      border-radius:50%;
+      color:#fff;
+      background:rgba(9,6,19,.54);
+      font-size:24px;
+      cursor:pointer;
+      backdrop-filter:blur(10px);
+    }
+
+    .video-placeholder{
+      position:relative;
+      min-height:min(74svh,680px);
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      padding:78px 28px 48px;
+      text-align:center;
+      background:
+        linear-gradient(135deg,rgba(10,7,24,.34),rgba(10,7,24,.88)),
+        url("../../images/demo-anniversaire-04.webp") center/cover;
+    }
+
+    .video-placeholder::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 50% 43%,rgba(25,217,255,.24),transparent 36%),
+        linear-gradient(180deg,rgba(9,6,19,.08),rgba(9,6,19,.78));
+    }
+
+    .video-placeholder-inner{
+      position:relative;
+      z-index:1;
+      width:min(620px,100%);
+    }
+
+    .screen-loader{
+      position:relative;
+      width:min(390px,100%);
+      aspect-ratio:16/9;
+      margin:0 auto 34px;
+      overflow:hidden;
+      border:1px solid rgba(25,217,255,.48);
+      background:
+        linear-gradient(90deg,rgba(25,217,255,.08) 1px,transparent 1px) 0 0/24px 100%,
+        linear-gradient(rgba(25,217,255,.07) 1px,transparent 1px) 0 0/100% 24px,
+        rgba(8,8,21,.52);
+      box-shadow:0 24px 60px rgba(0,0,0,.33);
+    }
+
+    .screen-loader::before{
+      content:"";
+      position:absolute;
+      top:0;
+      bottom:0;
+      left:-35%;
+      width:34%;
+      background:linear-gradient(90deg,transparent,rgba(223,255,29,.72),transparent);
+      filter:blur(5px);
+      animation:scan 1.8s linear infinite;
+    }
+
+    @keyframes scan{
+      to{transform:translateX(520%)}
+    }
+
+    .screen-loader strong{
+      position:absolute;
+      top:50%;
+      left:50%;
+      color:var(--acid);
+      font:400 71px/.8 "Anton",Arial,sans-serif;
+      letter-spacing:-.08em;
+      text-shadow:4px 0 var(--violet),-4px 0 var(--electric);
+      transform:translate(-50%,-50%);
+    }
+
+    .video-placeholder h2{
+      margin:17px 0 0;
+      color:#fff;
+      font:400 clamp(52px,7vw,85px)/.78 "Anton",Arial,sans-serif;
+      letter-spacing:-.06em;
+      text-transform:uppercase;
+    }
+
+    .video-placeholder h2 span{
+      display:block;
+      margin-top:16px;
+      color:var(--acid);
+      font:700 clamp(16px,3vw,31px)/.92 "Space Grotesk",Arial,sans-serif;
+      letter-spacing:.13em;
+    }
+
+    .video-placeholder p{
+      max-width:530px;
+      margin:22px auto 0;
+      color:#f0f1fb;
+      font-size:14px;
+      line-height:1.72;
+    }
+
+    .loading-line{
+      width:min(315px,100%);
+      height:4px;
+      overflow:hidden;
+      margin:29px auto 0;
+      background:rgba(255,255,255,.17);
+    }
+
+    .loading-line span{
+      display:block;
+      width:42%;
+      height:100%;
+      background:linear-gradient(90deg,transparent,var(--electric),var(--acid),transparent);
+      animation:loadingSweep 1.35s ease-in-out infinite;
+    }
+
+    @keyframes loadingSweep{
+      from{transform:translateX(-120%)}
+      to{transform:translateX(310%)}
+    }
+
+    .loading-label{
+      margin-top:13px!important;
+      color:var(--electric)!important;
+      font:500 10px/1.3 "DM Mono",monospace!important;
+      letter-spacing:.15em;
+      text-transform:uppercase;
+    }
+
+    .rsvp-content{
+      min-height:min(72svh,650px);
+      padding:81px clamp(28px,6vw,78px) 52px;
+      color:#11111a;
+      background:
+        radial-gradient(circle at 82% 11%,rgba(25,217,255,.36),transparent 36%),
+        radial-gradient(circle at 8% 90%,rgba(223,255,29,.25),transparent 30%),
+        #f5f5fa;
+    }
+
+    .rsvp-content .section-tag{
+      color:#5233c5;
+    }
+
+    .rsvp-content .section-tag::before{
+      border-color:rgba(82,51,197,.48);
+      color:#5233c5;
+    }
+
+    .rsvp-content h2{
+      margin:18px 0 0;
+      color:#11111a;
+      font:400 clamp(51px,7vw,82px)/.77 "Anton",Arial,sans-serif;
+      letter-spacing:-.06em;
+      text-transform:uppercase;
+    }
+
+    .rsvp-content h2 span{
+      display:block;
+      margin-top:15px;
+      color:#5436cf;
+      font:700 clamp(16px,3vw,29px)/.92 "Space Grotesk",Arial,sans-serif;
+      letter-spacing:.12em;
+    }
+
+    .rsvp-content > p{
+      max-width:530px;
+      margin:19px 0 0;
+      color:#5d5e70;
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .rsvp-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:15px;
+      margin-top:29px;
+    }
+
+    .rsvp-grid label{
+      display:block;
+      color:#4f4d7e;
+      font:500 10px/1.2 "DM Mono",monospace;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .rsvp-grid input,
+    .rsvp-grid select{
+      width:100%;
+      height:52px;
+      margin-top:8px;
+      padding:0 15px;
+      border:1px solid rgba(82,51,197,.25);
+      border-radius:0;
+      outline:none;
+      color:#11111a;
+      background:rgba(255,255,255,.6);
+      font:14px "Space Grotesk",Arial,sans-serif;
+    }
+
+    .rsvp-grid input:focus,
+    .rsvp-grid select:focus{
+      border-color:var(--violet);
+      box-shadow:0 0 0 3px rgba(109,66,255,.14);
+    }
+
+    .rsvp-submit{
+      margin-top:24px;
+      border:none;
+    }
+
+    .rsvp-note{
+      margin-top:16px!important;
+      color:#737484!important;
+      font:500 9px/1.35 "DM Mono",monospace!important;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+    }
+
+    .toast{
+      position:fixed;
+      z-index:2600;
+      left:50%;
+      bottom:26px;
+      max-width:calc(100% - 34px);
+      padding:12px 17px;
+      border:1px solid rgba(25,217,255,.38);
+      color:#fff;
+      background:rgba(18,16,42,.95);
+      box-shadow:0 18px 48px rgba(0,0,0,.42);
+      font-size:12px;
+      transform:translate(-50%,24px);
+      opacity:0;
+      pointer-events:none;
+      transition:.28s ease;
+    }
+
+    .toast.show{
+      transform:translate(-50%,0);
+      opacity:1;
+    }
+
+    @media(max-width:980px){
+      .agenda{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media(max-width:900px){
+      .story-name{display:none}
+      .hero-disc{width:61vw;right:-3%;top:17%}
+      .intro,.schedule-head,.gallery-head{grid-template-columns:1fr}
+      .photo-frame{width:100%;max-width:650px;min-height:500px;margin:0 auto}
+    }
+
+    @media(max-width:640px){
+      .rsvp-grid{grid-template-columns:1fr}
+    }
+
+    @media(max-width:580px){
+      .nav{
+        width:min(100% - 26px,var(--max));
+        min-height:66px;
+      }
+
+      .brand-title{
+        font-size:12px;
+        letter-spacing:.14em;
+      }
+
+      .brand-sub{font-size:6px}
+      .back{padding:8px 10px;font-size:8px}
+      .round-button{width:35px;height:35px}
+
+      .hero{padding:105px 0 48px}
+      .hero-title{font-size:89px}
+      .hero-copy{max-width:318px;font-size:13px}
+      .hero-disc{top:28%;right:-14%;width:84vw}
+      .scroll-word{display:none}
+
+      .entry-age{font-size:180px}
+      .entry-title{font-size:16px}
+      .entry-copy{font-size:13px}
+
+      .section{padding:82px 0}
+      .title{font-size:58px}
+      .photo-frame{min-height:420px}
+      .detail-grid{grid-template-columns:1fr 1fr}
+      .detail{min-height:102px}
+
+      .flash{min-height:78svh}
+      .flash h2{font-size:74px}
+
+      .schedule{padding:82px 0}
+      .agenda{grid-template-columns:1fr}
+      .agenda-card{min-height:210px}
+
+      .quote-block{padding:92px 0}
+      .quote{font-size:52px}
+
+      .gallery{
+        grid-template-columns:1fr 1fr;
+        grid-auto-rows:180px;
+        gap:9px;
+      }
+
+      .gallery-card.tall{grid-row:span 2}
+      .gallery-card.wide{grid-column:span 2}
+      .gallery-label strong{font-size:27px}
+
+      .video-section{min-height:78svh}
+      .video-inner h2{font-size:70px}
+      .finale h2{font-size:78px}
+
+      .actions,
+      .schedule-actions{
+        width:100%;
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .actions .button-main,
+      .actions .button-ghost,
+      .schedule-actions .button-main,
+      .schedule-actions .button-ghost{
+        width:100%;
+      }
+
+      .video-placeholder{padding:76px 20px 44px}
+      .rsvp-content{padding:76px 24px 43px}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+
+      *,
+      *::before,
+      *::after{
+        animation-duration:.01ms!important;
+        animation-iteration-count:1!important;
+        transition-duration:.01ms!important;
+      }
+    }
+  </style></head><body>
+  <div class="progress" aria-hidden="true"><span data-progress></span></div>  <section class="entry" data-entry>
+    <div class="light-beam" aria-hidden="true"></div>
+    <div class="light-beam two" aria-hidden="true"></div>
+    <div class="confetti" data-confetti aria-hidden="true"></div><div class="entry-stage">
+  <div class="level">Niveau 30 débloqué</div>
+  <div class="entry-age">30</div>
+  <h1 class="entry-title">Camille passe en mode légende</h1>
+  <p class="entry-copy">Une nouvelle décennie mérite mieux qu’un simple message. Le 10 octobre, on oublie l’heure, on monte le son et on célèbre ça comme il se doit.</p>
+  <button class="entry-action" type="button" data-enter>Entrer dans la soirée <span aria-hidden="true">→</span></button>
+  <p class="entry-note">Samedi 10 octobre 2026 · Clermont-Ferrand</p>
+</div>
+
+  </section>  <header class="topbar" data-header>
+    <nav class="nav">
+      <a class="brand" href="../../index.html" aria-label="Retour à MakeYourStory">
+        <span class="brand-mark" aria-hidden="true">30</span>
+        <span>
+          <span class="brand-title">MAKE YOUR STORY</span>
+          <span class="brand-sub">INVITATION ANNIVERSAIRE</span>
+        </span>
+      </a>  <div class="nav-actions">
+    <span class="story-name">Camille · 30 ans</span>
+    <button class="round-button" type="button" aria-label="Couper ou remettre la musique" aria-pressed="false" data-sound>♪</button>
+    <button class="round-button" type="button" aria-label="Partager cette invitation" data-share>↗</button>
+    <a class="back" href="../../invitation-anniversaire.html">Invitation</a>
+  </div>
+</nav>
+
+  </header>  <audio id="story-audio" preload="auto" loop>
+    <source src="../../audio/demo-anniversaire.mp3" type="audio/mpeg">
+  </audio>  <main>
+    <section class="hero" data-hero>
+      <div class="hero-disc" aria-hidden="true"></div>  <div class="shell">
+    <p class="hero-label">Anniversaire de Camille</p>
+
+    <h1 class="hero-title">30<span>Et aucune intention de ralentir.</span></h1>
+
+    <p class="hero-copy">Une date à bloquer. Une tenue à prévoir. Une soirée à raconter longtemps. Camille vous attend pour fêter cette nouvelle décennie sans demi-mesure.</p>
+
+    <div class="hero-meta">
+      <span>Samedi 10 octobre 2026</span>
+      <span>19 h 30 · Le Loft 63 · Clermont-Ferrand</span>
+    </div>
+  </div>
+
+  <div class="scroll-word">Faire défiler</div>
+</section>
+
+<section class="section">
+  <div class="shell intro">
+    <div class="reveal">
+      <p class="section-tag" data-n="01">Le prétexte parfait</p>
+
+      <h2 class="title">Une nouvelle décennie,<span>une seule règle : en profiter.</span></h2>
+
+      <p class="copy">30 ans, c’est l’âge où l’on sait davantage ce que l’on aime, avec qui l’on veut célébrer et pourquoi certaines soirées méritent vraiment d’être improvisées jusqu’au bout de la nuit.</p>
+
+      <div class="detail-grid">
+        <div class="detail">
+          <b>Date</b>
+          <span>10.10.2026</span>
+        </div>
+
+        <div class="detail">
+          <b>Horaire</b>
+          <span>À partir de 19 h 30</span>
+        </div>
+
+        <div class="detail">
+          <b>Ambiance</b>
+          <span>Électrique, libre, festive</span>
+        </div>
+
+        <div class="detail">
+          <b>Dress code</b>
+          <span>Un détail qui brille</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-frame reveal" style="--delay:.14s">
+      <p class="photo-caption">La seule crise à gérer : choisir sa tenue.</p>
+    </div>
+  </div>
+</section>
+
+<section class="flash">
+  <div class="flash-inner reveal">
+    <p class="flash-kicker">Pas un dîner tranquille</p>
+    <h2>On sort.<span>On danse. On oublie l’heure.</span></h2>
+    <p>Il y aura du son, des surprises, des verres levés trop haut et des photos qu’il faudra peut-être expliquer le lendemain. C’est exactement le programme.</p>
+  </div>
+</section>
+
+<section class="schedule">
+  <div class="shell">
+    <div class="schedule-head">
+      <div class="reveal">
+        <p class="section-tag" data-n="02">Le plan de la soirée</p>
+        <h2 class="title">Un timing simple.<span>Une énergie qui monte.</span></h2>
+      </div>
+
+      <p class="copy reveal" style="--delay:.12s">L’essentiel tient en peu de mots : arriver, trinquer, rire, danser. Le reste s’écrira sur place, avec les bonnes personnes.</p>
+    </div>
+
+    <div class="agenda">
+      <article class="agenda-card reveal" data-index="01">
+        <time>19 h 30</time>
+        <h3>On arrive</h3>
+        <p>Les premiers verres, les premières retrouvailles et déjà quelques photos compromettantes.</p>
+      </article>
+
+      <article class="agenda-card reveal" data-index="02" style="--delay:.08s">
+        <time>21 h 00</time>
+        <h3>On mange</h3>
+        <p>De quoi tenir toute la nuit, sans interrompre l’ambiance une seule seconde.</p>
+      </article>
+
+      <article class="agenda-card reveal" data-index="03" style="--delay:.16s">
+        <time>22 h 30</time>
+        <h3>On monte le son</h3>
+        <p>La playlist prend les commandes. Le salon devient officiellement une piste de danse.</p>
+      </article>
+
+      <article class="agenda-card reveal" data-index="04" style="--delay:.24s">
+        <time>00 h 00</time>
+        <h3>On célèbre</h3>
+        <p>Les bougies, les surprises, les cris et le moment où tout le monde chante trop fort.</p>
+      </article>
+    </div>
+
+    <div class="schedule-actions reveal" style="--delay:.14s">
+      <button class="button-main" type="button" data-open-rsvp>Je viens à la fête</button>
+      <button class="button-ghost" type="button" data-calendar>Ajouter au calendrier</button>
+      <a class="button-ghost" href="https://www.google.com/maps/search/?api=1&query=Clermont-Ferrand" target="_blank" rel="noopener">Voir l’itinéraire</a>
+    </div>
+  </div>
+</section>
+
+<section class="quote-block">
+  <p class="quote reveal">« Les années passent.<span>Les bonnes soirées deviennent des légendes. »</span></p>
+</section>
+
+<section class="gallery-section">
+  <div class="shell">
+    <div class="gallery-head">
+      <div class="reveal">
+        <p class="section-tag" data-n="03">Les meilleurs souvenirs</p>
+        <h2 class="title">On a déjà de quoi raconter.<span>Il reste à créer la suite.</span></h2>
+      </div>
+
+      <p class="copy reveal" style="--delay:.12s">Les vraies bonnes soirées ne se mesurent pas à l’heure de fin, mais aux anecdotes qui reviennent des années plus tard.</p>
+    </div>
+
+    <div class="gallery">
+      <div class="gallery-card tall reveal" style="--image:url('../../images/demo-anniversaire-03.webp')">
+        <div class="gallery-label">
+          <strong>Les indispensables.</strong>
+          <span>Ceux qui savent déjà comment ça va finir.</span>
+        </div>
+      </div>
+
+      <div class="gallery-card reveal" style="--image:url('../../images/demo-anniversaire-01.webp');--delay:.08s">
+        <div class="gallery-label">
+          <strong>Le chaos.</strong>
+          <span>La meilleure partie du plan.</span>
+        </div>
+      </div>
+
+      <div class="gallery-card reveal" style="--image:url('../../images/demo-anniversaire-02.webp');--delay:.16s">
+        <div class="gallery-label">
+          <strong>Le style.</strong>
+          <span>Un détail qui brille.</span>
+        </div>
+      </div>
+
+      <div class="gallery-card wide reveal" style="--image:url('../../images/demo-anniversaire-05.webp');--delay:.12s">
+        <div class="gallery-label">
+          <strong>Une seule mission : profiter.</strong>
+          <span>Camille fête ses 30 ans. C’est largement suffisant comme raison.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="video-section">
+  <div class="video-inner reveal">
+    <p class="hero-label">Le souvenir en mouvement</p>
+
+    <h2>Le moment,<span>à revivre sans fin.</span></h2>
+
+    <p class="video-copy">Un cri au moment du gâteau, une entrée spectaculaire, une danse improbable ou simplement ce regard juste avant que la soirée bascule : quelques secondes peuvent garder toute l’énergie du moment.</p>
+
+    <button class="video-play" type="button" data-open-video aria-label="Découvrir l’espace vidéo personnel">▷</button>
+
+    <p class="video-note">Un souvenir qui garde le son, la lumière et l’énergie</p>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="finale-inner reveal">
+    <p class="hero-label">Samedi 10 octobre 2026</p>
+
+    <h2>Tu viens.<span>Ou tu vas le regretter.</span></h2>
+
+    <p class="finale-copy">Partage cette invitation, ajoute la date au calendrier et prépare un détail qui brille. La suite se passe au Loft 63, à Clermont-Ferrand.</p>
+
+    <div class="actions">
+      <button class="button-main" type="button" data-share>Partager l’invitation <span aria-hidden="true">→</span></button>
+      <button class="button-ghost" type="button" data-whatsapp>Envoyer sur WhatsApp</button>
+      <button class="button-ghost" type="button" data-copy-link>Copier le lien</button>
+    </div>
+  </div>
+</section>
+
+  </main>  <footer class="footer">
+    <p>Une histoire créée avec MakeYourStory</p>
+    <a href="../../invitation-anniversaire.html">Découvrir les invitations anniversaire</a>
+  </footer>  <section class="modal" data-video-modal aria-label="Votre vidéo souvenir">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="video-title">
+      <button class="modal-close" type="button" data-close-video aria-label="Fermer">×</button>  <div class="video-placeholder">
+    <div class="video-placeholder-inner">
+      <div class="screen-loader" aria-hidden="true">
+        <strong>30</strong>
+      </div>
+
+      <p class="hero-label">Votre vidéo souvenir</p>
+
+      <h2 id="video-title">La soirée,<span>en mouvement.</span></h2>
+
+      <p>Ici, les meilleurs moments de cette fête peuvent prendre vie : l’arrivée des invités, les surprises, les bougies, la musique et toutes les scènes qui méritent d’être rejouées.</p>
+
+      <div class="loading-line" aria-hidden="true"><span></span></div>
+      <p class="loading-label">Préparation de la séquence</p>
+    </div>
+  </div>
+</div>
+
+  </section>  <section class="modal" data-rsvp-modal aria-label="Répondre à l’invitation">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="rsvp-title">
+      <button class="modal-close" type="button" data-close-rsvp aria-label="Fermer">×</button>  <form class="rsvp-content" data-rsvp-form>
+    <p class="section-tag" data-n="RSVP">Réponse attendue</p>
+
+    <h2 id="rsvp-title">Tu seras là,<span>pour le niveau 30 ?</span></h2>
+
+    <p>Une réponse rapide permet de préparer la soirée au bon format.</p>
+
+    <div class="rsvp-grid">
+      <label>
+        Prénom et nom
+        <input type="text" required placeholder="Votre prénom et nom">
+      </label>
+
+      <label>
+        Votre réponse
+        <select required>
+          <option value="">Choisir une réponse</option>
+          <option>Oui, évidemment</option>
+          <option>Je ne peux pas, mais je penserai fort à toi</option>
+        </select>
+      </label>
+
+      <label>
+        Nombre de personnes
+        <select>
+          <option>1 personne</option>
+          <option>2 personnes</option>
+          <option>3 personnes</option>
+          <option>4 personnes</option>
+        </select>
+      </label>
+
+      <label>
+        Une précision ?
+        <input type="text" placeholder="Facultatif">
+      </label>
+    </div>
+
+    <button class="button-main rsvp-submit" type="submit">Envoyer ma réponse</button>
+
+    <p class="rsvp-note">Rendez-vous le 10 octobre. Le reste se passera sur place.</p>
+  </form>
+</div>
+
+  </section>  <div class="toast" data-toast role="status" aria-live="polite"></div>  <script>
+    (() => {
+      const entry = document.querySelector("[data-entry]");
+      const enter = document.querySelector("[data-enter]");
+      const confetti = document.querySelector("[data-confetti]");
+      const audio = document.getElementById("story-audio");
+      const sound = document.querySelector("[data-sound]");
+      const header = document.querySelector("[data-header]");
+      const progress = document.querySelector("[data-progress]");
+      const hero = document.querySelector("[data-hero]");
+      const shareButtons = document.querySelectorAll("[data-share]");
+      const whatsappButton = document.querySelector("[data-whatsapp]");
+      const copyButton = document.querySelector("[data-copy-link]");
+      const calendarButton = document.querySelector("[data-calendar]");
+      const toast = document.querySelector("[data-toast]");
+
+      const videoModal = document.querySelector("[data-video-modal]");
+      const openVideo = document.querySelector("[data-open-video]");
+      const closeVideo = document.querySelector("[data-close-video]");
+
+      const rsvpModal = document.querySelector("[data-rsvp-modal]");
+      const openRsvp = document.querySelector("[data-open-rsvp]");
+      const closeRsvp = document.querySelector("[data-close-rsvp]");
+      const rsvpForm = document.querySelector("[data-rsvp-form]");
+
+      let toastTimer;
+
+      document.body.style.overflow = "hidden";
+
+      const colors = ["#19d9ff", "#dfff1d", "#6d42ff", "#ff8d3a", "#f8f8ff"];
+
+      for (let i = 0; i < 96; i += 1) {
+        const piece = document.createElement("i");
+
+        piece.style.setProperty("--x", `${Math.random() * 106 - 3}%`);
+        piece.style.setProperty("--y", `${Math.random() * -112}%`);
+        piece.style.setProperty("--w", `${4 + Math.random() * 7}px`);
+        piece.style.setProperty("--h", `${8 + Math.random() * 16}px`);
+        piece.style.setProperty("--color", colors[Math.floor(Math.random() * colors.length)]);
+        piece.style.setProperty("--duration", `${5 + Math.random() * 8}s`);
+        piece.style.setProperty("--delay", `${Math.random() * -13}s`);
+        piece.style.setProperty("--drift", `${-145 + Math.random() * 290}px`);
+        piece.style.setProperty("--r", `${Math.random() * 360}deg`);
+
+        confetti.appendChild(piece);
+      }
+
+      const showToast = (message) => {
+        toast.textContent = message;
+        toast.classList.add("show");
+
+        window.clearTimeout(toastTimer);
+
+        toastTimer = window.setTimeout(() => {
+          toast.classList.remove("show");
+        }, 2800);
+      };
+
+      const pageUrl = () => window.location.href.split("#")[0];
+
+      const copyLink = async () => {
+        const url = pageUrl();
+
+        try {
+          await navigator.clipboard.writeText(url);
+          showToast("Lien copié");
+          return;
+        } catch {}
+
+        const input = document.createElement("textarea");
+        input.value = url;
+        input.setAttribute("readonly", "");
+        input.style.position = "fixed";
+        input.style.opacity = "0";
+
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        input.remove();
+
+        showToast("Lien copié");
+      };
+
+      const shareStory = async () => {
+        const data = {
+          title: "Camille fête ses 30 ans",
+          text: "Une soirée. Une date. Aucune excuse valable.",
+          url: pageUrl()
+        };
+
+        if (navigator.share) {
+          try {
+            await navigator.share(data);
+            return;
+          } catch (error) {
+            if (error.name === "AbortError") return;
+          }
+        }
+
+        copyLink();
+      };
+
+      const playMusic = async () => {
+        try {
+          audio.volume = 0;
+          await audio.play();
+
+          sound.classList.add("on");
+          sound.setAttribute("aria-pressed", "true");
+          sound.textContent = "❚❚";
+
+          let volume = 0;
+
+          const fade = window.setInterval(() => {
+            volume += 0.05;
+            audio.volume = Math.min(volume, 0.58);
+
+            if (volume >= 0.58) {
+              window.clearInterval(fade);
+            }
+          }, 90);
+        } catch {
+          sound.textContent = "♪";
+        }
+      };
+
+      const openModal = (modal) => {
+        modal.classList.add("open");
+        document.body.style.overflow = "hidden";
+      };
+
+      const closeModal = (modal) => {
+        modal.classList.remove("open");
+        document.body.style.overflow = "";
+      };
+
+      const downloadCalendar = () => {
+        const event = [
+          "BEGIN:VCALENDAR",
+          "VERSION:2.0",
+          "PRODID:-//MakeYourStory//Anniversaire//FR",
+          "BEGIN:VEVENT",
+          "UID:camille-30-20261010@makeyourstory.fr",
+          "DTSTAMP:20260701T120000Z",
+          "DTSTART:20261010T193000",
+          "DTEND:20261011T040000",
+          "SUMMARY:Les 30 ans de Camille",
+          "LOCATION:Le Loft 63, Clermont-Ferrand",
+          "DESCRIPTION:Une soirée pour fêter les 30 ans de Camille.",
+          "END:VEVENT",
+          "END:VCALENDAR"
+        ].join("\r\n");
+
+        const blob = new Blob([event], { type:"text/calendar;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = "anniversaire-camille-30-ans.ics";
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        URL.revokeObjectURL(url);
+        showToast("La date est prête à être ajoutée au calendrier.");
+      };
+
+      enter.addEventListener("click", () => {
+        entry.classList.add("is-opening");
+        document.body.classList.add("story-open");
+        playMusic();
+
+        window.setTimeout(() => {
+          entry.classList.add("is-hidden");
+          document.body.style.overflow = "";
+        }, 760);
+
+        window.setTimeout(() => {
+          entry.remove();
+        }, 1650);
+      });
+
+      sound.addEventListener("click", async () => {
+        try {
+          if (audio.paused) {
+            await audio.play();
+            audio.volume = 0.58;
+            sound.classList.add("on");
+            sound.setAttribute("aria-pressed", "true");
+            sound.textContent = "❚❚";
+          } else {
+            audio.pause();
+            sound.classList.remove("on");
+            sound.setAttribute("aria-pressed", "false");
+            sound.textContent = "♪";
+          }
+        } catch {
+          showToast("Le son sera disponible dans quelques instants.");
+        }
+      });
+
+      shareButtons.forEach((button) => {
+        button.addEventListener("click", shareStory);
+      });
+
+      whatsappButton.addEventListener("click", () => {
+        const text = encodeURIComponent(
+          "Camille fête ses 30 ans. Une soirée. Une date. Aucune excuse valable. " + pageUrl()
+        );
+
+        window.open("https://wa.me/?text=" + text, "_blank", "noopener");
+      });
+
+      copyButton.addEventListener("click", copyLink);
+      calendarButton.addEventListener("click", downloadCalendar);
+
+      openVideo.addEventListener("click", () => openModal(videoModal));
+      closeVideo.addEventListener("click", () => closeModal(videoModal));
+
+      openRsvp.addEventListener("click", () => openModal(rsvpModal));
+      closeRsvp.addEventListener("click", () => closeModal(rsvpModal));
+
+      rsvpForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        closeModal(rsvpModal);
+        rsvpForm.reset();
+        showToast("Parfait, ta réponse a bien été enregistrée.");
+      });
+
+      [videoModal, rsvpModal].forEach((modal) => {
+        modal.addEventListener("click", (event) => {
+          if (event.target === modal) {
+            closeModal(modal);
+          }
+        });
+      });
+
+      window.addEventListener("scroll", () => {
+        header.classList.toggle("solid", window.scrollY > 25);
+
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.width = (max ? (window.scrollY / max) * 100 : 0) + "%";
+
+        hero.style.setProperty("--hero-shift", `${window.scrollY * 0.12}px`);
+      }, { passive:true });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((item) => {
+          if (item.isIntersecting) {
+            item.target.classList.add("show");
+            observer.unobserve(item.target);
+          }
+        });
+      }, { threshold:0.14 });
+
+      document.querySelectorAll(".reveal").forEach((element) => {
+        observer.observe(element);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+
+        if (videoModal.classList.contains("open")) {
+          closeModal(videoModal);
+        }
+
+        if (rsvpModal.classList.contains("open")) {
+          closeModal(rsvpModal);
+        }
+      });
+    })();
+  </script></body>
+</html>
