@@ -5,20 +5,32 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#080607">
-  <meta name="robots" content="index,follow">  <title>Faire-part digital personnalisé à partager | MakeYourStory</title>
-  <meta name="description" content="Créez un faire-part, une invitation ou une annonce digitale sur mesure à 29,90 €. Partage instantané par SMS, WhatsApp, lien privé ou QR Code.">
-  <link rel="canonical" href="https://makeyourstory.fr/">  <meta property="og:type" content="website">
+  <meta name="robots" content="index,follow">
+
+  <title>Faire-part digital personnalisé à partager | MakeYourStory</title>
+  <meta name="description" content="Créez un faire-part, une invitation ou une annonce digitale personnalisée à partager par SMS, WhatsApp, lien privé ou QR Code.">
+
+  <link rel="canonical" href="https://makeyourstory.fr/">
+
+  <meta property="og:type" content="website">
   <meta property="og:site_name" content="MakeYourStory">
   <meta property="og:title" content="Faire-part digital personnalisé à partager | MakeYourStory">
-  <meta property="og:description" content="Créez un faire-part, une invitation ou une annonce digitale sur mesure à 29,90 €. Partage instantané par SMS, WhatsApp, lien privé ou QR Code.">
+  <meta property="og:description" content="Créez un faire-part, une invitation ou une annonce digitale personnalisée, prête à partager en un geste.">
   <meta property="og:url" content="https://makeyourstory.fr/">
-  <meta property="og:image" content="https://makeyourstory.fr/images/og-makeyourstory.webp">  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://makeyourstory.fr/images/og-makeyourstory.webp">
+
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Faire-part digital personnalisé à partager | MakeYourStory">
-  <meta name="twitter:description" content="Créez un faire-part, une invitation ou une annonce digitale sur mesure à 29,90 €. Partage instantané par SMS, WhatsApp, lien privé ou QR Code.">
-  <meta name="twitter:image" content="https://makeyourstory.fr/images/og-makeyourstory.webp">  <link rel="icon" href="images/favicon.webp" type="image/webp">
+  <meta name="twitter:description" content="Créez un faire-part, une invitation ou une annonce digitale personnalisée, prête à partager en un geste.">
+  <meta name="twitter:image" content="https://makeyourstory.fr/images/og-makeyourstory.webp">
+
+  <link rel="icon" href="images/favicon.webp" type="image/webp">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.webp">
+
   <link rel="stylesheet" href="assets/site.css">
-  <script src="assets/analytics.js" defer></script>  <script type="application/ld+json">
+  <script src="assets/analytics.js" defer></script>
+
+  <script type="application/ld+json">
     {
       "@context":"https://schema.org",
       "@type":"Service",
@@ -32,16 +44,146 @@
         "telephone":"+33670396322"
       }
     }
-  </script></head><body>
-  <a class="skip" href="#contenu">Aller au contenu</a>  <header class="site-header">
+  </script>
+
+  <style>
+    /* =========================================================
+       CORRECTIF IMAGES ACCUEIL
+       Les images sont de vraies balises <img>, pas des fonds CSS.
+       ========================================================= */
+
+    .occasion-card--image{
+      position:relative;
+      isolation:isolate;
+      overflow:hidden;
+      background:#201014;
+    }
+
+    .occasion-card--image::before,
+    .occasion-card--image::after{
+      content:none !important;
+    }
+
+    .occasion-card-image{
+      position:absolute;
+      z-index:0;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center;
+      transform:scale(1.001);
+      transition:transform .42s ease;
+    }
+
+    .occasion-card-shade{
+      position:absolute;
+      z-index:1;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(7,3,4,.04) 0%,
+          rgba(7,3,4,.16) 37%,
+          rgba(7,3,4,.9) 100%
+        );
+    }
+
+    .occasion-card-content{
+      position:relative;
+      z-index:2;
+      width:100%;
+    }
+
+    .occasion-card--image:hover .occasion-card-image{
+      transform:scale(1.07);
+    }
+
+    .occasion-card--image:hover{
+      border-color:rgba(245,128,153,.58);
+      box-shadow:0 18px 34px rgba(0,0,0,.22);
+    }
+
+    /* Image réelle dans le téléphone de l'accueil */
+    .phone-cover{
+      overflow:hidden;
+      background:none !important;
+    }
+
+    .phone-cover-image{
+      position:absolute;
+      z-index:0;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center;
+    }
+
+    .phone-cover::after{
+      z-index:1;
+    }
+
+    /* Image réelle dans le bloc Album Émotion */
+    .album-image{
+      position:relative;
+      overflow:hidden;
+      background:#32131d !important;
+    }
+
+    .album-image-media{
+      position:absolute;
+      z-index:0;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center;
+    }
+
+    .album-image::after{
+      content:"";
+      position:absolute;
+      z-index:1;
+      inset:0;
+      pointer-events:none;
+      background:linear-gradient(
+        180deg,
+        rgba(7,3,4,.06),
+        rgba(7,3,4,.58)
+      );
+    }
+
+    @media(max-width:650px){
+      .occasion-card-image{
+        object-position:center;
+      }
+
+      .album-image-media{
+        object-position:center;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+
+  <header class="site-header">
     <div class="wrap nav">
       <a class="wordmark" href="index.html" aria-label="Accueil MakeYourStory">
         <span class="mark" aria-hidden="true">M</span>
-        <span>
-          <span class="wordmark-title">MAKE YOUR STORY</span>
-          <span class="wordmark-sub">FAIRE-PARTS &amp; ALBUMS DIGITAUX</span>
-        </span>
-      </a>  <nav class="main-nav" aria-label="Navigation principale">
+
+```
+    <span>
+      <span class="wordmark-title">MAKE YOUR STORY</span>
+      <span class="wordmark-sub">FAIRE-PARTS &amp; ALBUMS DIGITAUX</span>
+    </span>
+  </a>
+
+  <nav class="main-nav" aria-label="Navigation principale">
     <a href="index.html" aria-current="page">Accueil</a>
     <a href="faire-parts.html">Faire-parts</a>
     <a href="album-emotion.html">Album Émotion</a>
@@ -69,12 +211,21 @@
   <a href="professionnels.html">Professionnels</a>
   <a class="mobile-primary" href="faire-parts.html#occasions">Créer mon faire-part</a>
 </div>
+```
 
-  </header>  <main id="contenu">
+  </header>
+
+  <main id="contenu">
     <section class="home-hero">
       <div class="wrap hero-grid">
         <div class="hero-copy">
-          <p class="hero-eyebrow"><span></span> La nouvelle manière d’annoncer</p>      <h1 class="hero-title">VOTRE ANNONCE.<span>Leur émotion.</span></h1>
+          <p class="hero-eyebrow"><span></span> La nouvelle manière d’annoncer</p>
+
+```
+      <h1 class="hero-title">
+        VOTRE ANNONCE.
+        <span>Leur émotion.</span>
+      </h1>
 
       <p class="hero-lead">
         Un <strong>faire-part digital personnalisé</strong>, créé pour votre événement et prêt à être partagé en un geste.
@@ -102,13 +253,25 @@
       <div class="hero-orbit" aria-hidden="true"></div>
 
       <div class="hero-dots" aria-hidden="true">
-        <span></span><span></span><span></span><span></span><span></span><span></span>
-        <span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
       </div>
 
       <div class="phone">
         <div class="phone-screen">
-          <div class="phone-cover"></div>
+          <div class="phone-cover">
+            <img
+              class="phone-cover-image"
+              src="images/cat-naissance-bebe.webp"
+              alt=""
+              width="800"
+              height="1200"
+              decoding="async"
+              fetchpriority="high"
+            >
+          </div>
 
           <div class="phone-content">
             <span class="mini-label">Nous avons une grande nouvelle</span>
@@ -135,57 +298,120 @@
   <div class="wrap">
     <p class="eyebrow" style="text-align:center">Une occasion, un vrai moment à ouvrir</p>
 
-    <h2 class="section-title">LE FAIRE-PART DIGITAL,<br>POUR CE QUI COMPTE VRAIMENT.</h2>
+    <h2 class="section-title">
+      LE FAIRE-PART DIGITAL,<br>
+      POUR CE QUI COMPTE VRAIMENT.
+    </h2>
 
     <p class="section-sub">
       Chaque modèle est personnalisé avec vos informations, votre univers et vos mots.
-      Vous n’avez pas besoin de savoir quoi écrire : le formulaire vous guide.
+      Le formulaire guide chaque étape simplement.
     </p>
 
     <div class="card-grid">
-      <a class="occasion-card" href="faire-part-naissance.html" style="--image:url('images/cat-naissance-bebe.webp')">
-        <span>
+      <a class="occasion-card occasion-card--image" href="faire-part-naissance.html">
+        <img
+          class="occasion-card-image"
+          src="images/cat-naissance-bebe.webp"
+          alt=""
+          width="900"
+          height="1200"
+          loading="eager"
+          decoding="async"
+        >
+
+        <span class="occasion-card-shade" aria-hidden="true"></span>
+
+        <div class="occasion-card-content">
           <span class="card-icon">◌</span>
           <h3>Naissance</h3>
           <p>Présentez bébé avec une douceur qui vous ressemble.</p>
           <span class="card-link">Voir la démo <span>→</span></span>
-        </span>
+        </div>
       </a>
 
-      <a class="occasion-card" href="invitation-mariage.html" style="--image:url('images/cat-mariage.webp')">
-        <span>
+      <a class="occasion-card occasion-card--image" href="invitation-mariage.html">
+        <img
+          class="occasion-card-image"
+          src="images/cat-mariage.webp"
+          alt=""
+          width="900"
+          height="1200"
+          loading="lazy"
+          decoding="async"
+        >
+
+        <span class="occasion-card-shade" aria-hidden="true"></span>
+
+        <div class="occasion-card-content">
           <span class="card-icon">∞</span>
           <h3>Mariage</h3>
           <p>Invitez vos proches en un lien, sans rien oublier.</p>
           <span class="card-link">Voir la démo <span>→</span></span>
-        </span>
+        </div>
       </a>
 
-      <a class="occasion-card" href="invitation-anniversaire.html" style="--image:url('images/cat-anniversaire.webp')">
-        <span>
+      <a class="occasion-card occasion-card--image" href="invitation-anniversaire.html">
+        <img
+          class="occasion-card-image"
+          src="images/cat-anniversaire.webp"
+          alt=""
+          width="900"
+          height="1200"
+          loading="lazy"
+          decoding="async"
+        >
+
+        <span class="occasion-card-shade" aria-hidden="true"></span>
+
+        <div class="occasion-card-content">
           <span class="card-icon">✦</span>
           <h3>Anniversaire</h3>
           <p>Une invitation qui lance déjà la fête.</p>
           <span class="card-link">Voir la démo <span>→</span></span>
-        </span>
+        </div>
       </a>
 
-      <a class="occasion-card" href="annonce-deces.html" style="--image:url('images/cat-hommage.webp')">
-        <span>
+      <a class="occasion-card occasion-card--image" href="annonce-deces.html">
+        <img
+          class="occasion-card-image"
+          src="images/cat-hommage.webp"
+          alt=""
+          width="900"
+          height="1200"
+          loading="lazy"
+          decoding="async"
+        >
+
+        <span class="occasion-card-shade" aria-hidden="true"></span>
+
+        <div class="occasion-card-content">
           <span class="card-icon">✧</span>
           <h3>Hommage</h3>
           <p>Une annonce douce, claire et respectueuse.</p>
           <span class="card-link">Voir la démo <span>→</span></span>
-        </span>
+        </div>
       </a>
 
-      <a class="occasion-card" href="demande-personnalisee.html" style="--image:url('images/cat-autres-evenements.webp')">
-        <span>
+      <a class="occasion-card occasion-card--image" href="demande-personnalisee.html">
+        <img
+          class="occasion-card-image"
+          src="images/cat-autres-evenements.webp"
+          alt=""
+          width="1200"
+          height="900"
+          loading="lazy"
+          decoding="async"
+        >
+
+        <span class="occasion-card-shade" aria-hidden="true"></span>
+
+        <div class="occasion-card-content">
           <span class="card-icon">☆</span>
           <h3>Sur mesure</h3>
           <p>Départ, diplôme, fête, voyage : racontez-nous.</p>
           <span class="card-link">Voir la démo <span>→</span></span>
-        </span>
+        </div>
       </a>
     </div>
 
@@ -193,11 +419,14 @@
       <div>
         <p class="eyebrow">L’offre qui rend l’émotion simple</p>
 
-        <h2>UN LIEN À ENVOYER.<span>Une annonce à garder.</span></h2>
+        <h2>
+          UN LIEN À ENVOYER.
+          <span>Une annonce à garder.</span>
+        </h2>
 
         <p>
-          Nous créons votre page à partir de vos informations, de vos photos et de votre ambiance.
-          Vous recevez un lien privé, facile à partager par SMS ou WhatsApp, et un QR Code à imprimer ou à glisser dans une carte.
+          Chaque page est créée à partir de vos informations, de vos photos et de votre ambiance.
+          Vous recevez un lien privé, facile à partager par SMS ou WhatsApp, ainsi qu’un QR Code à imprimer ou à glisser dans une carte.
         </p>
       </div>
 
@@ -252,7 +481,10 @@
   <div class="wrap">
     <p class="eyebrow" style="text-align:center">Du premier message au souvenir qui dure</p>
 
-    <h2 class="section-title">C’EST SIMPLE.<br>ET ÇA CHANGE TOUT.</h2>
+    <h2 class="section-title">
+      C’EST SIMPLE.<br>
+      ET ÇA CHANGE TOUT.
+    </h2>
 
     <div class="steps-grid">
       <article class="step-card">
@@ -263,14 +495,14 @@
 
       <article class="step-card">
         <span class="step-n">2</span>
-        <h3>Racontez-nous l’essentiel</h3>
+        <h3>Racontez l’essentiel</h3>
         <p>Le formulaire s’adapte à votre événement pour recueillir les bonnes informations, sans vous faire perdre de temps.</p>
       </article>
 
       <article class="step-card">
         <span class="step-n">3</span>
         <h3>Envoyez. Faites sourire.</h3>
-        <p>Votre annonce est prête à partager par lien, QR Code, SMS ou WhatsApp. Vos proches n’ont qu’à ouvrir.</p>
+        <p>Votre annonce est prête à partager par lien, QR Code, SMS ou WhatsApp, avec toutes les personnes qui comptent.</p>
       </article>
     </div>
   </div>
@@ -278,16 +510,29 @@
 
 <section class="section section--tight">
   <div class="wrap surface album-band">
-    <div class="album-image" role="img" aria-label="Aperçu d’un album photo émotion"></div>
+    <div class="album-image" role="img" aria-label="Aperçu d’un album photo émotion">
+      <img
+        class="album-image-media"
+        src="images/hero-couple.webp"
+        alt=""
+        width="1400"
+        height="900"
+        loading="lazy"
+        decoding="async"
+      >
+    </div>
 
     <div class="album-copy">
       <p class="eyebrow">Après l’annonce, le souvenir</p>
 
-      <h2>ALBUM<span>Émotion.</span></h2>
+      <h2>
+        ALBUM
+        <span>Émotion.</span>
+      </h2>
 
       <p>
-        Votre faire-part a fait son effet ? Prolongez le moment avec un mini album digital sur mesure :
-        vos plus belles photos, un texte, une ambiance et le même partage ultra simple.
+        Votre faire-part a fait son effet ? Prolongez le moment avec un Album Émotion digital :
+        vos plus belles photos, un texte, une ambiance et le même partage simple.
       </p>
 
       <div class="album-prices">
@@ -338,17 +583,24 @@
     </div>
   </div>
 </section>
+```
 
-  </main>  <footer class="footer">
+  </main>
+
+  <footer class="footer">
     <div class="wrap">
       <div class="footer-grid">
         <div class="footer-promise">
           <span class="footer-heart" aria-hidden="true">♡</span>
-          <div>
-            <strong>UNE ANNONCE QUI COMPTE.</strong>
-            <p>UN SOUVENIR QUI RESTE.</p>
-          </div>
-        </div>    <div>
+
+```
+      <div>
+        <strong>UNE ANNONCE QUI COMPTE.</strong>
+        <p>UN SOUVENIR QUI RESTE.</p>
+      </div>
+    </div>
+
+    <div>
       <strong>UNE QUESTION ?</strong>
       <p><a href="mailto:basalteweb@gmail.com">basalteweb@gmail.com</a></p>
       <p><a href="tel:+33670396322">06 70 39 63 22</a></p>
@@ -379,6 +631,11 @@
     </span>
   </div>
 </div>
+```
 
-  </footer>  <script src="assets/site.js" defer></script></body>
+  </footer>
+
+  <script src="assets/site.js" defer></script>
+
+</body>
 </html>
