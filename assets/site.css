@@ -11,3 +11,122 @@
 @media(max-width:1100px){.main-nav{gap:13px;font-size:10px}.card-grid{grid-template-columns:repeat(3,1fr)}.occasion-card{min-height:235px}.feature-rail{grid-template-columns:repeat(2,1fr);gap:13px}.feature:nth-child(2){border-right:0}.feature:nth-child(3){border-right:1px solid rgba(245,183,192,.18)}.form-grid.form-grid--3{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:1020px){.main-nav{display:none}.nav-toggle{display:block}.nav{min-height:66px}.hero-grid,.occasion-hero-grid{grid-template-columns:1fr;gap:2px}.hero-copy{padding:48px 0 14px}.hero-visual{min-height:390px}.demo-shell{margin:8px auto 0}.footer-grid{grid-template-columns:1fr 1fr}.footer-brand{text-align:left}.split-intro,.contact-layout{grid-template-columns:1fr}.pricing-grid{grid-template-columns:1fr 1fr}.album-band{grid-template-columns:1fr}.album-image{min-height:260px}.album-copy{padding:36px 28px}.occasion-hero{padding-top:42px}.form-section-header{display:block}.form-section-header p{margin-top:12px}.offer-band{grid-template-columns:1fr}.offer-price{max-width:470px}.story-gallery{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:650px){.wrap{width:min(100% - 26px,var(--max))}.wordmark{min-width:0;flex:1 1 auto;gap:7px;overflow:hidden}.mark{width:35px;height:35px;flex:0 0 35px;font-size:31px}.mark::after{right:-3px;bottom:-5px;font-size:18px}.wordmark-title{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;letter-spacing:.20em}.wordmark-sub{font-size:5px;letter-spacing:.18em}.nav-cta{display:none}.nav-toggle{width:30px;padding:0;font-size:28px}.footer-grid{grid-template-columns:1fr;gap:15px}.footer-legal{flex-direction:column}.section{padding:47px 0}.home-hero{padding:0 0 36px}.hero-copy{padding-top:35px}.hero-title{font-size:50px}.hero-lead{font-size:13px}.hero-visual{min-height:365px}.phone{width:202px;height:390px;border-radius:30px}.phone-screen{border-radius:20px}.phone-content h2{font-size:39px}.phone-badge{left:-21px;top:38px}.phone-share{right:-19px;bottom:45px}.hero-orbit{width:290px}.card-grid{grid-template-columns:1fr 1fr;gap:9px;margin-top:21px}.occasion-card{min-height:225px;padding:13px}.occasion-card:nth-child(5){grid-column:1/-1;min-height:205px}.occasion-card h3{font-size:19px}.occasion-card p{font-size:9px}.offer-band{margin-top:16px;padding:24px 20px}.offer-band h2{font-size:36px}.offer-price strong{font-size:54px}.feature-rail{grid-template-columns:1fr;padding:12px}.feature,.feature:nth-child(2),.feature:nth-child(3){padding:8px 0;border-right:0;border-bottom:1px solid rgba(245,183,192,.14)}.feature:last-child{border-bottom:0}.steps-grid{grid-template-columns:1fr;gap:10px}.step-card{padding:20px}.album-copy{padding:31px 21px}.occasion-hero-copy h1{font-size:50px}.occasion-hero-copy>p:not(.eyebrow){font-size:13px}.demo-shell{padding:11px;border-radius:17px}.demo-card{min-height:337px;padding:22px 17px}.demo-card h2{font-size:48px}.demo-tools p{display:none}.qr-preview{width:58px;height:58px}.split-intro{gap:14px}.intro-pane,.form-section{padding:21px}.intro-pane h2,.form-section-header h2{font-size:34px}.form-grid,.form-grid.form-grid--3{grid-template-columns:1fr}.field--full{grid-column:auto}.album-upsell{grid-template-columns:1fr;padding:20px}.pricing-grid{grid-template-columns:1fr}.page-hero{padding:52px 0 35px}.page-hero h1{font-size:46px}.contact-panel{padding:22px}.thankyou{padding:28px 20px}.legal-page{padding:36px 0 46px}.legal-page .content{padding:21px}.mobile-menu{width:min(100% - 24px,var(--max))}}
+/* =========================================================
+CORRECTIF AFFICHAGE DES IMAGES
+À LAISSER TOUT À LA FIN DE assets/site.css
+========================================================= */
+
+/* Cartes des occasions sur l'accueil */
+.occasion-card{
+position:relative;
+isolation:isolate;
+overflow:hidden;
+background-color:#201014;
+background-image:
+linear-gradient(
+180deg,
+rgba(7,3,4,.04) 0%,
+rgba(7,3,4,.18) 38%,
+rgba(7,3,4,.88) 100%
+),
+var(
+--image,
+radial-gradient(circle at 72% 18%, rgba(235,119,149,.28), transparent 34%),
+linear-gradient(145deg,#37151f,#12090c)
+);
+background-position:center;
+background-size:cover;
+background-repeat:no-repeat;
+}
+
+/* Les anciens calques négatifs masquaient les photos */
+.occasion-card::before,
+.occasion-card::after{
+content:none;
+}
+
+/* Le texte reste toujours au-dessus de l'image */
+.occasion-card > *{
+position:relative;
+z-index:1;
+}
+
+/* Les cartes ont désormais une image visible même au survol */
+.occasion-card:hover{
+border-color:rgba(245,128,153,.58);
+box-shadow:0 18px 34px rgba(0,0,0,.22);
+transform:translateY(-3px);
+transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
+}
+
+/* Aperçus des pages commerciales */
+.demo-card{
+position:relative;
+isolation:isolate;
+overflow:hidden;
+background-color:#210d13;
+background-image:var(
+--demo-image,
+radial-gradient(circle at 75% 16%, rgba(235,119,149,.36), transparent 30%),
+linear-gradient(145deg,#4a1727,#17090e)
+);
+background-position:center;
+background-size:cover;
+background-repeat:no-repeat;
+}
+
+/* L'image est sur la carte, le dégradé passe seulement devant */
+.demo-card::before{
+content:none;
+}
+
+.demo-card::after{
+z-index:0;
+background:
+linear-gradient(
+180deg,
+rgba(17,7,10,.04) 0%,
+rgba(17,7,10,.18) 42%,
+rgba(17,7,10,.86) 100%
+);
+}
+
+/* Le contenu reste lisible au-dessus */
+.demo-card .demo-content{
+position:relative;
+z-index:1;
+}
+
+/* Les variantes gardent leur style tout en restant visibles */
+.demo-card.theme-memorial{
+background-image:
+linear-gradient(
+180deg,
+rgba(22,19,20,.16),
+rgba(21,18,19,.84)
+),
+var(
+--demo-image,
+linear-gradient(145deg,#52484d,#211c1f)
+);
+}
+
+.demo-card.theme-memorial::after{
+background:none;
+}
+
+.demo-card.theme-birthday::after{
+z-index:0;
+}
+
+.demo-card.theme-custom::after{
+z-index:0;
+}
+
+/* Les aperçus dans les formulaires et les sections restent nets */
+.phone-cover,
+.album-image{
+background-position:center;
+background-size:cover;
+background-repeat:no-repeat;
+}
