@@ -1676,6 +1676,34 @@
         transition-duration:.01ms!important;
       }
     }
+  
+    /* Correctif images : calques fiables sur ordinateur et mobile */
+    .hero::before,
+    .memory-hero::before,
+    .memory-film::before,
+    .finale::before{
+      z-index:0;
+    }
+
+    .hero::after,
+    .memory-hero::after,
+    .memory-film::after,
+    .finale::after{
+      z-index:1;
+    }
+
+    .hero .shell,
+    .memory-hero-inner,
+    .memory-film-inner,
+    .finale-inner{
+      position:relative;
+      z-index:3;
+    }
+
+    .hero-orbit{
+      z-index:2;
+    }
+
   </style></head><body>
   <div class="progress" aria-hidden="true"><span data-progress></span></div>  <section class="entry" data-entry>
     <div class="light-field" data-lights aria-hidden="true"></div><div class="entry-stage">
