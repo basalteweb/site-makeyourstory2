@@ -18,7 +18,54 @@
   <meta name="twitter:image" content="https://makeyourstory.fr/images/cat-anniversaire.webp">  <link rel="icon" href="images/favicon.webp" type="image/webp">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.webp">
   <link rel="stylesheet" href="assets/site.css">
-  <script src="assets/analytics.js" defer></script>  <script type="application/ld+json">
+  <script src="assets/analytics.js" defer></script>
+
+  <style>
+    /* Correctif fiable de l’image dans l’aperçu anniversaire */
+    .demo-card.theme-birthday{
+      position:relative !important;
+      isolation:isolate !important;
+      overflow:hidden !important;
+      background:#4c1830 !important;
+    }
+
+    .demo-card.theme-birthday .demo-card-photo{
+      position:absolute !important;
+      z-index:0 !important;
+      inset:0 !important;
+      display:block !important;
+      width:100% !important;
+      height:100% !important;
+      object-fit:cover !important;
+      object-position:center !important;
+      pointer-events:none !important;
+    }
+
+    .demo-card.theme-birthday::before{
+      content:none !important;
+      display:none !important;
+    }
+
+    .demo-card.theme-birthday::after{
+      content:"" !important;
+      position:absolute !important;
+      z-index:1 !important;
+      inset:0 !important;
+      display:block !important;
+      background:
+        radial-gradient(circle at 10% 13%,rgba(255,230,152,.66) 0 3px,transparent 4px),
+        radial-gradient(circle at 76% 20%,rgba(255,233,164,.60) 0 4px,transparent 5px),
+        radial-gradient(circle at 16% 77%,rgba(255,190,210,.70) 0 4px,transparent 5px),
+        linear-gradient(160deg,rgba(73,21,45,.16),rgba(73,21,45,.72)) !important;
+      pointer-events:none !important;
+    }
+
+    .demo-card.theme-birthday .demo-content{
+      position:relative !important;
+      z-index:2 !important;
+    }
+  </style>
+  <script type="application/ld+json">
     {
       "@context":"https://schema.org",
       "@type":"Service",
@@ -105,6 +152,13 @@
       </div>
 
       <article class="demo-card theme-birthday" style="--demo-image:url('images/cat-anniversaire.webp')">
+        <img
+          class="demo-card-photo"
+          src="images/cat-anniversaire.webp"
+          alt=""
+          aria-hidden="true"
+          decoding="async"
+        >
         <div class="demo-content">
           <span class="overline">On ne fête pas tous les jours ses</span>
           <h2>30 ans</h2>
