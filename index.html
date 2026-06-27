@@ -299,75 +299,107 @@
       }
     }
 
-    /* Correctif smartphone : le titre et les informations restent toujours dans l’écran. */
+
+
+    /* Mobile : même écriture que l’original. Seul le retour de ligne est activé pour éviter tout débordement. */
     .hero-title-mobile-break{
       display:none;
     }
 
+    /* Les deux informations restent attachées au visuel, jamais à la bordure de l’écran. */
+    .magic-phone .phone-badge,
+    .magic-phone .phone-share{
+      position:absolute;
+      z-index:5;
+      margin:0;
+    }
+
+    .magic-phone .phone-badge{
+      top:21%;
+      left:-7%;
+    }
+
+    .magic-phone .phone-share{
+      right:-5%;
+      bottom:17%;
+      width:142px;
+    }
+
     @media(max-width:650px){
-      html,
-      body{
-        overflow-x:clip;
-      }
-
-      .home-hero{
-        overflow:hidden;
-      }
-
-      .home-hero .hero-grid,
-      .home-hero .hero-copy{
-        min-width:0;
-        width:100%;
-      }
-
-      .home-hero .hero-title{
-        max-width:100%;
-        margin-right:0;
-        font-size:clamp(46px,12.8vw,54px)!important;
-        line-height:.88!important;
-        letter-spacing:-.065em!important;
-        white-space:normal!important;
-        overflow-wrap:normal!important;
-        word-break:normal!important;
-      }
-
+      /* Typographie strictement conservée : police, taille et style d’origine. */
       .hero-title-mobile-break{
         display:block;
       }
 
-      .home-hero .hero-title > span{
-        margin-top:13px;
-        font-size:clamp(31px,9.4vw,39px)!important;
-        line-height:1.03!important;
+      /* Les garanties se rangent simplement sur deux lignes, sans changer leurs textes. */
+      .hero-meta{
+        display:grid;
+        grid-template-columns:max-content max-content;
+        column-gap:13px;
+        row-gap:10px;
       }
 
-      .home-hero .hero-lead{
+      .hero-meta span:nth-child(3){
+        grid-column:1 / -1;
+      }
+
+      .magic-phone .phone-badge{
+        top:19%;
+        left:2%;
+      }
+
+      .magic-phone .phone-share{
+        right:2%;
+        bottom:17%;
+        width:136px;
+      }
+    }
+
+
+    /* Correctif mobile : stoppe le débordement horizontal sans modifier les écritures. */
+    @media(max-width:650px){
+      html,
+      body{
+        overflow-x:hidden;
+      }
+
+      .home-hero .wrap,
+      .home-hero .hero-grid,
+      .home-hero .hero-copy,
+      .home-hero .hero-visual{
+        min-width:0;
+      }
+
+      .home-hero .hero-visual{
+        width:100%;
+      }
+
+      /* Avant : 106vw + marge négative. Cela élargissait toute la page sur mobile. */
+      .magic-phone{
+        width:min(490px,calc(100vw - 26px));
         max-width:100%;
+        margin-right:auto;
+        margin-left:auto;
       }
 
-      .home-hero .hero-meta{
+      /* Les deux cadres restent dans la zone visible de l'image, avec une marge sûre. */
+      .magic-phone .phone-badge{
+        left:2%;
+        right:auto;
+        max-width:calc(100% - 28px);
+      }
+
+      .magic-phone .phone-share{
+        right:2%;
+        left:auto;
+        width:136px;
+        max-width:calc(100% - 28px);
+      }
+
+      /* Les garanties passent proprement sur deux lignes, sans toucher à leur police. */
+      .hero-meta{
         width:100%;
         max-width:100%;
-        display:flex!important;
-        flex-wrap:wrap!important;
-        gap:11px 15px!important;
-      }
-
-      .home-hero .hero-meta span{
-        min-width:0;
-        white-space:normal!important;
-      }
-
-      .home-hero .hero-actions{
-        width:100%;
-        gap:10px!important;
-      }
-
-      .home-hero .hero-actions .button{
-        min-width:0;
-        padding-inline:14px;
-        white-space:normal;
-        text-align:center;
       }
     }
 
@@ -440,7 +472,7 @@
 
 
       <h1 class="hero-title">
-        VOTRE <br class="hero-title-mobile-break">ANNONCE.
+        VOTRE<br class="hero-title-mobile-break"> ANNONCE.
         <span>Leur émotion.</span>
       </h1>
 
@@ -501,16 +533,16 @@
           <span style="--x:15%;--y:47%;--size:3px;--duration:5.2s;--delay:-3.1s"></span>
           <span style="--x:78%;--y:48%;--size:3px;--duration:4.9s;--delay:-2.4s"></span>
         </div>
-      </div>
 
-      <div class="phone-badge">
-        Votre faire-part<br>
-        <strong>29,90 € TTC</strong>
-      </div>
+        <div class="phone-badge magic-phone-badge">
+          Votre faire-part<br>
+          <strong>29,90 € TTC</strong>
+        </div>
 
-      <div class="phone-share">
-        Partager à vos proches
-        <span>SMS · WhatsApp · QR</span>
+        <div class="phone-share magic-phone-share">
+          Partager à vos proches
+          <span>SMS · WhatsApp · QR</span>
+        </div>
       </div>
     </div>
   </div>
