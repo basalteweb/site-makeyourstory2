@@ -205,17 +205,17 @@
     .letter{
       position:absolute;
       z-index:2;
-      left:8%;
-      right:8%;
-      bottom:5%;
-      min-height:88%;
-      padding:36px 24px 25px;
+      left:10%;
+      right:10%;
+      bottom:-2%;
+      min-height:82%;
+      padding:32px 22px 22px;
       color:#39342b;
       background:
         radial-gradient(circle at 80% 10%,rgba(209,187,139,.2),transparent 30%),
         var(--ivory);
       box-shadow:0 14px 26px rgba(0,0,0,.15);
-      transform:translateY(24%) rotateX(0deg);
+      transform:translateY(38%) rotateX(0deg);
       transition:transform 1s cubic-bezier(.2,.8,.2,1),box-shadow 1s ease;
     }
 
@@ -271,7 +271,7 @@
       top:0;
       left:0;
       width:100%;
-      height:57%;
+      height:60%;
       clip-path:polygon(0 0,100% 0,50% 100%);
       transform-origin:top;
       background:
@@ -287,9 +287,9 @@
       bottom:0;
       left:0;
       width:100%;
-      height:67%;
+      height:70%;
       overflow:hidden;
-      clip-path:polygon(0 0,50% 60%,100% 0,100% 100%,0 100%);
+      clip-path:polygon(0 0,50% 68%,100% 0,100% 100%,0 100%);
       background:
         linear-gradient(145deg,rgba(255,255,255,.18),transparent 46%),
         #e7dbc5;
@@ -327,7 +327,7 @@
 
     .entry.is-opening .letter{
       z-index:7;
-      transform:translateY(-26%) scale(1.03);
+      transform:translateY(-18%) scale(1.03);
       box-shadow:0 30px 58px rgba(0,0,0,.26);
     }
 
@@ -1660,9 +1660,11 @@
       .round-button{width:35px;height:35px}
 
       .entry-stage{width:min(100% - 28px,530px)}
-      .letter{padding:29px 18px 18px}
+      .letter{bottom:-4%;min-height:80%;padding:26px 18px 18px;transform:translateY(40%) rotateX(0deg)}
       .letter h2{font-size:52px}
       .seal{width:56px;height:56px}
+      .envelope-flap{height:61%}
+      .envelope-front{height:71%;clip-path:polygon(0 0,50% 69%,100% 0,100% 100%,0 100%)}
 
       .hero{padding:105px 0 48px}
       .hero-title{font-size:76px}
@@ -1725,6 +1727,54 @@
         transition-duration:.01ms!important;
       }
     }
+
+
+    /* Correctif d’affichage des images — compatible mobile et ordinateur */
+    .entry::before{
+      z-index:0;
+    }
+
+    .entry::after{
+      z-index:1;
+    }
+
+    .dust{
+      z-index:2;
+    }
+
+    .entry-stage{
+      position:relative;
+      z-index:4;
+    }
+
+    .hero::before,
+    .cinema::before,
+    .film::before,
+    .finale::before{
+      z-index:0;
+      pointer-events:none;
+    }
+
+    .hero::after,
+    .cinema::after,
+    .film::after,
+    .finale::after{
+      z-index:1;
+      pointer-events:none;
+    }
+
+    .hero-ornament{
+      z-index:2;
+    }
+
+    .hero .shell,
+    .cinema-inner,
+    .film-inner,
+    .finale-inner{
+      position:relative;
+      z-index:3;
+    }
+
   </style></head><body>
   <div class="progress" aria-hidden="true"><span data-progress></span></div>  <section class="entry" data-entry>
     <div class="dust" data-dust aria-hidden="true"></div><div class="entry-stage">
