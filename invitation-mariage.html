@@ -18,7 +18,55 @@
   <meta name="twitter:image" content="https://makeyourstory.fr/images/cat-mariage.webp">  <link rel="icon" href="images/favicon.webp" type="image/webp">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.webp">
   <link rel="stylesheet" href="assets/site.css">
-  <script src="assets/analytics.js" defer></script>  <script type="application/ld+json">
+  <script src="assets/analytics.js" defer></script>
+
+  <style>
+    /* Correctif fiable de l’image dans l’aperçu mariage */
+    .demo-card.theme-wedding{
+      position:relative !important;
+      isolation:isolate !important;
+      overflow:hidden !important;
+      background:#241c16 !important;
+    }
+
+    .demo-card.theme-wedding .demo-card-photo{
+      position:absolute !important;
+      z-index:0 !important;
+      inset:0 !important;
+      display:block !important;
+      width:100% !important;
+      height:100% !important;
+      object-fit:cover !important;
+      object-position:center !important;
+      pointer-events:none !important;
+    }
+
+    .demo-card.theme-wedding::before{
+      content:none !important;
+      display:none !important;
+    }
+
+    .demo-card.theme-wedding::after{
+      content:"" !important;
+      position:absolute !important;
+      z-index:1 !important;
+      inset:0 !important;
+      display:block !important;
+      background:linear-gradient(
+        180deg,
+        rgba(22,16,12,.05) 0%,
+        rgba(22,16,12,.16) 42%,
+        rgba(22,16,12,.84) 100%
+      ) !important;
+      pointer-events:none !important;
+    }
+
+    .demo-card.theme-wedding .demo-content{
+      position:relative !important;
+      z-index:2 !important;
+    }
+  </style>
+  <script type="application/ld+json">
     {
       "@context":"https://schema.org",
       "@type":"Service",
@@ -105,6 +153,13 @@
       </div>
 
       <article class="demo-card theme-wedding" style="--demo-image:url('images/cat-mariage.webp')">
+        <img
+          class="demo-card-photo"
+          src="images/cat-mariage.webp"
+          alt=""
+          aria-hidden="true"
+          decoding="async"
+        >
         <div class="demo-content">
           <span class="overline">Nous avons la joie de vous inviter</span>
           <h2>Camille &amp; Julien</h2>
