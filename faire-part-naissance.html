@@ -25,6 +25,39 @@
   <link rel="icon" href="images/favicon.webp" type="image/webp">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.webp">
   <link rel="stylesheet" href="assets/site.css">
+
+  <style>
+    /* Correctif image de l’aperçu : affichage fiable sur PC et mobile */
+    .demo-card{
+      position:relative !important;
+      isolation:isolate !important;
+      overflow:hidden !important;
+      background-color:#210d13 !important;
+      background-image:var(--demo-image) !important;
+      background-position:center !important;
+      background-size:cover !important;
+      background-repeat:no-repeat !important;
+    }
+
+    .demo-card::before{
+      content:none !important;
+      display:none !important;
+    }
+
+    .demo-card::after{
+      content:"" !important;
+      position:absolute !important;
+      z-index:0 !important;
+      inset:0 !important;
+      pointer-events:none !important;
+      background:linear-gradient(180deg,rgba(33,13,22,.04) 12%,rgba(33,13,22,.76) 100%) !important;
+    }
+
+    .demo-card .demo-content{
+      position:relative !important;
+      z-index:1 !important;
+    }
+  </style>
   <script src="assets/analytics.js" defer></script>
 
   <script type="application/ld+json">
