@@ -1792,19 +1792,385 @@
         transition-duration:.01ms!important;
       }
     }
+  
+
+    /* Poster anniversaire lisible, inspiré du visuel fourni */
+    .poster-stage,
+    .hero-shell{
+      width:min(760px,100%);
+      margin:auto;
+      text-align:center;
+    }
+
+    .poster-top,
+    .hero-topline{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:20px;
+      margin-bottom:18px;
+    }
+
+    .poster-kicker,
+    .hero-label{
+      position:relative;
+      margin:0;
+      color:var(--acid);
+      font:700 11px/1 "DM Mono",monospace;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+    }
+
+    .poster-kicker::after,
+    .hero-label::after{
+      content:"";
+      display:block;
+      width:22px;
+      height:2px;
+      margin-top:9px;
+      background:var(--acid);
+      box-shadow:0 0 14px rgba(223,255,29,.55);
+    }
+
+    .poster-badge,
+    .hero-badge{
+      min-width:46px;
+      height:46px;
+      display:grid;
+      place-items:center;
+      border:2px solid var(--violet);
+      color:#0f0d10;
+      background:var(--acid);
+      box-shadow:6px 6px 0 rgba(109,66,255,.95), 0 0 28px rgba(223,255,29,.18);
+      font:700 22px/1 "Anton",Arial,sans-serif;
+      letter-spacing:.02em;
+      text-transform:uppercase;
+    }
+
+    .poster-art,
+    .hero-visual{
+      position:relative;
+      width:min(520px,100%);
+      aspect-ratio:1/1.06;
+      margin:0 auto;
+      overflow:visible;
+    }
+
+    .poster-rings,
+    .hero-rings{
+      position:absolute;
+      inset:2% 9% 8%;
+      border-radius:50%;
+      border:2px solid rgba(25,217,255,.85);
+      background:
+        repeating-radial-gradient(circle at center, transparent 0 23px, rgba(223,255,29,.22) 24px 25px),
+        radial-gradient(circle at center, rgba(109,66,255,.14), transparent 62%);
+      box-shadow:
+        0 0 30px rgba(25,217,255,.32),
+        inset 0 0 34px rgba(109,66,255,.18);
+      filter:drop-shadow(0 0 12px rgba(25,217,255,.2));
+    }
+
+    .poster-rings::before,
+    .hero-rings::before{
+      content:"";
+      position:absolute;
+      inset:24%;
+      border-radius:50%;
+      border:2px solid rgba(223,255,29,.85);
+      box-shadow:0 0 22px rgba(223,255,29,.28);
+    }
+
+    .poster-rings::after,
+    .hero-rings::after{
+      content:"";
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:10px;
+      aspect-ratio:1;
+      border-radius:50%;
+      background:#ffffff;
+      box-shadow:0 0 18px #fff, 0 0 40px rgba(25,217,255,.5);
+      transform:translate(-50%,-50%);
+    }
+
+    .poster-beam,
+    .hero-light{
+      position:absolute;
+      border-radius:999px;
+      filter:blur(2px);
+      mix-blend-mode:screen;
+      opacity:.92;
+    }
+
+    .poster-beam--cyan,
+    .hero-light--cyan{
+      top:14%;
+      right:6%;
+      width:52%;
+      height:18%;
+      background:linear-gradient(90deg,rgba(25,217,255,0) 0%, rgba(25,217,255,.92) 40%, rgba(25,217,255,0) 100%);
+      transform:rotate(-24deg);
+    }
+
+    .poster-beam--lime,
+    .hero-light--lime{
+      top:34%;
+      left:0%;
+      width:58%;
+      height:17%;
+      background:linear-gradient(90deg,rgba(223,255,29,0) 0%, rgba(223,255,29,.78) 44%, rgba(223,255,29,0) 100%);
+      transform:rotate(22deg);
+    }
+
+    .poster-beam--violet,
+    .hero-light--violet{
+      right:7%;
+      bottom:18%;
+      width:44%;
+      height:14%;
+      background:linear-gradient(90deg,rgba(109,66,255,0) 0%, rgba(109,66,255,.78) 48%, rgba(109,66,255,0) 100%);
+      transform:rotate(34deg);
+    }
+
+    .poster-portrait,
+    .hero-portrait{
+      position:absolute;
+      z-index:2;
+      left:50%;
+      bottom:2%;
+      width:58%;
+      height:86%;
+      border-radius:46% 46% 18% 18% / 42% 42% 20% 20%;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,0)),
+        url("../../images/demo-anniversaire-hero.webp") center 18%/cover;
+      transform:translateX(-50%);
+      box-shadow:0 30px 65px rgba(0,0,0,.38);
+    }
+
+    .poster-name,
+    .hero-name{
+      position:relative;
+      width:fit-content;
+      max-width:100%;
+      margin:18px auto 0;
+      padding:0 66px;
+      color:var(--acid);
+      font:700 clamp(22px,3vw,30px)/1 "Space Grotesk",Arial,sans-serif;
+      letter-spacing:.56em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .poster-name::before,
+    .poster-name::after,
+    .hero-name::before,
+    .hero-name::after{
+      content:"";
+      position:absolute;
+      top:50%;
+      width:44px;
+      height:2px;
+      background:rgba(223,255,29,.72);
+      box-shadow:0 0 12px rgba(223,255,29,.25);
+      transform:translateY(-50%);
+    }
+
+    .poster-name::before,
+    .hero-name::before{left:0}
+    .poster-name::after,
+    .hero-name::after{right:0}
+
+    .poster-age,
+    .hero-title{
+      margin:10px 0 0;
+      color:#ffffff;
+      font:400 clamp(92px,17vw,176px)/.9 "Anton",Arial,sans-serif;
+      letter-spacing:-.045em;
+      text-transform:uppercase;
+      text-shadow:
+        0 0 16px rgba(255,255,255,.35),
+        0 0 34px rgba(25,217,255,.22),
+        0 0 48px rgba(109,66,255,.18);
+      background:linear-gradient(90deg,#f9ffff 0%, #ecfbff 34%, #e4e8ff 62%, #d88cff 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .poster-date,
+    .hero-date-pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:44px;
+      margin:14px auto 0;
+      padding:0 22px;
+      border:1.5px solid rgba(223,255,29,.75);
+      border-radius:999px;
+      color:#f4f6ff;
+      background:rgba(10,8,19,.72);
+      box-shadow:0 0 22px rgba(25,217,255,.1), inset 0 0 20px rgba(109,66,255,.12);
+      font:500 18px/1 "DM Mono",monospace;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+
+    .entry-copy,
+    .entry-title,
+    .level,
+    .entry-age{display:none}
+
+    .entry-action{
+      margin-top:22px;
+      border:1px solid rgba(255,255,255,.16);
+      color:#101013;
+      background:var(--acid);
+      box-shadow:7px 7px 0 var(--violet),0 18px 42px rgba(0,0,0,.34);
+    }
+
+    .entry-note{
+      margin-top:18px;
+      color:#eff1ff;
+      font:500 10px/1.5 "DM Mono",monospace;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+
+    .hero.hero-poster{
+      min-height:100svh;
+      padding:110px 0 60px;
+      align-items:center;
+    }
+
+    .hero.hero-poster::before{
+      background:
+        radial-gradient(circle at 50% 18%,rgba(25,217,255,.12),transparent 22%),
+        radial-gradient(circle at 82% 38%,rgba(109,66,255,.16),transparent 20%),
+        linear-gradient(180deg,rgba(9,6,19,.06),rgba(9,6,19,.2) 36%,rgba(9,6,19,.98) 100%),
+        linear-gradient(90deg,rgba(9,6,19,.82),rgba(9,6,19,.35) 55%,rgba(9,6,19,.72)),
+        url("../../images/demo-anniversaire-hero.webp") center 14%/cover;
+      filter:saturate(1.08);
+    }
+
+    .hero.hero-poster::after{
+      background:
+        radial-gradient(circle at 50% 28%,rgba(25,217,255,.12),transparent 20%),
+        radial-gradient(circle at 70% 46%,rgba(109,66,255,.18),transparent 18%),
+        radial-gradient(circle at 32% 42%,rgba(223,255,29,.08),transparent 22%);
+    }
+
+    .hero-copy{
+      max-width:620px;
+      margin:26px auto 0;
+      text-align:center;
+      color:#eceefa;
+      font-size:15px;
+      line-height:1.76;
+    }
+
+    .hero-meta.hero-meta--center{
+      justify-content:center;
+      gap:18px 24px;
+      margin-top:24px;
+    }
+
+    .hero-meta.hero-meta--center span::before{
+      background:var(--acid);
+    }
+
+    body.story-open .hero-label,
+    body.story-open .hero-badge,
+    body.story-open .hero-visual,
+    body.story-open .hero-name,
+    body.story-open .hero-title,
+    body.story-open .hero-date-pill,
+    body.story-open .hero-copy,
+    body.story-open .hero-meta{
+      animation:heroIn .88s cubic-bezier(.2,.82,.2,1) forwards;
+      opacity:0;
+      transform:translateY(28px);
+    }
+
+    body.story-open .hero-badge{animation-delay:.06s}
+    body.story-open .hero-visual{animation-delay:.12s}
+    body.story-open .hero-name{animation-delay:.2s}
+    body.story-open .hero-title{animation-delay:.28s}
+    body.story-open .hero-date-pill{animation-delay:.36s}
+    body.story-open .hero-copy{animation-delay:.44s}
+    body.story-open .hero-meta{animation-delay:.52s}
+
+    @media(max-width:900px){
+      .poster-art,
+      .hero-visual{width:min(500px,100%)}
+      .poster-name,
+      .hero-name{padding:0 52px; letter-spacing:.42em}
+    }
+
+    @media(max-width:580px){
+      .poster-top,
+      .hero-topline{margin-bottom:14px}
+
+      .poster-badge,
+      .hero-badge{min-width:40px;height:40px;font-size:19px;box-shadow:5px 5px 0 rgba(109,66,255,.95)}
+
+      .poster-art,
+      .hero-visual{width:min(100%,360px);aspect-ratio:1/1.1}
+
+      .poster-rings,
+      .hero-rings{inset:4% 5% 10%}
+
+      .poster-portrait,
+      .hero-portrait{width:66%;height:84%;background-position:center 12%}
+
+      .poster-name,
+      .hero-name{padding:0 34px;font-size:18px;letter-spacing:.34em}
+
+      .poster-name::before,
+      .poster-name::after,
+      .hero-name::before,
+      .hero-name::after{width:22px}
+
+      .poster-age,
+      .hero-title{font-size:92px;line-height:.9}
+
+      .poster-date,
+      .hero-date-pill{min-height:38px;padding:0 16px;font-size:13px;letter-spacing:.16em}
+
+      .hero-copy{max-width:330px;font-size:13px}
+      .hero-meta.hero-meta--center{gap:10px;margin-top:18px}
+      .entry-action{width:100%;max-width:320px}
+      .entry-note{font-size:9px}
+    }
+
   </style></head><body>
   <div class="progress" aria-hidden="true"><span data-progress></span></div>  <section class="entry" data-entry>
     <div class="light-beam" aria-hidden="true"></div>
     <div class="light-beam two" aria-hidden="true"></div>
-    <div class="confetti" data-confetti aria-hidden="true"></div><div class="entry-stage">
-  <div class="level">Niveau 30 débloqué</div>
-  <div class="entry-age">30</div>
-  <h1 class="entry-title">Camille passe en mode légende</h1>
-  <p class="entry-copy">Une nouvelle décennie mérite mieux qu’un simple message. Le 10 octobre, on oublie l’heure, on monte le son et on célèbre ça comme il se doit.</p>
-  <button class="entry-action" type="button" data-enter>Entrer dans la soirée <span aria-hidden="true">→</span></button>
-  <p class="entry-note">Samedi 10 octobre 2026 · Clermont-Ferrand</p>
-</div>
+    <div class="confetti" data-confetti aria-hidden="true"></div>
+    <div class="entry-stage poster-stage">
+      <div class="poster-top">
+        <p class="poster-kicker">Save the date</p>
+        <div class="poster-badge">30</div>
+      </div>
 
+      <div class="poster-art" aria-hidden="true">
+        <div class="poster-rings"></div>
+        <div class="poster-beam poster-beam--cyan"></div>
+        <div class="poster-beam poster-beam--lime"></div>
+        <div class="poster-beam poster-beam--violet"></div>
+        <div class="poster-portrait"></div>
+      </div>
+
+      <p class="poster-name">Camille</p>
+      <h1 class="poster-age">30 ans</h1>
+      <p class="poster-date">10 octobre 2026</p>
+
+      <button class="entry-action" type="button" data-enter>Découvrir l’invitation <span aria-hidden="true">→</span></button>
+      <p class="entry-note">Samedi 10 octobre 2026 · 19 h 30 · Clermont-Ferrand</p>
+    </div>
   </section>  <header class="topbar" data-header>
     <nav class="nav">
       <a class="brand" href="../../index.html" aria-label="Retour à MakeYourStory">
@@ -1824,21 +2190,34 @@
   </header>  <audio id="story-audio" preload="auto" loop>
     <source src="../../audio/demo-anniversaire.mp3" type="audio/mpeg">
   </audio>  <main>
-    <section class="hero" data-hero>
-      <div class="hero-disc" aria-hidden="true"></div>  <div class="shell">
-    <p class="hero-label">Anniversaire de Camille</p>
+    <section class="hero hero-poster" data-hero>
+      <div class="shell hero-shell">
+        <div class="hero-topline">
+          <p class="hero-label">Save the date</p>
+          <div class="hero-badge">30</div>
+        </div>
 
-    <h1 class="hero-title">30<span>Et aucune intention de ralentir.</span></h1>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-rings"></div>
+          <div class="hero-light hero-light--cyan"></div>
+          <div class="hero-light hero-light--lime"></div>
+          <div class="hero-light hero-light--violet"></div>
+          <div class="hero-portrait"></div>
+        </div>
 
-    <p class="hero-copy">Une date à bloquer. Une tenue à prévoir. Une soirée à raconter longtemps. Camille vous attend pour fêter cette nouvelle décennie sans demi-mesure.</p>
+        <p class="hero-name">Camille</p>
+        <h1 class="hero-title">30 ans</h1>
+        <p class="hero-date-pill">10 octobre 2026</p>
 
-    <div class="hero-meta">
-      <span>Samedi 10 octobre 2026</span>
-      <span>19 h 30 · Le Loft 63 · Clermont-Ferrand</span>
-    </div>
-  </div>
+        <p class="hero-copy">Une date à bloquer. Une tenue à prévoir. Une soirée à raconter longtemps. Camille vous attend pour fêter cette nouvelle décennie avec une invitation beaucoup plus lisible et marquante.</p>
 
-  <div class="scroll-word">Faire défiler</div>
+        <div class="hero-meta hero-meta--center">
+          <span>Samedi 10 octobre 2026</span>
+          <span>19 h 30 · Le Loft 63 · Clermont-Ferrand</span>
+        </div>
+      </div>
+
+      <div class="scroll-word">Faire défiler</div>
 </section>
 
 <section class="section">
@@ -2254,11 +2633,11 @@
         window.setTimeout(() => {
           entry.classList.add("is-hidden");
           document.body.style.overflow = "";
-        }, 760);
+        }, 1650);
 
         window.setTimeout(() => {
           entry.remove();
-        }, 1650);
+        }, 2600);
       });
 
       sound.addEventListener("click", async () => {
