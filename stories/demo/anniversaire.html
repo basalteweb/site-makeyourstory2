@@ -1739,6 +1739,48 @@
       .rsvp-content{padding:76px 24px 43px}
     }
 
+
+    /* Correctif images : calques fiables sur ordinateur et mobile */
+    .entry::before{
+      z-index:0;
+    }
+
+    .entry::after{
+      z-index:1;
+    }
+
+    .entry-stage{
+      position:relative;
+      z-index:5;
+    }
+
+    .hero::before,
+    .flash::before,
+    .video-section::before,
+    .finale::before{
+      z-index:0 !important;
+    }
+
+    .hero::after,
+    .flash::after,
+    .video-section::after,
+    .finale::after{
+      z-index:1 !important;
+    }
+
+    .hero .shell,
+    .flash-inner,
+    .video-inner,
+    .finale-inner{
+      position:relative;
+      z-index:2;
+    }
+
+    .hero-disc,
+    .scroll-word{
+      z-index:3;
+    }
+
     @media(prefers-reduced-motion:reduce){
       html{scroll-behavior:auto}
 
