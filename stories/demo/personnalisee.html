@@ -2193,6 +2193,35 @@
         transition-duration:.01ms!important;
       }
     }
+
+    /* Correctif images : calques fiables sur mobile et ordinateur */
+    .hero::before,
+    .destination::before,
+    .video-section::before,
+    .finale::before{
+      z-index:0 !important;
+    }
+
+    .hero::after,
+    .destination::after,
+    .video-section::after,
+    .finale::after{
+      z-index:1 !important;
+    }
+
+    .hero .shell,
+    .destination-inner,
+    .video-inner,
+    .finale-inner{
+      position:relative;
+      z-index:2;
+    }
+
+    .hero-orbit,
+    .scroll-hint{
+      z-index:2;
+    }
+
   </style></head><body>
   <a class="skip" href="#contenu">Aller au contenu</a>  <div class="progress" aria-hidden="true">
     <span data-progress></span>
