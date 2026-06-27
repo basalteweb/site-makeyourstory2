@@ -22,40 +22,215 @@
   <link rel="apple-touch-icon" href="images/apple-touch-icon.webp">
   <link rel="stylesheet" href="assets/site.css">
   <script src="assets/analytics.js" defer></script>
+
+  <style>
+    /* Correctif fiable : vraies images plutôt que fonds masqués par les pseudo-calques */
+    .occasion-card{
+      position:relative !important;
+      isolation:isolate !important;
+      overflow:hidden !important;
+      background:#1d1115 !important;
+    }
+
+    .occasion-card-photo{
+      position:absolute !important;
+      z-index:0 !important;
+      inset:0 !important;
+      display:block !important;
+      width:100% !important;
+      height:100% !important;
+      object-fit:cover !important;
+      object-position:center !important;
+      pointer-events:none !important;
+    }
+
+    .occasion-card::before{
+      content:none !important;
+      display:none !important;
+    }
+
+    .occasion-card::after{
+      content:"" !important;
+      position:absolute !important;
+      z-index:1 !important;
+      inset:0 !important;
+      display:block !important;
+      background:
+        linear-gradient(180deg,rgba(10,7,8,.06) 0%,rgba(10,7,8,.16) 42%,rgba(10,7,8,.84) 100%) !important;
+      pointer-events:none !important;
+    }
+
+    .occasion-card > span{
+      position:relative !important;
+      z-index:2 !important;
+    }
+
+    .occasion-card:hover .occasion-card-photo{
+      transform:scale(1.04);
+    }
+
+    .occasion-card-photo{
+      transition:transform .45s ease;
+    }
+  </style>
+
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"MakeYourStory","url":"https://makeyourstory.fr/","description":"Création de faire-parts et d'albums émotion digitaux personnalisés, prêts à partager.","provider":{"@type":"Organization","name":"BASALTE-WEB","email":"basalteweb@gmail.com","telephone":"+33670396322"}}</script>
-</head><body>
+</head>
+<body>
 <a class="skip" href="#contenu">Aller au contenu</a>
+
 <header class="site-header">
   <div class="wrap nav">
     <a class="wordmark" href="index.html" aria-label="Accueil MakeYourStory">
       <span class="mark" aria-hidden="true">M</span>
       <span><span class="wordmark-title">MAKE YOUR STORY</span><span class="wordmark-sub">FAIRE-PARTS &amp; ALBUMS DIGITAUX</span></span>
     </a>
-    <nav class="main-nav" aria-label="Navigation principale"><a href="index.html">Accueil</a><a href="faire-parts.html" aria-current="page">Faire-parts</a><a href="album-emotion.html">Album Émotion</a><a href="tarifs.html">Tarifs</a><a href="comment-ca-marche.html">Comment ça marche</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></nav>
+
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="faire-parts.html" aria-current="page">Faire-parts</a>
+      <a href="album-emotion.html">Album Émotion</a>
+      <a href="tarifs.html">Tarifs</a>
+      <a href="comment-ca-marche.html">Comment ça marche</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
     <a class="nav-cta" href="faire-parts.html#occasions">Créer mon faire-part <span aria-hidden="true">♡</span></a>
     <button class="nav-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" data-menu-toggle>☰</button>
   </div>
-  <div class="wrap mobile-menu" data-mobile-menu><a href="index.html">Accueil</a><a href="faire-parts.html" aria-current="page">Faire-parts</a><a href="album-emotion.html">Album Émotion</a><a href="tarifs.html">Tarifs</a><a href="comment-ca-marche.html">Comment ça marche</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a class="mobile-primary" href="faire-parts.html#occasions">Créer mon faire-part</a></div>
+
+  <div class="wrap mobile-menu" data-mobile-menu>
+    <a href="index.html">Accueil</a>
+    <a href="faire-parts.html" aria-current="page">Faire-parts</a>
+    <a href="album-emotion.html">Album Émotion</a>
+    <a href="tarifs.html">Tarifs</a>
+    <a href="comment-ca-marche.html">Comment ça marche</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
+    <a class="mobile-primary" href="faire-parts.html#occasions">Créer mon faire-part</a>
+  </div>
 </header>
-<main id="contenu"><section class="page-hero"><div class="wrap"><p class="eyebrow">Votre annonce mérite mieux qu’un simple message</p><h1>CHOISISSEZ L’OCCASION.<span>Nous créons le moment.</span></h1><p>Ouvrez chaque démo, imaginez vos propres informations à la place, puis remplissez le formulaire adapté. Chaque faire-part est créé sur mesure et livré prêt à partager.</p></div></section>
-<section class="section" id="occasions"><div class="wrap"><div class="card-grid">
-<a class="occasion-card" href="faire-part-naissance.html" style="--image:url('images/cat-naissance-bebe.webp')"><span><span class="card-icon">◌</span><h3>Faire-part de naissance</h3><p>Prénom, photo, heure, poids, taille et vos premiers mots.</p><span class="card-link">Voir la démo <span>→</span></span></span></a>
-<a class="occasion-card" href="invitation-mariage.html" style="--image:url('images/cat-mariage.webp')"><span><span class="card-icon">∞</span><h3>Invitation de mariage</h3><p>Les prénoms, la date, le lieu, le programme et le RSVP.</p><span class="card-link">Voir la démo <span>→</span></span></span></a>
-<a class="occasion-card" href="invitation-anniversaire.html" style="--image:url('images/cat-anniversaire.webp')"><span><span class="card-icon">✦</span><h3>Invitation anniversaire</h3><p>Une belle façon de donner envie de venir célébrer.</p><span class="card-link">Voir la démo <span>→</span></span></span></a>
-<a class="occasion-card" href="annonce-deces.html" style="--image:url('images/cat-hommage.webp')"><span><span class="card-icon">✧</span><h3>Annonce de décès</h3><p>Les informations utiles, avec pudeur et délicatesse.</p><span class="card-link">Voir la démo <span>→</span></span></span></a>
-<a class="occasion-card" href="demande-personnalisee.html" style="--image:url('images/cat-autres-evenements.webp')"><span><span class="card-icon">☆</span><h3>Demande personnalisée</h3><p>Départ, diplôme, baby shower, fête de famille et plus encore.</p><span class="card-link">Voir la démo <span>→</span></span></span></a>
-</div><div class="surface offer-band"><div><p class="eyebrow">Une seule formule, tout ce qu’il faut</p><h2>FAIRE-PART DIGITAL<span>29,90 € TTC.</span></h2><p>Une page sur mesure, vos informations intégrées, un lien privé à partager sans limite et un QR Code à conserver. Pour les projets hors cadre, la page personnalisée vous permet d’expliquer exactement ce que vous imaginez.</p></div><div class="offer-price"><small>Inclus avec chaque création</small><strong>♡</strong><p>Design personnalisé<br>Lien de partage<br>QR Code<br>Expérience mobile</p></div></div></div></section></main>
+
+<main id="contenu">
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Votre annonce mérite mieux qu’un simple message</p>
+      <h1>CHOISISSEZ L’OCCASION.<span>Nous créons le moment.</span></h1>
+      <p>Ouvrez chaque démo, imaginez vos propres informations à la place, puis remplissez le formulaire adapté. Chaque faire-part est créé sur mesure et livré prêt à partager.</p>
+    </div>
+  </section>
+
+  <section class="section" id="occasions">
+    <div class="wrap">
+      <div class="card-grid">
+        <a class="occasion-card" href="faire-part-naissance.html">
+          <img class="occasion-card-photo" src="images/cat-naissance-bebe.webp" alt="" aria-hidden="true" decoding="async">
+          <span>
+            <span class="card-icon">◌</span>
+            <h3>Faire-part de naissance</h3>
+            <p>Prénom, photo, heure, poids, taille et vos premiers mots.</p>
+            <span class="card-link">Voir la démo <span>→</span></span>
+          </span>
+        </a>
+
+        <a class="occasion-card" href="invitation-mariage.html">
+          <img class="occasion-card-photo" src="images/cat-mariage.webp" alt="" aria-hidden="true" decoding="async">
+          <span>
+            <span class="card-icon">∞</span>
+            <h3>Invitation de mariage</h3>
+            <p>Les prénoms, la date, le lieu, le programme et le RSVP.</p>
+            <span class="card-link">Voir la démo <span>→</span></span>
+          </span>
+        </a>
+
+        <a class="occasion-card" href="invitation-anniversaire.html">
+          <img class="occasion-card-photo" src="images/cat-anniversaire.webp" alt="" aria-hidden="true" decoding="async">
+          <span>
+            <span class="card-icon">✦</span>
+            <h3>Invitation anniversaire</h3>
+            <p>Une belle façon de donner envie de venir célébrer.</p>
+            <span class="card-link">Voir la démo <span>→</span></span>
+          </span>
+        </a>
+
+        <a class="occasion-card" href="annonce-deces.html">
+          <img class="occasion-card-photo" src="images/cat-hommage.webp" alt="" aria-hidden="true" decoding="async">
+          <span>
+            <span class="card-icon">✧</span>
+            <h3>Annonce de décès</h3>
+            <p>Les informations utiles, avec pudeur et délicatesse.</p>
+            <span class="card-link">Voir la démo <span>→</span></span>
+          </span>
+        </a>
+
+        <a class="occasion-card" href="demande-personnalisee.html">
+          <img class="occasion-card-photo" src="images/cat-autres-evenements.webp" alt="" aria-hidden="true" decoding="async">
+          <span>
+            <span class="card-icon">☆</span>
+            <h3>Demande personnalisée</h3>
+            <p>Départ, diplôme, baby shower, fête de famille et plus encore.</p>
+            <span class="card-link">Voir la démo <span>→</span></span>
+          </span>
+        </a>
+      </div>
+
+      <div class="surface offer-band">
+        <div>
+          <p class="eyebrow">Une seule formule, tout ce qu’il faut</p>
+          <h2>FAIRE-PART DIGITAL<span>29,90 € TTC.</span></h2>
+          <p>Une page sur mesure, vos informations intégrées, un lien privé à partager sans limite et un QR Code à conserver. Pour les projets hors cadre, la page personnalisée vous permet d’expliquer exactement ce que vous imaginez.</p>
+        </div>
+
+        <div class="offer-price">
+          <small>Inclus avec chaque création</small>
+          <strong>♡</strong>
+          <p>Design personnalisé<br>Lien de partage<br>QR Code<br>Expérience mobile</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
 <footer class="footer">
   <div class="wrap">
     <div class="footer-grid">
-      <div class="footer-promise"><span class="footer-heart" aria-hidden="true">♡</span><div><strong>UNE ANNONCE QUI COMPTE.</strong><p>UN SOUVENIR QUI RESTE.</p></div></div>
-      <div><strong>UNE QUESTION ?</strong><p><a href="mailto:basalteweb@gmail.com">basalteweb@gmail.com</a></p><p><a href="tel:+33670396322">06 70 39 63 22</a></p></div>
-      <div><strong>PARTAGER FACILEMENT</strong><p>SMS · WhatsApp · lien privé · QR Code</p></div>
-      <div class="footer-brand"><small>UNE CRÉATION</small><span>BASALTE-WEB</span><small>MAKE YOUR STORY</small></div>
+      <div class="footer-promise">
+        <span class="footer-heart" aria-hidden="true">♡</span>
+        <div><strong>UNE ANNONCE QUI COMPTE.</strong><p>UN SOUVENIR QUI RESTE.</p></div>
+      </div>
+
+      <div>
+        <strong>UNE QUESTION ?</strong>
+        <p><a href="mailto:basalteweb@gmail.com">basalteweb@gmail.com</a></p>
+        <p><a href="tel:+33670396322">06 70 39 63 22</a></p>
+      </div>
+
+      <div>
+        <strong>PARTAGER FACILEMENT</strong>
+        <p>SMS · WhatsApp · lien privé · QR Code</p>
+      </div>
+
+      <div class="footer-brand">
+        <small>UNE CRÉATION</small>
+        <span>BASALTE-WEB</span>
+        <small>MAKE YOUR STORY</small>
+      </div>
     </div>
-    <div class="footer-legal"><span>© 2026 MakeYourStory.fr — Marque exploitée par BASALTE-WEB.</span><span><a href="access.html">Accéder à une histoire</a> · <a href="cgv.html">CGV</a> · <a href="mentions-legales.html">Mentions légales</a> · <a href="confidentialite.html">Confidentialité</a> · <a href="politique-cookies.html">Cookies</a></span></div>
+
+    <div class="footer-legal">
+      <span>© 2026 MakeYourStory.fr — Marque exploitée par BASALTE-WEB.</span>
+      <span>
+        <a href="access.html">Accéder à une histoire</a> ·
+        <a href="cgv.html">CGV</a> ·
+        <a href="mentions-legales.html">Mentions légales</a> ·
+        <a href="confidentialite.html">Confidentialité</a> ·
+        <a href="politique-cookies.html">Cookies</a>
+      </span>
+    </div>
   </div>
 </footer>
+
 <script src="assets/site.js" defer></script>
 </body>
 </html>
