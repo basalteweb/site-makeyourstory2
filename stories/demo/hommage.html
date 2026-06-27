@@ -1704,6 +1704,62 @@
       z-index:2;
     }
 
+
+    /* =========================================================
+       CORRECTIF IMAGES — ORDINATEUR UNIQUEMENT
+       Téléphone : aucune règle modifiée.
+       Sur PC, les photos sont affichées entièrement (sans zoom
+       supplémentaire ni recadrage forcé par background-size: cover).
+       ========================================================= */
+    @media (min-width:769px){
+      .entry::before{
+        background-size:auto, auto, contain;
+        background-position:center, center, center;
+        background-repeat:repeat, repeat, no-repeat;
+        transform:none;
+        animation:none;
+      }
+
+      .hero::before{
+        background-size:auto, auto, contain;
+        background-position:center, center, center;
+        background-repeat:repeat, repeat, no-repeat;
+        transform:none;
+        animation:none;
+      }
+
+      .memory-hero::before,
+      .memory-film::before,
+      .finale::before{
+        background-size:auto, contain;
+        background-position:center, center;
+        background-repeat:repeat, no-repeat;
+        transform:none;
+        animation:none;
+      }
+
+      .portrait-card{
+        background-size:auto, contain;
+        background-position:center, center;
+        background-repeat:repeat, no-repeat;
+        background-color:#8ea1a2;
+      }
+
+      .gallery-card{
+        background-size:contain;
+        background-position:center;
+        background-repeat:no-repeat;
+        background-color:#33464b;
+      }
+
+      .memory-placeholder{
+        background-size:auto, contain;
+        background-position:center, center;
+        background-repeat:repeat, no-repeat;
+        background-color:#2b3f44;
+      }
+    }
+
   </style></head><body>
   <div class="progress" aria-hidden="true"><span data-progress></span></div>  <section class="entry" data-entry>
     <div class="light-field" data-lights aria-hidden="true"></div><div class="entry-stage">
