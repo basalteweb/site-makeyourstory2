@@ -5,2548 +5,1654 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#14233a">
-  <meta name="robots" content="noindex,follow">  <title>Louise, trois ans de petites choses | Album Émotion</title>
-  <meta name="description" content="Démo Album Émotion MakeYourStory : une histoire photo digitale à ouvrir, revivre et partager.">
-  <link rel="canonical" href="https://makeyourstory.fr/stories/demo/album-emotion.html">  <meta property="og:type" content="website">
+  <meta name="robots" content="index,follow">  <title>Album photo digital personnalisé | Album Émotion | MakeYourStory</title>
+  <meta name="description" content="Transformez vos photos en Album Émotion : une histoire digitale plus longue, vivante et facile à partager. 1 à 10 photos : 49,90 €. 10 à 20 photos : 69,90 €.">
+  <link rel="canonical" href="https://makeyourstory.fr/album-emotion.html">  <meta property="og:type" content="website">
   <meta property="og:site_name" content="MakeYourStory">
-  <meta property="og:title" content="Louise, trois ans de petites choses">
-  <meta property="og:description" content="Une démo Album Émotion : après l’annonce, l’histoire continue.">
-  <meta property="og:url" content="https://makeyourstory.fr/stories/demo/album-emotion.html">
+  <meta property="og:title" content="Album Émotion digital avec vos photos | MakeYourStory">
+  <meta property="og:description" content="Après l’annonce, l’histoire continue. Créez un album photo digital vivant, émotionnel et facile à partager.">
+  <meta property="og:url" content="https://makeyourstory.fr/album-emotion.html">
   <meta property="og:image" content="https://makeyourstory.fr/images/demo-album-emotion-og.webp">  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Louise, trois ans de petites choses">
-  <meta name="twitter:description" content="Une démo Album Émotion : après l’annonce, l’histoire continue.">
-  <meta name="twitter:image" content="https://makeyourstory.fr/images/demo-album-emotion-og.webp">  <link rel="icon" href="../../images/favicon.webp" type="image/webp">
-  <link rel="apple-touch-icon" href="../../images/apple-touch-icon.webp">  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">  <script src="../../assets/analytics.js" defer></script>  <style>
+  <meta name="twitter:title" content="Album Émotion digital avec vos photos | MakeYourStory">
+  <meta name="twitter:description" content="Après l’annonce, l’histoire continue. Créez un album photo digital vivant, émotionnel et facile à partager.">
+  <meta name="twitter:image" content="https://makeyourstory.fr/images/demo-album-emotion-og.webp">  <link rel="icon" href="images/favicon.webp" type="image/webp">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.webp">
+  <link rel="stylesheet" href="assets/site.css">
+  <script src="assets/analytics.js" defer></script>  <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"Service",
+      "name":"Album Émotion MakeYourStory",
+      "url":"https://makeyourstory.fr/album-emotion.html",
+      "description":"Création d’albums photo digitaux personnalisés, émotionnels et prêts à partager.",
+      "provider":{
+        "@type":"Organization",
+        "name":"BASALTE-WEB",
+        "email":"basalteweb@gmail.com",
+        "telephone":"+33670396322"
+      },
+      "offers":{
+        "@type":"OfferCatalog",
+        "name":"Formules Album Émotion",
+        "itemListElement":[
+          {
+            "@type":"Offer",
+            "name":"Album Émotion Mini",
+            "price":"49.90",
+            "priceCurrency":"EUR",
+            "description":"Album digital personnalisé avec 1 à 10 photos."
+          },
+          {
+            "@type":"Offer",
+            "name":"Album Émotion Complet",
+            "price":"69.90",
+            "priceCurrency":"EUR",
+            "description":"Album digital personnalisé avec 10 à 20 photos."
+          }
+        ]
+      }
+    }
+  </script>  <style>
     :root{
-      --ink:#14233a;
-      --ink-soft:#52657a;
-      --navy:#11273f;
-      --teal:#286c73;
-      --coral:#e47750;
-      --yellow:#f3c95f;
-      --paper:#f7f1e6;
-      --cream:#fffdf8;
-      --line:rgba(20,35,58,.15);
-      --max:1170px;
+      --ae-ink:#15233a;
+      --ae-ink-soft:#40536a;
+      --ae-blue:#2a6974;
+      --ae-blue-deep:#163b53;
+      --ae-coral:#e67850;
+      --ae-cream:#f7f2e9;
+      --ae-paper:#fffdf9;
+      --ae-yellow:#f3c65a;
+      --ae-line:rgba(21,35,58,.14);
+      --ae-shadow:0 24px 60px rgba(21,35,58,.14);
     }
 
-    *{
+    .ae-page,
+    .ae-page *{
       box-sizing:border-box;
     }
 
-    html{
-      overflow-x:hidden;
-      scroll-behavior:smooth;
+    .ae-page{
+      overflow:hidden;
+      color:var(--ae-ink);
+      background:
+        radial-gradient(circle at 100% 0%,rgba(243,198,90,.18),transparent 27%),
+        radial-gradient(circle at 0% 40%,rgba(230,120,80,.08),transparent 28%),
+        var(--ae-cream);
     }
 
-    body{
-      min-width:320px;
+    .ae-label{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
       margin:0;
-      overflow-x:hidden;
-      color:var(--ink);
-      background:
-        radial-gradient(circle at 100% 0%,rgba(243,201,95,.18),transparent 28%),
-        radial-gradient(circle at 0% 55%,rgba(228,119,80,.1),transparent 31%),
-        var(--paper);
-      font-family:"Manrope",Arial,sans-serif;
-      line-height:1.55;
-    }
-
-    body,
-    button{
-      font-family:"Manrope",Arial,sans-serif;
-    }
-
-    a{
-      color:inherit;
-      text-decoration:none;
-    }
-
-    button{
-      border:0;
-    }
-
-    button,
-    a{
-      -webkit-tap-highlight-color:transparent;
-    }
-
-    h1,
-    h2,
-    h3,
-    p{
-      overflow-wrap:anywhere;
-    }
-
-    ::selection{
-      color:#ffffff;
-      background:var(--coral);
-    }
-
-    .skip{
-      position:fixed;
-      z-index:4000;
-      top:12px;
-      left:12px;
-      padding:10px 14px;
-      color:#ffffff;
-      background:var(--navy);
-      transform:translateY(-180%);
-      transition:.2s ease;
-    }
-
-    .skip:focus{
-      transform:translateY(0);
-    }
-
-    .progress{
-      position:fixed;
-      z-index:3000;
-      top:0;
-      left:0;
-      width:100%;
-      height:4px;
-      background:rgba(20,35,58,.12);
-      pointer-events:none;
-    }
-
-    .progress span{
-      display:block;
-      width:0;
-      height:100%;
-      background:linear-gradient(90deg,var(--coral),var(--yellow),var(--teal));
-      box-shadow:0 0 14px rgba(40,108,115,.55);
-    }
-
-    .shell{
-      width:min(var(--max),calc(100% - 40px));
-      margin:auto;
-    }
-
-    /* OUVERTURE */
-
-    .entry{
-      position:fixed;
-      z-index:2500;
-      inset:0;
-      display:grid;
-      place-items:center;
-      padding:20px;
-      overflow:hidden;
-      color:#ffffff;
-      background:
-        radial-gradient(circle at 78% 15%,rgba(243,201,95,.25),transparent 28%),
-        radial-gradient(circle at 8% 89%,rgba(228,119,80,.22),transparent 30%),
-        linear-gradient(135deg,#11273f,#246571);
-      transition:opacity .75s ease,visibility .75s ease;
-    }
-
-    .entry.is-hidden{
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;
-    }
-
-    .entry::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      opacity:.32;
-      background:
-        repeating-linear-gradient(90deg,transparent 0 46px,rgba(255,255,255,.08) 47px 48px),
-        repeating-linear-gradient(0deg,transparent 0 46px,rgba(255,255,255,.06) 47px 48px);
-      pointer-events:none;
-    }
-
-    .entry-sun{
-      position:absolute;
-      top:-140px;
-      right:-130px;
-      width:360px;
-      height:360px;
-      border-radius:50%;
-      background:var(--yellow);
-      box-shadow:0 0 80px rgba(243,201,95,.4);
-      opacity:.87;
-      pointer-events:none;
-    }
-
-    .entry-stage{
-      position:relative;
-      z-index:1;
-      width:min(530px,100%);
-      text-align:center;
-    }
-
-    .entry-label{
-      margin:0 0 14px;
-      color:#ffe6a5;
-      font:500 10px/1.4 "DM Mono",monospace;
-      letter-spacing:.16em;
+      color:var(--ae-coral) !important;
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:.14em;
+      line-height:1.4;
       text-transform:uppercase;
     }
 
-    .entry-book{
-      position:relative;
-      width:min(440px,100%);
-      aspect-ratio:10 / 12.8;
-      overflow:hidden;
-      margin:auto;
-      padding:34px;
-      border:10px solid #fffaf0;
-      color:#ffffff;
-      box-shadow:0 30px 75px rgba(0,0,0,.35);
-      background:
-        linear-gradient(180deg,rgba(16,38,62,.03),rgba(16,38,62,.84)),
-        url("../../images/demo-album-emotion-intro.webp") center/cover,
-        #2a6b73;
-      transition:transform 1.2s cubic-bezier(.18,.8,.2,1),filter 1.2s ease;
-    }
-
-    .entry-book::before{
+    .ae-label::before{
       content:"";
-      position:absolute;
-      top:0;
-      bottom:0;
-      left:28px;
-      width:1px;
-      background:rgba(255,255,255,.42);
-      box-shadow:9px 0 0 rgba(255,255,255,.13);
+      width:30px;
+      height:1px;
+      background:currentColor;
     }
 
-    .entry-book::after{
-      content:"";
-      position:absolute;
-      top:25px;
-      right:25px;
-      width:62px;
-      height:62px;
-      border:1px solid rgba(255,255,255,.77);
-      border-radius:50%;
-    }
-
-    .entry-book-inner{
-      position:absolute;
-      z-index:1;
-      right:35px;
-      bottom:38px;
-      left:53px;
-      text-align:left;
-    }
-
-    .entry-book-inner small{
-      display:block;
-      color:#ffe6a5;
-      font:500 9px/1.4 "DM Mono",monospace;
-      letter-spacing:.15em;
-      text-transform:uppercase;
-    }
-
-    .entry-book-inner h1{
-      margin:13px 0 0;
-      color:#ffffff;
-      font:400 clamp(59px,12vw,88px)/.91 "DM Serif Display",Georgia,serif;
-      letter-spacing:-.075em;
-    }
-
-    .entry-book-inner p{
-      margin:16px 0 0;
-      color:rgba(255,255,255,.9);
-      font-size:13px;
-      line-height:1.63;
-    }
-
-    .entry-message{
-      min-height:45px;
-      max-width:475px;
-      margin:22px auto 0;
-      color:#f9fbf3;
-      font-size:13px;
-      line-height:1.72;
-    }
-
-    .entry-button{
+    .ae-button{
       display:inline-flex;
       align-items:center;
       justify-content:center;
       gap:9px;
       min-height:51px;
-      margin-top:18px;
       padding:0 23px;
+      border:1px solid transparent;
       border-radius:999px;
-      color:var(--navy);
-      background:#fffaf0;
-      box-shadow:0 15px 38px rgba(0,0,0,.26);
       font-size:12px;
       font-weight:800;
-      cursor:pointer;
+      line-height:1;
+      text-decoration:none;
       transition:.22s ease;
     }
 
-    .entry-button:hover{
+    .ae-button:hover{
       transform:translateY(-3px);
-      color:#ffffff;
-      background:var(--coral);
     }
 
-    .entry-button:disabled{
-      cursor:default;
-      opacity:.78;
-      transform:none;
+    .ae-button--coral{
+      color:#ffffff !important;
+      background:var(--ae-coral);
+      box-shadow:0 13px 28px rgba(230,120,80,.24);
     }
 
-    .entry-note{
-      margin:15px 0 0;
-      color:rgba(255,255,255,.72);
-      font:500 9px/1.4 "DM Mono",monospace;
-      letter-spacing:.12em;
-      text-transform:uppercase;
+    .ae-button--coral:hover{
+      color:#ffffff !important;
+      background:var(--ae-blue-deep);
     }
 
-    .entry.is-opening .entry-book{
-      filter:blur(8px);
-      transform:translateY(-30px) rotate(-4deg) scale(1.05);
+    .ae-button--ghost{
+      border-color:rgba(21,35,58,.3);
+      color:var(--ae-ink) !important;
+      background:rgba(255,255,255,.48);
     }
 
-    .entry.is-opening .entry-message,
-    .entry.is-opening .entry-button,
-    .entry.is-opening .entry-note,
-    .entry.is-opening .entry-label{
-      opacity:0;
-      transform:translateY(-12px);
-      transition:.45s ease;
+    .ae-button--ghost:hover{
+      color:#ffffff !important;
+      border-color:var(--ae-blue-deep);
+      background:var(--ae-blue-deep);
     }
 
-    /* NAVIGATION */
-
-    .topbar{
-      position:fixed;
-      z-index:100;
-      top:0;
-      left:0;
-      width:100%;
-      transition:.25s ease;
+    .ae-section{
+      padding:clamp(76px,9vw,125px) 0;
     }
 
-    .topbar.solid{
-      border-bottom:1px solid rgba(255,255,255,.16);
-      background:rgba(17,39,63,.91);
-      backdrop-filter:blur(15px);
-    }
-
-    .nav{
-      width:min(var(--max),calc(100% - 40px));
-      min-height:75px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      margin:auto;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
-      color:#ffffff;
-    }
-
-    .brand-mark{
-      width:40px;
-      height:40px;
-      display:grid;
-      place-items:center;
-      flex:0 0 40px;
-      border:1px solid rgba(255,255,255,.74);
-      border-radius:50%;
-      font:400 18px/1 "DM Serif Display",Georgia,serif;
-    }
-
-    .brand-title{
-      display:block;
-      color:#ffffff;
-      font-size:12px;
-      font-weight:800;
-      letter-spacing:.13em;
-      white-space:nowrap;
-    }
-
-    .brand-sub{
-      display:block;
-      margin-top:4px;
-      color:#ffe6a5;
-      font:500 7px/1 "DM Mono",monospace;
-      letter-spacing:.17em;
-      text-transform:uppercase;
-    }
-
-    .nav-actions{
-      display:flex;
-      align-items:center;
-      gap:9px;
-    }
-
-    .story-name{
-      color:#ffe6a5;
-      font:500 9px/1 "DM Mono",monospace;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      white-space:nowrap;
-    }
-
-    .round-button{
-      width:39px;
-      height:39px;
-      display:grid;
-      place-items:center;
-      flex:0 0 39px;
-      border:1px solid rgba(255,255,255,.52);
-      border-radius:50%;
-      color:#ffffff;
-      background:transparent;
-      cursor:pointer;
-      transition:.2s ease;
-    }
-
-    .round-button:hover,
-    .round-button.on{
-      color:var(--navy);
-      background:#ffffff;
-    }
-
-    .return-link{
-      padding:9px 13px;
-      border:1px solid rgba(255,230,165,.72);
-      border-radius:999px;
-      color:#ffe6a5;
-      font:500 9px/1 "DM Mono",monospace;
-      letter-spacing:.09em;
-      text-transform:uppercase;
-      transition:.2s ease;
-    }
-
-    .return-link:hover{
-      color:var(--navy);
-      background:#ffe6a5;
+    .ae-section--tight{
+      padding-top:0;
     }
 
     /* HERO */
 
-    .hero{
-      --hero-shift:0px;
+    .ae-hero{
       position:relative;
-      min-height:100svh;
-      display:grid;
-      align-items:end;
-      isolation:isolate;
       overflow:hidden;
-      padding:123px 0 64px;
+      padding:clamp(90px,11vw,150px) 0 clamp(72px,9vw,114px);
       color:#ffffff;
+      background:
+        radial-gradient(circle at 76% 18%,rgba(243,198,90,.32),transparent 25%),
+        radial-gradient(circle at 94% 78%,rgba(230,120,80,.2),transparent 28%),
+        linear-gradient(135deg,#11263d 0%,#235c6b 57%,#183a55 100%);
     }
 
-    .hero::before{
+    .ae-hero::before{
       content:"";
       position:absolute;
-      z-index:-2;
-      inset:0;
-      background:
-        linear-gradient(180deg,rgba(17,39,63,.06),rgba(17,39,63,.16) 43%,rgba(17,39,63,.94)),
-        linear-gradient(90deg,rgba(17,39,63,.74),transparent 58%,rgba(17,39,63,.2)),
-        url("../../images/demo-album-emotion-hero.webp") center/cover,
-        #286c73;
-      transform:scale(1.08) translate3d(0,var(--hero-shift),0);
-      transition:transform .1s linear;
-    }
-
-    .hero::after{
-      content:"";
-      position:absolute;
-      z-index:-1;
-      inset:0;
-      background:
-        radial-gradient(circle at 77% 17%,rgba(243,201,95,.22),transparent 35%),
-        radial-gradient(circle at 86% 48%,rgba(228,119,80,.14),transparent 26%);
-    }
-
-    .hero-coin{
-      position:absolute;
-      top:15%;
-      right:9%;
-      width:min(30vw,330px);
-      aspect-ratio:1;
-      border:2px solid rgba(255,236,180,.72);
+      top:-190px;
+      right:-170px;
+      width:500px;
+      height:500px;
+      border:1px solid rgba(255,255,255,.2);
       border-radius:50%;
-      box-shadow:0 0 42px rgba(255,228,155,.26);
-      animation:coinFloat 5s ease-in-out infinite alternate;
+      box-shadow:
+        0 0 0 65px rgba(255,255,255,.035),
+        0 0 0 132px rgba(255,255,255,.02);
       pointer-events:none;
     }
 
-    .hero-coin::before{
-      content:"3";
+    .ae-hero::after{
+      content:"";
       position:absolute;
-      top:50%;
-      left:50%;
-      color:rgba(255,236,180,.84);
-      font:400 clamp(94px,15vw,165px)/1 "DM Serif Display",Georgia,serif;
-      transform:translate(-50%,-54%);
+      bottom:-220px;
+      left:-150px;
+      width:440px;
+      height:440px;
+      border:1px solid rgba(243,198,90,.32);
+      border-radius:50%;
+      pointer-events:none;
     }
 
-    .hero-coin::after{
-      content:"ANS";
-      position:absolute;
-      bottom:23%;
-      left:50%;
-      color:#ffe6a5;
-      font:500 10px/1 "DM Mono",monospace;
-      letter-spacing:.22em;
-      transform:translateX(-42%);
+    .ae-hero-grid{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(320px,.86fr);
+      gap:clamp(40px,8vw,110px);
+      align-items:center;
     }
 
-    @keyframes coinFloat{
-      from{
-        transform:translateY(0) rotate(-4deg);
-      }
-
-      to{
-        transform:translateY(-14px) rotate(5deg);
-      }
+    .ae-hero-copy{
+      max-width:720px;
     }
 
-    .hero-inner{
-      max-width:860px;
+    .ae-hero .ae-label{
+      color:#ffe49a !important;
     }
 
-    .hero-label,
-    .hero-title,
-    .hero-subtitle,
-    .hero-copy,
-    .hero-details{
-      opacity:0;
-      transform:translateY(28px);
+    .ae-hero h1{
+      margin:19px 0 0;
+      color:#ffffff !important;
+      font-size:clamp(56px,8vw,104px);
+      font-weight:800;
+      line-height:.86;
+      letter-spacing:-.075em;
     }
 
-    body.story-open .hero-label,
-    body.story-open .hero-title,
-    body.story-open .hero-subtitle,
-    body.story-open .hero-copy,
-    body.story-open .hero-details{
-      animation:heroAppear .8s cubic-bezier(.2,.8,.2,1) forwards;
+    .ae-hero h1 span{
+      display:block;
+      margin-top:17px;
+      color:#ffe49a !important;
+      font-size:clamp(27px,3.3vw,42px);
+      font-weight:700;
+      line-height:1.06;
+      letter-spacing:-.045em;
     }
 
-    body.story-open .hero-title{
-      animation-delay:.1s;
+    .ae-hero-lead{
+      max-width:635px;
+      margin:28px 0 0;
+      color:rgba(255,255,255,.86) !important;
+      font-size:16px;
+      line-height:1.82;
     }
 
-    body.story-open .hero-subtitle{
-      animation-delay:.18s;
+    .ae-hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:30px;
     }
 
-    body.story-open .hero-copy{
-      animation-delay:.28s;
+    .ae-hero-actions .ae-button--ghost{
+      border-color:rgba(255,255,255,.5);
+      color:#ffffff !important;
+      background:rgba(255,255,255,.08);
     }
 
-    body.story-open .hero-details{
-      animation-delay:.38s;
+    .ae-hero-actions .ae-button--ghost:hover{
+      color:var(--ae-ink) !important;
+      background:#ffffff;
     }
 
-    @keyframes heroAppear{
-      to{
-        opacity:1;
-        transform:translateY(0);
-      }
+    .ae-hero-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px 18px;
+      margin:28px 0 0;
+      color:rgba(255,255,255,.76) !important;
+      font-size:12px;
     }
 
-    .hero-label{
+    .ae-hero-meta span{
       display:inline-flex;
       align-items:center;
-      gap:10px;
-      margin:0;
-      color:#ffe6a5;
-      font:500 10px/1.35 "DM Mono",monospace;
-      letter-spacing:.16em;
+      gap:8px;
+    }
+
+    .ae-hero-meta span::before{
+      content:"";
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:#ffe49a;
+      box-shadow:0 0 12px rgba(255,228,154,.7);
+    }
+
+    .ae-hero-visual{
+      position:relative;
+      min-height:505px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .ae-orbit{
+      position:absolute;
+      width:min(100%,432px);
+      aspect-ratio:1;
+      border:1px solid rgba(255,255,255,.28);
+      border-radius:50%;
+      animation:ae-orbit 16s linear infinite;
+    }
+
+    .ae-orbit::before,
+    .ae-orbit::after{
+      content:"";
+      position:absolute;
+      border-radius:50%;
+    }
+
+    .ae-orbit::before{
+      top:13%;
+      right:6%;
+      width:13px;
+      height:13px;
+      background:#ffe49a;
+      box-shadow:0 0 17px rgba(255,228,154,.9);
+    }
+
+    .ae-orbit::after{
+      bottom:12%;
+      left:6%;
+      width:11px;
+      height:11px;
+      background:var(--ae-coral);
+      box-shadow:0 0 17px rgba(230,120,80,.85);
+    }
+
+    @keyframes ae-orbit{
+      to{
+        transform:rotate(360deg);
+      }
+    }
+
+    .ae-book{
+      position:relative;
+      z-index:2;
+      width:min(275px,66vw);
+      aspect-ratio:10 / 14;
+      overflow:hidden;
+      padding:18px;
+      border:1px solid rgba(255,255,255,.5);
+      box-shadow:0 28px 70px rgba(0,0,0,.36);
+      transform:rotate(6deg);
+      background:
+        linear-gradient(180deg,rgba(12,28,45,.02),rgba(12,28,45,.86)),
+        url("images/cat-naissance-bebe.webp") center/cover,
+        #2c6470;
+    }
+
+    .ae-book::before{
+      content:"";
+      position:absolute;
+      top:0;
+      bottom:0;
+      left:22px;
+      width:1px;
+      background:rgba(255,255,255,.36);
+      box-shadow:8px 0 0 rgba(255,255,255,.1);
+    }
+
+    .ae-book::after{
+      content:"";
+      position:absolute;
+      top:17px;
+      right:17px;
+      width:54px;
+      height:54px;
+      border:1px solid rgba(255,255,255,.7);
+      border-radius:50%;
+    }
+
+    .ae-book-content{
+      position:absolute;
+      z-index:1;
+      right:24px;
+      bottom:28px;
+      left:42px;
+      color:#ffffff;
+    }
+
+    .ae-book-content small{
+      display:block;
+      color:#ffe49a;
+      font-size:8px;
+      font-weight:800;
+      letter-spacing:.14em;
       text-transform:uppercase;
     }
 
-    .hero-label::before{
-      content:"";
-      width:29px;
-      height:1px;
-      background:#ffe6a5;
-    }
-
-    .hero-title{
-      margin:17px 0 0;
+    .ae-book-content strong{
+      display:block;
+      margin-top:12px;
       color:#ffffff;
-      font:400 clamp(67px,11vw,148px)/1 "DM Serif Display",Georgia,serif;
-      letter-spacing:-.08em;
+      font-size:39px;
+      line-height:.9;
+      letter-spacing:-.07em;
     }
 
-    .hero-subtitle{
-      max-width:620px;
-      margin:20px 0 0;
-      color:#ffe6a5;
-      font-size:clamp(19px,3vw,31px);
+    .ae-book-content p{
+      margin:14px 0 0;
+      color:rgba(255,255,255,.9);
+      font-size:11px;
+      line-height:1.55;
+    }
+
+    .ae-float{
+      position:absolute;
+      z-index:3;
+      width:202px;
+      padding:16px;
+      color:#ffffff;
+      box-shadow:0 18px 45px rgba(0,0,0,.22);
+      backdrop-filter:blur(9px);
+    }
+
+    .ae-float--top{
+      top:38px;
+      left:-6px;
+      border:1px solid rgba(255,228,154,.45);
+      background:rgba(30,70,79,.9);
+      transform:rotate(-5deg);
+    }
+
+    .ae-float--bottom{
+      right:-7px;
+      bottom:42px;
+      border:1px solid rgba(255,222,213,.44);
+      background:rgba(109,47,42,.88);
+      transform:rotate(5deg);
+    }
+
+    .ae-float small{
+      display:block;
+      color:#ffe49a;
+      font-size:9px;
       font-weight:800;
-      line-height:1.28;
+      letter-spacing:.12em;
+      text-transform:uppercase;
     }
 
-    .hero-copy{
-      max-width:510px;
+    .ae-float--bottom small{
+      color:#ffd6c9;
+    }
+
+    .ae-float strong{
+      display:block;
+      margin-top:7px;
+      color:#ffffff;
+      font-size:15px;
+      line-height:1.2;
+    }
+
+    .ae-float p{
+      margin:8px 0 0;
+      color:rgba(255,255,255,.78);
+      font-size:11px;
+      line-height:1.5;
+    }
+
+    /* DIFFÉRENCE */
+
+    .ae-intro{
+      max-width:820px;
+      margin:auto;
+      text-align:center;
+    }
+
+    .ae-intro h2,
+    .ae-story-copy h2,
+    .ae-form-title{
+      margin:13px 0 0;
+      color:var(--ae-ink) !important;
+      font-size:clamp(39px,5.9vw,72px);
+      font-weight:800;
+      line-height:.93;
+      letter-spacing:-.067em;
+    }
+
+    .ae-intro h2 span,
+    .ae-story-copy h2 span,
+    .ae-form-title span{
+      display:block;
+      margin-top:14px;
+      color:var(--ae-coral) !important;
+      font-size:clamp(21px,2.8vw,34px);
+      font-weight:700;
+      line-height:1.16;
+      letter-spacing:-.04em;
+    }
+
+    .ae-intro > p:last-child{
+      max-width:695px;
+      margin:24px auto 0;
+      color:var(--ae-ink-soft) !important;
+      font-size:15px;
+      line-height:1.8;
+    }
+
+    .ae-compare{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:15px;
+      margin-top:46px;
+    }
+
+    .ae-compare-card{
+      min-height:330px;
+      padding:clamp(27px,4vw,42px);
+      border:1px solid var(--ae-line);
+      background:#ffffff;
+      box-shadow:0 12px 30px rgba(21,35,58,.05);
+    }
+
+    .ae-compare-card--dark{
+      position:relative;
+      overflow:hidden;
+      color:#ffffff;
+      border-color:transparent;
+      background:
+        radial-gradient(circle at 92% 12%,rgba(243,198,90,.25),transparent 28%),
+        radial-gradient(circle at 7% 90%,rgba(230,120,80,.22),transparent 30%),
+        linear-gradient(135deg,#173d55,#236e75);
+    }
+
+    .ae-compare-card--dark::before{
+      content:"ALBUM";
+      position:absolute;
+      right:-17px;
+      bottom:-28px;
+      color:rgba(255,255,255,.07);
+      font-size:88px;
+      font-weight:800;
+      letter-spacing:-.1em;
+      pointer-events:none;
+    }
+
+    .ae-compare-card > *{
+      position:relative;
+      z-index:1;
+    }
+
+    .ae-card-number{
+      display:inline-grid;
+      width:43px;
+      height:43px;
+      place-items:center;
+      border:1px solid rgba(21,35,58,.22);
+      border-radius:50%;
+      color:var(--ae-blue-deep);
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .ae-compare-card--dark .ae-card-number{
+      border-color:rgba(255,255,255,.46);
+      color:#ffe49a;
+    }
+
+    .ae-compare-card h3{
+      margin:19px 0 0;
+      color:var(--ae-ink) !important;
+      font-size:clamp(29px,4vw,42px);
+      line-height:.97;
+      letter-spacing:-.055em;
+    }
+
+    .ae-compare-card--dark h3{
+      color:#ffffff !important;
+    }
+
+    .ae-compare-card h3 span{
+      display:block;
+      margin-top:11px;
+      color:var(--ae-coral) !important;
+      font-size:18px;
+      line-height:1.25;
+      letter-spacing:-.025em;
+    }
+
+    .ae-compare-card--dark h3 span{
+      color:#ffe49a !important;
+    }
+
+    .ae-compare-card p{
+      max-width:470px;
+      margin:20px 0 0;
+      color:var(--ae-ink-soft) !important;
+      font-size:14px;
+      line-height:1.75;
+    }
+
+    .ae-compare-card--dark p{
+      color:rgba(255,255,255,.8) !important;
+    }
+
+    .ae-mini-list{
+      display:grid;
+      gap:10px;
+      margin:24px 0 0;
+    }
+
+    .ae-mini-list div{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      color:var(--ae-ink) !important;
+      font-size:12px;
+      font-weight:700;
+      line-height:1.5;
+    }
+
+    .ae-compare-card--dark .ae-mini-list div{
+      color:rgba(255,255,255,.91) !important;
+    }
+
+    .ae-mini-list b{
+      width:20px;
+      height:20px;
+      display:grid;
+      place-items:center;
+      flex:0 0 20px;
+      border-radius:50%;
+      color:#ffffff;
+      background:var(--ae-coral);
+      font-size:10px;
+    }
+
+    .ae-compare-card--dark .ae-mini-list b{
+      color:#173d55;
+      background:#ffe49a;
+    }
+
+    /* HISTOIRE LOUISE */
+
+    .ae-story{
+      position:relative;
+      overflow:hidden;
+      color:#ffffff;
+      background:
+        radial-gradient(circle at 84% 17%,rgba(243,198,90,.22),transparent 26%),
+        radial-gradient(circle at 12% 90%,rgba(230,120,80,.22),transparent 29%),
+        linear-gradient(125deg,#173b53,#235f6a);
+    }
+
+    .ae-story::before{
+      content:"";
+      position:absolute;
+      top:-110px;
+      right:-100px;
+      width:350px;
+      height:350px;
+      border:1px solid rgba(255,255,255,.17);
+      border-radius:50%;
+      box-shadow:0 0 0 55px rgba(255,255,255,.028);
+      pointer-events:none;
+    }
+
+    .ae-story-grid{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns:.82fr 1.18fr;
+      gap:clamp(30px,7vw,105px);
+      align-items:center;
+    }
+
+    .ae-story-photos{
+      min-height:500px;
+      position:relative;
+    }
+
+    .ae-story-photo{
+      position:absolute;
+      overflow:hidden;
+      background:
+        linear-gradient(180deg,rgba(20,35,58,.02),rgba(20,35,58,.58)),
+        var(--ae-photo) center/cover,
+        #d2b08b;
+      box-shadow:0 23px 55px rgba(0,0,0,.23);
+    }
+
+    .ae-story-photo::after{
+      content:"";
+      position:absolute;
+      inset:11px;
+      border:1px solid rgba(255,255,255,.72);
+      pointer-events:none;
+    }
+
+    .ae-story-photo--one{
+      top:0;
+      left:0;
+      width:70%;
+      height:74%;
+      transform:rotate(-4deg);
+    }
+
+    .ae-story-photo--two{
+      right:0;
+      bottom:0;
+      width:58%;
+      height:59%;
+      transform:rotate(5deg);
+    }
+
+    .ae-story-stamp{
+      position:absolute;
+      z-index:2;
+      top:39%;
+      left:55%;
+      width:106px;
+      height:106px;
+      display:grid;
+      place-items:center;
+      border:2px solid #ffe49a;
+      border-radius:50%;
+      color:#ffe49a;
+      background:#214c60;
+      box-shadow:0 12px 28px rgba(0,0,0,.22);
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:.1em;
+      line-height:1.35;
+      text-align:center;
+      text-transform:uppercase;
+      transform:rotate(12deg);
+    }
+
+    .ae-story-copy .ae-label{
+      color:#ffe49a !important;
+    }
+
+    .ae-story-copy h2{
+      color:#ffffff !important;
+    }
+
+    .ae-story-copy h2 span{
+      color:#ffe49a !important;
+    }
+
+    .ae-story-copy > p:not(.ae-label){
+      max-width:600px;
+      margin:24px 0 0;
+      color:rgba(255,255,255,.81) !important;
+      font-size:15px;
+      line-height:1.82;
+    }
+
+    .ae-story-copy .ae-button{
+      margin-top:28px;
+      color:#173d55 !important;
+      background:#ffffff;
+    }
+
+    .ae-story-copy .ae-button:hover{
+      color:#ffffff !important;
+      background:var(--ae-coral);
+    }
+
+    /* OFFRES */
+
+    .ae-offers-head{
+      max-width:750px;
+    }
+
+    .ae-offers-head h2{
+      margin:13px 0 0;
+      color:var(--ae-ink) !important;
+      font-size:clamp(39px,5.8vw,69px);
+      font-weight:800;
+      line-height:.93;
+      letter-spacing:-.065em;
+    }
+
+    .ae-offers-head h2 span{
+      display:block;
+      margin-top:14px;
+      color:var(--ae-blue) !important;
+      font-size:clamp(21px,2.8vw,33px);
+      font-weight:700;
+      line-height:1.16;
+      letter-spacing:-.04em;
+    }
+
+    .ae-offers-head p:last-child{
+      max-width:650px;
       margin:22px 0 0;
-      color:#fff9ed;
+      color:var(--ae-ink-soft) !important;
+      font-size:15px;
+      line-height:1.78;
+    }
+
+    .ae-offers{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:15px;
+      margin-top:42px;
+    }
+
+    .ae-offer{
+      position:relative;
+      overflow:hidden;
+      min-height:370px;
+      padding:clamp(27px,4vw,42px);
+      border:1px solid var(--ae-line);
+      background:#ffffff;
+      box-shadow:0 15px 35px rgba(21,35,58,.06);
+    }
+
+    .ae-offer--featured{
+      color:#ffffff;
+      border-color:transparent;
+      background:
+        radial-gradient(circle at 85% 12%,rgba(243,198,90,.24),transparent 26%),
+        radial-gradient(circle at 8% 92%,rgba(230,120,80,.19),transparent 28%),
+        linear-gradient(135deg,#153a53,#286d73);
+    }
+
+    .ae-offer-kicker{
+      display:inline-flex;
+      padding:8px 11px;
+      border:1px solid rgba(21,35,58,.22);
+      color:var(--ae-blue-deep) !important;
+      font-size:9px;
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .ae-offer--featured .ae-offer-kicker{
+      border-color:rgba(255,255,255,.42);
+      color:#ffe49a !important;
+    }
+
+    .ae-offer h3{
+      margin:20px 0 0;
+      color:var(--ae-ink) !important;
+      font-size:clamp(36px,4.6vw,53px);
+      line-height:.9;
+      letter-spacing:-.065em;
+    }
+
+    .ae-offer--featured h3{
+      color:#ffffff !important;
+    }
+
+    .ae-offer-price{
+      display:block;
+      margin-top:15px;
+      color:var(--ae-coral) !important;
+      font-size:28px;
+      font-weight:800;
+      line-height:1;
+      letter-spacing:-.045em;
+    }
+
+    .ae-offer--featured .ae-offer-price{
+      color:#ffe49a !important;
+    }
+
+    .ae-offer p{
+      max-width:470px;
+      margin:18px 0 0;
+      color:var(--ae-ink-soft) !important;
+      font-size:14px;
+      line-height:1.72;
+    }
+
+    .ae-offer--featured p{
+      color:rgba(255,255,255,.81) !important;
+    }
+
+    .ae-offer-list{
+      display:grid;
+      gap:10px;
+      margin:23px 0 0;
+    }
+
+    .ae-offer-list div{
+      display:flex;
+      gap:10px;
+      color:var(--ae-ink) !important;
+      font-size:12px;
+      font-weight:700;
+      line-height:1.45;
+    }
+
+    .ae-offer--featured .ae-offer-list div{
+      color:rgba(255,255,255,.9) !important;
+    }
+
+    .ae-offer-list b{
+      color:var(--ae-coral);
+      font-size:14px;
+    }
+
+    .ae-offer--featured .ae-offer-list b{
+      color:#ffe49a;
+    }
+
+    /* FORM */
+
+    .ae-form-shell{
+      display:grid;
+      grid-template-columns:.78fr 1.22fr;
+      gap:clamp(30px,6vw,82px);
+      padding:clamp(31px,5vw,60px);
+      color:#ffffff;
+      background:
+        radial-gradient(circle at 9% 90%,rgba(230,120,80,.2),transparent 28%),
+        radial-gradient(circle at 89% 12%,rgba(243,198,90,.18),transparent 26%),
+        #14233a;
+    }
+
+    .ae-form-copy .ae-label{
+      color:#ffe49a !important;
+    }
+
+    .ae-form-copy h2{
+      margin:13px 0 0;
+      color:#ffffff !important;
+      font-size:clamp(37px,5vw,59px);
+      font-weight:800;
+      line-height:.93;
+      letter-spacing:-.065em;
+    }
+
+    .ae-form-copy h2 span{
+      display:block;
+      margin-top:13px;
+      color:#ffe49a !important;
+      font-size:clamp(21px,2.8vw,32px);
+      font-weight:700;
+      line-height:1.15;
+      letter-spacing:-.04em;
+    }
+
+    .ae-form-copy > p:not(.ae-label){
+      max-width:500px;
+      margin:23px 0 0;
+      color:rgba(255,255,255,.8) !important;
       font-size:14px;
       line-height:1.78;
     }
 
-    .hero-details{
+    .ae-form-copy-list{
+      display:grid;
+      gap:13px;
+      margin-top:30px;
+    }
+
+    .ae-form-copy-list div{
       display:flex;
-      flex-wrap:wrap;
-      gap:14px;
-      margin:27px 0 0;
-      color:#fff9ed;
-      font:500 10px/1.45 "DM Mono",monospace;
-      letter-spacing:.07em;
-      text-transform:uppercase;
-    }
-
-    .hero-details span{
-      display:inline-flex;
-      align-items:center;
-      gap:9px;
-    }
-
-    .hero-details span::before{
-      content:"";
-      width:18px;
-      height:2px;
-      background:var(--yellow);
-    }
-
-    .scroll-hint{
-      position:absolute;
-      right:28px;
-      bottom:39px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      color:rgba(255,255,255,.82);
-      font:500 9px/1 "DM Mono",monospace;
-      letter-spacing:.13em;
-      text-transform:uppercase;
-      writing-mode:vertical-rl;
-      transform:rotate(180deg);
-    }
-
-    .scroll-hint::before{
-      content:"";
-      width:1px;
-      height:45px;
-      background:linear-gradient(#ffe6a5,transparent);
-    }
-
-    /* SECTIONS */
-
-    .section{
-      padding:124px 0;
-    }
-
-    .section-label{
-      display:inline-flex;
-      align-items:center;
+      align-items:flex-start;
       gap:11px;
-      color:var(--coral);
-      font:500 10px/1.35 "DM Mono",monospace;
-      letter-spacing:.16em;
-      text-transform:uppercase;
+      color:rgba(255,255,255,.9) !important;
+      font-size:13px;
+      font-weight:700;
+      line-height:1.5;
     }
 
-    .section-label::before{
-      content:attr(data-number);
-      width:39px;
-      height:39px;
+    .ae-form-copy-list b{
+      width:23px;
+      height:23px;
       display:grid;
       place-items:center;
-      border:1px solid rgba(228,119,80,.62);
+      flex:0 0 23px;
       border-radius:50%;
-      color:var(--coral);
-      font:600 11px/1 "DM Mono",monospace;
-      letter-spacing:0;
+      color:#173d55;
+      background:#ffe49a;
+      font-size:11px;
     }
 
-    .section-title{
-      max-width:760px;
-      margin:20px 0 0;
-      color:var(--ink);
-      font:400 clamp(48px,7vw,87px)/1.03 "DM Serif Display",Georgia,serif;
-      letter-spacing:-.065em;
+    .ae-form-panel{
+      padding:clamp(24px,4vw,42px);
+      color:var(--ae-ink);
+      background:#ffffff;
+      box-shadow:0 22px 48px rgba(0,0,0,.17);
     }
 
-    .section-subtitle{
-      max-width:655px;
-      margin:17px 0 0;
-      color:var(--coral);
-      font-size:clamp(18px,2.7vw,28px);
+    .ae-form-panel .ae-label{
+      color:#9b3f2a !important;
+    }
+
+    .ae-form-title{
+      font-size:clamp(31px,4vw,48px);
+    }
+
+    .ae-form-title span{
+      color:#9b3f2a !important;
+      font-size:clamp(18px,2.4vw,25px);
       font-weight:800;
-      line-height:1.34;
     }
 
-    .section-copy{
-      max-width:530px;
-      margin:21px 0 0;
-      color:var(--ink-soft);
-      font-size:14px;
-      line-height:1.8;
+    .ae-form-intro{
+      margin:17px 0 0;
+      color:#50616b !important;
+      font-size:13px;
+      line-height:1.7;
     }
 
-    .reveal{
-      opacity:0;
-      filter:blur(7px);
-      transform:translateY(40px);
-      transition:
-        opacity .75s cubic-bezier(.2,.76,.2,1) var(--delay,0s),
-        transform .75s cubic-bezier(.2,.76,.2,1) var(--delay,0s),
-        filter .75s cubic-bezier(.2,.76,.2,1) var(--delay,0s);
+    .ae-form{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+      margin-top:28px;
     }
 
-    .reveal.show{
+    .ae-field{
+      min-width:0;
+    }
+
+    .ae-field--full{
+      grid-column:1 / -1;
+    }
+
+    .ae-field label{
+      display:block;
+      margin-bottom:8px;
+      color:#20282d !important;
+      font-size:12px;
+      font-weight:800;
+      line-height:1.4;
+    }
+
+    .ae-field input,
+    .ae-field select,
+    .ae-field textarea{
+      width:100%;
+      min-height:48px;
+      padding:12px 13px;
+      border:1px solid rgba(21,35,58,.28);
+      border-radius:0;
+      outline:0;
+      color:#18242b !important;
+      background:#ffffff !important;
+      font:inherit;
+      font-size:13px;
+      line-height:1.4;
+      transition:border-color .2s ease,box-shadow .2s ease;
+    }
+
+    .ae-field textarea{
+      min-height:128px;
+      resize:vertical;
+    }
+
+    .ae-field input::placeholder,
+    .ae-field textarea::placeholder{
+      color:#728087 !important;
       opacity:1;
-      filter:none;
-      transform:translateY(0);
     }
 
-    .button-main,
-    .button-secondary{
-      display:inline-flex;
+    .ae-field input:focus,
+    .ae-field select:focus,
+    .ae-field textarea:focus{
+      border-color:var(--ae-coral);
+      box-shadow:0 0 0 3px rgba(230,120,80,.15);
+    }
+
+    .ae-hint{
+      margin:7px 0 0;
+      color:#5e6d74 !important;
+      font-size:11px;
+      line-height:1.52;
+    }
+
+    .ae-check{
+      display:flex !important;
+      align-items:flex-start;
+      gap:10px;
+      margin:0 !important;
+      color:#435158 !important;
+      font-size:12px !important;
+      font-weight:600 !important;
+      line-height:1.6 !important;
+    }
+
+    .ae-check input{
+      width:17px;
+      height:17px;
+      flex:0 0 17px;
+      margin:2px 0 0;
+      accent-color:var(--ae-coral);
+    }
+
+    .ae-check a{
+      color:#a33c29 !important;
+      font-weight:800;
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
+
+    .ae-submit-row{
+      display:flex;
+      flex-wrap:wrap;
       align-items:center;
-      justify-content:center;
-      gap:9px;
-      min-height:51px;
+      gap:16px;
+    }
+
+    .ae-submit{
+      min-height:52px;
       padding:0 23px;
+      border:0;
       border-radius:999px;
+      color:#ffffff !important;
+      background:var(--ae-coral);
+      box-shadow:0 13px 28px rgba(230,120,80,.24);
+      font:inherit;
       font-size:12px;
       font-weight:800;
       cursor:pointer;
       transition:.22s ease;
     }
 
-    .button-main{
-      color:#ffffff;
-      background:var(--coral);
-      box-shadow:0 12px 27px rgba(228,119,80,.22);
-    }
-
-    .button-main:hover{
+    .ae-submit:hover{
       transform:translateY(-3px);
-      color:#ffffff;
-      background:var(--navy);
+      color:#ffffff !important;
+      background:var(--ae-blue-deep);
     }
 
-    .button-secondary{
-      border:1px solid rgba(20,35,58,.28);
-      color:var(--ink);
-      background:rgba(255,255,255,.54);
-    }
-
-    .button-secondary:hover{
-      transform:translateY(-3px);
-      color:#ffffff;
-      background:var(--navy);
-    }
-
-    .button-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:27px;
-    }
-
-    /* PREMIER CHAPITRE */
-
-    .chapter-grid{
-      display:grid;
-      grid-template-columns:.9fr 1.1fr;
-      gap:clamp(30px,6vw,88px);
-      align-items:center;
-    }
-
-    .chapter-stack{
-      position:relative;
-      min-height:610px;
-    }
-
-    .chapter-photo{
-      position:absolute;
-      overflow:hidden;
-      cursor:pointer;
-      background:
-        linear-gradient(180deg,rgba(17,39,63,.03),rgba(17,39,63,.68)),
-        var(--photo) center/cover,
-        #c8a277;
-      box-shadow:0 25px 54px rgba(20,35,58,.2);
-      transition:.3s cubic-bezier(.2,.76,.2,1);
-    }
-
-    .chapter-photo:hover{
-      transform:translateY(-8px) rotate(0deg);
-    }
-
-    .chapter-photo::after{
-      content:"";
-      position:absolute;
-      inset:12px;
-      border:1px solid rgba(255,255,255,.76);
-      pointer-events:none;
-    }
-
-    .chapter-photo--one{
-      top:0;
-      left:0;
-      width:72%;
-      height:71%;
-      transform:rotate(-5deg);
-    }
-
-    .chapter-photo--two{
-      right:0;
-      bottom:1%;
-      width:60%;
-      height:58%;
-      transform:rotate(5deg);
-    }
-
-    .chapter-caption{
-      position:absolute;
-      z-index:3;
-      right:8%;
-      top:48%;
-      width:185px;
-      padding:15px;
-      color:#ffffff;
-      background:var(--coral);
-      box-shadow:0 14px 30px rgba(228,119,80,.28);
-      font-size:12px;
-      font-weight:700;
-      line-height:1.5;
-      transform:rotate(-7deg);
-    }
-
-    .chapter-card{
-      position:relative;
-      overflow:hidden;
-      padding:clamp(31px,5vw,59px);
-      background:
-        radial-gradient(circle at 88% 12%,rgba(243,201,95,.29),transparent 27%),
-        radial-gradient(circle at 6% 91%,rgba(228,119,80,.14),transparent 28%),
-        var(--cream);
-      box-shadow:0 23px 55px rgba(20,35,58,.11);
-    }
-
-    .chapter-card::before{
-      content:"";
-      position:absolute;
-      top:0;
-      left:0;
-      width:100%;
-      height:5px;
-      background:linear-gradient(90deg,var(--coral),var(--yellow),var(--teal));
-    }
-
-    .chapter-card p{
-      max-width:535px;
-    }
-
-    .chapter-facts{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:12px;
-      margin-top:30px;
-    }
-
-    .chapter-fact{
-      min-height:100px;
-      padding:17px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.54);
-    }
-
-    .chapter-fact small{
-      display:block;
-      color:var(--coral);
-      font:500 9px/1.3 "DM Mono",monospace;
-      letter-spacing:.13em;
-      text-transform:uppercase;
-    }
-
-    .chapter-fact strong{
-      display:block;
-      margin-top:10px;
-      color:var(--ink);
-      font-size:14px;
-      line-height:1.42;
-    }
-
-    /* FIL DU TEMPS */
-
-    .timeline-section{
-      padding:124px 0;
-      background:
-        radial-gradient(circle at 87% 12%,rgba(243,201,95,.31),transparent 28%),
-        radial-gradient(circle at 8% 91%,rgba(228,119,80,.12),transparent 27%),
-        #edf3ef;
-    }
-
-    .timeline-head{
-      display:grid;
-      grid-template-columns:.86fr 1.14fr;
-      gap:clamp(30px,6vw,88px);
-      align-items:end;
-      margin-bottom:43px;
-    }
-
-    .timeline{
-      border-top:1px solid var(--line);
-    }
-
-    .timeline-row{
-      display:grid;
-      grid-template-columns:130px 1fr 210px;
-      gap:28px;
-      align-items:center;
-      padding:25px 0;
-      border-bottom:1px solid var(--line);
-    }
-
-    .timeline-age{
-      color:var(--coral);
-      font:400 31px/1.02 "DM Serif Display",Georgia,serif;
-      letter-spacing:-.045em;
-    }
-
-    .timeline-age span{
-      display:block;
-      margin-top:7px;
-      color:#647987;
-      font:500 9px/1.35 "DM Mono",monospace;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
-
-    .timeline-text{
-      position:relative;
-      padding-left:25px;
-    }
-
-    .timeline-text::before{
-      content:"";
-      position:absolute;
-      top:7px;
-      left:0;
-      width:11px;
-      height:11px;
-      border:3px solid #edf3ef;
-      border-radius:50%;
-      background:var(--coral);
-      box-shadow:0 0 0 1px rgba(228,119,80,.62);
-    }
-
-    .timeline-text h3{
+    .ae-submit-note{
       margin:0;
-      color:var(--ink);
-      font:400 30px/1.07 "DM Serif Display",Georgia,serif;
-      letter-spacing:-.04em;
-    }
-
-    .timeline-text p{
-      max-width:560px;
-      margin:10px 0 0;
-      color:#637783;
-      font-size:13px;
-      line-height:1.72;
-    }
-
-    .timeline-thumb{
-      aspect-ratio:1.25 / 1;
-      overflow:hidden;
-      cursor:pointer;
-      background:
-        linear-gradient(180deg,rgba(17,39,63,.03),rgba(17,39,63,.42)),
-        var(--thumb) center/cover,
-        #8cb0b0;
-      box-shadow:0 12px 25px rgba(20,35,58,.13);
-      transition:.25s ease;
-    }
-
-    .timeline-thumb:hover{
-      transform:scale(1.04);
-    }
-
-    /* CITATION */
-
-    .quote-section{
-      position:relative;
-      overflow:hidden;
-      padding:136px 0;
-      color:#ffffff;
-      text-align:center;
-      background:
-        radial-gradient(circle at 50% 44%,rgba(243,201,95,.18),transparent 41%),
-        linear-gradient(135deg,#163952,#286d73);
-    }
-
-    .quote-section::before,
-    .quote-section::after{
-      content:"✦";
-      position:absolute;
-      color:rgba(255,255,255,.11);
-      font:400 clamp(210px,25vw,380px)/1 "DM Serif Display",Georgia,serif;
-      pointer-events:none;
-    }
-
-    .quote-section::before{
-      top:3%;
-      left:-7%;
-    }
-
-    .quote-section::after{
-      right:-8%;
-      bottom:-7%;
-      color:rgba(255,232,170,.12);
-      transform:rotate(18deg);
-    }
-
-    .quote{
-      position:relative;
-      z-index:1;
-      width:min(900px,calc(100% - 40px));
-      margin:auto;
-    }
-
-    .quote p{
-      margin:0;
-      color:#ffffff;
-      font:400 clamp(40px,6.5vw,78px)/1.14 "DM Serif Display",Georgia,serif;
-      letter-spacing:-.06em;
-    }
-
-    .quote footer{
-      max-width:650px;
-      margin:30px auto 0;
-      color:#ffe6a5;
-      font-size:clamp(17px,2.6vw,28px);
-      font-weight:800;
-      line-height:1.42;
-    }
-
-    /* GALERIE */
-
-    .gallery-section{
-      padding:124px 0;
-    }
-
-    .gallery-head{
-      display:grid;
-      grid-template-columns:.86fr 1.14fr;
-      gap:clamp(30px,6vw,88px);
-      align-items:end;
-      margin-bottom:43px;
-    }
-
-    .gallery{
-      display:grid;
-      grid-template-columns:1.1fr .9fr .9fr;
-      grid-auto-rows:250px;
-      gap:14px;
-    }
-
-    .gallery-card{
-      position:relative;
-      isolation:isolate;
-      overflow:hidden;
-      cursor:pointer;
-      background:
-        linear-gradient(180deg,rgba(17,39,63,.03),rgba(17,39,63,.74)),
-        var(--image) center/cover,
-        #8eacaa;
-      box-shadow:0 17px 36px rgba(20,35,58,.14);
-      transition:.33s cubic-bezier(.2,.76,.2,1);
-    }
-
-    .gallery-card::after{
-      content:"";
-      position:absolute;
-      z-index:2;
-      inset:13px;
-      border:1px solid rgba(255,255,255,.76);
-      opacity:.56;
-      transition:.25s ease;
-      pointer-events:none;
-    }
-
-    .gallery-card:hover{
-      transform:translateY(-8px) scale(1.01);
-    }
-
-    .gallery-card:hover::after{
-      inset:8px;
-      opacity:1;
-    }
-
-    .gallery-card.tall{
-      grid-row:span 2;
-    }
-
-    .gallery-card.wide{
-      grid-column:span 2;
-    }
-
-    .gallery-label{
-      position:absolute;
-      z-index:3;
-      right:22px;
-      bottom:20px;
-      left:22px;
-      color:#ffffff;
-    }
-
-    .gallery-label strong{
-      display:block;
-      font:400 29px/1.07 "DM Serif Display",Georgia,serif;
-      letter-spacing:-.04em;
-    }
-
-    .gallery-label span{
-      display:block;
-      margin-top:8px;
-      color:#ffe6a5;
-      font:500 9px/1.35 "DM Mono",monospace;
-      letter-spacing:.1em;
-      text-transform:uppercase;
-    }
-
-    /* PAGE MOTS */
-
-    .words-section{
-      position:relative;
-      min-height:88svh;
-      display:grid;
-      place-items:center;
-      isolation:isolate;
-      overflow:hidden;
-      padding:90px 20px;
-      color:#ffffff;
-      text-align:center;
-    }
-
-    .words-section::before{
-      content:"";
-      position:absolute;
-      z-index:-2;
-      inset:0;
-      background:
-        linear-gradient(180deg,rgba(17,39,63,.16),rgba(17,39,63,.91)),
-        url("../../images/demo-album-emotion-08.webp") center/cover,
-        #286c73;
-      transform:scale(1.06);
-      animation:wordsMove 21s ease-in-out infinite alternate;
-    }
-
-    .words-section::after{
-      content:"";
-      position:absolute;
-      z-index:-1;
-      inset:0;
-      background:
-        radial-gradient(circle at 50% 43%,rgba(243,201,95,.2),transparent 37%),
-        linear-gradient(90deg,rgba(228,119,80,.1),transparent,rgba(255,232,170,.1));
-    }
-
-    @keyframes wordsMove{
-      from{
-        transform:scale(1.06);
-      }
-
-      to{
-        transform:scale(1.15) translateY(-1%);
-      }
-    }
-
-    .words-inner{
-      width:min(850px,100%);
-    }
-
-    .words-inner .hero-label{
-      justify-content:center;
-      opacity:1;
-      transform:none;
-      animation:none;
-    }
-
-    .words-title{
-      margin:19px 0 0;
-      color:#ffffff;
-      font:400 clamp(55px,9vw,113px)/1.03 "DM Serif Display",Georgia,serif;
-      letter-spacing:-.068em;
-      text-shadow:0 12px 35px rgba(8,28,43,.35);
-    }
-
-    .words-subtitle{
-      max-width:600px;
-      margin:22px auto 0;
-      color:#ffe6a5;
-      font-size:clamp(18px,2.7vw,29px);
-      font-weight:800;
-      line-height:1.4;
-    }
-
-    .words-copy{
-      max-width:560px;
-      margin:21px auto 0;
-      color:#fff9ec;
-      font-size:14px;
-      line-height:1.77;
-    }
-
-    .play-button{
-      width:88px;
-      height:88px;
-      position:relative;
-      display:grid;
-      place-items:center;
-      margin:34px auto 0;
-      border:1px solid rgba(255,255,255,.85);
-      border-radius:50%;
-      color:#ffffff;
-      background:rgba(255,255,255,.08);
-      box-shadow:0 16px 42px rgba(0,0,0,.27);
-      font-size:27px;
-      cursor:pointer;
-      transition:.23s ease;
-    }
-
-    .play-button::before{
-      content:"";
-      position:absolute;
-      inset:-10px;
-      border:1px solid rgba(255,230,165,.54);
-      border-radius:50%;
-      animation:pulse 2.1s ease-out infinite;
-    }
-
-    @keyframes pulse{
-      0%{
-        transform:scale(.76);
-        opacity:1;
-      }
-
-      100%{
-        transform:scale(1.28);
-        opacity:0;
-      }
-    }
-
-    .play-button:hover{
-      transform:scale(1.07);
-      color:var(--navy);
-      background:#ffffff;
-    }
-
-    .words-note{
-      margin:18px 0 0;
-      color:#ffe6a5;
-      font:500 9px/1.4 "DM Mono",monospace;
-      letter-spacing:.13em;
-      text-transform:uppercase;
-    }
-
-    /* FINALE */
-
-    .finale{
-      min-height:100svh;
-      position:relative;
-      display:grid;
-      place-items:center;
-      isolation:isolate;
-      overflow:hidden;
-      color:#ffffff;
-      text-align:center;
-    }
-
-    .finale::before{
-      content:"";
-      position:absolute;
-      z-index:-2;
-      inset:0;
-      background:
-        linear-gradient(180deg,rgba(17,39,63,.52),rgba(17,39,63,.94)),
-        url("../../images/demo-album-emotion-07.webp") center/cover,
-        #286c73;
-      transform:scale(1.06);
-      animation:finalMove 21s ease-in-out infinite alternate;
-    }
-
-    .finale::after{
-      content:"";
-      position:absolute;
-      z-index:-1;
-      inset:0;
-      background:
-        radial-gradient(circle at 50% 45%,rgba(243,201,95,.2),transparent 38%),
-        radial-gradient(circle at 72% 28%,rgba(228,119,80,.15),transparent 29%);
-    }
-
-    @keyframes finalMove{
-      from{
-        transform:scale(1.06);
-      }
-
-      to{
-        transform:scale(1.16) translateY(-1%);
-      }
-    }
-
-    .finale-inner{
-      width:min(880px,calc(100% - 40px));
-    }
-
-    .finale .hero-label{
-      justify-content:center;
-      opacity:1;
-      transform:none;
-      animation:none;
-    }
-
-    .finale-title{
-      margin:20px 0 0;
-      color:#ffffff;
-      font:400 clamp(61px,10vw,130px)/1.02 "DM Serif Display",Georgia,serif;
-      letter-spacing:-.077em;
-      text-shadow:0 12px 36px rgba(8,28,43,.36);
-    }
-
-    .finale-subtitle{
-      max-width:600px;
-      margin:22px auto 0;
-      color:#ffe6a5;
-      font-size:clamp(18px,2.7vw,30px);
-      font-weight:800;
-      line-height:1.4;
-    }
-
-    .finale-copy{
-      max-width:565px;
-      margin:20px auto 0;
-      color:#fff9ec;
-      font-size:14px;
-      line-height:1.75;
-    }
-
-    .finale .button-main{
-      color:var(--navy);
-      background:#ffffff;
-    }
-
-    .finale .button-main:hover{
-      color:#ffffff;
-      background:var(--coral);
-    }
-
-    .finale .button-secondary{
-      border-color:rgba(255,255,255,.5);
-      color:#ffffff;
-      background:rgba(255,255,255,.08);
-    }
-
-    .finale .button-secondary:hover{
-      color:var(--navy);
-      background:#ffffff;
-    }
-
-    .footer{
-      padding:39px 20px;
-      color:#d7e8e8;
-      background:var(--navy);
-      text-align:center;
-    }
-
-    .footer p{
-      margin:0;
-      font:500 9px/1.4 "DM Mono",monospace;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-    }
-
-    .footer a{
-      display:inline-flex;
-      margin-top:15px;
-      color:#ffe6a5;
-      font-size:12px;
-      font-weight:800;
-    }
-
-    /* MODALE PHOTO */
-
-    .modal{
-      position:fixed;
-      z-index:2800;
-      inset:0;
-      display:none;
-      place-items:center;
-      padding:20px;
-      background:rgba(8,23,37,.92);
-      backdrop-filter:blur(14px);
-    }
-
-    .modal.open{
-      display:grid;
-    }
-
-    .modal-dialog{
-      position:relative;
-      width:min(920px,100%);
-      max-height:min(88svh,770px);
-      overflow:auto;
-      background:var(--cream);
-      box-shadow:0 35px 100px rgba(0,0,0,.52);
-    }
-
-    .modal-close{
-      position:absolute;
-      z-index:5;
-      top:16px;
-      right:16px;
-      width:40px;
-      height:40px;
-      display:grid;
-      place-items:center;
-      border:1px solid rgba(255,255,255,.7);
-      border-radius:50%;
-      color:#ffffff;
-      background:rgba(17,39,63,.74);
-      font-size:23px;
-      cursor:pointer;
-    }
-
-    .lightbox-photo{
-      min-height:min(57svh,550px);
-      background:
-        linear-gradient(180deg,rgba(17,39,63,.05),rgba(17,39,63,.36)),
-        var(--modal-image) center/cover,
-        #719b9b;
-    }
-
-    .lightbox-content{
-      padding:clamp(26px,5vw,54px);
-      background:
-        radial-gradient(circle at 91% 10%,rgba(243,201,95,.24),transparent 28%),
-        var(--cream);
-    }
-
-    .lightbox-content .section-label{
-      color:var(--coral);
-    }
-
-    .lightbox-content h2{
-      margin:18px 0 0;
-      color:var(--ink);
-      font:400 clamp(42px,6vw,67px)/1.04 "DM Serif Display",Georgia,serif;
-      letter-spacing:-.06em;
-    }
-
-    .lightbox-content p{
-      max-width:620px;
-      margin:17px 0 0;
-      color:var(--ink-soft);
-      font-size:14px;
-      line-height:1.75;
-    }
-
-    .words-modal{
-      position:relative;
-      min-height:min(73svh,640px);
-      display:grid;
-      place-items:center;
-      overflow:hidden;
-      padding:76px 24px 45px;
-      color:#ffffff;
-      text-align:center;
-      background:
-        linear-gradient(135deg,rgba(17,39,63,.34),rgba(17,39,63,.92)),
-        url("../../images/demo-album-emotion-08.webp") center/cover,
-        #286c73;
-    }
-
-    .words-modal::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 50% 43%,rgba(243,201,95,.2),transparent 37%),
-        linear-gradient(180deg,rgba(17,39,63,.04),rgba(17,39,63,.78));
-    }
-
-    .words-modal-inner{
-      position:relative;
-      z-index:1;
-      width:min(630px,100%);
-    }
-
-    .words-window{
-      position:relative;
-      width:min(390px,100%);
-      aspect-ratio:16 / 9;
-      margin:0 auto 30px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.62);
-      background:
-        linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px) 0 0/27px 100%,
-        linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px) 0 0/100% 27px,
-        rgba(17,39,63,.5);
-      box-shadow:0 20px 50px rgba(0,0,0,.28);
-    }
-
-    .words-window::before{
-      content:"";
-      position:absolute;
-      top:0;
-      left:-35%;
-      width:34%;
-      height:100%;
-      background:linear-gradient(90deg,transparent,rgba(255,231,168,.78),transparent);
-      filter:blur(5px);
-      animation:scanLine 1.7s linear infinite;
-    }
-
-    @keyframes scanLine{
-      to{
-        transform:translateX(520%);
-      }
-    }
-
-    .words-window strong{
-      position:absolute;
-      top:50%;
-      left:50%;
-      color:#fff3cc;
-      font:400 69px/1 "DM Serif Display",Georgia,serif;
-      letter-spacing:-.1em;
-      text-shadow:4px 0 var(--coral),-4px 0 var(--yellow);
-      transform:translate(-50%,-50%);
-    }
-
-    .words-modal h2{
-      margin:16px 0 0;
-      color:#ffffff;
-      font:400 clamp(44px,7vw,73px)/1.05 "DM Serif Display",Georgia,serif;
-      letter-spacing:-.06em;
-    }
-
-    .words-modal .modal-subtitle{
-      margin:18px auto 0;
-      color:#ffe6a5;
-      font-size:clamp(17px,2.6vw,27px);
-      font-weight:800;
-      line-height:1.4;
-    }
-
-    .words-modal .modal-copy{
-      max-width:520px;
-      margin:19px auto 0;
-      color:#fff9ec;
-      font-size:14px;
-      line-height:1.73;
-    }
-
-    .loading-line{
-      width:min(300px,100%);
-      height:3px;
-      overflow:hidden;
-      margin:27px auto 0;
-      background:rgba(255,255,255,.2);
-    }
-
-    .loading-line span{
-      display:block;
-      width:42%;
-      height:100%;
-      background:linear-gradient(90deg,transparent,var(--yellow),#fff3cc,transparent);
-      animation:loadingMove 1.45s ease-in-out infinite;
-    }
-
-    @keyframes loadingMove{
-      from{
-        transform:translateX(-120%);
-      }
-
-      to{
-        transform:translateX(310%);
-      }
-    }
-
-    .loading-note{
-      margin:12px 0 0;
-      color:#ffe6a5;
-      font:500 9px/1.4 "DM Mono",monospace;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-    }
-
-    .toast{
-      position:fixed;
-      z-index:3100;
-      left:50%;
-      bottom:24px;
-      max-width:calc(100% - 30px);
-      padding:12px 17px;
-      border:1px solid rgba(255,255,255,.32);
-      border-radius:999px;
-      color:#ffffff;
-      background:rgba(17,39,63,.97);
-      box-shadow:0 15px 40px rgba(0,0,0,.3);
-      font-size:12px;
-      transform:translate(-50%,24px);
-      opacity:0;
-      pointer-events:none;
-      transition:.28s ease;
-    }
-
-    .toast.show{
-      transform:translate(-50%,0);
-      opacity:1;
-    }
-
-    @media(max-width:900px){
-      .story-name{
-        display:none;
-      }
-
-      .hero-coin{
-        width:48vw;
-        right:-3%;
-        top:19%;
-      }
-
-      .chapter-grid,
-      .timeline-head,
-      .gallery-head{
+      color:#526169 !important;
+      font-size:11px;
+      line-height:1.55;
+    }
+
+    @media(max-width:980px){
+      .ae-hero-grid,
+      .ae-story-grid,
+      .ae-form-shell{
         grid-template-columns:1fr;
       }
 
-      .chapter-stack{
-        max-width:670px;
-        width:100%;
-        margin:auto;
+      .ae-hero-copy{
+        max-width:760px;
+      }
+
+      .ae-hero-visual{
+        min-height:430px;
       }
     }
 
-    @media(max-width:650px){
-      .timeline-row{
-        grid-template-columns:87px 1fr;
-        gap:16px;
+    @media(max-width:760px){
+      .ae-compare,
+      .ae-offers{
+        grid-template-columns:1fr;
       }
 
-      .timeline-thumb{
-        grid-column:2;
-        width:100%;
-        max-width:255px;
+      .ae-hero{
+        padding-top:92px;
       }
     }
 
-    @media(max-width:580px){
-      .nav{
-        width:calc(100% - 24px);
-        min-height:64px;
-        gap:8px;
+    @media(max-width:560px){
+      .ae-hero h1{
+        font-size:56px;
       }
 
-      .brand-mark{
-        width:33px;
-        height:33px;
-        flex-basis:33px;
+      .ae-hero h1 span{
+        font-size:27px;
+      }
+
+      .ae-hero-lead{
         font-size:14px;
       }
 
-      .brand-title{
-        max-width:138px;
-        overflow:hidden;
+      .ae-hero-actions,
+      .ae-hero-actions .ae-button{
+        width:100%;
+      }
+
+      .ae-hero-actions .ae-button{
+        justify-content:center;
+      }
+
+      .ae-hero-visual{
+        min-height:405px;
+      }
+
+      .ae-book{
+        width:225px;
+      }
+
+      .ae-float{
+        width:165px;
+        padding:13px;
+      }
+
+      .ae-float--top{
+        top:19px;
+      }
+
+      .ae-float--bottom{
+        right:-3px;
+        bottom:18px;
+      }
+
+      .ae-float strong{
+        font-size:12px;
+      }
+
+      .ae-float p{
         font-size:10px;
-        letter-spacing:.1em;
-        text-overflow:ellipsis;
-        white-space:nowrap;
       }
 
-      .brand-sub,
-      .return-link{
-        display:none;
+      .ae-story-photos{
+        min-height:390px;
       }
 
-      .nav-actions{
-        gap:6px;
+      .ae-story-stamp{
+        width:84px;
+        height:84px;
+        left:52%;
+        font-size:8px;
       }
 
-      .round-button{
-        width:34px;
-        height:34px;
-        flex-basis:34px;
+      .ae-form-shell{
+        padding:29px 18px;
       }
 
-      .entry{
-        padding:15px;
-      }
-
-      .entry-book{
-        padding:25px;
-        border-width:7px;
-      }
-
-      .entry-book::before{
-        left:21px;
-      }
-
-      .entry-book-inner{
-        right:26px;
-        bottom:28px;
-        left:39px;
-      }
-
-      .entry-book-inner h1{
-        font-size:59px;
-      }
-
-      .entry-book-inner p{
-        font-size:12px;
-      }
-
-      .entry-message{
-        max-width:390px;
-        margin-top:19px;
-        font-size:12px;
-      }
-
-      .hero{
-        min-height:92svh;
-        padding:102px 0 44px;
-      }
-
-      .hero-title{
-        font-size:66px;
-      }
-
-      .hero-subtitle{
-        max-width:390px;
-        margin-top:16px;
-        font-size:21px;
-        line-height:1.35;
-      }
-
-      .hero-copy{
-        max-width:340px;
-        margin-top:18px;
-        font-size:13px;
-      }
-
-      .hero-coin{
-        width:76vw;
-        top:25%;
-        right:-20%;
-      }
-
-      .scroll-hint{
-        display:none;
-      }
-
-      .section,
-      .timeline-section,
-      .gallery-section{
-        padding:80px 0;
-      }
-
-      .section-title{
-        font-size:52px;
-      }
-
-      .section-subtitle{
-        margin-top:15px;
-        font-size:20px;
-      }
-
-      .chapter-stack{
-        min-height:410px;
-      }
-
-      .chapter-caption{
-        width:155px;
-        padding:12px;
-        right:4%;
-        top:45%;
-        font-size:11px;
-      }
-
-      .chapter-facts{
+      .ae-form{
         grid-template-columns:1fr;
       }
 
-      .timeline-age{
-        font-size:23px;
+      .ae-field--full{
+        grid-column:auto;
       }
 
-      .timeline-text{
-        padding-left:21px;
-      }
-
-      .timeline-text h3{
-        font-size:28px;
-      }
-
-      .quote-section{
-        padding:90px 0;
-      }
-
-      .quote p{
-        font-size:46px;
-        line-height:1.17;
-      }
-
-      .quote footer{
-        margin-top:24px;
-        font-size:20px;
-        line-height:1.45;
-      }
-
-      .gallery{
-        grid-template-columns:1fr 1fr;
-        grid-auto-rows:180px;
-        gap:9px;
-      }
-
-      .gallery-card.tall{
-        grid-row:span 2;
-      }
-
-      .gallery-card.wide{
-        grid-column:span 2;
-      }
-
-      .gallery-label strong{
-        font-size:25px;
-      }
-
-      .words-section{
-        min-height:77svh;
-      }
-
-      .words-title{
-        font-size:65px;
-      }
-
-      .words-subtitle{
-        font-size:21px;
-      }
-
-      .finale-title{
-        font-size:72px;
-      }
-
-      .finale-subtitle{
-        font-size:21px;
-      }
-
-      .button-row{
-        width:100%;
+      .ae-submit-row{
+        align-items:stretch;
         flex-direction:column;
       }
 
-      .button-row .button-main,
-      .button-row .button-secondary{
+      .ae-submit{
         width:100%;
       }
     }
-
-    @media(prefers-reduced-motion:reduce){
-      html{
-        scroll-behavior:auto;
-      }
-
-      *,
-      *::before,
-      *::after{
-        animation-duration:.01ms!important;
-        animation-iteration-count:1!important;
-        transition-duration:.01ms!important;
-      }
-    }
   </style></head><body>
-  <a class="skip" href="#contenu">Aller au contenu</a>  <div class="progress" aria-hidden="true">
-    <span data-progress></span>
-  </div>  <section class="entry" data-entry>
-    <div class="entry-sun" aria-hidden="true"></div><div class="entry-stage">
-  <p class="entry-label">Album Émotion · Louise</p>
+  <a class="skip" href="#contenu">Aller au contenu</a>  <header class="site-header">
+    <div class="wrap nav">
+      <a class="wordmark" href="index.html" aria-label="Accueil MakeYourStory">
+        <span class="mark" aria-hidden="true">M</span>
+        <span>
+          <span class="wordmark-title">MAKE YOUR STORY</span>
+          <span class="wordmark-sub">FAIRE-PARTS &amp; ALBUMS DIGITAUX</span>
+        </span>
+      </a>  <nav class="main-nav" aria-label="Navigation principale">
+    <a href="index.html">Accueil</a>
+    <a href="faire-parts.html">Faire-parts</a>
+    <a href="album-emotion.html" aria-current="page">Album Émotion</a>
+    <a href="tarifs.html">Tarifs</a>
+    <a href="comment-ca-marche.html">Comment ça marche</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contact.html">Contact</a>
+  </nav>
 
-  <article class="entry-book">
-    <div class="entry-book-inner">
-      <small>Tome 01</small>
-      <h1>Louise</h1>
-      <p>Trois ans de petites choses devenues immenses.</p>
-    </div>
-  </article>
-
-  <p class="entry-message" data-entry-message>
-    La première page annonçait son arrivée. Celle-ci raconte tous les moments qui ont suivi.
-  </p>
-
-  <button class="entry-button" type="button" data-enter>
-    Ouvrir l’album <span aria-hidden="true">→</span>
-  </button>
-
-  <p class="entry-note">Une histoire à revivre, puis à transmettre</p>
-</div>
-
-  </section>  <header class="topbar" data-header>
-    <nav class="nav">
-      <a class="brand" href="../../index.html" aria-label="Retour à MakeYourStory">
-        <span class="brand-mark" aria-hidden="true">M</span>    <span>
-      <span class="brand-title">MAKE YOUR STORY</span>
-      <span class="brand-sub">Album Émotion</span>
-    </span>
+  <a class="nav-cta" href="faire-parts.html#occasions">
+    Créer mon faire-part <span aria-hidden="true">♡</span>
   </a>
 
-  <div class="nav-actions">
-    <span class="story-name">Louise · 3 ans</span>
+  <button class="nav-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" data-menu-toggle>☰</button>
+</div>
 
-    <button class="round-button" type="button" aria-label="Couper ou remettre la musique" aria-pressed="false" data-sound>♪</button>
+<div class="wrap mobile-menu" data-mobile-menu>
+  <a href="index.html">Accueil</a>
+  <a href="faire-parts.html">Faire-parts</a>
+  <a href="album-emotion.html" aria-current="page">Album Émotion</a>
+  <a href="tarifs.html">Tarifs</a>
+  <a href="comment-ca-marche.html">Comment ça marche</a>
+  <a href="faq.html">FAQ</a>
+  <a href="contact.html">Contact</a>
+  <a href="professionnels.html">Professionnels</a>
+  <a class="mobile-primary" href="faire-parts.html#occasions">Créer mon faire-part</a>
+</div>
 
-    <button class="round-button" type="button" aria-label="Partager cet album" data-share>↗</button>
+  </header>  <main id="contenu" class="ae-page">
+    <section class="ae-hero">
+      <div class="wrap ae-hero-grid">
+        <div class="ae-hero-copy">
+          <p class="ae-label">Après l’annonce, l’histoire continue</p>      <h1>
+        ALBUM
+        <span>Émotion.</span>
+      </h1>
 
-    <a class="return-link" href="../../album-emotion.html">Retour</a>
-  </div>
-</nav>
-
-  </header>  <audio id="story-audio" preload="auto" loop>
-    <source src="../../audio/demo-album-emotion.mp3" type="audio/mpeg">
-  </audio>  <main id="contenu">
-    <section class="hero" data-hero>
-      <div class="hero-coin" aria-hidden="true"></div>  <div class="shell">
-    <div class="hero-inner">
-      <p class="hero-label">Album Émotion · 2023 — 2026</p>
-
-      <h1 class="hero-title">Louise</h1>
-
-      <p class="hero-subtitle">1 096 jours de toi.</p>
-
-      <p class="hero-copy">
-        Une collection de petits moments qui n’avaient l’air de rien sur le moment, mais qui sont aujourd’hui tout ce qu’on a envie de garder.
+      <p class="ae-hero-lead">
+        Le faire-part annonce un moment. L’Album Émotion raconte tout ce qui est venu après :
+        les photos, les petits détails, les souvenirs et les émotions qui méritent plus qu’une simple galerie.
       </p>
 
-      <div class="hero-details">
-        <span>20 photos</span>
-        <span>3 années</span>
-        <span>Une histoire à partager</span>
+      <div class="ae-hero-actions">
+        <a class="ae-button ae-button--coral" href="#formulaire">
+          Créer mon Album Émotion <span aria-hidden="true">→</span>
+        </a>
+
+        <a class="ae-button ae-button--ghost" href="stories/demo/album-emotion.html">
+          Ouvrir la démo de Louise <span aria-hidden="true">▷</span>
+        </a>
+      </div>
+
+      <div class="ae-hero-meta">
+        <span>1 à 20 photos</span>
+        <span>Lien à partager</span>
+        <span>QR Code inclus</span>
+      </div>
+    </div>
+
+    <div class="ae-hero-visual" aria-label="Aperçu d’un Album Émotion sur téléphone">
+      <div class="ae-orbit" aria-hidden="true"></div>
+
+      <div class="ae-float ae-float--top">
+        <small>Avant</small>
+        <strong>Le faire-part.</strong>
+        <p>Quelques secondes pour annoncer une grande nouvelle.</p>
+      </div>
+
+      <div class="ae-book" aria-hidden="true">
+        <div class="ae-book-content">
+          <small>Album Émotion</small>
+          <strong>Louise</strong>
+          <p>Trois ans de petites choses devenues immenses.</p>
+        </div>
+      </div>
+
+      <div class="ae-float ae-float--bottom">
+        <small>Après</small>
+        <strong>L’album vivant.</strong>
+        <p>Une histoire photo plus longue, à ouvrir et transmettre encore.</p>
       </div>
     </div>
   </div>
-
-  <div class="scroll-hint">Feuilleter</div>
 </section>
 
-<section class="section">
-  <div class="shell chapter-grid">
-    <div class="chapter-stack reveal">
-      <button
-        class="chapter-photo chapter-photo--one"
-        type="button"
-        style="--photo:url('../../images/demo-album-emotion-01.webp')"
-        data-open-photo
-        data-photo="../../images/demo-album-emotion-01.webp"
-        data-title="Les premiers jours"
-        data-text="Quelques semaines après l’annonce, le monde était devenu beaucoup plus petit : des siestes, des bras, des sourires et une nouvelle façon de regarder le temps.">
-      </button>
+<section class="ae-section">
+  <div class="wrap">
+    <div class="ae-intro">
+      <p class="ae-label">Deux créations, deux rôles</p>
 
-      <button
-        class="chapter-photo chapter-photo--two"
-        type="button"
-        style="--photo:url('../../images/demo-album-emotion-02.webp')"
-        data-open-photo
-        data-photo="../../images/demo-album-emotion-02.webp"
-        data-title="Toujours près de nous"
-        data-text="Les journées se sont remplies de gestes minuscules, de petites habitudes et de ces regards qui font oublier tout le reste.">
-      </button>
+      <h2>
+        L’ANNONCE OUVRE LA PORTE.
+        <span>L’album fait vivre le souvenir.</span>
+      </h2>
 
-      <div class="chapter-caption">Les plus beaux souvenirs ne préviennent jamais avant d’arriver.</div>
-    </div>
-
-    <article class="chapter-card reveal" style="--delay:.1s">
-      <p class="section-label" data-number="01">Le premier chapitre</p>
-
-      <h2 class="section-title">Les premiers jours.</h2>
-
-      <p class="section-subtitle">Quand chaque détail devenait un événement.</p>
-
-      <p class="section-copy">
-        C’était l’époque des nuits trop courtes, des premiers sourires et des photos envoyées par dizaines. Chaque journée semblait minuscule ; aujourd’hui, elles racontent le début de tout.
-      </p>
-
-      <div class="chapter-facts">
-        <div class="chapter-fact">
-          <small>Premier mot</small>
-          <strong>Encore</strong>
-        </div>
-
-        <div class="chapter-fact">
-          <small>Premier fou rire</small>
-          <strong>Dans le bain</strong>
-        </div>
-
-        <div class="chapter-fact">
-          <small>Meilleur endroit</small>
-          <strong>Les bras de maman</strong>
-        </div>
-
-        <div class="chapter-fact">
-          <small>Super pouvoir</small>
-          <strong>Faire fondre tout le monde</strong>
-        </div>
-      </div>
-
-      <div class="button-row">
-        <button class="button-main" type="button" data-open-photo data-photo="../../images/demo-album-emotion-01.webp" data-title="Les premiers jours" data-text="Quelques semaines après l’annonce, le monde était devenu beaucoup plus petit : des siestes, des bras, des sourires et une nouvelle façon de regarder le temps.">
-          Ouvrir le souvenir
-        </button>
-
-        <button class="button-secondary" type="button" data-share>
-          Partager l’album
-        </button>
-      </div>
-    </article>
-  </div>
-</section>
-
-<section class="timeline-section">
-  <div class="shell">
-    <div class="timeline-head">
-      <div class="reveal">
-        <p class="section-label" data-number="02">Le temps passe</p>
-
-        <h2 class="section-title">Mais certaines choses restent.</h2>
-
-        <p class="section-subtitle">Un album pour retrouver la trace de chaque étape.</p>
-      </div>
-
-      <p class="section-copy reveal" style="--delay:.12s">
-        L’Album Émotion ne montre pas seulement les plus belles images. Il donne à chaque photo une place dans une histoire : avant, pendant et après.
+      <p>
+        Les deux se partagent de la même manière, par SMS, WhatsApp, lien ou QR Code.
+        Mais l’intention change : le faire-part informe et touche rapidement ; l’Album Émotion prend le temps de raconter.
       </p>
     </div>
 
-    <div class="timeline">
-      <article class="timeline-row reveal">
-        <div class="timeline-age">
-          6 mois
-          <span>Décembre 2023</span>
-        </div>
+    <div class="ae-compare">
+      <article class="ae-compare-card">
+        <span class="ae-card-number">01</span>
 
-        <div class="timeline-text">
-          <h3>La grande découverte.</h3>
-          <p>Les premiers objets attrapés, les grimaces incompréhensibles et cette envie de tout regarder comme si le monde venait d’être inventé.</p>
-        </div>
+        <h3>
+          Le faire-part digital
+          <span>Pour annoncer.</span>
+        </h3>
 
-        <button class="timeline-thumb" type="button" style="--thumb:url('../../images/demo-album-emotion-03.webp')" data-open-photo data-photo="../../images/demo-album-emotion-03.webp" data-title="La grande découverte" data-text="Il suffisait d’un rayon de soleil sur un mur ou d’un jouet à attraper pour que toute la journée devienne une aventure."></button>
+        <p>
+          Une création courte et forte pour présenter une naissance, inviter à un mariage, annoncer une fête ou partager une information importante.
+        </p>
+
+        <div class="ae-mini-list">
+          <div><b>✓</b><span>Un moment à annoncer.</span></div>
+          <div><b>✓</b><span>Les informations essentielles.</span></div>
+          <div><b>✓</b><span>Une émotion immédiate.</span></div>
+        </div>
       </article>
 
-      <article class="timeline-row reveal" style="--delay:.08s">
-        <div class="timeline-age">
-          1 an
-          <span>Juin 2024</span>
-        </div>
+      <article class="ae-compare-card ae-compare-card--dark">
+        <span class="ae-card-number">02</span>
 
-        <div class="timeline-text">
-          <h3>Les premiers pas.</h3>
-          <p>Un pas, une chute, deux mains tendues. Puis l’envie de ne plus jamais s’arrêter et de partir découvrir toutes les pièces de la maison.</p>
-        </div>
+        <h3>
+          L’Album Émotion
+          <span>Pour raconter la suite.</span>
+        </h3>
 
-        <button class="timeline-thumb" type="button" style="--thumb:url('../../images/demo-album-emotion-04.webp')" data-open-photo data-photo="../../images/demo-album-emotion-04.webp" data-title="Les premiers pas" data-text="Le salon est devenu une piste d’exploration. Chaque meuble avait quelque chose à raconter, chaque couloir était une nouvelle expédition."></button>
+        <p>
+          Une histoire digitale plus longue, construite autour de vos photos, de vos mots, de vos dates et de tous les détails qui donnent du relief aux souvenirs.
+        </p>
+
+        <div class="ae-mini-list">
+          <div><b>✓</b><span>Une sélection de 1 à 20 photos.</span></div>
+          <div><b>✓</b><span>Des chapitres, des légendes et un fil émotionnel.</span></div>
+          <div><b>✓</b><span>Un lien à garder et à partager sans limite.</span></div>
+        </div>
       </article>
-
-      <article class="timeline-row reveal" style="--delay:.16s">
-        <div class="timeline-age">
-          2 ans
-          <span>Juin 2025</span>
-        </div>
-
-        <div class="timeline-text">
-          <h3>Le caractère arrive.</h3>
-          <p>Des opinions sur tout, de grandes phrases, des chansons inventées et une personnalité qui prend de plus en plus de place dans la maison.</p>
-        </div>
-
-        <button class="timeline-thumb" type="button" style="--thumb:url('../../images/demo-album-emotion-05.webp')" data-open-photo data-photo="../../images/demo-album-emotion-05.webp" data-title="Le caractère arrive" data-text="On ne savait pas encore qu’une toute petite personne pouvait avoir autant d’idées, de détermination et de choses très importantes à dire."></button>
-      </article>
-
-      <article class="timeline-row reveal" style="--delay:.24s">
-        <div class="timeline-age">
-          3 ans
-          <span>Juin 2026</span>
-        </div>
-
-        <div class="timeline-text">
-          <h3>Déjà tellement de souvenirs.</h3>
-          <p>Les vacances, les anniversaires, les repas de famille et ces instants simples qui, quelques semaines plus tard, deviennent ceux qu’on cherche en premier.</p>
-        </div>
-
-        <button class="timeline-thumb" type="button" style="--thumb:url('../../images/demo-album-emotion-06.webp')" data-open-photo data-photo="../../images/demo-album-emotion-06.webp" data-title="Déjà tellement de souvenirs" data-text="Il y a les grandes journées qu’on prépare. Et puis il y a tous les autres instants, ceux qui deviennent les plus précieux sans qu’on s’en rende compte."></button>
-      </article>
-    </div>
-
-    <div class="button-row reveal" style="--delay:.17s">
-      <button class="button-main" type="button" data-open-photo data-photo="../../images/demo-album-emotion-07.webp" data-title="Un dimanche parmi tant d’autres" data-text="Rien d’extraordinaire sur le papier. Juste une journée ensemble, un peu de lumière, des rires et la sensation qu’il n’y avait nulle part ailleurs où être.">
-        Voir un souvenir au hasard
-      </button>
-
-      <button class="button-secondary" type="button" data-copy-link>
-        Copier le lien
-      </button>
-
-      <button class="button-secondary" type="button" data-share>
-        Partager l’album
-      </button>
     </div>
   </div>
 </section>
 
-<section class="quote-section">
-  <blockquote class="quote reveal">
-    <p>« Les petites choses deviennent les plus grands souvenirs. »</p>
-    <footer>On ne les photographie pas pour les garder. On les garde parce qu’on les a photographiées.</footer>
-  </blockquote>
+<section class="ae-section ae-story">
+  <div class="wrap ae-story-grid">
+    <div class="ae-story-photos" aria-label="Aperçu de photos d’un Album Émotion">
+      <div class="ae-story-photo ae-story-photo--one" style="--ae-photo:url('images/demo-album-emotion-01.webp')"></div>
+      <div class="ae-story-photo ae-story-photo--two" style="--ae-photo:url('images/demo-album-emotion-02.webp')"></div>
+      <div class="ae-story-stamp">Louise<br>3 ans<br>et déjà<br>tant de choses</div>
+    </div>
+
+    <div class="ae-story-copy">
+      <p class="ae-label">La suite, simplement</p>
+
+      <h2>
+        LOUISE A GRANDI.
+        <span>Son histoire aussi.</span>
+      </h2>
+
+      <p>
+        Son faire-part annonçait son arrivée. Quelques années plus tard, les premières grimaces, les premiers pas, les vacances, les anniversaires et les moments de famille méritent leur propre espace.
+      </p>
+
+      <p>
+        L’Album Émotion transforme ces images en une création plus vivante : une couverture, des pages à faire défiler, des mots, des instants forts et une fin à partager avec tous ceux qui l’aiment.
+      </p>
+
+      <a class="ae-button" href="stories/demo/album-emotion.html">
+        Découvrir l’Album de Louise <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
 </section>
 
-<section class="gallery-section">
-  <div class="shell">
-    <div class="gallery-head">
-      <div class="reveal">
-        <p class="section-label" data-number="03">Les pages préférées</p>
+<section class="ae-section">
+  <div class="wrap">
+    <div class="ae-offers-head">
+      <p class="ae-label">Deux formats, la même émotion</p>
 
-        <h2 class="section-title">Tout ce qui mérite de rester.</h2>
+      <h2>
+        CHOISISSEZ LE RYTHME
+        <span>de votre histoire.</span>
+      </h2>
 
-        <p class="section-subtitle">Des images, des détails et une histoire qu’on a envie de revoir.</p>
-      </div>
-
-      <p class="section-copy reveal" style="--delay:.12s">
-        Une galerie devient plus forte lorsqu’elle est construite comme un récit. Chaque photo a une raison d’être là, une ambiance et une émotion à faire revenir.
+      <p>
+        Chaque album est créé à partir de votre sélection de photos et de vos indications. L’objectif n’est pas d’empiler des images : c’est de composer un souvenir cohérent, beau et personnel.
       </p>
     </div>
 
-    <div class="gallery">
-      <button class="gallery-card tall reveal" type="button" style="--image:url('../../images/demo-album-emotion-01.webp')" data-open-photo data-photo="../../images/demo-album-emotion-01.webp" data-title="Le tout début" data-text="Les premières pages sont souvent les plus douces. Elles racontent une vie qui commence, sans savoir encore tout ce qu’elle va bouleverser.">
-        <span class="gallery-label">
-          <strong>Le tout début.</strong>
-          <span>La première page de l’histoire.</span>
-        </span>
-      </button>
+    <div class="ae-offers">
+      <article class="ae-offer">
+        <span class="ae-offer-kicker">Album Émotion Mini</span>
 
-      <button class="gallery-card reveal" type="button" style="--image:url('../../images/demo-album-emotion-03.webp');--delay:.08s" data-open-photo data-photo="../../images/demo-album-emotion-03.webp" data-title="Les petites mains" data-text="Des mains minuscules qui attrapent le monde, une découverte après l’autre.">
-        <span class="gallery-label">
-          <strong>Les détails.</strong>
-          <span>Ceux qu’on oublie trop vite.</span>
-        </span>
-      </button>
+        <h3>1 à 10<br>photos</h3>
 
-      <button class="gallery-card reveal" type="button" style="--image:url('../../images/demo-album-emotion-04.webp');--delay:.16s" data-open-photo data-photo="../../images/demo-album-emotion-04.webp" data-title="La liberté" data-text="Le jour où les pas deviennent plus assurés, les journées deviennent plus grandes.">
-        <span class="gallery-label">
-          <strong>La liberté.</strong>
-          <span>Prendre le monde de vitesse.</span>
-        </span>
-      </button>
+        <span class="ae-offer-price">49,90 €</span>
 
-      <button class="gallery-card wide reveal" type="button" style="--image:url('../../images/demo-album-emotion-07.webp');--delay:.12s" data-open-photo data-photo="../../images/demo-album-emotion-07.webp" data-title="La famille" data-text="Les photos les plus importantes ne sont pas toujours les plus parfaites. Ce sont celles dans lesquelles on reconnaît vraiment ce qu’on ressentait.">
-        <span class="gallery-label">
-          <strong>La famille.</strong>
-          <span>Le décor de toutes les grandes histoires.</span>
-        </span>
-      </button>
+        <p>
+          Pour une naissance, un week-end, une séance photo, un premier anniversaire ou une sélection de souvenirs particulièrement forts.
+        </p>
+
+        <div class="ae-offer-list">
+          <div><b>→</b><span>Une couverture personnalisée.</span></div>
+          <div><b>→</b><span>Vos photos et vos mots.</span></div>
+          <div><b>→</b><span>Lien à partager et QR Code inclus.</span></div>
+        </div>
+      </article>
+
+      <article class="ae-offer ae-offer--featured">
+        <span class="ae-offer-kicker">Album Émotion Complet</span>
+
+        <h3>10 à 20<br>photos</h3>
+
+        <span class="ae-offer-price">69,90 €</span>
+
+        <p>
+          Pour raconter davantage : une année, une famille, un mariage, une évolution, un voyage ou une grande série de souvenirs.
+        </p>
+
+        <div class="ae-offer-list">
+          <div><b>→</b><span>Une narration plus riche et plus longue.</span></div>
+          <div><b>→</b><span>Davantage de chapitres et de légendes.</span></div>
+          <div><b>→</b><span>Une expérience pensée pour être revécue.</span></div>
+        </div>
+      </article>
     </div>
   </div>
 </section>
 
-<section class="words-section">
-  <div class="words-inner reveal">
-    <p class="hero-label">Une page qui peut contenir bien plus que des photos</p>
+<section class="ae-section ae-section--tight" id="formulaire">
+  <div class="wrap">
+    <div class="ae-form-shell">
+      <div class="ae-form-copy">
+        <p class="ae-label">Créer votre Album Émotion</p>
 
-    <h2 class="words-title">Les mots.</h2>
+        <h2>
+          VOS PHOTOS.
+          <span>Leur histoire.</span>
+        </h2>
 
-    <p class="words-subtitle">Ceux qu’on ne pense pas toujours à écrire au bon moment.</p>
+        <p>
+          Partagez vos photos via un lien, indiquez le titre, l’ambiance et les souvenirs importants. L’album est ensuite composé comme une histoire à ouvrir sur téléphone.
+        </p>
 
-    <p class="words-copy">
-      Un Album Émotion peut garder une phrase, une lettre, une anecdote ou un message à relire plus tard. Les images font revenir les visages ; les mots font revenir tout le reste.
-    </p>
+        <div class="ae-form-copy-list">
+          <div><b>1</b><span>Choisissez la formule correspondant au nombre de photos.</span></div>
+          <div><b>2</b><span>Envoyez un lien Google Drive, Dropbox, WeTransfer ou équivalent.</span></div>
+          <div><b>3</b><span>Recevez un lien simple à transmettre à vos proches.</span></div>
+        </div>
+      </div>
 
-    <button class="play-button" type="button" data-open-words aria-label="Ouvrir une page de mots">▷</button>
+      <section class="ae-form-panel" aria-labelledby="album-form-title">
+        <p class="ae-label">Votre demande</p>
 
-    <p class="words-note">Un album vivant, pas une simple suite de photos.</p>
-  </div>
-</section>
+        <h2 class="ae-form-title" id="album-form-title">
+          L’ALBUM COMMENCE ICI.
+          <span>Quelques informations suffisent.</span>
+        </h2>
 
-<section class="finale">
-  <div class="finale-inner reveal">
-    <p class="hero-label">Album Émotion · Louise</p>
+        <p class="ae-form-intro">
+          Le formulaire permet de préparer votre album. Les éléments, le délai et les modalités de règlement sont confirmés avant réalisation.
+        </p>
 
-    <h2 class="finale-title">À revivre.<br>À transmettre.</h2>
+        <form class="ae-form" action="https://formsubmit.co/basalteweb@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Demande Album Émotion · MakeYourStory">
+          <input type="hidden" name="_next" value="https://makeyourstory.fr/merci.html">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="Produit" value="Album Émotion">
+          <input type="text" name="_honey" style="display:none">
 
-    <p class="finale-subtitle">Et à garder tout près, pour les jours où l’on voudra se souvenir.</p>
+          <div class="ae-field">
+            <label for="al-name">Prénom et nom *</label>
+            <input id="al-name" type="text" name="Client" required autocomplete="name">
+          </div>
 
-    <p class="finale-copy">
-      Le même geste que pour le faire-part : un lien envoyé en quelques secondes. Mais cette fois, ce lien ouvre plusieurs années de moments qu’on ne veut pas laisser disparaître.
-    </p>
+          <div class="ae-field">
+            <label for="al-email">E-mail *</label>
+            <input id="al-email" type="email" name="Email" required autocomplete="email">
+          </div>
 
-    <div class="button-row" style="justify-content:center">
-      <button class="button-main" type="button" data-share>
-        Partager l’album <span aria-hidden="true">→</span>
-      </button>
+          <div class="ae-field">
+            <label for="al-phone">Téléphone *</label>
+            <input id="al-phone" type="tel" name="Téléphone" required autocomplete="tel">
+          </div>
 
-      <button class="button-secondary" type="button" data-whatsapp>
-        Envoyer sur WhatsApp
-      </button>
+          <div class="ae-field">
+            <label for="al-offer">Formule choisie *</label>
+            <select id="al-offer" name="Offre choisie" required>
+              <option value="">Choisir</option>
+              <option>Album Émotion Mini · 1 à 10 photos · 49,90 €</option>
+              <option>Album Émotion Complet · 10 à 20 photos · 69,90 €</option>
+            </select>
+          </div>
 
-      <button class="button-secondary" type="button" data-copy-link>
-        Copier le lien
-      </button>
+          <div class="ae-field">
+            <label for="al-title">Titre de l’album *</label>
+            <input id="al-title" type="text" name="Titre de l’album" required placeholder="Ex. Louise, trois ans de petites choses">
+          </div>
+
+          <div class="ae-field">
+            <label for="al-occasion">Moment raconté *</label>
+            <select id="al-occasion" name="Moment raconté" required>
+              <option value="">Choisir</option>
+              <option>Naissance et premiers mois</option>
+              <option>Anniversaire ou enfance</option>
+              <option>Mariage</option>
+              <option>Famille</option>
+              <option>Voyage</option>
+              <option>Hommage</option>
+              <option>Autre histoire personnelle</option>
+            </select>
+          </div>
+
+          <div class="ae-field">
+            <label for="al-period">Période ou date importante</label>
+            <input id="al-period" type="text" name="Période ou date" placeholder="Ex. 2023 à 2026">
+          </div>
+
+          <div class="ae-field">
+            <label for="al-style">Ambiance souhaitée</label>
+            <select id="al-style" name="Ambiance">
+              <option value="">Choisir</option>
+              <option>Douce et lumineuse</option>
+              <option>Chaleureuse et familiale</option>
+              <option>Élégante et intemporelle</option>
+              <option>Colorée et joyeuse</option>
+              <option>Naturelle et authentique</option>
+              <option>Je préfère être conseillé(e)</option>
+            </select>
+          </div>
+
+          <div class="ae-field ae-field--full">
+            <label for="al-photos">Lien de partage de vos photos *</label>
+            <input id="al-photos" type="text" name="Lien des photos" required placeholder="Google Drive, Dropbox, WeTransfer ou autre lien de partage">
+            <p class="ae-hint">Vérifiez que le lien permet bien la consultation ou le téléchargement des photos.</p>
+          </div>
+
+          <div class="ae-field ae-field--full">
+            <label for="al-message">Les mots ou souvenirs à intégrer</label>
+            <textarea id="al-message" name="Texte et souvenirs" placeholder="Une date, une phrase, un moment marquant, un lieu, une anecdote, un message à garder…"></textarea>
+          </div>
+
+          <div class="ae-field ae-field--full">
+            <label for="al-notes">Autres précisions</label>
+            <textarea id="al-notes" name="Précisions complémentaires" placeholder="Musique souhaitée, ordre des photos, personne à mettre en avant, QR Code à imprimer, demande particulière…"></textarea>
+          </div>
+
+          <div class="ae-field ae-field--full">
+            <label class="ae-check">
+              <input type="checkbox" required>
+              <span>J’ai lu et j’accepte les <a href="cgv.html">conditions générales de vente</a> ainsi que la <a href="confidentialite.html">politique de confidentialité</a>.</span>
+            </label>
+          </div>
+
+          <div class="ae-field ae-field--full">
+            <div class="ae-submit-row">
+              <button class="ae-submit" type="submit">
+                Envoyer ma demande d’album <span aria-hidden="true">♡</span>
+              </button>
+
+              <p class="ae-submit-note">
+                Les informations sont utilisées uniquement pour répondre à cette demande et préparer l’album.
+              </p>
+            </div>
+          </div>
+        </form>
+      </section>
     </div>
   </div>
 </section>
 
   </main>  <footer class="footer">
-    <p>Une histoire créée avec MakeYourStory</p>
-    <a href="../../album-emotion.html">Découvrir Album Émotion</a>
-  </footer>  <section class="modal" data-photo-modal aria-label="Souvenir en grand format">
-    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="photo-modal-title">
-      <button class="modal-close" type="button" data-close-photo aria-label="Fermer">×</button>  <div class="lightbox-photo" data-lightbox-photo></div>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-promise">
+          <span class="footer-heart" aria-hidden="true">♡</span>
+          <div>
+            <strong>UNE ANNONCE QUI COMPTE.</strong>
+            <p>UN SOUVENIR QUI RESTE.</p>
+          </div>
+        </div>    <div>
+      <strong>UNE QUESTION ?</strong>
+      <p><a href="mailto:basalteweb@gmail.com">basalteweb@gmail.com</a></p>
+      <p><a href="tel:+33670396322">06 70 39 63 22</a></p>
+    </div>
 
-  <div class="lightbox-content">
-    <p class="section-label" data-number="M">Un souvenir</p>
-    <h2 id="photo-modal-title" data-photo-title></h2>
-    <p data-photo-text></p>
-  </div>
-</div>
+    <div>
+      <strong>PARTAGER FACILEMENT</strong>
+      <p>SMS · WhatsApp · lien personnel · QR Code</p>
+    </div>
 
-  </section>  <section class="modal" data-words-modal aria-label="Les mots de l’album">
-    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="words-modal-title">
-      <button class="modal-close" type="button" data-close-words aria-label="Fermer">×</button>  <div class="words-modal">
-    <div class="words-modal-inner">
-      <div class="words-window" aria-hidden="true">
-        <strong>♥</strong>
-      </div>
-
-      <p class="hero-label">Un mot à garder</p>
-
-      <h2 id="words-modal-title">Pour Louise.</h2>
-
-      <p class="modal-subtitle">À lire un jour, beaucoup plus tard.</p>
-
-      <p class="modal-copy">
-        Tu ne te souviendras peut-être pas de tous ces moments. Alors nous les avons gardés ici : pour que tu puisses les retrouver, comprendre à quel point tu étais attendue, et voir tout ce que tu as changé autour de toi.
-      </p>
-
-      <div class="loading-line" aria-hidden="true">
-        <span></span>
-      </div>
-
-      <p class="loading-note">Une page à relire autant de fois qu’il le faut</p>
+    <div class="footer-brand">
+      <small>UNE CRÉATION</small>
+      <span>BASALTE-WEB</span>
+      <small>MAKE YOUR STORY</small>
     </div>
   </div>
+
+  <div class="footer-legal">
+    <span>© 2026 MakeYourStory.fr — Marque exploitée par BASALTE-WEB.</span>
+
+    <span>
+      <a href="access.html">Accéder à une histoire</a> ·
+      <a href="professionnels.html">Professionnels</a> ·
+      <a href="cgv.html">CGV</a> ·
+      <a href="mentions-legales.html">Mentions légales</a> ·
+      <a href="confidentialite.html">Confidentialité</a> ·
+      <a href="politique-cookies.html">Cookies</a>
+    </span>
+  </div>
 </div>
 
-  </section>  <div class="toast" data-toast role="status" aria-live="polite"></div>  <script>
-    (() => {
-      const entry = document.querySelector("[data-entry]");
-      const enterButton = document.querySelector("[data-enter]");
-      const entryMessage = document.querySelector("[data-entry-message]");
-      const audio = document.getElementById("story-audio");
-      const soundButton = document.querySelector("[data-sound]");
-      const header = document.querySelector("[data-header]");
-      const progressBar = document.querySelector("[data-progress]");
-      const hero = document.querySelector("[data-hero]");
-      const toast = document.querySelector("[data-toast]");
-
-      const shareButtons = document.querySelectorAll("[data-share]");
-      const copyButtons = document.querySelectorAll("[data-copy-link]");
-      const whatsappButton = document.querySelector("[data-whatsapp]");
-
-      const photoModal = document.querySelector("[data-photo-modal]");
-      const photoOpenButtons = document.querySelectorAll("[data-open-photo]");
-      const photoCloseButton = document.querySelector("[data-close-photo]");
-      const lightboxPhoto = document.querySelector("[data-lightbox-photo]");
-      const photoTitle = document.querySelector("[data-photo-title]");
-      const photoText = document.querySelector("[data-photo-text]");
-
-      const wordsModal = document.querySelector("[data-words-modal]");
-      const wordsOpenButton = document.querySelector("[data-open-words]");
-      const wordsCloseButton = document.querySelector("[data-close-words]");
-
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-      let openingStarted = false;
-      let toastTimer;
-
-      document.body.style.overflow = "hidden";
-
-      const currentUrl = () => window.location.href.split("#")[0];
-
-      const showToast = (message) => {
-        if (!toast) return;
-
-        toast.textContent = message;
-        toast.classList.add("show");
-
-        window.clearTimeout(toastTimer);
-
-        toastTimer = window.setTimeout(() => {
-          toast.classList.remove("show");
-        }, 2800);
-      };
-
-      const copyLink = async () => {
-        const url = currentUrl();
-
-        try {
-          await navigator.clipboard.writeText(url);
-          showToast("Lien copié");
-          return;
-        } catch (error) {
-          const textarea = document.createElement("textarea");
-
-          textarea.value = url;
-          textarea.setAttribute("readonly", "");
-          textarea.style.position = "fixed";
-          textarea.style.opacity = "0";
-
-          document.body.appendChild(textarea);
-          textarea.select();
-
-          const copied = document.execCommand("copy");
-          textarea.remove();
-
-          if (copied) {
-            showToast("Lien copié");
-          } else {
-            window.prompt("Copiez ce lien :", url);
-          }
-        }
-      };
-
-      const shareStory = async () => {
-        const shareData = {
-          title: "Louise, trois ans de petites choses",
-          text: "Découvre l’Album Émotion de Louise.",
-          url: currentUrl()
-        };
-
-        if (navigator.share) {
-          try {
-            await navigator.share(shareData);
-            return;
-          } catch (error) {
-            if (error && error.name === "AbortError") return;
-          }
-        }
-
-        copyLink();
-      };
-
-      const playMusic = async () => {
-        if (!audio || !soundButton) return;
-
-        try {
-          audio.volume = 0;
-          await audio.play();
-
-          soundButton.classList.add("on");
-          soundButton.setAttribute("aria-pressed", "true");
-          soundButton.textContent = "❚❚";
-
-          let volume = 0;
-
-          const fade = window.setInterval(() => {
-            volume += 0.04;
-            audio.volume = Math.min(volume, 0.42);
-
-            if (volume >= 0.42) {
-              window.clearInterval(fade);
-            }
-          }, 100);
-        } catch (error) {
-          soundButton.textContent = "♪";
-        }
-      };
-
-      const openModal = (modal) => {
-        if (!modal) return;
-
-        modal.classList.add("open");
-        document.body.style.overflow = "hidden";
-      };
-
-      const closeModal = (modal) => {
-        if (!modal) return;
-
-        modal.classList.remove("open");
-        document.body.style.overflow = "";
-      };
-
-      if (enterButton && entry) {
-        enterButton.addEventListener("click", () => {
-          if (openingStarted) return;
-
-          openingStarted = true;
-          enterButton.disabled = true;
-          enterButton.textContent = "L’album s’ouvre…";
-
-          if (entryMessage) {
-            entryMessage.textContent = "Les pages apparaissent. Prenez le temps de retrouver chaque moment.";
-          }
-
-          playMusic();
-
-          const leaveDelay = reduceMotion ? 120 : 1050;
-          const removeDelay = reduceMotion ? 550 : 2100;
-
-          window.setTimeout(() => {
-            entry.classList.add("is-opening");
-            document.body.classList.add("story-open");
-          }, leaveDelay);
-
-          window.setTimeout(() => {
-            entry.classList.add("is-hidden");
-            document.body.style.overflow = "";
-          }, leaveDelay + 700);
-
-          window.setTimeout(() => {
-            entry.remove();
-          }, removeDelay);
-        });
-      }
-
-      if (soundButton && audio) {
-        soundButton.addEventListener("click", async () => {
-          try {
-            if (audio.paused) {
-              await audio.play();
-              audio.volume = 0.42;
-
-              soundButton.classList.add("on");
-              soundButton.setAttribute("aria-pressed", "true");
-              soundButton.textContent = "❚❚";
-            } else {
-              audio.pause();
-
-              soundButton.classList.remove("on");
-              soundButton.setAttribute("aria-pressed", "false");
-              soundButton.textContent = "♪";
-            }
-          } catch (error) {
-            showToast("Le son sera disponible après une interaction.");
-          }
-        });
-      }
-
-      shareButtons.forEach((button) => {
-        button.addEventListener("click", shareStory);
-      });
-
-      copyButtons.forEach((button) => {
-        button.addEventListener("click", copyLink);
-      });
-
-      if (whatsappButton) {
-        whatsappButton.addEventListener("click", () => {
-          const message = encodeURIComponent(
-            "Découvre l’Album Émotion de Louise : " + currentUrl()
-          );
-
-          window.open("https://wa.me/?text=" + message, "_blank", "noopener");
-        });
-      }
-
-      photoOpenButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          if (!photoModal || !lightboxPhoto || !photoTitle || !photoText) return;
-
-          const image = button.dataset.photo || "";
-          const title = button.dataset.title || "Un souvenir";
-          const text = button.dataset.text || "";
-
-          lightboxPhoto.style.setProperty("--modal-image", `url("${image}")`);
-          photoTitle.textContent = title;
-          photoText.textContent = text;
-
-          openModal(photoModal);
-        });
-      });
-
-      if (photoCloseButton) {
-        photoCloseButton.addEventListener("click", () => closeModal(photoModal));
-      }
-
-      if (wordsOpenButton) {
-        wordsOpenButton.addEventListener("click", () => openModal(wordsModal));
-      }
-
-      if (wordsCloseButton) {
-        wordsCloseButton.addEventListener("click", () => closeModal(wordsModal));
-      }
-
-      [photoModal, wordsModal].forEach((modal) => {
-        if (!modal) return;
-
-        modal.addEventListener("click", (event) => {
-          if (event.target === modal) {
-            closeModal(modal);
-          }
-        });
-      });
-
-      window.addEventListener("scroll", () => {
-        if (header) {
-          header.classList.toggle("solid", window.scrollY > 24);
-        }
-
-        if (progressBar) {
-          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-          const percent = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
-          progressBar.style.width = percent + "%";
-        }
-
-        if (hero) {
-          hero.style.setProperty("--hero-shift", `${window.scrollY * 0.08}px`);
-        }
-      }, { passive:true });
-
-      const revealItems = document.querySelectorAll(".reveal");
-
-      if ("IntersectionObserver" in window) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entryItem) => {
-            if (!entryItem.isIntersecting) return;
-
-            entryItem.target.classList.add("show");
-            observer.unobserve(entryItem.target);
-          });
-        }, { threshold:.14 });
-
-        revealItems.forEach((item) => observer.observe(item));
-      } else {
-        revealItems.forEach((item) => item.classList.add("show"));
-      }
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key !== "Escape") return;
-
-        if (photoModal && photoModal.classList.contains("open")) {
-          closeModal(photoModal);
-        }
-
-        if (wordsModal && wordsModal.classList.contains("open")) {
-          closeModal(wordsModal);
-        }
-      });
-    })();
-  </script></body>
-  </html>
+  </footer>  <script src="assets/site.js" defer></script></body>
+                                        </html>
