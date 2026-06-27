@@ -4,18 +4,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#14233a">
+  <meta name="theme-color" content="#080607">
   <meta name="robots" content="index,follow">  <title>Album photo digital personnalisé | Album Émotion | MakeYourStory</title>
-  <meta name="description" content="Transformez vos photos en Album Émotion : une histoire digitale plus longue, vivante et facile à partager. 1 à 10 photos : 49,90 €. 10 à 20 photos : 69,90 €.">
+  <meta name="description" content="Après votre faire-part, créez un Album Émotion : une histoire photo digitale de 1 à 20 photos, plus longue, vivante et facile à partager.">
   <link rel="canonical" href="https://makeyourstory.fr/album-emotion.html">  <meta property="og:type" content="website">
   <meta property="og:site_name" content="MakeYourStory">
   <meta property="og:title" content="Album Émotion digital avec vos photos | MakeYourStory">
-  <meta property="og:description" content="Après l’annonce, l’histoire continue. Créez un album photo digital vivant, émotionnel et facile à partager.">
+  <meta property="og:description" content="Le faire-part annonce un moment. L’Album Émotion raconte tout ce qui est venu après.">
   <meta property="og:url" content="https://makeyourstory.fr/album-emotion.html">
-  <meta property="og:image" content="https://makeyourstory.fr/images/demo-album-emotion-og.webp">  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://makeyourstory.fr/images/og-makeyourstory.webp">  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Album Émotion digital avec vos photos | MakeYourStory">
-  <meta name="twitter:description" content="Après l’annonce, l’histoire continue. Créez un album photo digital vivant, émotionnel et facile à partager.">
-  <meta name="twitter:image" content="https://makeyourstory.fr/images/demo-album-emotion-og.webp">  <link rel="icon" href="images/favicon.webp" type="image/webp">
+  <meta name="twitter:description" content="Le faire-part annonce un moment. L’Album Émotion raconte tout ce qui est venu après.">
+  <meta name="twitter:image" content="https://makeyourstory.fr/images/og-makeyourstory.webp">  <link rel="icon" href="images/favicon.webp" type="image/webp">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.webp">
   <link rel="stylesheet" href="assets/site.css">
   <script src="assets/analytics.js" defer></script>  <script type="application/ld+json">
@@ -24,7 +24,7 @@
       "@type":"Service",
       "name":"Album Émotion MakeYourStory",
       "url":"https://makeyourstory.fr/album-emotion.html",
-      "description":"Création d’albums photo digitaux personnalisés, émotionnels et prêts à partager.",
+      "description":"Création d’un album photo digital personnalisé, plus long et plus vivant qu’un faire-part, prêt à partager par lien ou QR Code.",
       "provider":{
         "@type":"Organization",
         "name":"BASALTE-WEB",
@@ -37,1201 +37,20 @@
         "itemListElement":[
           {
             "@type":"Offer",
-            "name":"Album Émotion Mini",
+            "name":"Album Émotion · 1 à 10 photos",
             "price":"49.90",
-            "priceCurrency":"EUR",
-            "description":"Album digital personnalisé avec 1 à 10 photos."
+            "priceCurrency":"EUR"
           },
           {
             "@type":"Offer",
-            "name":"Album Émotion Complet",
+            "name":"Album Émotion · 10 à 20 photos",
             "price":"69.90",
-            "priceCurrency":"EUR",
-            "description":"Album digital personnalisé avec 10 à 20 photos."
+            "priceCurrency":"EUR"
           }
         ]
       }
     }
-  </script>  <style>
-    :root{
-      --ae-ink:#15233a;
-      --ae-ink-soft:#40536a;
-      --ae-blue:#2a6974;
-      --ae-blue-deep:#163b53;
-      --ae-coral:#e67850;
-      --ae-cream:#f7f2e9;
-      --ae-paper:#fffdf9;
-      --ae-yellow:#f3c65a;
-      --ae-line:rgba(21,35,58,.14);
-      --ae-shadow:0 24px 60px rgba(21,35,58,.14);
-    }
-
-    .ae-page,
-    .ae-page *{
-      box-sizing:border-box;
-    }
-
-    .ae-page{
-      overflow:hidden;
-      color:var(--ae-ink);
-      background:
-        radial-gradient(circle at 100% 0%,rgba(243,198,90,.18),transparent 27%),
-        radial-gradient(circle at 0% 40%,rgba(230,120,80,.08),transparent 28%),
-        var(--ae-cream);
-    }
-
-    .ae-label{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      margin:0;
-      color:var(--ae-coral) !important;
-      font-size:10px;
-      font-weight:800;
-      letter-spacing:.14em;
-      line-height:1.4;
-      text-transform:uppercase;
-    }
-
-    .ae-label::before{
-      content:"";
-      width:30px;
-      height:1px;
-      background:currentColor;
-    }
-
-    .ae-button{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:9px;
-      min-height:51px;
-      padding:0 23px;
-      border:1px solid transparent;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:800;
-      line-height:1;
-      text-decoration:none;
-      transition:.22s ease;
-    }
-
-    .ae-button:hover{
-      transform:translateY(-3px);
-    }
-
-    .ae-button--coral{
-      color:#ffffff !important;
-      background:var(--ae-coral);
-      box-shadow:0 13px 28px rgba(230,120,80,.24);
-    }
-
-    .ae-button--coral:hover{
-      color:#ffffff !important;
-      background:var(--ae-blue-deep);
-    }
-
-    .ae-button--ghost{
-      border-color:rgba(21,35,58,.3);
-      color:var(--ae-ink) !important;
-      background:rgba(255,255,255,.48);
-    }
-
-    .ae-button--ghost:hover{
-      color:#ffffff !important;
-      border-color:var(--ae-blue-deep);
-      background:var(--ae-blue-deep);
-    }
-
-    .ae-section{
-      padding:clamp(76px,9vw,125px) 0;
-    }
-
-    .ae-section--tight{
-      padding-top:0;
-    }
-
-    /* HERO */
-
-    .ae-hero{
-      position:relative;
-      overflow:hidden;
-      padding:clamp(90px,11vw,150px) 0 clamp(72px,9vw,114px);
-      color:#ffffff;
-      background:
-        radial-gradient(circle at 76% 18%,rgba(243,198,90,.32),transparent 25%),
-        radial-gradient(circle at 94% 78%,rgba(230,120,80,.2),transparent 28%),
-        linear-gradient(135deg,#11263d 0%,#235c6b 57%,#183a55 100%);
-    }
-
-    .ae-hero::before{
-      content:"";
-      position:absolute;
-      top:-190px;
-      right:-170px;
-      width:500px;
-      height:500px;
-      border:1px solid rgba(255,255,255,.2);
-      border-radius:50%;
-      box-shadow:
-        0 0 0 65px rgba(255,255,255,.035),
-        0 0 0 132px rgba(255,255,255,.02);
-      pointer-events:none;
-    }
-
-    .ae-hero::after{
-      content:"";
-      position:absolute;
-      bottom:-220px;
-      left:-150px;
-      width:440px;
-      height:440px;
-      border:1px solid rgba(243,198,90,.32);
-      border-radius:50%;
-      pointer-events:none;
-    }
-
-    .ae-hero-grid{
-      position:relative;
-      z-index:1;
-      display:grid;
-      grid-template-columns:minmax(0,1fr) minmax(320px,.86fr);
-      gap:clamp(40px,8vw,110px);
-      align-items:center;
-    }
-
-    .ae-hero-copy{
-      max-width:720px;
-    }
-
-    .ae-hero .ae-label{
-      color:#ffe49a !important;
-    }
-
-    .ae-hero h1{
-      margin:19px 0 0;
-      color:#ffffff !important;
-      font-size:clamp(56px,8vw,104px);
-      font-weight:800;
-      line-height:.86;
-      letter-spacing:-.075em;
-    }
-
-    .ae-hero h1 span{
-      display:block;
-      margin-top:17px;
-      color:#ffe49a !important;
-      font-size:clamp(27px,3.3vw,42px);
-      font-weight:700;
-      line-height:1.06;
-      letter-spacing:-.045em;
-    }
-
-    .ae-hero-lead{
-      max-width:635px;
-      margin:28px 0 0;
-      color:rgba(255,255,255,.86) !important;
-      font-size:16px;
-      line-height:1.82;
-    }
-
-    .ae-hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:30px;
-    }
-
-    .ae-hero-actions .ae-button--ghost{
-      border-color:rgba(255,255,255,.5);
-      color:#ffffff !important;
-      background:rgba(255,255,255,.08);
-    }
-
-    .ae-hero-actions .ae-button--ghost:hover{
-      color:var(--ae-ink) !important;
-      background:#ffffff;
-    }
-
-    .ae-hero-meta{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px 18px;
-      margin:28px 0 0;
-      color:rgba(255,255,255,.76) !important;
-      font-size:12px;
-    }
-
-    .ae-hero-meta span{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .ae-hero-meta span::before{
-      content:"";
-      width:7px;
-      height:7px;
-      border-radius:50%;
-      background:#ffe49a;
-      box-shadow:0 0 12px rgba(255,228,154,.7);
-    }
-
-    .ae-hero-visual{
-      position:relative;
-      min-height:505px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .ae-orbit{
-      position:absolute;
-      width:min(100%,432px);
-      aspect-ratio:1;
-      border:1px solid rgba(255,255,255,.28);
-      border-radius:50%;
-      animation:ae-orbit 16s linear infinite;
-    }
-
-    .ae-orbit::before,
-    .ae-orbit::after{
-      content:"";
-      position:absolute;
-      border-radius:50%;
-    }
-
-    .ae-orbit::before{
-      top:13%;
-      right:6%;
-      width:13px;
-      height:13px;
-      background:#ffe49a;
-      box-shadow:0 0 17px rgba(255,228,154,.9);
-    }
-
-    .ae-orbit::after{
-      bottom:12%;
-      left:6%;
-      width:11px;
-      height:11px;
-      background:var(--ae-coral);
-      box-shadow:0 0 17px rgba(230,120,80,.85);
-    }
-
-    @keyframes ae-orbit{
-      to{
-        transform:rotate(360deg);
-      }
-    }
-
-    .ae-book{
-      position:relative;
-      z-index:2;
-      width:min(275px,66vw);
-      aspect-ratio:10 / 14;
-      overflow:hidden;
-      padding:18px;
-      border:1px solid rgba(255,255,255,.5);
-      box-shadow:0 28px 70px rgba(0,0,0,.36);
-      transform:rotate(6deg);
-      background:
-        linear-gradient(180deg,rgba(12,28,45,.02),rgba(12,28,45,.86)),
-        url("images/cat-naissance-bebe.webp") center/cover,
-        #2c6470;
-    }
-
-    .ae-book::before{
-      content:"";
-      position:absolute;
-      top:0;
-      bottom:0;
-      left:22px;
-      width:1px;
-      background:rgba(255,255,255,.36);
-      box-shadow:8px 0 0 rgba(255,255,255,.1);
-    }
-
-    .ae-book::after{
-      content:"";
-      position:absolute;
-      top:17px;
-      right:17px;
-      width:54px;
-      height:54px;
-      border:1px solid rgba(255,255,255,.7);
-      border-radius:50%;
-    }
-
-    .ae-book-content{
-      position:absolute;
-      z-index:1;
-      right:24px;
-      bottom:28px;
-      left:42px;
-      color:#ffffff;
-    }
-
-    .ae-book-content small{
-      display:block;
-      color:#ffe49a;
-      font-size:8px;
-      font-weight:800;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-    }
-
-    .ae-book-content strong{
-      display:block;
-      margin-top:12px;
-      color:#ffffff;
-      font-size:39px;
-      line-height:.9;
-      letter-spacing:-.07em;
-    }
-
-    .ae-book-content p{
-      margin:14px 0 0;
-      color:rgba(255,255,255,.9);
-      font-size:11px;
-      line-height:1.55;
-    }
-
-    .ae-float{
-      position:absolute;
-      z-index:3;
-      width:202px;
-      padding:16px;
-      color:#ffffff;
-      box-shadow:0 18px 45px rgba(0,0,0,.22);
-      backdrop-filter:blur(9px);
-    }
-
-    .ae-float--top{
-      top:38px;
-      left:-6px;
-      border:1px solid rgba(255,228,154,.45);
-      background:rgba(30,70,79,.9);
-      transform:rotate(-5deg);
-    }
-
-    .ae-float--bottom{
-      right:-7px;
-      bottom:42px;
-      border:1px solid rgba(255,222,213,.44);
-      background:rgba(109,47,42,.88);
-      transform:rotate(5deg);
-    }
-
-    .ae-float small{
-      display:block;
-      color:#ffe49a;
-      font-size:9px;
-      font-weight:800;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
-
-    .ae-float--bottom small{
-      color:#ffd6c9;
-    }
-
-    .ae-float strong{
-      display:block;
-      margin-top:7px;
-      color:#ffffff;
-      font-size:15px;
-      line-height:1.2;
-    }
-
-    .ae-float p{
-      margin:8px 0 0;
-      color:rgba(255,255,255,.78);
-      font-size:11px;
-      line-height:1.5;
-    }
-
-    /* DIFFÉRENCE */
-
-    .ae-intro{
-      max-width:820px;
-      margin:auto;
-      text-align:center;
-    }
-
-    .ae-intro h2,
-    .ae-story-copy h2,
-    .ae-form-title{
-      margin:13px 0 0;
-      color:var(--ae-ink) !important;
-      font-size:clamp(39px,5.9vw,72px);
-      font-weight:800;
-      line-height:.93;
-      letter-spacing:-.067em;
-    }
-
-    .ae-intro h2 span,
-    .ae-story-copy h2 span,
-    .ae-form-title span{
-      display:block;
-      margin-top:14px;
-      color:var(--ae-coral) !important;
-      font-size:clamp(21px,2.8vw,34px);
-      font-weight:700;
-      line-height:1.16;
-      letter-spacing:-.04em;
-    }
-
-    .ae-intro > p:last-child{
-      max-width:695px;
-      margin:24px auto 0;
-      color:var(--ae-ink-soft) !important;
-      font-size:15px;
-      line-height:1.8;
-    }
-
-    .ae-compare{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:15px;
-      margin-top:46px;
-    }
-
-    .ae-compare-card{
-      min-height:330px;
-      padding:clamp(27px,4vw,42px);
-      border:1px solid var(--ae-line);
-      background:#ffffff;
-      box-shadow:0 12px 30px rgba(21,35,58,.05);
-    }
-
-    .ae-compare-card--dark{
-      position:relative;
-      overflow:hidden;
-      color:#ffffff;
-      border-color:transparent;
-      background:
-        radial-gradient(circle at 92% 12%,rgba(243,198,90,.25),transparent 28%),
-        radial-gradient(circle at 7% 90%,rgba(230,120,80,.22),transparent 30%),
-        linear-gradient(135deg,#173d55,#236e75);
-    }
-
-    .ae-compare-card--dark::before{
-      content:"ALBUM";
-      position:absolute;
-      right:-17px;
-      bottom:-28px;
-      color:rgba(255,255,255,.07);
-      font-size:88px;
-      font-weight:800;
-      letter-spacing:-.1em;
-      pointer-events:none;
-    }
-
-    .ae-compare-card > *{
-      position:relative;
-      z-index:1;
-    }
-
-    .ae-card-number{
-      display:inline-grid;
-      width:43px;
-      height:43px;
-      place-items:center;
-      border:1px solid rgba(21,35,58,.22);
-      border-radius:50%;
-      color:var(--ae-blue-deep);
-      font-size:12px;
-      font-weight:800;
-    }
-
-    .ae-compare-card--dark .ae-card-number{
-      border-color:rgba(255,255,255,.46);
-      color:#ffe49a;
-    }
-
-    .ae-compare-card h3{
-      margin:19px 0 0;
-      color:var(--ae-ink) !important;
-      font-size:clamp(29px,4vw,42px);
-      line-height:.97;
-      letter-spacing:-.055em;
-    }
-
-    .ae-compare-card--dark h3{
-      color:#ffffff !important;
-    }
-
-    .ae-compare-card h3 span{
-      display:block;
-      margin-top:11px;
-      color:var(--ae-coral) !important;
-      font-size:18px;
-      line-height:1.25;
-      letter-spacing:-.025em;
-    }
-
-    .ae-compare-card--dark h3 span{
-      color:#ffe49a !important;
-    }
-
-    .ae-compare-card p{
-      max-width:470px;
-      margin:20px 0 0;
-      color:var(--ae-ink-soft) !important;
-      font-size:14px;
-      line-height:1.75;
-    }
-
-    .ae-compare-card--dark p{
-      color:rgba(255,255,255,.8) !important;
-    }
-
-    .ae-mini-list{
-      display:grid;
-      gap:10px;
-      margin:24px 0 0;
-    }
-
-    .ae-mini-list div{
-      display:flex;
-      align-items:flex-start;
-      gap:10px;
-      color:var(--ae-ink) !important;
-      font-size:12px;
-      font-weight:700;
-      line-height:1.5;
-    }
-
-    .ae-compare-card--dark .ae-mini-list div{
-      color:rgba(255,255,255,.91) !important;
-    }
-
-    .ae-mini-list b{
-      width:20px;
-      height:20px;
-      display:grid;
-      place-items:center;
-      flex:0 0 20px;
-      border-radius:50%;
-      color:#ffffff;
-      background:var(--ae-coral);
-      font-size:10px;
-    }
-
-    .ae-compare-card--dark .ae-mini-list b{
-      color:#173d55;
-      background:#ffe49a;
-    }
-
-    /* HISTOIRE LOUISE */
-
-    .ae-story{
-      position:relative;
-      overflow:hidden;
-      color:#ffffff;
-      background:
-        radial-gradient(circle at 84% 17%,rgba(243,198,90,.22),transparent 26%),
-        radial-gradient(circle at 12% 90%,rgba(230,120,80,.22),transparent 29%),
-        linear-gradient(125deg,#173b53,#235f6a);
-    }
-
-    .ae-story::before{
-      content:"";
-      position:absolute;
-      top:-110px;
-      right:-100px;
-      width:350px;
-      height:350px;
-      border:1px solid rgba(255,255,255,.17);
-      border-radius:50%;
-      box-shadow:0 0 0 55px rgba(255,255,255,.028);
-      pointer-events:none;
-    }
-
-    .ae-story-grid{
-      position:relative;
-      z-index:1;
-      display:grid;
-      grid-template-columns:.82fr 1.18fr;
-      gap:clamp(30px,7vw,105px);
-      align-items:center;
-    }
-
-    .ae-story-photos{
-      min-height:500px;
-      position:relative;
-    }
-
-    .ae-story-photo{
-      position:absolute;
-      overflow:hidden;
-      background:
-        linear-gradient(180deg,rgba(20,35,58,.02),rgba(20,35,58,.58)),
-        var(--ae-photo) center/cover,
-        #d2b08b;
-      box-shadow:0 23px 55px rgba(0,0,0,.23);
-    }
-
-    .ae-story-photo::after{
-      content:"";
-      position:absolute;
-      inset:11px;
-      border:1px solid rgba(255,255,255,.72);
-      pointer-events:none;
-    }
-
-    .ae-story-photo--one{
-      top:0;
-      left:0;
-      width:70%;
-      height:74%;
-      transform:rotate(-4deg);
-    }
-
-    .ae-story-photo--two{
-      right:0;
-      bottom:0;
-      width:58%;
-      height:59%;
-      transform:rotate(5deg);
-    }
-
-    .ae-story-stamp{
-      position:absolute;
-      z-index:2;
-      top:39%;
-      left:55%;
-      width:106px;
-      height:106px;
-      display:grid;
-      place-items:center;
-      border:2px solid #ffe49a;
-      border-radius:50%;
-      color:#ffe49a;
-      background:#214c60;
-      box-shadow:0 12px 28px rgba(0,0,0,.22);
-      font-size:10px;
-      font-weight:800;
-      letter-spacing:.1em;
-      line-height:1.35;
-      text-align:center;
-      text-transform:uppercase;
-      transform:rotate(12deg);
-    }
-
-    .ae-story-copy .ae-label{
-      color:#ffe49a !important;
-    }
-
-    .ae-story-copy h2{
-      color:#ffffff !important;
-    }
-
-    .ae-story-copy h2 span{
-      color:#ffe49a !important;
-    }
-
-    .ae-story-copy > p:not(.ae-label){
-      max-width:600px;
-      margin:24px 0 0;
-      color:rgba(255,255,255,.81) !important;
-      font-size:15px;
-      line-height:1.82;
-    }
-
-    .ae-story-copy .ae-button{
-      margin-top:28px;
-      color:#173d55 !important;
-      background:#ffffff;
-    }
-
-    .ae-story-copy .ae-button:hover{
-      color:#ffffff !important;
-      background:var(--ae-coral);
-    }
-
-    /* OFFRES */
-
-    .ae-offers-head{
-      max-width:750px;
-    }
-
-    .ae-offers-head h2{
-      margin:13px 0 0;
-      color:var(--ae-ink) !important;
-      font-size:clamp(39px,5.8vw,69px);
-      font-weight:800;
-      line-height:.93;
-      letter-spacing:-.065em;
-    }
-
-    .ae-offers-head h2 span{
-      display:block;
-      margin-top:14px;
-      color:var(--ae-blue) !important;
-      font-size:clamp(21px,2.8vw,33px);
-      font-weight:700;
-      line-height:1.16;
-      letter-spacing:-.04em;
-    }
-
-    .ae-offers-head p:last-child{
-      max-width:650px;
-      margin:22px 0 0;
-      color:var(--ae-ink-soft) !important;
-      font-size:15px;
-      line-height:1.78;
-    }
-
-    .ae-offers{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:15px;
-      margin-top:42px;
-    }
-
-    .ae-offer{
-      position:relative;
-      overflow:hidden;
-      min-height:370px;
-      padding:clamp(27px,4vw,42px);
-      border:1px solid var(--ae-line);
-      background:#ffffff;
-      box-shadow:0 15px 35px rgba(21,35,58,.06);
-    }
-
-    .ae-offer--featured{
-      color:#ffffff;
-      border-color:transparent;
-      background:
-        radial-gradient(circle at 85% 12%,rgba(243,198,90,.24),transparent 26%),
-        radial-gradient(circle at 8% 92%,rgba(230,120,80,.19),transparent 28%),
-        linear-gradient(135deg,#153a53,#286d73);
-    }
-
-    .ae-offer-kicker{
-      display:inline-flex;
-      padding:8px 11px;
-      border:1px solid rgba(21,35,58,.22);
-      color:var(--ae-blue-deep) !important;
-      font-size:9px;
-      font-weight:800;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
-
-    .ae-offer--featured .ae-offer-kicker{
-      border-color:rgba(255,255,255,.42);
-      color:#ffe49a !important;
-    }
-
-    .ae-offer h3{
-      margin:20px 0 0;
-      color:var(--ae-ink) !important;
-      font-size:clamp(36px,4.6vw,53px);
-      line-height:.9;
-      letter-spacing:-.065em;
-    }
-
-    .ae-offer--featured h3{
-      color:#ffffff !important;
-    }
-
-    .ae-offer-price{
-      display:block;
-      margin-top:15px;
-      color:var(--ae-coral) !important;
-      font-size:28px;
-      font-weight:800;
-      line-height:1;
-      letter-spacing:-.045em;
-    }
-
-    .ae-offer--featured .ae-offer-price{
-      color:#ffe49a !important;
-    }
-
-    .ae-offer p{
-      max-width:470px;
-      margin:18px 0 0;
-      color:var(--ae-ink-soft) !important;
-      font-size:14px;
-      line-height:1.72;
-    }
-
-    .ae-offer--featured p{
-      color:rgba(255,255,255,.81) !important;
-    }
-
-    .ae-offer-list{
-      display:grid;
-      gap:10px;
-      margin:23px 0 0;
-    }
-
-    .ae-offer-list div{
-      display:flex;
-      gap:10px;
-      color:var(--ae-ink) !important;
-      font-size:12px;
-      font-weight:700;
-      line-height:1.45;
-    }
-
-    .ae-offer--featured .ae-offer-list div{
-      color:rgba(255,255,255,.9) !important;
-    }
-
-    .ae-offer-list b{
-      color:var(--ae-coral);
-      font-size:14px;
-    }
-
-    .ae-offer--featured .ae-offer-list b{
-      color:#ffe49a;
-    }
-
-    /* FORM */
-
-    .ae-form-shell{
-      display:grid;
-      grid-template-columns:.78fr 1.22fr;
-      gap:clamp(30px,6vw,82px);
-      padding:clamp(31px,5vw,60px);
-      color:#ffffff;
-      background:
-        radial-gradient(circle at 9% 90%,rgba(230,120,80,.2),transparent 28%),
-        radial-gradient(circle at 89% 12%,rgba(243,198,90,.18),transparent 26%),
-        #14233a;
-    }
-
-    .ae-form-copy .ae-label{
-      color:#ffe49a !important;
-    }
-
-    .ae-form-copy h2{
-      margin:13px 0 0;
-      color:#ffffff !important;
-      font-size:clamp(37px,5vw,59px);
-      font-weight:800;
-      line-height:.93;
-      letter-spacing:-.065em;
-    }
-
-    .ae-form-copy h2 span{
-      display:block;
-      margin-top:13px;
-      color:#ffe49a !important;
-      font-size:clamp(21px,2.8vw,32px);
-      font-weight:700;
-      line-height:1.15;
-      letter-spacing:-.04em;
-    }
-
-    .ae-form-copy > p:not(.ae-label){
-      max-width:500px;
-      margin:23px 0 0;
-      color:rgba(255,255,255,.8) !important;
-      font-size:14px;
-      line-height:1.78;
-    }
-
-    .ae-form-copy-list{
-      display:grid;
-      gap:13px;
-      margin-top:30px;
-    }
-
-    .ae-form-copy-list div{
-      display:flex;
-      align-items:flex-start;
-      gap:11px;
-      color:rgba(255,255,255,.9) !important;
-      font-size:13px;
-      font-weight:700;
-      line-height:1.5;
-    }
-
-    .ae-form-copy-list b{
-      width:23px;
-      height:23px;
-      display:grid;
-      place-items:center;
-      flex:0 0 23px;
-      border-radius:50%;
-      color:#173d55;
-      background:#ffe49a;
-      font-size:11px;
-    }
-
-    .ae-form-panel{
-      padding:clamp(24px,4vw,42px);
-      color:var(--ae-ink);
-      background:#ffffff;
-      box-shadow:0 22px 48px rgba(0,0,0,.17);
-    }
-
-    .ae-form-panel .ae-label{
-      color:#9b3f2a !important;
-    }
-
-    .ae-form-title{
-      font-size:clamp(31px,4vw,48px);
-    }
-
-    .ae-form-title span{
-      color:#9b3f2a !important;
-      font-size:clamp(18px,2.4vw,25px);
-      font-weight:800;
-    }
-
-    .ae-form-intro{
-      margin:17px 0 0;
-      color:#50616b !important;
-      font-size:13px;
-      line-height:1.7;
-    }
-
-    .ae-form{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:16px;
-      margin-top:28px;
-    }
-
-    .ae-field{
-      min-width:0;
-    }
-
-    .ae-field--full{
-      grid-column:1 / -1;
-    }
-
-    .ae-field label{
-      display:block;
-      margin-bottom:8px;
-      color:#20282d !important;
-      font-size:12px;
-      font-weight:800;
-      line-height:1.4;
-    }
-
-    .ae-field input,
-    .ae-field select,
-    .ae-field textarea{
-      width:100%;
-      min-height:48px;
-      padding:12px 13px;
-      border:1px solid rgba(21,35,58,.28);
-      border-radius:0;
-      outline:0;
-      color:#18242b !important;
-      background:#ffffff !important;
-      font:inherit;
-      font-size:13px;
-      line-height:1.4;
-      transition:border-color .2s ease,box-shadow .2s ease;
-    }
-
-    .ae-field textarea{
-      min-height:128px;
-      resize:vertical;
-    }
-
-    .ae-field input::placeholder,
-    .ae-field textarea::placeholder{
-      color:#728087 !important;
-      opacity:1;
-    }
-
-    .ae-field input:focus,
-    .ae-field select:focus,
-    .ae-field textarea:focus{
-      border-color:var(--ae-coral);
-      box-shadow:0 0 0 3px rgba(230,120,80,.15);
-    }
-
-    .ae-hint{
-      margin:7px 0 0;
-      color:#5e6d74 !important;
-      font-size:11px;
-      line-height:1.52;
-    }
-
-    .ae-check{
-      display:flex !important;
-      align-items:flex-start;
-      gap:10px;
-      margin:0 !important;
-      color:#435158 !important;
-      font-size:12px !important;
-      font-weight:600 !important;
-      line-height:1.6 !important;
-    }
-
-    .ae-check input{
-      width:17px;
-      height:17px;
-      flex:0 0 17px;
-      margin:2px 0 0;
-      accent-color:var(--ae-coral);
-    }
-
-    .ae-check a{
-      color:#a33c29 !important;
-      font-weight:800;
-      text-decoration:underline;
-      text-underline-offset:3px;
-    }
-
-    .ae-submit-row{
-      display:flex;
-      flex-wrap:wrap;
-      align-items:center;
-      gap:16px;
-    }
-
-    .ae-submit{
-      min-height:52px;
-      padding:0 23px;
-      border:0;
-      border-radius:999px;
-      color:#ffffff !important;
-      background:var(--ae-coral);
-      box-shadow:0 13px 28px rgba(230,120,80,.24);
-      font:inherit;
-      font-size:12px;
-      font-weight:800;
-      cursor:pointer;
-      transition:.22s ease;
-    }
-
-    .ae-submit:hover{
-      transform:translateY(-3px);
-      color:#ffffff !important;
-      background:var(--ae-blue-deep);
-    }
-
-    .ae-submit-note{
-      margin:0;
-      color:#526169 !important;
-      font-size:11px;
-      line-height:1.55;
-    }
-
-    @media(max-width:980px){
-      .ae-hero-grid,
-      .ae-story-grid,
-      .ae-form-shell{
-        grid-template-columns:1fr;
-      }
-
-      .ae-hero-copy{
-        max-width:760px;
-      }
-
-      .ae-hero-visual{
-        min-height:430px;
-      }
-    }
-
-    @media(max-width:760px){
-      .ae-compare,
-      .ae-offers{
-        grid-template-columns:1fr;
-      }
-
-      .ae-hero{
-        padding-top:92px;
-      }
-    }
-
-    @media(max-width:560px){
-      .ae-hero h1{
-        font-size:56px;
-      }
-
-      .ae-hero h1 span{
-        font-size:27px;
-      }
-
-      .ae-hero-lead{
-        font-size:14px;
-      }
-
-      .ae-hero-actions,
-      .ae-hero-actions .ae-button{
-        width:100%;
-      }
-
-      .ae-hero-actions .ae-button{
-        justify-content:center;
-      }
-
-      .ae-hero-visual{
-        min-height:405px;
-      }
-
-      .ae-book{
-        width:225px;
-      }
-
-      .ae-float{
-        width:165px;
-        padding:13px;
-      }
-
-      .ae-float--top{
-        top:19px;
-      }
-
-      .ae-float--bottom{
-        right:-3px;
-        bottom:18px;
-      }
-
-      .ae-float strong{
-        font-size:12px;
-      }
-
-      .ae-float p{
-        font-size:10px;
-      }
-
-      .ae-story-photos{
-        min-height:390px;
-      }
-
-      .ae-story-stamp{
-        width:84px;
-        height:84px;
-        left:52%;
-        font-size:8px;
-      }
-
-      .ae-form-shell{
-        padding:29px 18px;
-      }
-
-      .ae-form{
-        grid-template-columns:1fr;
-      }
-
-      .ae-field--full{
-        grid-column:auto;
-      }
-
-      .ae-submit-row{
-        align-items:stretch;
-        flex-direction:column;
-      }
-
-      .ae-submit{
-        width:100%;
-      }
-    }
-  </style></head><body>
+  </script></head><body>
   <a class="skip" href="#contenu">Aller au contenu</a>  <header class="site-header">
     <div class="wrap nav">
       <a class="wordmark" href="index.html" aria-label="Accueil MakeYourStory">
@@ -1269,347 +88,330 @@
   <a class="mobile-primary" href="faire-parts.html#occasions">Créer mon faire-part</a>
 </div>
 
-  </header>  <main id="contenu" class="ae-page">
-    <section class="ae-hero">
-      <div class="wrap ae-hero-grid">
-        <div class="ae-hero-copy">
-          <p class="ae-label">Après l’annonce, l’histoire continue</p>      <h1>
-        ALBUM
-        <span>Émotion.</span>
-      </h1>
+  </header>  <main id="contenu">
+    <section class="occasion-hero">
+      <div class="wrap occasion-hero-grid">
+        <div class="occasion-hero-copy">
+          <p class="eyebrow">Après l’annonce, l’histoire continue</p>      <h1>ALBUM<span>Émotion.</span></h1>
 
-      <p class="ae-hero-lead">
-        Le faire-part annonce un moment. L’Album Émotion raconte tout ce qui est venu après :
-        les photos, les petits détails, les souvenirs et les émotions qui méritent plus qu’une simple galerie.
+      <p>
+        Le <strong>faire-part digital</strong> annonce un moment important.
+        L’<strong>Album Émotion</strong> raconte tout ce qui est venu après : les photos, les premiers souvenirs, les détails qu’on ne veut pas oublier et les instants qui prennent de la valeur avec le temps.
       </p>
 
-      <div class="ae-hero-actions">
-        <a class="ae-button ae-button--coral" href="#formulaire">
+      <p class="product-pill">
+        1 à 10 photos <strong>49,90 €</strong> ·
+        10 à 20 photos <strong>69,90 €</strong>
+      </p>
+
+      <div class="button-row" style="margin-top:22px">
+        <a class="button button--pink" href="#formulaire">
           Créer mon Album Émotion <span aria-hidden="true">→</span>
         </a>
 
-        <a class="ae-button ae-button--ghost" href="stories/demo/album-emotion.html">
-          Ouvrir la démo de Louise <span aria-hidden="true">▷</span>
+        <a class="button button--ghost" href="stories/demo/album-emotion.html">
+          Voir la démo de Louise <span aria-hidden="true">▷</span>
         </a>
       </div>
-
-      <div class="ae-hero-meta">
-        <span>1 à 20 photos</span>
-        <span>Lien à partager</span>
-        <span>QR Code inclus</span>
-      </div>
     </div>
 
-    <div class="ae-hero-visual" aria-label="Aperçu d’un Album Émotion sur téléphone">
-      <div class="ae-orbit" aria-hidden="true"></div>
-
-      <div class="ae-float ae-float--top">
-        <small>Avant</small>
-        <strong>Le faire-part.</strong>
-        <p>Quelques secondes pour annoncer une grande nouvelle.</p>
+    <div class="demo-shell" id="demo">
+      <div class="demo-top">
+        <span><i></i><i></i><i></i></span>
+        <span>aperçu mobile</span>
       </div>
 
-      <div class="ae-book" aria-hidden="true">
-        <div class="ae-book-content">
-          <small>Album Émotion</small>
-          <strong>Louise</strong>
-          <p>Trois ans de petites choses devenues immenses.</p>
+      <a class="demo-card" href="stories/demo/album-emotion.html" style="--demo-image:url('images/cat-naissance-bebe.webp')" aria-label="Ouvrir la démo Album Émotion de Louise">
+        <div class="demo-content">
+          <span class="overline">Album Émotion</span>
+          <h2>Louise</h2>
+          <p class="demo-subtitle">Trois ans de petites choses devenues immenses.</p>
+
+          <div class="demo-details">
+            <span>20 photos</span>
+            <span>2023 — 2026</span>
+            <span>À partager</span>
+          </div>
         </div>
-      </div>
+      </a>
 
-      <div class="ae-float ae-float--bottom">
-        <small>Après</small>
-        <strong>L’album vivant.</strong>
-        <p>Une histoire photo plus longue, à ouvrir et transmettre encore.</p>
+      <div class="demo-tools">
+        <p>Une histoire plus longue, à ouvrir sur téléphone et à transmettre simplement.</p>
+
+        <a class="button button--pink" href="stories/demo/album-emotion.html">
+          Ouvrir la démo
+        </a>
+
+        <img class="qr-preview" src="images/qr-album-emotion.webp" alt="QR Code de la démo Album Émotion">
       </div>
     </div>
   </div>
 </section>
 
-<section class="ae-section">
+<section class="section section--tight">
   <div class="wrap">
-    <div class="ae-intro">
-      <p class="ae-label">Deux créations, deux rôles</p>
+    <p class="eyebrow" style="text-align:center">Deux formats, deux moments différents</p>
 
-      <h2>
-        L’ANNONCE OUVRE LA PORTE.
-        <span>L’album fait vivre le souvenir.</span>
-      </h2>
+    <h2 class="section-title">LE FAIRE-PART ANNONCE.<br>L’ALBUM RACONTE LA SUITE.</h2>
 
-      <p>
-        Les deux se partagent de la même manière, par SMS, WhatsApp, lien ou QR Code.
-        Mais l’intention change : le faire-part informe et touche rapidement ; l’Album Émotion prend le temps de raconter.
-      </p>
-    </div>
+    <p class="section-sub">
+      Les deux créations se partagent de la même façon : un lien à envoyer par SMS ou WhatsApp, un QR Code à imprimer et une expérience pensée pour le téléphone. Mais elles ne servent pas au même moment.
+    </p>
 
-    <div class="ae-compare">
-      <article class="ae-compare-card">
-        <span class="ae-card-number">01</span>
-
-        <h3>
-          Le faire-part digital
-          <span>Pour annoncer.</span>
-        </h3>
-
-        <p>
-          Une création courte et forte pour présenter une naissance, inviter à un mariage, annoncer une fête ou partager une information importante.
-        </p>
-
-        <div class="ae-mini-list">
-          <div><b>✓</b><span>Un moment à annoncer.</span></div>
-          <div><b>✓</b><span>Les informations essentielles.</span></div>
-          <div><b>✓</b><span>Une émotion immédiate.</span></div>
-        </div>
+    <div class="steps-grid">
+      <article class="step-card">
+        <span class="step-n">1</span>
+        <h3>Le faire-part digital</h3>
+        <p>Il annonce une naissance, un mariage, un anniversaire, un hommage ou un événement. Il transmet une grande nouvelle, une date, un lieu et une émotion immédiate.</p>
       </article>
 
-      <article class="ae-compare-card ae-compare-card--dark">
-        <span class="ae-card-number">02</span>
+      <article class="step-card">
+        <span class="step-n">2</span>
+        <h3>L’Album Émotion</h3>
+        <p>Il prend le temps de raconter. Vos photos, quelques mots, des moments forts et une ambiance construisent une histoire plus longue à revivre.</p>
+      </article>
 
-        <h3>
-          L’Album Émotion
-          <span>Pour raconter la suite.</span>
-        </h3>
-
-        <p>
-          Une histoire digitale plus longue, construite autour de vos photos, de vos mots, de vos dates et de tous les détails qui donnent du relief aux souvenirs.
-        </p>
-
-        <div class="ae-mini-list">
-          <div><b>✓</b><span>Une sélection de 1 à 20 photos.</span></div>
-          <div><b>✓</b><span>Des chapitres, des légendes et un fil émotionnel.</span></div>
-          <div><b>✓</b><span>Un lien à garder et à partager sans limite.</span></div>
-        </div>
+      <article class="step-card">
+        <span class="step-n">3</span>
+        <h3>Le même partage simple</h3>
+        <p>Le résultat reste facile à envoyer : un lien privé, un QR Code et aucun téléchargement à demander à vos proches.</p>
       </article>
     </div>
   </div>
 </section>
 
-<section class="ae-section ae-story">
-  <div class="wrap ae-story-grid">
-    <div class="ae-story-photos" aria-label="Aperçu de photos d’un Album Émotion">
-      <div class="ae-story-photo ae-story-photo--one" style="--ae-photo:url('images/demo-album-emotion-01.webp')"></div>
-      <div class="ae-story-photo ae-story-photo--two" style="--ae-photo:url('images/demo-album-emotion-02.webp')"></div>
-      <div class="ae-story-stamp">Louise<br>3 ans<br>et déjà<br>tant de choses</div>
+<section class="section section--tight">
+  <div class="wrap surface offer-band">
+    <div>
+      <p class="eyebrow">L’exemple de Louise</p>
+
+      <h2>VOUS AVEZ ANNONCÉ SA NAISSANCE.<span>MAINTENANT, RACONTEZ CE QUI A SUIVI.</span></h2>
+
+      <p>
+        Vous avez envoyé le faire-part de naissance de Louise avec MakeYourStory. Vos proches ont découvert son prénom, sa photo et son arrivée en quelques secondes.
+      </p>
+
+      <p>
+        Quelques mois ou quelques années plus tard, l’Album Émotion devient la suite naturelle : les premiers sourires, les vacances, les anniversaires, les grimaces, les moments de famille et tout ce qui mérite de ne pas rester perdu dans la galerie du téléphone.
+      </p>
+
+      <p>
+        Le même principe fonctionne après un mariage, un anniversaire, un voyage, une fête de famille ou tout autre moment qui mérite d’être raconté plus longuement.
+      </p>
     </div>
 
-    <div class="ae-story-copy">
-      <p class="ae-label">La suite, simplement</p>
+    <div class="offer-price">
+      <small>Une histoire photo à partager</small>
+      <strong>À partir de 49,90 €</strong>
+      <p>Vos photos, vos mots, un lien privé et un QR Code inclus.</p>
 
-      <h2>
-        LOUISE A GRANDI.
-        <span>Son histoire aussi.</span>
-      </h2>
-
-      <p>
-        Son faire-part annonçait son arrivée. Quelques années plus tard, les premières grimaces, les premiers pas, les vacances, les anniversaires et les moments de famille méritent leur propre espace.
-      </p>
-
-      <p>
-        L’Album Émotion transforme ces images en une création plus vivante : une couverture, des pages à faire défiler, des mots, des instants forts et une fin à partager avec tous ceux qui l’aiment.
-      </p>
-
-      <a class="ae-button" href="stories/demo/album-emotion.html">
-        Découvrir l’Album de Louise <span aria-hidden="true">→</span>
+      <a class="button button--soft" style="margin-top:17px" href="stories/demo/album-emotion.html">
+        Découvrir l’exemple de Louise
       </a>
     </div>
   </div>
 </section>
 
-<section class="ae-section">
-  <div class="wrap">
-    <div class="ae-offers-head">
-      <p class="ae-label">Deux formats, la même émotion</p>
+<section class="section">
+  <div class="wrap split-intro">
+    <article class="surface intro-pane">
+      <p class="eyebrow">Plus qu’une galerie photo</p>
 
-      <h2>
-        CHOISISSEZ LE RYTHME
-        <span>de votre histoire.</span>
-      </h2>
+      <h2>UNE HISTOIRE À OUVRIR.<span>PAS JUSTE DES IMAGES À FAIRE DÉFILER.</span></h2>
 
       <p>
-        Chaque album est créé à partir de votre sélection de photos et de vos indications. L’objectif n’est pas d’empiler des images : c’est de composer un souvenir cohérent, beau et personnel.
+        Les photos sont choisies, mises en scène et accompagnées de vos mots. L’album devient une page personnelle avec un début, des souvenirs, des respirations et une fin à partager.
       </p>
-    </div>
 
-    <div class="ae-offers">
-      <article class="ae-offer">
-        <span class="ae-offer-kicker">Album Émotion Mini</span>
-
-        <h3>1 à 10<br>photos</h3>
-
-        <span class="ae-offer-price">49,90 €</span>
-
-        <p>
-          Pour une naissance, un week-end, une séance photo, un premier anniversaire ou une sélection de souvenirs particulièrement forts.
-        </p>
-
-        <div class="ae-offer-list">
-          <div><b>→</b><span>Une couverture personnalisée.</span></div>
-          <div><b>→</b><span>Vos photos et vos mots.</span></div>
-          <div><b>→</b><span>Lien à partager et QR Code inclus.</span></div>
+      <div class="inclusions">
+        <div class="inclusion">
+          <strong>Album Émotion Mini · 49,90 € :</strong>&nbsp;
+          1 à 10 photos, couverture personnalisée, texte, lien privé et QR Code.
         </div>
-      </article>
 
-      <article class="ae-offer ae-offer--featured">
-        <span class="ae-offer-kicker">Album Émotion Complet</span>
-
-        <h3>10 à 20<br>photos</h3>
-
-        <span class="ae-offer-price">69,90 €</span>
-
-        <p>
-          Pour raconter davantage : une année, une famille, un mariage, une évolution, un voyage ou une grande série de souvenirs.
-        </p>
-
-        <div class="ae-offer-list">
-          <div><b>→</b><span>Une narration plus riche et plus longue.</span></div>
-          <div><b>→</b><span>Davantage de chapitres et de légendes.</span></div>
-          <div><b>→</b><span>Une expérience pensée pour être revécue.</span></div>
+        <div class="inclusion">
+          <strong>Album Émotion Complet · 69,90 € :</strong>&nbsp;
+          10 à 20 photos, narration plus longue, davantage de souvenirs et de contenu.
         </div>
-      </article>
-    </div>
+
+        <div class="inclusion">
+          Une même simplicité : vos proches ouvrent le lien depuis leur téléphone, sans application et sans compte à créer.
+        </div>
+
+        <div class="inclusion">
+          L’album peut suivre un faire-part MakeYourStory, mais peut aussi être créé pour une histoire déjà vécue.
+        </div>
+      </div>
+    </article>
+
+    <article class="surface intro-pane">
+      <p class="eyebrow">Ce qui peut être raconté</p>
+
+      <h2>UNE NAISSANCE.<span>UN MARIAGE. UNE ANNÉE. UNE FAMILLE.</span></h2>
+
+      <p>
+        L’Album Émotion est fait pour les histoires qui méritent plus qu’une seule photo. Il peut réunir les moments les plus importants ou les détails les plus simples, ceux qui deviennent précieux après coup.
+      </p>
+
+      <div class="inclusions">
+        <div class="inclusion">Les premiers mois ou les premières années d’un enfant.</div>
+        <div class="inclusion">Les photos d’un mariage, d’un anniversaire ou d’une fête importante.</div>
+        <div class="inclusion">Un voyage, une famille, une séance photo ou une période de vie.</div>
+        <div class="inclusion">Un cadeau à offrir, à envoyer ou à garder pour plus tard.</div>
+      </div>
+
+      <div class="button-row" style="margin-top:24px">
+        <a class="button button--pink" href="stories/demo/album-emotion.html">
+          Voir une vraie démo <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </article>
   </div>
 </section>
 
-<section class="ae-section ae-section--tight" id="formulaire">
-  <div class="wrap">
-    <div class="ae-form-shell">
-      <div class="ae-form-copy">
-        <p class="ae-label">Créer votre Album Émotion</p>
+<section class="section section--tight" id="formulaire">
+  <div class="wrap split-intro">
+    <div class="surface intro-pane">
+      <p class="eyebrow">Créer votre album</p>
 
-        <h2>
-          VOS PHOTOS.
-          <span>Leur histoire.</span>
-        </h2>
+      <h2>VOS PHOTOS.<span>LEUR HISTOIRE.</span></h2>
+
+      <p>
+        Choisissez votre formule, partagez le lien vers vos photos et indiquez les souvenirs ou les mots importants. L’album est ensuite créé pour être ouvert et partagé simplement.
+      </p>
+
+      <div class="inclusions">
+        <div class="inclusion">Choisissez la formule selon le nombre de photos.</div>
+        <div class="inclusion">Envoyez vos images via Google Drive, Dropbox, WeTransfer ou un lien équivalent.</div>
+        <div class="inclusion">Ajoutez les dates, les phrases, les détails ou les souvenirs à conserver.</div>
+        <div class="inclusion">Recevez un lien privé et un QR Code prêts à partager.</div>
+      </div>
+    </div>
+
+    <section class="form-shell form-section" aria-labelledby="album-form-title">
+      <div class="form-section-header">
+        <div>
+          <p class="eyebrow">Demande Album Émotion</p>
+          <h2 id="album-form-title">L’ALBUM COMMENCE ICI.<span>QUELQUES INFORMATIONS SUFFISENT.</span></h2>
+        </div>
 
         <p>
-          Partagez vos photos via un lien, indiquez le titre, l’ambiance et les souvenirs importants. L’album est ensuite composé comme une histoire à ouvrir sur téléphone.
+          Les éléments, le délai et les modalités de règlement sont confirmés avant la création de l’album.
         </p>
-
-        <div class="ae-form-copy-list">
-          <div><b>1</b><span>Choisissez la formule correspondant au nombre de photos.</span></div>
-          <div><b>2</b><span>Envoyez un lien Google Drive, Dropbox, WeTransfer ou équivalent.</span></div>
-          <div><b>3</b><span>Recevez un lien simple à transmettre à vos proches.</span></div>
-        </div>
       </div>
 
-      <section class="ae-form-panel" aria-labelledby="album-form-title">
-        <p class="ae-label">Votre demande</p>
+      <form class="form-grid form-grid--3" action="https://formsubmit.co/basalteweb@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Demande Album Émotion · MakeYourStory">
+        <input type="hidden" name="_next" value="https://makeyourstory.fr/merci.html">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="Produit" value="Album Émotion">
+        <input type="text" name="_honey" style="display:none">
 
-        <h2 class="ae-form-title" id="album-form-title">
-          L’ALBUM COMMENCE ICI.
-          <span>Quelques informations suffisent.</span>
-        </h2>
+        <div class="field">
+          <label for="al-name">Votre prénom et nom *</label>
+          <input id="al-name" type="text" name="Client" required autocomplete="name">
+        </div>
 
-        <p class="ae-form-intro">
-          Le formulaire permet de préparer votre album. Les éléments, le délai et les modalités de règlement sont confirmés avant réalisation.
-        </p>
+        <div class="field">
+          <label for="al-email">Votre e-mail *</label>
+          <input id="al-email" type="email" name="Email" required autocomplete="email">
+        </div>
 
-        <form class="ae-form" action="https://formsubmit.co/basalteweb@gmail.com" method="POST">
-          <input type="hidden" name="_subject" value="Demande Album Émotion · MakeYourStory">
-          <input type="hidden" name="_next" value="https://makeyourstory.fr/merci.html">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="Produit" value="Album Émotion">
-          <input type="text" name="_honey" style="display:none">
+        <div class="field">
+          <label for="al-phone">Votre téléphone *</label>
+          <input id="al-phone" type="tel" name="Téléphone" required autocomplete="tel">
+        </div>
 
-          <div class="ae-field">
-            <label for="al-name">Prénom et nom *</label>
-            <input id="al-name" type="text" name="Client" required autocomplete="name">
-          </div>
+        <div class="field">
+          <label for="al-offer">Formule Album Émotion *</label>
+          <select id="al-offer" name="Offre choisie" required>
+            <option value="">Choisir</option>
+            <option>Album Émotion Mini · 1 à 10 photos · 49,90 €</option>
+            <option>Album Émotion Complet · 10 à 20 photos · 69,90 €</option>
+          </select>
+        </div>
 
-          <div class="ae-field">
-            <label for="al-email">E-mail *</label>
-            <input id="al-email" type="email" name="Email" required autocomplete="email">
-          </div>
+        <div class="field">
+          <label for="al-title">Titre de votre album *</label>
+          <input id="al-title" type="text" name="Titre de l’album" required placeholder="Ex. Louise, trois ans de petites choses">
+        </div>
 
-          <div class="ae-field">
-            <label for="al-phone">Téléphone *</label>
-            <input id="al-phone" type="tel" name="Téléphone" required autocomplete="tel">
-          </div>
+        <div class="field">
+          <label for="al-moment">Moment raconté *</label>
+          <select id="al-moment" name="Moment raconté" required>
+            <option value="">Choisir</option>
+            <option>Naissance et premiers mois</option>
+            <option>Enfance ou anniversaire</option>
+            <option>Mariage</option>
+            <option>Famille</option>
+            <option>Voyage</option>
+            <option>Hommage</option>
+            <option>Autre histoire personnelle</option>
+          </select>
+        </div>
 
-          <div class="ae-field">
-            <label for="al-offer">Formule choisie *</label>
-            <select id="al-offer" name="Offre choisie" required>
-              <option value="">Choisir</option>
-              <option>Album Émotion Mini · 1 à 10 photos · 49,90 €</option>
-              <option>Album Émotion Complet · 10 à 20 photos · 69,90 €</option>
-            </select>
-          </div>
+        <div class="field">
+          <label for="al-period">Période ou date importante</label>
+          <input id="al-period" type="text" name="Période ou date" placeholder="Ex. 2023 à 2026">
+        </div>
 
-          <div class="ae-field">
-            <label for="al-title">Titre de l’album *</label>
-            <input id="al-title" type="text" name="Titre de l’album" required placeholder="Ex. Louise, trois ans de petites choses">
-          </div>
+        <div class="field">
+          <label for="al-previous">Avez-vous déjà créé un faire-part MakeYourStory ?</label>
+          <select id="al-previous" name="Faire-part MakeYourStory déjà créé">
+            <option value="">Choisir</option>
+            <option>Oui, pour cette même histoire</option>
+            <option>Oui, pour un autre événement</option>
+            <option>Non, ce sera ma première création</option>
+          </select>
+        </div>
 
-          <div class="ae-field">
-            <label for="al-occasion">Moment raconté *</label>
-            <select id="al-occasion" name="Moment raconté" required>
-              <option value="">Choisir</option>
-              <option>Naissance et premiers mois</option>
-              <option>Anniversaire ou enfance</option>
-              <option>Mariage</option>
-              <option>Famille</option>
-              <option>Voyage</option>
-              <option>Hommage</option>
-              <option>Autre histoire personnelle</option>
-            </select>
-          </div>
+        <div class="field">
+          <label for="al-style">Ambiance souhaitée</label>
+          <select id="al-style" name="Ambiance">
+            <option value="">Choisir</option>
+            <option>Douce et lumineuse</option>
+            <option>Chaleureuse et familiale</option>
+            <option>Élégante et intemporelle</option>
+            <option>Colorée et joyeuse</option>
+            <option>Naturelle et authentique</option>
+            <option>Je préfère être conseillé(e)</option>
+          </select>
+        </div>
 
-          <div class="ae-field">
-            <label for="al-period">Période ou date importante</label>
-            <input id="al-period" type="text" name="Période ou date" placeholder="Ex. 2023 à 2026">
-          </div>
+        <div class="field field--full">
+          <label for="al-photos">Lien de partage de vos photos *</label>
+          <input id="al-photos" type="text" name="Lien des photos" required placeholder="Google Drive, Dropbox, WeTransfer ou autre lien de partage">
+        </div>
 
-          <div class="ae-field">
-            <label for="al-style">Ambiance souhaitée</label>
-            <select id="al-style" name="Ambiance">
-              <option value="">Choisir</option>
-              <option>Douce et lumineuse</option>
-              <option>Chaleureuse et familiale</option>
-              <option>Élégante et intemporelle</option>
-              <option>Colorée et joyeuse</option>
-              <option>Naturelle et authentique</option>
-              <option>Je préfère être conseillé(e)</option>
-            </select>
-          </div>
+        <div class="field field--full">
+          <label for="al-message">Les souvenirs ou mots à intégrer</label>
+          <textarea id="al-message" name="Texte et souvenirs" placeholder="Une phrase, une date, un lieu, une anecdote, des prénoms, un message à garder ou à offrir…"></textarea>
+        </div>
 
-          <div class="ae-field ae-field--full">
-            <label for="al-photos">Lien de partage de vos photos *</label>
-            <input id="al-photos" type="text" name="Lien des photos" required placeholder="Google Drive, Dropbox, WeTransfer ou autre lien de partage">
-            <p class="ae-hint">Vérifiez que le lien permet bien la consultation ou le téléchargement des photos.</p>
-          </div>
+        <div class="field field--full">
+          <label for="al-notes">Autres précisions</label>
+          <textarea id="al-notes" name="Précisions complémentaires" placeholder="Ordre des photos, musique souhaitée, QR Code à offrir, personnes à mettre en avant, demande particulière…"></textarea>
+        </div>
 
-          <div class="ae-field ae-field--full">
-            <label for="al-message">Les mots ou souvenirs à intégrer</label>
-            <textarea id="al-message" name="Texte et souvenirs" placeholder="Une date, une phrase, un moment marquant, un lieu, une anecdote, un message à garder…"></textarea>
-          </div>
+        <div class="field field--full">
+          <label class="checkline">
+            <input type="checkbox" required>
+            <span>J’ai lu et j’accepte les <a href="cgv.html">conditions générales de vente</a> ainsi que la <a href="confidentialite.html">politique de confidentialité</a>.</span>
+          </label>
+        </div>
 
-          <div class="ae-field ae-field--full">
-            <label for="al-notes">Autres précisions</label>
-            <textarea id="al-notes" name="Précisions complémentaires" placeholder="Musique souhaitée, ordre des photos, personne à mettre en avant, QR Code à imprimer, demande particulière…"></textarea>
-          </div>
+        <div class="field field--full">
+          <button class="button button--pink" type="submit">
+            Envoyer ma demande d’album <span aria-hidden="true">♡</span>
+          </button>
 
-          <div class="ae-field ae-field--full">
-            <label class="ae-check">
-              <input type="checkbox" required>
-              <span>J’ai lu et j’accepte les <a href="cgv.html">conditions générales de vente</a> ainsi que la <a href="confidentialite.html">politique de confidentialité</a>.</span>
-            </label>
-          </div>
-
-          <div class="ae-field ae-field--full">
-            <div class="ae-submit-row">
-              <button class="ae-submit" type="submit">
-                Envoyer ma demande d’album <span aria-hidden="true">♡</span>
-              </button>
-
-              <p class="ae-submit-note">
-                Les informations sont utilisées uniquement pour répondre à cette demande et préparer l’album.
-              </p>
-            </div>
-          </div>
-        </form>
-      </section>
-    </div>
+          <p class="form-note">
+            Les informations sont utilisées uniquement pour répondre à cette demande et préparer votre Album Émotion.
+          </p>
+        </div>
+      </form>
+    </section>
   </div>
 </section>
 
@@ -1630,7 +432,7 @@
 
     <div>
       <strong>PARTAGER FACILEMENT</strong>
-      <p>SMS · WhatsApp · lien personnel · QR Code</p>
+      <p>SMS · WhatsApp · lien privé · QR Code</p>
     </div>
 
     <div class="footer-brand">
