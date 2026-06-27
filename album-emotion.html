@@ -280,58 +280,31 @@
       to{transform:rotate(360deg)}
     }
 
-    .album-page .album-phone{
+    .album-page .album-phone-wrap{
       position:relative;
       z-index:2;
+      width:min(100%,560px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
-    .album-page .album-phone .phone-screen{
-      overflow:hidden;
-      background:#211017;
+    .album-page .album-phone-visual{
+      position:relative;
+      width:min(100%,520px);
+      animation:album-float 6s ease-in-out infinite;
+      filter:drop-shadow(0 28px 48px rgba(0,0,0,.34));
     }
 
-    .album-page .album-phone-cover{
-      position:absolute;
-      inset:0;
-      overflow:hidden;
-      background:#31111c;
-    }
-
-    .album-page .album-phone-cover img{
+    .album-page .album-phone-visual img{
+      display:block;
       width:100%;
-      height:100%;
-      object-fit:cover;
-      object-position:center;
-      transform:scale(1.03);
-      filter:saturate(.82) contrast(1.03);
+      height:auto;
     }
 
-    .album-page .album-phone-cover::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg,rgba(8,4,6,.03) 18%,rgba(8,4,6,.88) 100%);
-    }
-
-    .album-page .album-phone .phone-content{
-      z-index:2;
-      right:26px;
-      bottom:29px;
-      left:26px;
-    }
-
-    .album-page .album-phone .mini-label{
-      color:var(--album-pink-soft) !important;
-    }
-
-    .album-page .album-phone h2{
-      margin:10px 0 0;
-      color:#fff !important;
-      font-size:clamp(41px,5vw,53px);
-    }
-
-    .album-page .album-phone p{
-      color:rgba(255,255,255,.88) !important;
+    @keyframes album-float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-10px)}
     }
 
     .album-page .album-phone-badge,
@@ -550,40 +523,46 @@
 
     .album-page .album-story-photo{
       position:absolute;
-      overflow:hidden;
-      box-shadow:0 23px 54px rgba(0,0,0,.35);
-      background:#35151f;
+      overflow:visible;
+      background:none;
+      box-shadow:none;
+      animation:album-frame-float 7s ease-in-out infinite;
     }
 
     .album-page .album-story-photo img{
+      display:block;
       width:100%;
-      height:100%;
-      object-fit:cover;
-      filter:saturate(.84);
+      height:auto;
+      object-fit:contain;
+      filter:none;
+      filter:drop-shadow(0 23px 54px rgba(0,0,0,.30));
     }
 
     .album-page .album-story-photo::after{
-      content:"";
-      position:absolute;
-      inset:11px;
-      border:1px solid rgba(255,255,255,.6);
-      pointer-events:none;
+      content:none;
     }
 
     .album-page .album-story-photo--one{
       top:0;
       left:0;
-      width:70%;
-      height:74%;
+      width:72%;
+      max-width:430px;
       transform:rotate(-4deg);
+      animation-delay:-1.2s;
     }
 
     .album-page .album-story-photo--two{
       right:0;
       bottom:0;
       width:58%;
-      height:59%;
-      transform:rotate(5deg);
+      max-width:320px;
+      transform:rotate(4deg);
+      animation-delay:-3.4s;
+    }
+
+    @keyframes album-frame-float{
+      0%,100%{translate:0 0}
+      50%{translate:0 -8px}
     }
 
     .album-page .album-story-stamp{
@@ -984,20 +963,32 @@
         min-height:405px;
       }
 
+      .album-page .album-phone-wrap{
+        width:min(100%,360px);
+      }
+
       .album-page .album-phone-badge{
-        top:20px;
-        left:-4px;
+        top:12px;
+        left:-2px;
       }
 
       .album-page .album-phone-note{
-        right:-5px;
-        bottom:19px;
-        max-width:160px;
+        right:-2px;
+        bottom:10px;
+        max-width:154px;
         padding:12px 13px;
       }
 
       .album-page .album-story-photos{
         min-height:390px;
+      }
+
+      .album-page .album-story-photo--one{
+        width:74%;
+      }
+
+      .album-page .album-story-photo--two{
+        width:62%;
       }
 
       .album-page .album-story-stamp{
@@ -1116,25 +1107,17 @@
             <strong>à partir de 49,90 €</strong>
           </div>
 
-          <div class="phone album-phone">
-            <div class="phone-screen">
-              <div class="album-phone-cover">
-                <img
-                  src="images/demo-album-emotion-01.webp"
-                  alt=""
-                  width="800"
-                  height="1200"
-                  decoding="async"
-                  fetchpriority="high"
-                >
-              </div>
-
-              <div class="phone-content">
-                <span class="mini-label">Album Émotion</span>
-                <h2>Louise</h2>
-                <p>Trois ans de petites choses devenues immenses.</p>
-              </div>
-            </div>
+          <div class="album-phone-wrap">
+            <figure class="album-phone-visual" aria-hidden="true">
+              <img
+                src="images/album-emotion-louise.webp"
+                alt="Album Émotion de Louise sur un vrai téléphone"
+                width="1024"
+                height="1536"
+                decoding="async"
+                fetchpriority="high"
+              >
+            </figure>
           </div>
 
           <div class="album-phone-note">
@@ -1208,10 +1191,10 @@
         <div class="album-story-grid">
           <div class="album-story-photos" aria-label="Aperçu de photos d’un Album Émotion">
             <div class="album-story-photo album-story-photo--one">
-              <img src="images/demo-album-emotion-01.webp" alt="" width="900" height="1200" loading="lazy" decoding="async">
+              <img src="images/louise-au-parc.webp" alt="Louise au parc dans un cadre réaliste" width="1024" height="1536" loading="lazy" decoding="async">
             </div>
             <div class="album-story-photo album-story-photo--two">
-              <img src="images/demo-album-emotion-02.webp" alt="" width="900" height="1200" loading="lazy" decoding="async">
+              <img src="images/louise-anniversaire-3-ans.webp" alt="Louise pour son anniversaire de 3 ans dans un cadre réaliste" width="1024" height="1536" loading="lazy" decoding="async">
             </div>
             <div class="album-story-stamp">Louise<br>3 ans<br>et déjà<br>tant de choses</div>
           </div>
