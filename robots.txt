@@ -3,4 +3,9 @@ Allow: /
 Disallow: /access.html
 Disallow: /merci.html
 Disallow: /stories/
+Disallow: /espace/
+Disallow: /admin/
+Disallow: /invitation/
+Disallow: /contenus/
+Disallow: /paiement/
 Sitemap: https://makeyourstory.fr/sitemap.xml

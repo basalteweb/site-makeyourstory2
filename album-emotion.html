@@ -7,7 +7,7 @@
   <meta name="robots" content="index,follow">
 
   <title>Album photo digital personnalisé | Album Émotion | MakeYourStory</title>
-  <meta name="description" content="Transformez vos photos en Album Émotion : une histoire digitale plus longue, vivante et facile à partager. 1 à 10 photos : 49,90 €. 10 à 20 photos : 69,90 €.">
+  <meta name="description" content="Transformez vos photos en Album Émotion : une histoire digitale plus longue, vivante et facile à partager. 1 à 10 photos : {{NUMBER_album-mini}} €. 10 à 20 photos : {{NUMBER_album-complet}} €.">
   <link rel="canonical" href="https://makeyourstory.fr/album-emotion.html">
 
   <meta property="og:type" content="website">
@@ -1123,7 +1123,7 @@
 
           <div class="album-phone-badge">
             Votre Album Émotion
-            <strong>à partir de 49,90 €</strong>
+            <strong>à partir de {{NUMBER_album-mini}} €</strong>
           </div>
 
           <div class="album-phone-wrap">
@@ -1263,7 +1263,7 @@
             <span class="album-offer-kicker">Album Émotion Mini</span>
 
             <h3>1 à 10<br>photos</h3>
-            <span class="album-offer-price">49,90 €</span>
+            <span class="album-offer-price">{{NUMBER_album-mini}} €</span>
 
             <p>
               Pour une naissance, un week-end, une séance photo, un premier anniversaire ou une sélection de souvenirs particulièrement forts.
@@ -1280,7 +1280,7 @@
             <span class="album-offer-kicker">Album Émotion Complet</span>
 
             <h3>10 à 20<br>photos</h3>
-            <span class="album-offer-price">69,90 €</span>
+            <span class="album-offer-price">{{NUMBER_album-complet}} €</span>
 
             <p>
               Pour raconter davantage : une année, une famille, un mariage, une évolution, un voyage ou une grande série de souvenirs.
@@ -1326,113 +1326,10 @@
           </h2>
 
           <p class="album-form-intro">
-            Le formulaire permet de préparer votre album. Les éléments, le délai et les modalités de règlement sont confirmés avant réalisation.
+            Choisissez votre formule. Vous pourrez ensuite transmettre vos photographies et vos textes dans votre espace privé.
           </p>
 
-          <form class="album-form" action="https://formsubmit.co/basalteweb@gmail.com" method="POST">
-            <input type="hidden" name="_subject" value="Demande Album Émotion · MakeYourStory">
-            <input type="hidden" name="_next" value="https://makeyourstory.fr/merci.html">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="Produit" value="Album Émotion">
-            <input type="text" name="_honey" style="display:none">
-
-            <div class="album-field">
-              <label for="al-name">Prénom et nom *</label>
-              <input id="al-name" type="text" name="Client" required autocomplete="name">
-            </div>
-
-            <div class="album-field">
-              <label for="al-email">E-mail *</label>
-              <input id="al-email" type="email" name="Email" required autocomplete="email">
-            </div>
-
-            <div class="album-field">
-              <label for="al-phone">Téléphone *</label>
-              <input id="al-phone" type="tel" name="Téléphone" required autocomplete="tel">
-            </div>
-
-            <div class="album-field">
-              <label for="al-offer">Formule choisie *</label>
-              <select id="al-offer" name="Offre choisie" required>
-                <option value="">Choisir</option>
-                <option>Album Émotion Mini · 1 à 10 photos · 49,90 €</option>
-                <option>Album Émotion Complet · 10 à 20 photos · 69,90 €</option>
-              </select>
-            </div>
-
-            <div class="album-field">
-              <label for="al-title">Titre de l’album *</label>
-              <input id="al-title" type="text" name="Titre de l’album" required placeholder="Ex. Louise, trois ans de petites choses">
-            </div>
-
-            <div class="album-field">
-              <label for="al-occasion">Moment raconté *</label>
-              <select id="al-occasion" name="Moment raconté" required>
-                <option value="">Choisir</option>
-                <option>Naissance et premiers mois</option>
-                <option>Anniversaire ou enfance</option>
-                <option>Mariage</option>
-                <option>Famille</option>
-                <option>Voyage</option>
-                <option>Hommage</option>
-                <option>Autre histoire personnelle</option>
-              </select>
-            </div>
-
-            <div class="album-field">
-              <label for="al-period">Période ou date importante</label>
-              <input id="al-period" type="text" name="Période ou date" placeholder="Ex. 2023 à 2026">
-            </div>
-
-            <div class="album-field">
-              <label for="al-style">Ambiance souhaitée</label>
-              <select id="al-style" name="Ambiance">
-                <option value="">Choisir</option>
-                <option>Douce et lumineuse</option>
-                <option>Chaleureuse et familiale</option>
-                <option>Élégante et intemporelle</option>
-                <option>Colorée et joyeuse</option>
-                <option>Naturelle et authentique</option>
-                <option>Je préfère être conseillé(e)</option>
-              </select>
-            </div>
-
-            <div class="album-field album-field--full">
-              <label for="al-photos">Lien de partage de vos photos *</label>
-              <input id="al-photos" type="text" name="Lien des photos" required placeholder="Google Drive, Dropbox, WeTransfer ou autre lien de partage">
-              <p class="album-hint">Vérifiez que le lien permet bien la consultation ou le téléchargement des photos.</p>
-            </div>
-
-            <div class="album-field album-field--full">
-              <label for="al-message">Les mots ou souvenirs à intégrer</label>
-              <textarea id="al-message" name="Texte et souvenirs" placeholder="Une date, une phrase, un moment marquant, un lieu, une anecdote, un message à garder…"></textarea>
-            </div>
-
-            <div class="album-field album-field--full">
-              <label for="al-notes">Autres précisions</label>
-              <textarea id="al-notes" name="Précisions complémentaires" placeholder="Musique souhaitée, ordre des photos, personne à mettre en avant, QR Code à imprimer, demande particulière…"></textarea>
-            </div>
-
-            <div class="album-field album-field--full">
-              <label class="album-check">
-                <input type="checkbox" required>
-                <span>J’ai lu et j’accepte les <a href="cgv.html">conditions générales de vente</a> ainsi que la <a href="confidentialite.html">politique de confidentialité</a>.</span>
-              </label>
-            </div>
-
-            <div class="album-field album-field--full">
-              <div class="album-submit-row">
-                <button class="button button--pink" type="submit">
-                  Envoyer ma demande d’album <span aria-hidden="true">♡</span>
-                </button>
-
-                <p class="album-submit-note">
-                  Les informations sont utilisées uniquement pour répondre à cette demande et préparer l’album.
-                </p>
-              </div>
-            </div>
-          </form>
+          <div class="button-row"><a class="button button--pink" href="/commande/?produit=album-mini">Commander l’Album Mini</a><a class="button button--ghost" href="/commande/?produit=album-complet">Commander l’Album Complet</a></div>
         </section>
       </div>
     </section>

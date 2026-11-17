@@ -1836,8 +1836,8 @@
   </div>
 </nav>
 
-  </header>  <audio id="story-audio" preload="auto" loop>
-    <source src="../../audio/demo-mariage.mp3" type="audio/mpeg">
+  </header>  <audio id="story-audio" preload="none" loop>
+    <source src="../../audio/demo-love.mp3" type="audio/mpeg">
   </audio>  <main>
     <section class="hero" data-hero>
       <div class="hero-ornament" aria-hidden="true"></div>  <div class="shell">
@@ -2053,7 +2053,7 @@
       </label>
     </div>
 
-    <button class="button-main rsvp-submit" type="submit">Envoyer ma réponse</button>
+    <button class="button-main rsvp-submit" type="submit">Essayer le formulaire RSVP</button>
 
     <p class="rsvp-note">Nous avons hâte de vous retrouver.</p>
   </form>
@@ -2277,7 +2277,7 @@
         event.preventDefault();
         closeModal(rsvpModal);
         rsvpForm.reset();
-        showToast("Merci, votre réponse a bien été enregistrée.");
+        showToast("Vous avez terminé la démonstration du formulaire RSVP.");
       });
 
       [filmModal, rsvpModal].forEach((modal) => {

@@ -6,15 +6,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#080607">
   <meta name="robots" content="index,follow">  <title>Invitation de mariage digitale à partager | MakeYourStory</title>
-  <meta name="description" content="Créez une invitation de mariage digitale à 29,90 €. Date, lieu, RSVP et programme, prête à partager par SMS, WhatsApp ou QR Code.">
+  <meta name="description" content="Créez une invitation de mariage digitale à {{NUMBER_mariage}} €. Date, lieu, RSVP et programme, prête à partager par SMS, WhatsApp ou QR Code.">
   <link rel="canonical" href="https://makeyourstory.fr/invitation-mariage.html">  <meta property="og:type" content="website">
   <meta property="og:site_name" content="MakeYourStory">
   <meta property="og:title" content="Invitation de mariage digitale à partager | MakeYourStory">
-  <meta property="og:description" content="Créez une invitation de mariage digitale à 29,90 €. Date, lieu, RSVP et programme, prête à partager par SMS, WhatsApp ou QR Code.">
+  <meta property="og:description" content="Créez une invitation de mariage digitale à {{NUMBER_mariage}} €. Date, lieu, RSVP et programme, prête à partager par SMS, WhatsApp ou QR Code.">
   <meta property="og:url" content="https://makeyourstory.fr/invitation-mariage.html">
   <meta property="og:image" content="https://makeyourstory.fr/images/cat-mariage.webp">  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Invitation de mariage digitale à partager | MakeYourStory">
-  <meta name="twitter:description" content="Créez une invitation de mariage digitale à 29,90 €. Date, lieu, RSVP et programme, prête à partager par SMS, WhatsApp ou QR Code.">
+  <meta name="twitter:description" content="Créez une invitation de mariage digitale à {{NUMBER_mariage}} €. Date, lieu, RSVP et programme, prête à partager par SMS, WhatsApp ou QR Code.">
   <meta name="twitter:image" content="https://makeyourstory.fr/images/cat-mariage.webp">  <link rel="icon" href="images/favicon.webp" type="image/webp">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.webp">
   <link rel="stylesheet" href="assets/site.css">
@@ -132,7 +132,7 @@
       <p>Une invitation qui donne le ton de votre journée dès le premier écran. Vos invités retrouvent les informations essentielles sans chercher dans une discussion ou un message perdu.</p>
 
       <p class="product-pill">
-        Votre faire-part digital personnalisé · <strong>29,90 € TTC</strong>
+        Votre faire-part digital personnalisé · <strong>{{NUMBER_mariage}} € TTC</strong>
       </p>
 
       <div class="button-row" style="margin-top:22px">
@@ -232,123 +232,9 @@
         <p>Remplissez tranquillement ce que vous avez déjà. Chaque détail est ensuite organisé pour créer une invitation digitale harmonieuse et prête à partager.</p>
       </div>
 
-      <p class="required-note">Les champs marqués d’un astérisque sont nécessaires. Vos informations servent uniquement à préparer votre création.</p>
+      <p>Après le paiement, votre espace privé vous permet de transmettre vos informations, vos photographies et vos textes.</p>
 
-      <form class="form-grid form-grid--3" action="https://formsubmit.co/basalteweb@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Commande Invitation de mariage · MakeYourStory">
-        <input type="hidden" name="_next" value="https://makeyourstory.fr/merci.html">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="Produit" value="Invitation de mariage · 29,90 € TTC">
-        <input type="text" name="_honey" style="display:none">
-
-        <div class="field">
-          <label for="wed-client">Votre prénom et nom *</label>
-          <input id="wed-client" type="text" name="Client" required autocomplete="name">
-        </div>
-
-        <div class="field">
-          <label for="wed-email">Votre e-mail *</label>
-          <input id="wed-email" type="email" name="Email" required autocomplete="email">
-        </div>
-
-        <div class="field">
-          <label for="wed-phone">Votre téléphone *</label>
-          <input id="wed-phone" type="tel" name="Téléphone" required autocomplete="tel">
-        </div>
-
-        <div class="field">
-          <label for="wed-name1">Prénom de la personne 1 *</label>
-          <input id="wed-name1" type="text" name="Prénom 1" required placeholder="Ex. Camille">
-        </div>
-
-        <div class="field">
-          <label for="wed-name2">Prénom de la personne 2 *</label>
-          <input id="wed-name2" type="text" name="Prénom 2" required placeholder="Ex. Julien">
-        </div>
-
-        <div class="field">
-          <label for="wed-date">Date du mariage *</label>
-          <input id="wed-date" type="date" name="Date mariage" required>
-        </div>
-
-        <div class="field">
-          <label for="wed-time">Heure de la cérémonie</label>
-          <input id="wed-time" type="time" name="Heure cérémonie">
-        </div>
-
-        <div class="field">
-          <label for="wed-place">Lieu de cérémonie *</label>
-          <input id="wed-place" type="text" name="Lieu cérémonie" required placeholder="Ex. Église Saint-Pierre, Durtol">
-        </div>
-
-        <div class="field">
-          <label for="wed-party">Lieu de réception</label>
-          <input id="wed-party" type="text" name="Lieu réception" placeholder="Ex. Domaine de la Cascade">
-        </div>
-
-        <div class="field">
-          <label for="wed-rsvp">Date limite de réponse</label>
-          <input id="wed-rsvp" type="date" name="Date RSVP">
-        </div>
-
-        <div class="field">
-          <label for="wed-contact">Contact RSVP</label>
-          <input id="wed-contact" type="text" name="Contact RSVP" placeholder="Téléphone ou e-mail">
-        </div>
-
-        <div class="field">
-          <label for="wed-dress">Dress code</label>
-          <input id="wed-dress" type="text" name="Dress code" placeholder="Ex. Chic champêtre, touches terracotta">
-        </div>
-
-        <div class="field field--full">
-          <label for="wed-message">Votre message d’invitation *</label>
-          <textarea id="wed-message" name="Message" required placeholder="Ex. Nous serions très heureux de partager cette journée avec vous…"></textarea>
-        </div>
-
-        <div class="field field--full">
-          <label for="wed-program">Programme ou informations utiles</label>
-          <textarea id="wed-program" name="Programme" placeholder="Cocktail, repas, brunch du lendemain, hébergement, accès, enfants, navette…"></textarea>
-        </div>
-
-        <div class="field">
-          <label for="wed-style">Univers souhaité</label>
-          <select id="wed-style" name="Ambiance">
-            <option value="">Choisir</option>
-            <option>Élégant et intemporel</option>
-            <option>Champêtre et naturel</option>
-            <option>Moderne et minimaliste</option>
-            <option>Coloré et festif</option>
-            <option>Je préfère être conseillé(e)</option>
-          </select>
-        </div>
-
-        <div class="field field--full">
-          <label for="wed-photo">Lien vers une ou plusieurs photos</label>
-          <input id="wed-photo" type="text" name="Lien photo" placeholder="Google Drive, WeTransfer, Dropbox ou autre lien de partage">
-        </div>
-
-        <div class="field field--full">
-          <label class="checkline">
-            <input type="checkbox" required>
-            <span>
-              J’ai lu et j’accepte les <a href="cgv.html">conditions générales de vente</a>
-              ainsi que la <a href="confidentialite.html">politique de confidentialité</a>.
-            </span>
-          </label>
-        </div>
-
-        <div class="field field--full">
-          <button class="button button--pink" type="submit">
-            Envoyer ma demande de création <span aria-hidden="true">♡</span>
-          </button>
-
-          <p class="form-note">
-            Le formulaire envoie votre demande. Les éléments, le délai et les modalités de règlement sont confirmés avant toute création définitive.
-          </p>
-        </div>
-      </form>
+      <div class="button-row"><a class="button button--pink" href="/commande/?produit=mariage">Commander mon invitation de mariage</a></div>
     </section>
   </div>
 

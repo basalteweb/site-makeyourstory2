@@ -230,7 +230,7 @@
     .video-modal{position:fixed;z-index:1100;inset:0;display:none;place-items:center;padding:24px;background:rgba(4,3,4,.95);backdrop-filter:blur(14px)}
     .video-modal.open{display:grid}
     .video-frame{position:relative;width:min(1080px,100%);max-height:82svh;background:#000;box-shadow:0 34px 90px rgba(0,0,0,.65)}
-    .video-frame video{display:block;width:100%;max-height:82svh;object-fit:contain;background:#000}
+    .video-frame img{display:block;width:100%;max-height:82svh;object-fit:contain;background:#000}
     .video-close{position:absolute;top:-52px;right:0;width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(255,205,216,.55);border-radius:50%;background:rgba(255,255,255,.06);color:#fff;font-size:24px;cursor:pointer}
     .video-placeholder{padding:70px 30px;text-align:center;color:#fff;background:linear-gradient(135deg,#1a0b11,#090607)}
     .video-placeholder h3{margin:12px 0 0;font:500 clamp(38px,5vw,66px)/.85 "Cormorant Garamond",Georgia,serif}
@@ -282,7 +282,7 @@
     </nav>
   </header>
 
-  <audio id="story-audio" preload="auto" loop>
+  <audio id="story-audio" preload="none" loop>
     <source src="../../audio/demo-love.mp3" type="audio/mpeg">
   </audio>
 
@@ -365,11 +365,11 @@
 
     <section class="video-chapter">
       <div class="video-inner reveal">
-        <p class="eyebrow">Le souvenir en mouvement</p>
-        <h2>Et si notre histoire<span>avait une bande-annonce ?</span></h2>
-        <p class="video-copy">Ici, tu peux terminer l’expérience avec une vraie vidéo : un montage de vacances, une séquence de plage, une vidéo de votre mariage, ou simplement quelques secondes où vous riez ensemble.</p>
-        <button class="video-play" type="button" data-open-video aria-label="Lancer la vidéo souvenir">▷</button>
-        <p class="video-note">Vidéo finale à ajouter dans le dossier videos</p>
+        <p class="eyebrow">Le souvenir en images</p>
+        <h2>Une photographie<span>pour garder le moment.</span></h2>
+        <p class="video-copy">Retrouvez le souvenir qui clôt cette histoire.</p>
+        <button class="video-play" type="button" data-open-video aria-label="Voir le souvenir photo">▷</button>
+        <p class="video-note">Souvenir photo</p>
       </div>
     </section>
 
@@ -391,20 +391,11 @@
     <a href="../../contact.html">Parler de votre propre histoire</a>
   </footer>
 
-  <section class="video-modal" data-video-modal aria-label="Vidéo souvenir">
+  <section class="video-modal" data-video-modal aria-label="Photographie souvenir">
     <div class="video-frame">
-      <button class="video-close" type="button" data-close-video aria-label="Fermer la vidéo">×</button>
+      <button class="video-close" type="button" data-close-video aria-label="Fermer la photographie">×</button>
 
-      <!-- Dépose ton fichier à cet emplacement : videos/arnaud-angelique.mp4 -->
-      <video controls playsinline preload="metadata" poster="../../images/demo-03.webp" data-video>
-        <source src="../../videos/arnaud-angelique.mp4" type="video/mp4">
-      </video>
-
-      <div class="video-placeholder hidden" data-video-placeholder>
-        <p class="eyebrow">Votre vidéo finale</p>
-        <h3>Ici se lance<span>votre plus beau souvenir.</span></h3>
-        <p>Crée le dossier <strong>videos</strong> à la racine du dépôt, puis ajoute une vidéo nommée <strong>arnaud-angelique.mp4</strong>. Dès qu’elle est en ligne, cette fenêtre la lira automatiquement.</p>
-      </div>
+      <img src="../../images/demo-03.webp" alt="Souvenir du couple" loading="lazy">
     </div>
   </section>
 
@@ -419,8 +410,6 @@
       const openVideo = document.querySelector("[data-open-video]");
       const closeVideo = document.querySelector("[data-close-video]");
       const videoModal = document.querySelector("[data-video-modal]");
-      const video = document.querySelector("[data-video]");
-      const videoPlaceholder = document.querySelector("[data-video-placeholder]");
 
       document.body.style.overflow = "hidden";
 
@@ -490,15 +479,9 @@
       const openVideoModal = () => {
         videoModal.classList.add("open");
         document.body.style.overflow = "hidden";
-        video.currentTime = 0;
-        video.play().catch(() => {
-          video.classList.add("hidden");
-          videoPlaceholder.classList.remove("hidden");
-        });
       };
 
       const closeVideoModal = () => {
-        video.pause();
         videoModal.classList.remove("open");
         document.body.style.overflow = "";
       };
@@ -506,10 +489,6 @@
       openVideo.addEventListener("click", openVideoModal);
       closeVideo.addEventListener("click", closeVideoModal);
 
-      video.addEventListener("error", () => {
-        video.classList.add("hidden");
-        videoPlaceholder.classList.remove("hidden");
-      });
 
       videoModal.addEventListener("click", (event) => {
         if (event.target === videoModal) closeVideoModal();

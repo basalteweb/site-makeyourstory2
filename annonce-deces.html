@@ -84,7 +84,7 @@
       <p>Un espace sobre et respectueux pour transmettre les informations importantes, partager une photo et permettre aux proches de se recueillir autour d’un message digne.</p>
 
       <p class="product-pill">
-        Votre annonce digitale personnalisée · <strong>29,90 € TTC</strong>
+        Votre annonce digitale personnalisée · <strong>{{NUMBER_hommage}} € TTC</strong>
       </p>
 
       <div class="button-row" style="margin-top:22px">
@@ -177,101 +177,9 @@
         <p>Les informations peuvent être transmises à votre rythme. Chaque élément est ensuite organisé avec sobriété pour créer une annonce claire, respectueuse et prête à partager.</p>
       </div>
 
-      <p class="required-note">Les champs marqués d’un astérisque sont nécessaires. Vos informations servent uniquement à préparer votre création.</p>
+      <p>Après le paiement, votre espace privé vous permet de transmettre vos informations, vos photographies et vos textes.</p>
 
-      <form class="form-grid form-grid--3" action="https://formsubmit.co/basalteweb@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Commande Annonce de décès & hommage · MakeYourStory">
-        <input type="hidden" name="_next" value="https://makeyourstory.fr/merci.html">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="Produit" value="Annonce de décès & hommage · 29,90 € TTC">
-        <input type="text" name="_honey" style="display:none">
-
-        <div class="field">
-          <label for="mem-client">Votre prénom et nom *</label>
-          <input id="mem-client" type="text" name="Client" required autocomplete="name">
-        </div>
-
-        <div class="field">
-          <label for="mem-email">Votre e-mail *</label>
-          <input id="mem-email" type="email" name="Email" required autocomplete="email">
-        </div>
-
-        <div class="field">
-          <label for="mem-phone">Votre téléphone *</label>
-          <input id="mem-phone" type="tel" name="Téléphone" required autocomplete="tel">
-        </div>
-
-        <div class="field">
-          <label for="mem-name">Nom et prénom de la personne *</label>
-          <input id="mem-name" type="text" name="Nom personne" required placeholder="Ex. Jeanne Martin">
-        </div>
-
-        <div class="field">
-          <label for="mem-born">Date de naissance</label>
-          <input id="mem-born" type="date" name="Date naissance">
-        </div>
-
-        <div class="field">
-          <label for="mem-death">Date du décès *</label>
-          <input id="mem-death" type="date" name="Date décès" required>
-        </div>
-
-        <div class="field">
-          <label for="mem-ceremony-date">Date de cérémonie</label>
-          <input id="mem-ceremony-date" type="date" name="Date cérémonie">
-        </div>
-
-        <div class="field">
-          <label for="mem-ceremony-time">Heure de cérémonie</label>
-          <input id="mem-ceremony-time" type="time" name="Heure cérémonie">
-        </div>
-
-        <div class="field">
-          <label for="mem-place">Lieu de cérémonie</label>
-          <input id="mem-place" type="text" name="Lieu cérémonie" placeholder="Église, crématorium, cimetière…">
-        </div>
-
-        <div class="field field--full">
-          <label for="mem-condolences">Informations condoléances, fleurs ou dons</label>
-          <input id="mem-condolences" type="text" name="Condoléances / fleurs" placeholder="Ex. Registre de condoléances, fleurs, dons, adresse de la famille…">
-        </div>
-
-        <div class="field field--full">
-          <label for="mem-photo">Lien vers une photo souhaitée</label>
-          <input id="mem-photo" type="text" name="Lien photo" placeholder="Google Drive, WeTransfer, Dropbox ou autre lien de partage">
-        </div>
-
-        <div class="field field--full">
-          <label for="mem-message">Texte d’hommage ou annonce *</label>
-          <textarea id="mem-message" name="Texte hommage" required placeholder="Écrivez le message que vous souhaitez transmettre. Il sera mis en forme avec délicatesse dans votre annonce."></textarea>
-        </div>
-
-        <div class="field field--full">
-          <label for="mem-note">Indications particulières</label>
-          <textarea id="mem-note" name="Précisions" placeholder="Citation, texte religieux, musique, éléments à ne pas afficher ou précision importante."></textarea>
-        </div>
-
-        <div class="field field--full">
-          <label class="checkline">
-            <input type="checkbox" required>
-            <span>
-              J’ai lu et j’accepte les <a href="cgv.html">conditions générales de vente</a>
-              ainsi que la <a href="confidentialite.html">politique de confidentialité</a>.
-            </span>
-          </label>
-        </div>
-
-        <div class="field field--full">
-          <button class="button button--pink" type="submit">
-            Envoyer ma demande de création <span aria-hidden="true">♡</span>
-          </button>
-
-          <p class="form-note">
-            Le formulaire envoie votre demande. Les éléments, le délai et les modalités de règlement sont confirmés avant toute création définitive.
-          </p>
-        </div>
-      </form>
+      <div class="button-row"><a class="button button--pink" href="/commande/?produit=hommage">Commander mon annonce</a></div>
     </section>
   </div>
 

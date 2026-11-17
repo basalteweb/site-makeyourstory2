@@ -1,5 +1,6 @@
-MAKE YOUR STORY — FAIRE-PARTS DIGITAUX
+MAKEYOURSTORY
 
-Version livrée : accueil centré sur le faire-part digital à 29,90 €, 5 occasions avec démos + formulaires détaillés, Album Émotion 49,90 € / 69,90 €, partage mobile, QR codes de démo, SEO et pages légales réécrites.
+Vitrine existante, commandes Stripe Checkout et espace de gestion MakeYourStory.
+Le serveur Node.js sert la vitrine, les démonstrations et les espaces privés sur le même domaine.
 
-Le site est statique et les formulaires envoient vers basalteweb@gmail.com via FormSubmit. Les identifiants d’Analytics/GTM restent volontairement inactifs.
+Voir EXPLOITATION.md pour lancer, tester et déployer l’application, puis traiter une commande.

@@ -66,23 +66,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  const accessForm = document.querySelector("[data-access-form]");
-  if (accessForm) {
-    accessForm.addEventListener("submit", event => {
-      event.preventDefault();
-      const code = (accessForm.querySelector("input[name='code']").value || "").trim().toUpperCase();
-      const msg = accessForm.querySelector("[data-access-message]");
-      const urls = {
-        "DEMO": "faire-parts.html",
-        "DEMO-NAISSANCE": "faire-part-naissance.html#demo",
-        "DEMO-MARIAGE": "invitation-mariage.html#demo",
-        "DEMO-ANNIVERSAIRE": "invitation-anniversaire.html#demo",
-        "DEMO-HOMMAGE": "annonce-deces.html#demo",
-        "DEMO-ALBUM": "album-emotion.html#demo",
-        "DEMO-LOVE": "stories/demo/index.html"
-      };
-      if (urls[code]) { window.location.href = urls[code]; return; }
-      msg.textContent = "Ce code ne correspond pas à une histoire disponible. Vérifiez le code reçu avec votre lien.";
-    });
-  }
 });

@@ -1,0 +1,10 @@
+.git
+.github
+node_modules
+.env
+.env.*
+.runtime
+media
+test-results
+playwright-report
+tests
