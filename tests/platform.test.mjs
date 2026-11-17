@@ -69,7 +69,13 @@ async function fixtureOrder(db, email, name, product) {
 
 test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
   const storage=await mkdtemp(join(tmpdir(),'mys-spec-'));
-  const cfg=configFrom({APP_MODE:'test',APP_URL:origin,MEDIA_DIR:storage,ADMIN_EMAILS:'admin.mys@example.com',BILLING_VAT_NOTICE:'TVA non applicable · scénario de test'});
+  const testDatabase = process.env.MYS_TEST_DATABASE_URL;
+  if (testDatabase) {
+    const url = new URL(testDatabase);
+    assert.equal(url.hostname, '127.0.0.1');
+    assert.equal(url.pathname, '/makeyourstory_test');
+  }
+  const cfg=configFrom({APP_MODE:'test',APP_URL:origin,MEDIA_DIR:storage,DATABASE_URL:testDatabase,ADMIN_EMAILS:'admin.mys@example.com',BILLING_VAT_NOTICE:'TVA non applicable · scénario de test'});
   const { app,db }=await createApp(cfg);
   const server=app.listen(3137,'127.0.0.1');
   t.after(async()=>{await new Promise(resolve=>server.close(resolve));await db.close();await rm(storage,{recursive:true,force:true});});
@@ -87,7 +93,7 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     await expectStatus(await anon.get('/assets/plateforme.css'),200);
     await html(await anon.get('/commande/?produit=mariage'),503,/Commande en ligne indisponible/);
     await expectStatus(await anon.post('/demandes/contact',{Nom:'Contact Test',Email:'contact.mys@example.com',Projet:'Question de test'}),303);
-    assert.equal((await one(db,'select count(*) as n from inquiries')).n,1);
+    assert.equal(Number((await one(db,'select count(*) as n from inquiries')).n),1);
     await expectStatus(await anon.post('/demandes/contact',{Nom:'Spam',Email:'spam@example.com'},'https://example.org'),403);
     await expectStatus(await anon.post('/webhooks/stripe',{id:'no-signature'}),400);
   });
@@ -130,7 +136,7 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     await html(await admin.get(`${manage}/messages`),200,/Voici la photographie/);
     await expectStatus(await admin.post(`${manage}/messages`,upload(samplePhoto,'reponse.png',{content:'Merci pour vos éléments'})),303);
     await html(await alice.get(`${order}/messages`),200,/Merci pour vos éléments/);
-    assert.equal((await one(db,"select count(*) as n from notifications where kind='new_message'")).n,2);
+    assert.equal(Number((await one(db,"select count(*) as n from notifications where kind='new_message'")).n),2);
   });
   await t.test('version personnalisée, validation, lien, QR code et RSVP réel',async()=>{
     await expectStatus(await admin.post(`${manage}/creation/importer`,upload(archive,'creation.zip',{label:'Version de test'})),303);
@@ -165,7 +171,7 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     assert.ok(duplicate.includes(edit));
     await expectStatus(await second.get(answers),200);
     await html(await second.post(answers,{name:'Invité absent',attending:'no'}),200,/Votre réponse est enregistrée/);
-    assert.equal((await one(db,'select count(*) as n from responses')).n,2);
+    assert.equal(Number((await one(db,'select count(*) as n from responses')).n),2);
     await html(await first.get(edit),200,/Modifier ma réponse/);
     const key=new URL(origin+edit).searchParams.get('cle');
     await html(await first.post(answers+'modifier',{...yes,adults:'1',edit:key}),200,/Votre réponse est enregistrée/);
