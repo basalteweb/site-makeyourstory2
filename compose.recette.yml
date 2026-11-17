@@ -1,0 +1,12 @@
+services:
+  app:
+    env_file: !reset []
+    environment:
+      APP_MODE: test
+      APP_URL: http://127.0.0.1:3000
+      APP_SECRET: ${MYS_RECETTE_SECRET:?secret de recette MakeYourStory requis}
+      DATABASE_URL: postgresql://makeyourstory:${POSTGRES_PASSWORD:?mot de passe de recette MakeYourStory requis}@database:5432/makeyourstory
+      ADMIN_EMAILS: recette-admin@example.test
+      CHECKOUT_ENABLED: 'false'
+      MAIL_MODE: outbox
+    ports: !reset []
