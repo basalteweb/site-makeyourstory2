@@ -199,4 +199,21 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     await expectStatus(await bob.post('/espace/deconnexion',{}),303);
     await expectStatus(await bob.get(order),303);
   });
+  await t.test('le premier aperçu est présenté et enregistré avec son délai en heures', async () => {
+    assert.equal(configFrom({ DELIVERY_BUSINESS_DAYS: '3' }).deliveryLabel, '3 jours ouvrés');
+    await html(await anon.get('/cgv.html'), 200, /premier aperçu sous 72 heures/);
+    const buyer = { name: 'Délai de test', email: 'delai.mys@example.com', product: 'mariage' };
+    cfg.publicCheckout = true;
+    try {
+      const review = await html(await anon.post('/commande/recapitulatif', buyer), 200, /premier aperçu sous 72 heures/);
+      const catalogue = review.match(/name="catalogue" value="([^"]+)"/)?.[1];
+      const key = review.match(/name="key" value="([^"]+)"/)?.[1];
+      assert.ok(catalogue && key);
+      await expectStatus(await anon.post('/commande/paiement', { ...buyer, catalogue, key, terms: 'on' }), 503);
+      const stored = await one(db, 'select delivery_hours, delivery_days from orders where checkout_key=$1', [key]);
+      assert.deepEqual(stored, { delivery_hours: 72, delivery_days: null });
+    } finally {
+      cfg.publicCheckout = false;
+    }
+  });
 });

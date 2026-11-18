@@ -20,7 +20,12 @@ export function configFrom(env = process.env) {
   const secret = env.APP_SECRET || (live ? '' : randomBytes(48).toString('hex'));
   const stripeKey = env.STRIPE_API_KEY || '';
   const publicCheckout = env.CHECKOUT_ENABLED === 'true';
-  const deliveryDays = env.DELIVERY_BUSINESS_DAYS ? integer(env.DELIVERY_BUSINESS_DAYS, 1, 90) : null;
+  const deliveryDays = !env.DELIVERY_HOURS && env.DELIVERY_BUSINESS_DAYS
+    ? integer(env.DELIVERY_BUSINESS_DAYS, 1, 90) : null;
+  const deliveryHours = deliveryDays === null ? integer(env.DELIVERY_HOURS || '72', 1, 2160) : null;
+  const deliveryLabel = deliveryHours
+    ? `${deliveryHours} ${deliveryHours === 1 ? 'heure' : 'heures'}`
+    : `${deliveryDays} ${deliveryDays === 1 ? 'jour ouvré' : 'jours ouvrés'}`;
   const adminEmails = (env.ADMIN_EMAILS || '').split(',').filter(Boolean).map(emailAddress);
   const mailMode = env.MAIL_MODE || 'outbox';
   const testRecipients = (env.TEST_EMAIL_ALLOWLIST || '').split(',').filter(Boolean).map(emailAddress);
@@ -40,7 +45,7 @@ export function configFrom(env = process.env) {
   const ovhMailPassword = passwordHex ? Buffer.from(passwordHex, 'hex').toString('utf8') : env.OVH_MAIL_PASSWORD;
   assert(mailMode !== 'ovh' || (mailFrom.endsWith('@makeyourstory.fr') && ovhMailPassword),
     500, 'Boîte SMTP OVH MakeYourStory et mot de passe requis.');
-  assert(!publicCheckout || (stripeKey && env.STRIPE_WEBHOOK_SECRET && (!live || (env.TERMS_VERSION && env.CONSUMER_MEDIATOR && httpsUrl(env.CONSUMER_MEDIATOR_URL) && env.ADMIN_NOTIFY_EMAIL && deliveryDays))),
+  assert(!publicCheckout || (stripeKey && env.STRIPE_WEBHOOK_SECRET && (!live || (env.TERMS_VERSION && env.CONSUMER_MEDIATOR && httpsUrl(env.CONSUMER_MEDIATOR_URL) && env.ADMIN_NOTIFY_EMAIL))),
     500, 'Stripe, webhook et informations contractuelles incomplets.');
   return {
     mode, live, origin: origin.origin, databaseUrl, secret, publicCheckout, adminEmails, mailMode,
@@ -50,10 +55,10 @@ export function configFrom(env = process.env) {
     resendKey: env.RESEND_API_KEY, mailFrom, ovhMailPassword,
     mailAllowlist: testRecipients,
     adminNotify: env.ADMIN_NOTIFY_EMAIL ? emailAddress(env.ADMIN_NOTIFY_EMAIL) : adminEmails[0],
-    termsVersion: env.TERMS_VERSION || '2026-11-17',
+    termsVersion: env.TERMS_VERSION || '2026-11-18',
     mediator: env.CONSUMER_MEDIATOR || '', mediatorUrl: httpsUrl(env.CONSUMER_MEDIATOR_URL),
     hostingName: env.HOSTING_NAME || '',
-    proxyHops: Number(env.TRUST_PROXY_HOPS || 0), deliveryDays,
+    proxyHops: Number(env.TRUST_PROXY_HOPS || 0), deliveryDays, deliveryHours, deliveryLabel,
     vatNotice: env.BILLING_VAT_NOTICE || ''
   };
 }

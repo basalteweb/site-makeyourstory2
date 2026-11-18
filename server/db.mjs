@@ -33,7 +33,10 @@ export async function openDatabase(config) {
     close = () => db.close();
   }
   if (config.migrate) {
-    const schema = await readFile(new URL('../db/001-initial.sql', import.meta.url), 'utf8');
+    const [schema, deliveryMigration] = await Promise.all([
+      readFile(new URL('../db/001-initial.sql', import.meta.url), 'utf8'),
+      readFile(new URL('../db/002-delivery-hours.sql', import.meta.url), 'utf8')
+    ]);
     await transaction(async (tx) => {
       await tx.query('select pg_advisory_xact_lock(1637992218)');
       const { rows: [row] } = await tx.query("select to_regclass('makeyourstory.products') as installed");
@@ -41,6 +44,7 @@ export async function openDatabase(config) {
         if (tx.exec) await tx.exec(schema);
         else await tx.query(schema);
       }
+      await tx.query(deliveryMigration);
     });
   }
   if (!config.databaseUrl) await query('set search_path to makeyourstory, pg_catalog');

@@ -14,7 +14,8 @@ export function commerce(router, { db, config, stripe, auth }) {
   const catalog = () => many(db, 'select * from products where active order by amount,id');
   const offer = (id) => one(db, 'select * from products where id=$1 and active', [value(id, 40, true)]);
   const duration = async () => Number((await one(db, "select value from settings where key='publication_months'"))?.value || 12);
-  const stamp = (p, months) => mac(config.secret, `offer:${p.id}:${p.amount}:${p.name}:${config.termsVersion}:${config.deliveryDays || ''}:${months}`);
+  const deliveryStamp = config.deliveryHours ? `h${config.deliveryHours}` : config.deliveryDays || '';
+  const stamp = (p, months) => mac(config.secret, `offer:${p.id}:${p.amount}:${p.name}:${config.termsVersion}:${deliveryStamp}:${months}`);
   const formData = (body) => ({ name: value(body.name, 160, true), email: emailAddress(body.email), brief: value(body.brief, 1200) });
   const purchaseAllowed = (req, res, next) => {
     privatePage(res);
@@ -46,7 +47,7 @@ export function commerce(router, { db, config, stripe, auth }) {
       <dt>Nom</dt><dd>${e(data.name)}</dd><dt>Adresse de votre espace</dt><dd>${e(data.email)}</dd>
       ${data.brief ? `<dt>Votre projet</dt><dd class="px-text">${e(data.brief)}</dd>` : ''}</dl>
       ${post('/commande/paiement', `${Object.entries(fields).map(([k,v]) => hidden(k,v)).join('')}
-      <p>La création est réalisée à partir des éléments que vous transmettez. ${config.deliveryDays ? `Le premier aperçu est prévu sous ${config.deliveryDays} jours ouvrés après réception des éléments complets et après le délai de rétractation applicable.` : ''} Le lien reste disponible ${months} mois après publication.</p>
+      <p>Nous vous remettrons le premier aperçu sous ${e(config.deliveryLabel)} après réception de tous les éléments nécessaires et, le cas échéant, après expiration du délai de rétractation. Le lien reste disponible ${months} mois après publication.</p>
       ${check(csrfTerms, 'terms', false, 'required')}<p><a class="px-link" href="/confidentialite.html">Politique de confidentialité</a></p>
       <div class="button-row">${submit(`Payer ${euro(product.amount)} avec Stripe`)}${btn('Modifier', `/commande/?produit=${product.id}`, true)}</div>`)}</section>`, { compact: true }));
   });
@@ -63,8 +64,10 @@ export function commerce(router, { db, config, stripe, auth }) {
       if (old) return old;
       const customer = await customerByEmail(tx, data.email);
       const inserted = await one(tx, `insert into orders (customer_id,product_id,product_name,category,amount,buyer_email,client_name,
-        initial_brief,source,terms_version,terms_accepted_at,checkout_key,delivery_days,publication_months) values ($1,$2,$3,$4,$5,$6,$7,$8,'checkout',$9,now(),$10,$11,$12)
-        on conflict (checkout_key) do nothing returning *`, [customer.id,product.id,product.name,product.category,product.amount,data.email,data.name,data.brief,config.termsVersion,key,config.deliveryDays,months]);
+        initial_brief,source,terms_version,terms_accepted_at,checkout_key,delivery_days,delivery_hours,publication_months)
+        values ($1,$2,$3,$4,$5,$6,$7,$8,'checkout',$9,now(),$10,$11,$12,$13) on conflict (checkout_key) do nothing returning *`,
+        [customer.id,product.id,product.name,product.category,product.amount,data.email,data.name,data.brief,
+          config.termsVersion,key,config.deliveryDays,config.deliveryHours,months]);
       if (!inserted) return one(tx, 'select * from orders where checkout_key=$1', [key]);
       await addHistory(tx, inserted.id, 'checkout', 'Commande enregistrée avant ouverture de Stripe');
       return inserted;
