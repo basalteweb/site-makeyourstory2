@@ -25,6 +25,11 @@ export const panel = (title, content) => `<section class="px-panel"><h2>${e(titl
 export const links = (entries) => `<nav class="px-tabs" aria-label="Rubriques">${entries.map(([label, href, picked]) => `<a href="${e(href)}"${picked ? ' aria-current="page"' : ''}>${e(label)}</a>`).join('')}</nav>`;
 export const post = (action, html, attrs = '') => `<form method="post" action="${e(action)}" ${attrs}>${html}</form>`;
 
+export function mediationDetails({ mediator, mediatorUrl, mediatorAddress }) {
+  if (!mediator || !mediatorUrl || !mediatorAddress) return '';
+  return `${e(mediator)} · ${e(mediatorAddress)} · <a class="px-link" href="${e(mediatorUrl)}">Site du médiateur</a>`;
+}
+
 export function page(title, content, options = {}) {
   const { eyebrow = '', user, wide = false, compact = false } = options;
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">

@@ -216,4 +216,28 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
       cfg.publicCheckout = false;
     }
   });
+  await t.test('le médiateur désigné figure dans le récapitulatif et les informations légales', async () => {
+    const production = {
+      APP_MODE: 'production', APP_URL: 'https://makeyourstory.fr', APP_SECRET: 'x'.repeat(48),
+      DATABASE_URL: 'postgresql://makeyourstory@database/makeyourstory', MEDIA_DIR: storage,
+      ADMIN_EMAILS: 'admin@makeyourstory.fr', ADMIN_NOTIFY_EMAIL: 'admin@makeyourstory.fr',
+      HOSTING_NAME: 'Hébergeur de recette', MAIL_MODE: 'ovh', MAIL_FROM: 'contact@makeyourstory.fr', OVH_MAIL_PASSWORD: 'recette',
+      CHECKOUT_ENABLED: 'true', STRIPE_API_KEY: 'rk_live_fictive', STRIPE_WEBHOOK_SECRET: 'whsec_fictif',
+      TERMS_VERSION: '2026-11-18', CONSUMER_MEDIATOR: 'Médiation de recette', CONSUMER_MEDIATOR_URL: 'https://example.test/mediation'
+    };
+    assert.throws(() => configFrom(production), /coordonnées du médiateur/);
+    await html(await anon.get('/cgv.html'), 200, /Les coordonnées du médiateur seront publiées/);
+    const { mediator, mediatorUrl, mediatorAddress } = configFrom({ ...production, CONSUMER_MEDIATOR_ADDRESS: '2 rue de Recette $& associés' });
+    Object.assign(cfg, { mediator, mediatorUrl, mediatorAddress });
+    cfg.publicCheckout = true;
+    try {
+      const buyer = { name: 'Médiation de test', email: 'mediation.mys@example.com', product: 'mariage' };
+      const coordinates = /Médiation de recette · 2 rue de Recette \$&amp; associés · <a [^>]*href="https:\/\/example\.test\/mediation"/;
+      await html(await anon.get('/mentions-legales.html'), 200, coordinates);
+      await html(await anon.get('/cgv.html'), 200, coordinates);
+      await html(await anon.post('/commande/recapitulatif', buyer), 200, coordinates);
+    } finally {
+      cfg.publicCheckout = false;
+    }
+  });
 });

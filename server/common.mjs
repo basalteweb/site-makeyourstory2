@@ -20,6 +20,9 @@ export function configFrom(env = process.env) {
   const secret = env.APP_SECRET || (live ? '' : randomBytes(48).toString('hex'));
   const stripeKey = env.STRIPE_API_KEY || '';
   const publicCheckout = env.CHECKOUT_ENABLED === 'true';
+  const mediator = env.CONSUMER_MEDIATOR?.trim() || '';
+  const mediatorUrl = httpsUrl(env.CONSUMER_MEDIATOR_URL);
+  const mediatorAddress = env.CONSUMER_MEDIATOR_ADDRESS?.trim() || '';
   const deliveryDays = !env.DELIVERY_HOURS && env.DELIVERY_BUSINESS_DAYS
     ? integer(env.DELIVERY_BUSINESS_DAYS, 1, 90) : null;
   const deliveryHours = deliveryDays === null ? integer(env.DELIVERY_HOURS || '72', 1, 2160) : null;
@@ -45,8 +48,9 @@ export function configFrom(env = process.env) {
   const ovhMailPassword = passwordHex ? Buffer.from(passwordHex, 'hex').toString('utf8') : env.OVH_MAIL_PASSWORD;
   assert(mailMode !== 'ovh' || (mailFrom.endsWith('@makeyourstory.fr') && ovhMailPassword),
     500, 'Boîte SMTP OVH MakeYourStory et mot de passe requis.');
-  assert(!publicCheckout || (stripeKey && env.STRIPE_WEBHOOK_SECRET && (!live || (env.TERMS_VERSION && env.CONSUMER_MEDIATOR && httpsUrl(env.CONSUMER_MEDIATOR_URL) && env.ADMIN_NOTIFY_EMAIL))),
-    500, 'Stripe, webhook et informations contractuelles incomplets.');
+  assert(!publicCheckout || (stripeKey && env.STRIPE_WEBHOOK_SECRET), 500, 'Stripe et secret du webhook requis.');
+  assert(!live || !publicCheckout || (env.TERMS_VERSION && mediator && mediatorUrl && mediatorAddress && env.ADMIN_NOTIFY_EMAIL),
+    500, 'Version des CGV, coordonnées du médiateur et adresse de notification requises.');
   return {
     mode, live, origin: origin.origin, databaseUrl, secret, publicCheckout, adminEmails, mailMode,
     port: Number(env.PORT || 3000), storageDir, migrate: !live || env.MIGRATE === 'true',
@@ -56,7 +60,7 @@ export function configFrom(env = process.env) {
     mailAllowlist: testRecipients,
     adminNotify: env.ADMIN_NOTIFY_EMAIL ? emailAddress(env.ADMIN_NOTIFY_EMAIL) : adminEmails[0],
     termsVersion: env.TERMS_VERSION || '2026-11-18',
-    mediator: env.CONSUMER_MEDIATOR || '', mediatorUrl: httpsUrl(env.CONSUMER_MEDIATOR_URL),
+    mediator, mediatorUrl, mediatorAddress,
     hostingName: env.HOSTING_NAME || '',
     proxyHops: Number(env.TRUST_PROXY_HOPS || 0), deliveryDays, deliveryHours, deliveryLabel,
     vatNotice: env.BILLING_VAT_NOTICE || ''

@@ -14,7 +14,7 @@ import { guestRsvp } from './rsvp.mjs';
 import { invitationRoutes } from './invitations.mjs';
 import { mediaStore } from './media.mjs';
 import { companySettings } from './projects.mjs';
-import { escapeHtml as e, formProblem } from './ui.mjs';
+import { escapeHtml as e, formProblem, mediationDetails } from './ui.mjs';
 import { flushMail, pruneData } from './mail.mjs';
 
 const root = fileURLToPath(new URL('../',import.meta.url));
@@ -105,7 +105,7 @@ export async function createApp(config = configFrom()) {
     }
     if (path === 'cgv.html' || path === 'mentions-legales.html' || path === 'confidentialite.html') {
       const settings=await companySettings(db);
-      doc=doc.replaceAll('{{MEDIATOR}}',config.mediator&&config.mediatorUrl ? `<a href="${e(config.mediatorUrl)}">${e(config.mediator)}</a>`:'Les coordonnées du médiateur seront publiées avant l’ouverture des commandes')
+      doc=doc.replaceAll('{{MEDIATOR}}',() => mediationDetails(config) || 'Les coordonnées du médiateur seront publiées avant l’ouverture des commandes')
         .replaceAll('{{HOST}}',e(config.hostingName || 'GitHub Pages'))
         .replaceAll('{{BUSINESS}}',e([settings.business_name || 'BASALTE-WEB',settings.business_siret ? `SIRET ${settings.business_siret}` : '',settings.business_address].filter(Boolean).join(' · ')))
         .replaceAll('{{PREVIEW_DELAY}}',e(config.deliveryLabel))

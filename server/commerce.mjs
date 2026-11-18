@@ -3,7 +3,7 @@ import { addHistory, customerByEmail, many, one } from './db.mjs';
 import { assert, checked, cookies, emailAddress, mac, privatePage, sameToken, uuid, value } from './common.mjs';
 import { limited } from './auth.mjs';
 import { queueMail } from './mail.mjs';
-import { area, badge, btn, check, escapeHtml as e, euro, field, hidden, page, paymentNames, post, ref, select, submit } from './ui.mjs';
+import { area, badge, btn, check, escapeHtml as e, euro, field, hidden, mediationDetails, page, paymentNames, post, ref, select, submit } from './ui.mjs';
 
 const contactKinds = new Set(['contact', 'personnalisee', 'professionnel', 'commande']);
 const attemptKey = (id) => `mys_order_${id.replaceAll('-', '')}`;
@@ -42,10 +42,12 @@ export function commerce(router, { db, config, stripe, auth }) {
     const data = formData(req.body);
     const months = await duration();
     const fields = { ...data, product: product.id, catalogue: stamp(product, months), key: randomUUID() };
+    const mediation = mediationDetails(config);
     res.send(page('Récapitulatif de votre commande', `<section class="px-panel"><dl class="px-facts">
       <dt>Création</dt><dd>${e(product.name)}</dd><dt>Prix TTC</dt><dd>${euro(product.amount)}</dd>
       <dt>Nom</dt><dd>${e(data.name)}</dd><dt>Adresse de votre espace</dt><dd>${e(data.email)}</dd>
-      ${data.brief ? `<dt>Votre projet</dt><dd class="px-text">${e(data.brief)}</dd>` : ''}</dl>
+      ${data.brief ? `<dt>Votre projet</dt><dd class="px-text">${e(data.brief)}</dd>` : ''}
+      ${mediation ? `<dt>Médiation de la consommation</dt><dd>${mediation}</dd>` : ''}</dl>
       ${post('/commande/paiement', `${Object.entries(fields).map(([k,v]) => hidden(k,v)).join('')}
       <p>Nous vous remettrons le premier aperçu sous ${e(config.deliveryLabel)} après réception de tous les éléments nécessaires et, le cas échéant, après expiration du délai de rétractation. Le lien reste disponible ${months} mois après publication.</p>
       ${check(csrfTerms, 'terms', false, 'required')}<p><a class="px-link" href="/confidentialite.html">Politique de confidentialité</a></p>
