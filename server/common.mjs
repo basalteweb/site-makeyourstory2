@@ -35,7 +35,10 @@ export function configFrom(env = process.env) {
     500, 'Expéditeur et destinataires de test requis.');
   assert(mailMode !== 'resend' || env.RESEND_API_KEY, 500, 'Clé Resend requise.');
   const mailFrom = mailMode === 'ovh' ? emailAddress(env.MAIL_FROM) : env.MAIL_FROM;
-  assert(mailMode !== 'ovh' || (mailFrom.endsWith('@makeyourstory.fr') && env.OVH_MAIL_PASSWORD),
+  const passwordHex = env.OVH_MAIL_PASSWORD_HEX;
+  assert(!passwordHex || /^(?:[a-f\d]{2})+$/i.test(passwordHex), 500, 'Mot de passe OVH encodé invalide.');
+  const ovhMailPassword = passwordHex ? Buffer.from(passwordHex, 'hex').toString('utf8') : env.OVH_MAIL_PASSWORD;
+  assert(mailMode !== 'ovh' || (mailFrom.endsWith('@makeyourstory.fr') && ovhMailPassword),
     500, 'Boîte SMTP OVH MakeYourStory et mot de passe requis.');
   assert(!publicCheckout || (stripeKey && env.STRIPE_WEBHOOK_SECRET && (!live || (env.TERMS_VERSION && env.CONSUMER_MEDIATOR && httpsUrl(env.CONSUMER_MEDIATOR_URL) && env.ADMIN_NOTIFY_EMAIL && deliveryDays))),
     500, 'Stripe, webhook et informations contractuelles incomplets.');
@@ -44,7 +47,7 @@ export function configFrom(env = process.env) {
     port: Number(env.PORT || 3000), storageDir, migrate: !live || env.MIGRATE === 'true',
     databasePath: mode === 'test' ? 'memory://' : resolve(env.LOCAL_DATABASE_PATH || '.runtime/postgresql'),
     stripeKey, stripeWebhookSecret: env.STRIPE_WEBHOOK_SECRET,
-    resendKey: env.RESEND_API_KEY, mailFrom, ovhMailPassword: env.OVH_MAIL_PASSWORD,
+    resendKey: env.RESEND_API_KEY, mailFrom, ovhMailPassword,
     mailAllowlist: testRecipients,
     adminNotify: env.ADMIN_NOTIFY_EMAIL ? emailAddress(env.ADMIN_NOTIFY_EMAIL) : adminEmails[0],
     termsVersion: env.TERMS_VERSION || '2026-11-17',

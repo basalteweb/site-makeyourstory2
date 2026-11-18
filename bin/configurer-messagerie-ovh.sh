@@ -22,16 +22,18 @@ grep -qx 'CHECKOUT_ENABLED=false' "$env_file" || {
 
 IFS= read -rs -p 'Mot de passe de la boîte OVH puis Entrée : ' password
 printf '\n'
-[[ $password =~ ^[A-Za-z0-9.!@%_+=:-]{16,128}$ ]] || {
-    echo 'Saisissez le mot de passe dédié OVH (au moins 16 caractères, sans espace, apostrophe ou caractère de contrôle).' >&2
+[[ -n $password ]] || {
+    echo 'Saisissez le mot de passe de la boîte OVH.' >&2
     exit 1
 }
+password_hex=$(printf '%s' "$password" | od -An -v -tx1 | tr -d ' \n')
+unset password
 temporary=$(mktemp .env.ovh.XXXXXX)
 trap 'rm -f -- "$temporary"' EXIT
-sed -E '/^(MAIL_MODE|MAIL_FROM|ADMIN_EMAILS|ADMIN_NOTIFY_EMAIL|OVH_MAIL_PASSWORD)=/d' "$env_file" > "$temporary"
-printf "MAIL_MODE=ovh\nMAIL_FROM=%s\nADMIN_EMAILS=%s\nADMIN_NOTIFY_EMAIL=%s\nOVH_MAIL_PASSWORD='%s'\n" \
-    "$sender" "$administrator" "$administrator" "$password" >> "$temporary"
-unset password
+sed -E '/^(MAIL_MODE|MAIL_FROM|ADMIN_EMAILS|ADMIN_NOTIFY_EMAIL|OVH_MAIL_PASSWORD|OVH_MAIL_PASSWORD_HEX)=/d' "$env_file" > "$temporary"
+printf 'MAIL_MODE=ovh\nMAIL_FROM=%s\nADMIN_EMAILS=%s\nADMIN_NOTIFY_EMAIL=%s\nOVH_MAIL_PASSWORD_HEX=%s\n' \
+    "$sender" "$administrator" "$administrator" "$password_hex" >> "$temporary"
+unset password_hex
 
 docker compose --env-file "$env_file" --project-name makeyourstory run --rm --no-deps -T \
     --volume "$PWD/$temporary:/run/makeyourstory-mail.env:ro" --user root app \
