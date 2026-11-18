@@ -23,15 +23,20 @@ export function configFrom(env = process.env) {
   const deliveryDays = env.DELIVERY_BUSINESS_DAYS ? integer(env.DELIVERY_BUSINESS_DAYS, 1, 90) : null;
   const adminEmails = (env.ADMIN_EMAILS || '').split(',').filter(Boolean).map(emailAddress);
   const mailMode = env.MAIL_MODE || 'outbox';
+  const testRecipients = (env.TEST_EMAIL_ALLOWLIST || '').split(',').filter(Boolean).map(emailAddress);
   const storageDir = resolve(env.MEDIA_DIR || '.runtime/media');
   assert(!live || (origin.protocol === 'https:' && ['makeyourstory.fr','www.makeyourstory.fr'].includes(origin.hostname)
     && databaseUrl && secret.length >= 40 && env.MEDIA_DIR && adminEmails.length && env.HOSTING_NAME),
   500, 'Origine, PostgreSQL, médias persistants, secret, hébergeur et accès administrateur requis en production.');
   assert(!stripeKey || new RegExp(live ? '^[sr]k_live_' : '^(?:[sr]k|rkcs)_test_').test(stripeKey),
     500, 'Mode de la clé Stripe incompatible.');
-  assert(['outbox', 'resend'].includes(mailMode) && (!live || mailMode === 'resend'), 500, 'Service de messagerie incompatible.');
-  assert(mailMode !== 'resend' || (env.RESEND_API_KEY && env.MAIL_FROM && (live || env.TEST_EMAIL_ALLOWLIST)),
-    500, 'Expéditeur, clé Resend et destinataires de test requis.');
+  assert(['outbox', 'resend', 'ovh'].includes(mailMode) && (!live || mailMode !== 'outbox'), 500, 'Service de messagerie incompatible.');
+  assert(mailMode === 'outbox' || (env.MAIL_FROM && (live || testRecipients.length)),
+    500, 'Expéditeur et destinataires de test requis.');
+  assert(mailMode !== 'resend' || env.RESEND_API_KEY, 500, 'Clé Resend requise.');
+  const mailFrom = mailMode === 'ovh' ? emailAddress(env.MAIL_FROM) : env.MAIL_FROM;
+  assert(mailMode !== 'ovh' || (mailFrom.endsWith('@makeyourstory.fr') && env.OVH_MAIL_PASSWORD),
+    500, 'Boîte SMTP OVH MakeYourStory et mot de passe requis.');
   assert(!publicCheckout || (stripeKey && env.STRIPE_WEBHOOK_SECRET && (!live || (env.TERMS_VERSION && env.CONSUMER_MEDIATOR && httpsUrl(env.CONSUMER_MEDIATOR_URL) && env.ADMIN_NOTIFY_EMAIL && deliveryDays))),
     500, 'Stripe, webhook et informations contractuelles incomplets.');
   return {
@@ -39,8 +44,8 @@ export function configFrom(env = process.env) {
     port: Number(env.PORT || 3000), storageDir, migrate: !live || env.MIGRATE === 'true',
     databasePath: mode === 'test' ? 'memory://' : resolve(env.LOCAL_DATABASE_PATH || '.runtime/postgresql'),
     stripeKey, stripeWebhookSecret: env.STRIPE_WEBHOOK_SECRET,
-    resendKey: env.RESEND_API_KEY, mailFrom: env.MAIL_FROM,
-    mailAllowlist: (env.TEST_EMAIL_ALLOWLIST || '').split(',').filter(Boolean).map(emailAddress),
+    resendKey: env.RESEND_API_KEY, mailFrom, ovhMailPassword: env.OVH_MAIL_PASSWORD,
+    mailAllowlist: testRecipients,
     adminNotify: env.ADMIN_NOTIFY_EMAIL ? emailAddress(env.ADMIN_NOTIFY_EMAIL) : adminEmails[0],
     termsVersion: env.TERMS_VERSION || '2026-11-17',
     mediator: env.CONSUMER_MEDIATOR || '', mediatorUrl: httpsUrl(env.CONSUMER_MEDIATOR_URL),

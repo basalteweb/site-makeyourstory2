@@ -183,7 +183,7 @@ export function adminPortal(router,ctx) {
     +panel('Administrateurs',adminList+post('/admin/parametres/administrateurs',field('Adresse de l’administrateur','email','','email','required maxlength="254"')+check('Autoriser cette adresse à accéder à toutes les commandes.','confirm',false,'required')+submit('Accorder l’accès')))
     +panel('Services connectés',`<dl class="px-facts"><dt>Application</dt><dd>${e(config.mode)}</dd><dt>Paiement en ligne</dt><dd>${config.publicCheckout?'Ouvert':'Fermé'}</dd>
       <dt>Clé Stripe</dt><dd>${config.stripeKey?'Configurée':'À configurer'}</dd><dt>Signature Stripe</dt><dd>${config.stripeWebhookSecret?'Configurée':'À configurer'}</dd>
-      <dt>Messagerie</dt><dd>${config.mailMode==='resend'?'Resend':'File locale'}</dd><dt>Stockage</dt><dd>PostgreSQL et fichiers privés</dd></dl>`));
+      <dt>Messagerie</dt><dd>${({resend:'Resend',ovh:'OVHcloud SMTP',outbox:'File locale'})[config.mailMode]}</dd><dt>Stockage</dt><dd>PostgreSQL et fichiers privés</dd></dl>`));
   });
   router.post('/admin/parametres',...guard,async(req,res)=>{
     const siret = value(req.body.business_siret,14,true);
