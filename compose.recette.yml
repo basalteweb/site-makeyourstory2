@@ -7,6 +7,9 @@ services:
       APP_SECRET: ${MYS_RECETTE_SECRET:?secret de recette MakeYourStory requis}
       DATABASE_URL: postgresql://makeyourstory:${POSTGRES_PASSWORD:?mot de passe de recette MakeYourStory requis}@database:5432/makeyourstory
       ADMIN_EMAILS: recette-admin@example.test
-      CHECKOUT_ENABLED: 'false'
+      CHECKOUT_ENABLED: ${MYS_RECETTE_CHECKOUT_ENABLED:-false}
+      STRIPE_API_KEY: ${MYS_RECETTE_STRIPE_API_KEY:-}
+      STRIPE_WEBHOOK_SECRET: ${MYS_RECETTE_STRIPE_WEBHOOK_SECRET:-}
+      MYS_RECETTE_STRIPE_ACCOUNT: ${MYS_RECETTE_STRIPE_ACCOUNT:-}
       MAIL_MODE: outbox
     ports: !reset []
