@@ -65,7 +65,9 @@ compose run --rm --no-deps -T --user root --entrypoint tar app \
     -czf - -C /srv/makeyourstory/media . > "$temporary/medias.tar.gz"
 gzip -t "$temporary/medias.tar.gz"
 cp -- .env "$temporary/production.env"
-git rev-parse HEAD > "$temporary/revision.txt"
+# systemd runs as root without sudo's ownership hint for the deployment checkout.
+# Trust this checked directory only for reading the revision; do not alter Git's global configuration.
+git -c safe.directory="$PWD" rev-parse HEAD > "$temporary/revision.txt"
 if [[ -f /etc/caddy/Caddyfile ]]; then
     cp -- /etc/caddy/Caddyfile "$temporary/Caddyfile"
 fi

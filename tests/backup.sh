@@ -57,6 +57,8 @@ compose() {
 }
 git -C "$fixture" init --quiet
 git -C "$fixture" -c user.name='MakeYourStory CI' -c user.email='ci@example.test' commit --quiet --allow-empty -m 'Fixture de sauvegarde'
+# The real deployment checkout belongs to debian, while the backup service runs as root.
+chown -R 65534 "$fixture"
 compose up --detach --wait --wait-timeout 90
 compose exec -T database psql -X -v ON_ERROR_STOP=1 -U makeyourstory -d makeyourstory \
     -c "create table backup_probe (name text not null); insert into backup_probe values ('Sauvegarde vérifiée');" > /dev/null
