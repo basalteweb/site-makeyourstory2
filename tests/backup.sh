@@ -58,11 +58,11 @@ services:
       retries: 30
   app:
     image: node:24-bookworm-slim
-    working_dir: /srv/makeyourstory
+    working_dir: /source/makeyourstory
     env_file: .env
     command: [node, -e, "process.on('SIGTERM', () => process.exit(0)); setInterval(() => {}, 1000)"]
     volumes:
-      - ${MYS_BACKUP_TEST_SOURCE}:/srv/makeyourstory:ro
+      - ${MYS_BACKUP_TEST_SOURCE}:/source/makeyourstory:ro
       - media:/srv/makeyourstory/media
 volumes:
   media:
