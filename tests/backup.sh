@@ -3,7 +3,8 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 unset POSTGRES_PASSWORD
-export MYS_BACKUP_TEST_SOURCE="$PWD"
+test_source=$PWD
+unset MYS_BACKUP_TEST_SOURCE
 [[ $EUID == 0 ]] || { echo 'Exécutez ce test avec sudo.' >&2; exit 1; }
 if [[ -n $(docker ps --all --quiet --filter label=com.docker.compose.project=makeyourstory) ]]; then
     echo 'Le test nécessite un moteur Docker sans instance de production MakeYourStory.' >&2
@@ -42,6 +43,7 @@ MAIL_FROM=contact@makeyourstory.fr
 OVH_MAIL_PASSWORD=backup-test-only
 CHECKOUT_ENABLED=false
 EOF
+printf 'MYS_BACKUP_TEST_SOURCE=%s\n' "$test_source" >> "$fixture/.env"
 chmod 0600 "$fixture/.env"
 cat > "$fixture/compose.yml" <<'EOF'
 services:
@@ -116,7 +118,10 @@ archives=("$fixture"/.runtime/sauvegardes/makeyourstory-*.tar)
 bash "$fixture/bin/sauvegarder-production.sh" --installer
 systemctl is-enabled --quiet makeyourstory-sauvegarde.timer
 systemctl is-active --quiet makeyourstory-sauvegarde.timer
-systemctl start makeyourstory-sauvegarde.service
+if ! systemctl start makeyourstory-sauvegarde.service; then
+    journalctl --no-pager -u makeyourstory-sauvegarde.service -n 20
+    exit 1
+fi
 [[ $(systemctl show --property=Result --value makeyourstory-sauvegarde.service) == success ]]
 [[ $(docker inspect --format '{{.State.Running}}' "$app") == true ]]
 compose run --rm --no-deps -T app node --input-type=module - <<'JS'
