@@ -227,15 +227,21 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     };
     assert.throws(() => configFrom(production), /coordonnées du médiateur/);
     await html(await anon.get('/cgv.html'), 200, /Les coordonnées du médiateur seront publiées/);
-    const { mediator, mediatorUrl, mediatorAddress } = configFrom({ ...production, CONSUMER_MEDIATOR_ADDRESS: '2 rue de Recette $& associés' });
-    Object.assign(cfg, { mediator, mediatorUrl, mediatorAddress });
+    const { mediator, mediatorUrl, mediatorAddress, mediatorEmail, mediatorPhone } = configFrom({ ...production,
+      CONSUMER_MEDIATOR_ADDRESS: '2 rue de Recette $& associés', CONSUMER_MEDIATOR_EMAIL: 'litiges@example.test',
+      CONSUMER_MEDIATOR_PHONE: '+33 1 23 45 67 89' });
+    assert.throws(() => configFrom({ ...production, CONSUMER_MEDIATOR_PHONE: '" onclick="alert(1)' }), /Téléphone du médiateur/);
+    Object.assign(cfg, { mediator, mediatorUrl, mediatorAddress, mediatorEmail, mediatorPhone });
     cfg.publicCheckout = true;
     try {
       const buyer = { name: 'Médiation de test', email: 'mediation.mys@example.com', product: 'mariage' };
       const coordinates = /Médiation de recette · 2 rue de Recette \$&amp; associés · <a [^>]*href="https:\/\/example\.test\/mediation"/;
-      await html(await anon.get('/mentions-legales.html'), 200, coordinates);
-      await html(await anon.get('/cgv.html'), 200, coordinates);
-      await html(await anon.post('/commande/recapitulatif', buyer), 200, coordinates);
+      for (const response of [await anon.get('/mentions-legales.html'), await anon.get('/cgv.html'),
+        await anon.post('/commande/recapitulatif', buyer)]) {
+        const text = await html(response, 200, coordinates);
+        assert.match(text, /href="tel:\+33123456789"/);
+        assert.match(text, /href="mailto:litiges@example\.test"/);
+      }
     } finally {
       cfg.publicCheckout = false;
     }

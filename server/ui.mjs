@@ -25,9 +25,12 @@ export const panel = (title, content) => `<section class="px-panel"><h2>${e(titl
 export const links = (entries) => `<nav class="px-tabs" aria-label="Rubriques">${entries.map(([label, href, picked]) => `<a href="${e(href)}"${picked ? ' aria-current="page"' : ''}>${e(label)}</a>`).join('')}</nav>`;
 export const post = (action, html, attrs = '') => `<form method="post" action="${e(action)}" ${attrs}>${html}</form>`;
 
-export function mediationDetails({ mediator, mediatorUrl, mediatorAddress }) {
+export function mediationDetails({ mediator, mediatorUrl, mediatorAddress, mediatorEmail, mediatorPhone }) {
   if (!mediator || !mediatorUrl || !mediatorAddress) return '';
-  return `${e(mediator)} · ${e(mediatorAddress)} · <a class="px-link" href="${e(mediatorUrl)}">Site du médiateur</a>`;
+  return [e(mediator), e(mediatorAddress), `<a class="px-link" href="${e(mediatorUrl)}">Site du médiateur</a>`,
+    mediatorPhone ? `<a class="px-link" href="tel:${e(mediatorPhone.replace(/[^\d+]/g,''))}">${e(mediatorPhone)}</a>` : '',
+    mediatorEmail ? `<a class="px-link" href="mailto:${e(mediatorEmail)}">${e(mediatorEmail)}</a>` : ''
+  ].filter(Boolean).join(' · ');
 }
 
 export function page(title, content, options = {}) {

@@ -23,6 +23,9 @@ export function configFrom(env = process.env) {
   const mediator = env.CONSUMER_MEDIATOR?.trim() || '';
   const mediatorUrl = httpsUrl(env.CONSUMER_MEDIATOR_URL);
   const mediatorAddress = env.CONSUMER_MEDIATOR_ADDRESS?.trim() || '';
+  const mediatorEmail = env.CONSUMER_MEDIATOR_EMAIL?.trim() ? emailAddress(env.CONSUMER_MEDIATOR_EMAIL) : '';
+  const mediatorPhone = env.CONSUMER_MEDIATOR_PHONE?.trim() || '';
+  assert(!mediatorPhone || /^\+?[\d ().-]{6,30}$/.test(mediatorPhone), 500, 'Téléphone du médiateur invalide.');
   const deliveryDays = !env.DELIVERY_HOURS && env.DELIVERY_BUSINESS_DAYS
     ? integer(env.DELIVERY_BUSINESS_DAYS, 1, 90) : null;
   const deliveryHours = deliveryDays === null ? integer(env.DELIVERY_HOURS || '72', 1, 2160) : null;
@@ -60,7 +63,7 @@ export function configFrom(env = process.env) {
     mailAllowlist: testRecipients,
     adminNotify: env.ADMIN_NOTIFY_EMAIL ? emailAddress(env.ADMIN_NOTIFY_EMAIL) : adminEmails[0],
     termsVersion: env.TERMS_VERSION || '2026-11-18',
-    mediator, mediatorUrl, mediatorAddress,
+    mediator, mediatorUrl, mediatorAddress, mediatorEmail, mediatorPhone,
     hostingName: env.HOSTING_NAME || '',
     proxyHops: Number(env.TRUST_PROXY_HOPS || 0), deliveryDays, deliveryHours, deliveryLabel,
     vatNotice: env.BILLING_VAT_NOTICE || ''
