@@ -3,6 +3,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 unset POSTGRES_PASSWORD
+export MYS_BACKUP_TEST_SOURCE="$PWD"
 [[ $EUID == 0 ]] || { echo 'Exécutez ce test avec sudo.' >&2; exit 1; }
 if [[ -n $(docker ps --all --quiet --filter label=com.docker.compose.project=makeyourstory) ]]; then
     echo 'Le test nécessite un moteur Docker sans instance de production MakeYourStory.' >&2
@@ -26,9 +27,20 @@ cleanup() {
 trap cleanup EXIT
 install -d "$fixture/bin"
 cp bin/sauvegarder-production.sh "$fixture/bin/"
+cp bin/configurer-entreprise-production.sh "$fixture/bin/"
 cat > "$fixture/.env" <<'EOF'
 APP_URL=https://makeyourstory.fr
 POSTGRES_PASSWORD=backup-test-only
+APP_MODE=production
+APP_SECRET=backup-test-only-configuration-secret-at-least-40-characters
+DATABASE_URL=postgresql://makeyourstory:backup-test-only@database:5432/makeyourstory
+MEDIA_DIR=/srv/makeyourstory/media
+HOSTING_NAME=Hébergeur de recette
+ADMIN_EMAILS=admin@makeyourstory.fr
+MAIL_MODE=ovh
+MAIL_FROM=contact@makeyourstory.fr
+OVH_MAIL_PASSWORD=backup-test-only
+CHECKOUT_ENABLED=false
 EOF
 chmod 0600 "$fixture/.env"
 cat > "$fixture/compose.yml" <<'EOF'
@@ -46,8 +58,11 @@ services:
       retries: 30
   app:
     image: node:24-bookworm-slim
+    working_dir: /srv/makeyourstory
+    env_file: .env
     command: [node, -e, "process.on('SIGTERM', () => process.exit(0)); setInterval(() => {}, 1000)"]
     volumes:
+      - ${MYS_BACKUP_TEST_SOURCE}:/srv/makeyourstory:ro
       - media:/srv/makeyourstory/media
 volumes:
   media:
@@ -104,4 +119,23 @@ systemctl is-active --quiet makeyourstory-sauvegarde.timer
 systemctl start makeyourstory-sauvegarde.service
 [[ $(systemctl show --property=Result --value makeyourstory-sauvegarde.service) == success ]]
 [[ $(docker inspect --format '{{.State.Running}}' "$app") == true ]]
-echo 'Restauration, rotation, redémarrage après échec et programmation systemd vérifiés.'
+compose run --rm --no-deps -T app node --input-type=module - <<'JS'
+import { openDatabase } from './server/db.mjs';
+const db = await openDatabase({ databaseUrl: process.env.DATABASE_URL, migrate: true });
+await db.close();
+JS
+original_env=$(sha256sum "$fixture/.env")
+if printf '%s\n' 'Entreprise de recette' '12345678200011' '1 rue de Recette' '' | bash "$fixture/bin/configurer-entreprise-production.sh"; then
+    echo 'Un SIRET incorrect a été accepté.' >&2
+    exit 1
+fi
+[[ $(sha256sum "$fixture/.env") == "$original_env" ]]
+[[ $(compose exec -T database psql -X -U makeyourstory -d makeyourstory -Atc "select count(*) from settings where key='business_siret'") == 0 ]]
+printf '%s\n' 'Entreprise de recette' '12345678200010' '1 rue de Recette' '' | bash "$fixture/bin/configurer-entreprise-production.sh"
+[[ $(compose exec -T database psql -X -U makeyourstory -d makeyourstory -Atc "select value from settings where key='business_siret'") == 12345678200010 ]]
+[[ $(stat -c '%a' "$fixture/.env") == 600 ]]
+grep -qx 'CONSUMER_MEDIATOR_EMAIL=litiges@cm2c.net' "$fixture/.env"
+grep -qx 'POSTGRES_PASSWORD=backup-test-only' "$fixture/.env"
+grep -qx 'CHECKOUT_ENABLED=false' "$fixture/.env"
+[[ $(docker inspect --format '{{.State.Running}}' "$app") == true ]]
+echo 'Sauvegarde, restauration, systemd et configuration privée de l’entreprise vérifiés.'
