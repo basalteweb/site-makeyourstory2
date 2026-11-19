@@ -8,10 +8,17 @@ if [[ -n $(docker ps --all --quiet --filter label=com.docker.compose.project=mak
     echo 'Le test nécessite un moteur Docker sans instance de production MakeYourStory.' >&2
     exit 1
 fi
+if [[ -e /etc/systemd/system/makeyourstory-sauvegarde.service || -e /etc/systemd/system/makeyourstory-sauvegarde.timer ]]; then
+    echo 'Le test nécessite un système sans programmation de sauvegarde MakeYourStory.' >&2
+    exit 1
+fi
 fixture=$(mktemp -d)
 cleanup() {
     local status=$?
     trap - EXIT
+    systemctl disable --now makeyourstory-sauvegarde.timer > /dev/null 2>&1 || true
+    rm -f /etc/systemd/system/makeyourstory-sauvegarde.service /etc/systemd/system/makeyourstory-sauvegarde.timer
+    systemctl daemon-reload
     docker compose --project-directory "$fixture" --project-name makeyourstory down --volumes > /dev/null 2>&1 || true
     rm -rf -- "$fixture"
     exit "$status"
@@ -39,7 +46,7 @@ services:
       retries: 30
   app:
     image: node:24-bookworm-slim
-    command: [node, -e, "setInterval(() => {}, 1000)"]
+    command: [node, -e, "process.on('SIGTERM', () => process.exit(0)); setInterval(() => {}, 1000)"]
     volumes:
       - media:/srv/makeyourstory/media
 volumes:
@@ -89,4 +96,10 @@ fi
 [[ $(docker inspect --format '{{.State.Running}}' "$app") == true ]]
 archives=("$fixture"/.runtime/sauvegardes/makeyourstory-*.tar)
 [[ ${#archives[@]} == 7 ]]
-echo 'Restauration PostgreSQL et médias, permissions, rotation et redémarrage après échec vérifiés.'
+bash "$fixture/bin/sauvegarder-production.sh" --installer
+systemctl is-enabled --quiet makeyourstory-sauvegarde.timer
+systemctl is-active --quiet makeyourstory-sauvegarde.timer
+systemctl start makeyourstory-sauvegarde.service
+[[ $(systemctl show --property=Result --value makeyourstory-sauvegarde.service) == success ]]
+[[ $(docker inspect --format '{{.State.Running}}' "$app") == true ]]
+echo 'Restauration, rotation, redémarrage après échec et programmation systemd vérifiés.'

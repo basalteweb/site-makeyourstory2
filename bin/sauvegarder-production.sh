@@ -97,7 +97,7 @@ if [[ ${1:-} == --installer ]]; then
     escaped_repository=${repository//%/%%}
     escaped_repository=${escaped_repository//\\/\\\\}
     escaped_repository=${escaped_repository//\"/\\\"}
-    cat > /etc/systemd/system/makeyourstory-sauvegarde.service <<EOF
+    cat > "$temporary/makeyourstory-sauvegarde.service" <<EOF
 [Unit]
 Description=Sauvegarde de la base et des médias MakeYourStory
 Requires=docker.service
@@ -105,11 +105,11 @@ After=docker.service
 
 [Service]
 Type=oneshot
-WorkingDirectory="$escaped_repository"
+WorkingDirectory=${repository//%/%%}
 ExecStart=/usr/bin/bash "$escaped_repository/bin/sauvegarder-production.sh"
 UMask=0077
 EOF
-    cat > /etc/systemd/system/makeyourstory-sauvegarde.timer <<'EOF'
+    cat > "$temporary/makeyourstory-sauvegarde.timer" <<'EOF'
 [Unit]
 Description=Sauvegarde quotidienne MakeYourStory
 
@@ -120,7 +120,9 @@ Persistent=true
 [Install]
 WantedBy=timers.target
 EOF
-    systemd-analyze verify /etc/systemd/system/makeyourstory-sauvegarde.service /etc/systemd/system/makeyourstory-sauvegarde.timer
+    systemd-analyze verify "$temporary/makeyourstory-sauvegarde.service" "$temporary/makeyourstory-sauvegarde.timer"
+    install -m 0644 "$temporary/makeyourstory-sauvegarde.service" /etc/systemd/system/
+    install -m 0644 "$temporary/makeyourstory-sauvegarde.timer" /etc/systemd/system/
     systemctl daemon-reload
     systemctl enable --now makeyourstory-sauvegarde.timer
     echo 'Sauvegarde quotidienne programmée à 03 h 15, heure de Paris. Sept archives locales sont conservées.'
