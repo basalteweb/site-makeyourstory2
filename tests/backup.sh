@@ -135,9 +135,9 @@ if printf '%s\n' 'Entreprise de recette' '12345678200011' '1 rue de Recette' '' 
     exit 1
 fi
 [[ $(sha256sum "$fixture/.env") == "$original_env" ]]
-[[ $(compose exec -T database psql -X -U makeyourstory -d makeyourstory -Atc "select count(*) from settings where key='business_siret'") == 0 ]]
+[[ $(compose exec -T database psql -X -U makeyourstory -d makeyourstory -Atc "select count(*) from makeyourstory.settings where key='business_siret'") == 0 ]]
 printf '%s\n' 'Entreprise de recette' '12345678200010' '1 rue de Recette' '' | bash "$fixture/bin/configurer-entreprise-production.sh"
-[[ $(compose exec -T database psql -X -U makeyourstory -d makeyourstory -Atc "select value from settings where key='business_siret'") == 12345678200010 ]]
+[[ $(compose exec -T database psql -X -U makeyourstory -d makeyourstory -Atc "select value from makeyourstory.settings where key='business_siret'") == 12345678200010 ]]
 [[ $(stat -c '%a' "$fixture/.env") == 600 ]]
 grep -qx 'CONSUMER_MEDIATOR_EMAIL=litiges@cm2c.net' "$fixture/.env"
 grep -qx 'POSTGRES_PASSWORD=backup-test-only' "$fixture/.env"
