@@ -39,5 +39,7 @@ jobs:
         run: sh bin/recette.sh
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser
+      - name: Vérifier la page de secours du frontal HTTPS
+        run: bash tests/proxy.sh
       - name: Vérifier la sauvegarde et la restauration des données
         run: sudo bash tests/backup.sh
