@@ -13,7 +13,11 @@ export const btn = (label, href, ghost = false) => `<a class="button ${ghost ? '
 export const submit = (label, ghost = false) => `<button class="button ${ghost ? 'button--ghost' : 'button--pink'}" type="submit">${e(label)}</button>`;
 export const hidden = (name, value) => `<input type="hidden" name="${e(name)}" value="${e(value)}">`;
 export const field = (label, name, v = '', type = 'text', attr = '') => `<label class="px-field"><span>${e(label)}</span><input type="${type}" name="${e(name)}" value="${e(v)}" ${attr}></label>`;
-export const area = (label, name, v = '', attr = '') => `<label class="px-field"><span>${e(label)}</span><textarea name="${e(name)}" ${attr}>${e(v)}</textarea></label>`;
+let areaSequence=0;
+export const area = (label, name, v = '', attr = '') => {
+  const id=`px-area-${++areaSequence}`;
+  return `<label class="px-field" for="${id}"><span id="${id}-label">${e(label)}</span><textarea id="${id}" aria-labelledby="${id}-label" name="${e(name)}" ${attr}>${e(v)}</textarea></label>`;
+};
 export const check = (label, name, yes = false, attr = '') => `<label class="px-check"><input type="checkbox" name="${e(name)}" ${yes ? 'checked' : ''} ${attr}><span>${label}</span></label>`;
 let selectSequence=0;
 export function select(label, name, options, selected) {
