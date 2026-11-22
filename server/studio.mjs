@@ -110,7 +110,7 @@ export function studioRoutes(router,ctx) {
       +panel('Votre version de travail',choose)+workbench+exportPanel+panel('Photographies du projet',gallery+retouch)
       +panel('Informations du client',brief?`<details><summary>Consulter les informations transmises</summary><dl class="px-facts">${brief}</dl></details>`:empty('Aucune information enregistrée.'))
       +panel('Livrer cette création',`<p>Enregistrez votre version puis proposez-la au client. Il la retrouve dans son espace, peut demander des ajustements et la valider. La publication lui donne ensuite son lien et son QR code.</p><p>${btn('Validation et publication',`/admin/commandes/${o.id}/creation`)} ${btn('Retour au studio','/admin/studio',true)}</p><details><summary>Conseils pour mes créations programmées</summary><p>Les textes proviennent de index.html. Les couleurs proposées sont les variables CSS au format hexadécimal. Pour ajouter un emplacement, recadrer une photo ou retoucher le code, exportez puis réimportez votre dossier.</p><p>Ajoutez <code>data-mys-rsvp</code> à un bouton pour le relier au formulaire de l’événement publié. <code>data-mys-label</code> donne un nom à un bloc et <code>data-mys-lock</code> protège une zone pilotée par vos scripts.</p></details>`)
-      +`<script type="application/json" id="mys-studio-data">${json(data)}</script><script defer src="/assets/studio.js"></script>`,{user:req.user,wide:true,eyebrow:ref(o)}));
+      +`<script type="application/json" id="mys-studio-data">${json(data)}</script><script defer src="/assets/studio.js?v=20261122-studio"></script>`,{user:req.user,wide:true,eyebrow:ref(o)}));
   });
 
   router.post(`${path}/composer`,...guard,editable,async(req,res)=>{
