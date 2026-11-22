@@ -45,6 +45,7 @@ export function commerce(router, { db, config, stripe, auth }) {
     const mediation = mediationDetails(config);
     res.send(page('Récapitulatif de votre commande', `<section class="px-panel"><dl class="px-facts">
       <dt>Création</dt><dd>${e(product.name)}</dd><dt>Prix TTC</dt><dd>${euro(product.amount)}</dd>
+      ${config.vatNotice ? `<dt>TVA</dt><dd>${e(config.vatNotice)}</dd>` : ''}
       <dt>Nom</dt><dd>${e(data.name)}</dd><dt>Adresse de votre espace</dt><dd>${e(data.email)}</dd>
       ${data.brief ? `<dt>Votre projet</dt><dd class="px-text">${e(data.brief)}</dd>` : ''}
       ${mediation ? `<dt>Médiation de la consommation</dt><dd>${mediation}</dd>` : ''}</dl>

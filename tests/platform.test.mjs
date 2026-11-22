@@ -90,6 +90,7 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
   await t.test('vitrine, produits, formulaire de contact et paiements fermés sans Stripe',async()=>{
     await html(await anon.get('/'),200,/Mon espace/);
     await html(await anon.get('/tarifs.html'),200,/29,90/);
+    await html(await anon.get('/cgv.html'),200,/TVA non applicable · scénario de test/);
     await html(await anon.get('/stories/demo/mariage.html'),200,/démonstration du formulaire RSVP/);
     await expectStatus(await anon.get('/assets/plateforme.css'),200);
     await html(await anon.get('/commande/?produit=mariage'),503,/Commande en ligne indisponible/);
@@ -207,6 +208,7 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     cfg.publicCheckout = true;
     try {
       const review = await html(await anon.post('/commande/recapitulatif', buyer), 200, /premier aperçu sous 72 heures/);
+      assert.match(review, /TVA non applicable · scénario de test/);
       const catalogue = review.match(/name="catalogue" value="([^"]+)"/)?.[1];
       const key = review.match(/name="key" value="([^"]+)"/)?.[1];
       assert.ok(catalogue && key);

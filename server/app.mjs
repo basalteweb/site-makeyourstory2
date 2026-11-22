@@ -109,6 +109,7 @@ export async function createApp(config = configFrom()) {
         .replaceAll('{{HOST}}',e(config.hostingName || 'GitHub Pages'))
         .replaceAll('{{BUSINESS}}',e([settings.business_name || 'BASALTE-WEB',settings.business_siret ? `SIRET ${settings.business_siret}` : '',settings.business_address].filter(Boolean).join(' · ')))
         .replaceAll('{{PREVIEW_DELAY}}',e(config.deliveryLabel))
+        .replaceAll('{{VAT_NOTICE}}',e(config.vatNotice))
         .replaceAll('{{TERMS}}',e(config.termsVersion));
       res.set('Cache-Control','no-cache');
     }

@@ -182,6 +182,7 @@ export function adminPortal(router,ctx) {
     dashboard(req,res,'Paramètres','/admin/parametres',panel('Entreprise et conservation',fields)+panel('Produits et tarifs',`<p>Les nouveaux récapitulatifs utilisent ces tarifs. Les commandes déjà enregistrées conservent leur montant.</p>${productRows}`)
     +panel('Administrateurs',adminList+post('/admin/parametres/administrateurs',field('Adresse de l’administrateur','email','','email','required maxlength="254"')+check('Autoriser cette adresse à accéder à toutes les commandes.','confirm',false,'required')+submit('Accorder l’accès')))
     +panel('Services connectés',`<dl class="px-facts"><dt>Application</dt><dd>${e(config.mode)}</dd><dt>Paiement en ligne</dt><dd>${config.publicCheckout?'Ouvert':'Fermé'}</dd>
+      <dt>Mention de TVA</dt><dd>${e(config.vatNotice || 'À configurer avant l’ouverture')}</dd>
       <dt>Clé Stripe</dt><dd>${config.stripeKey?'Configurée':'À configurer'}</dd><dt>Signature Stripe</dt><dd>${config.stripeWebhookSecret?'Configurée':'À configurer'}</dd>
       <dt>Messagerie</dt><dd>${({resend:'Resend',ovh:'OVHcloud SMTP',outbox:'File locale'})[config.mailMode]}</dd><dt>Stockage</dt><dd>PostgreSQL et fichiers privés</dd></dl>`));
   });
