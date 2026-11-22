@@ -69,4 +69,8 @@
     });
   }
   document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+  const invitation=document.querySelector('iframe[data-invitation-rsvp]');
+  if(invitation) window.addEventListener('message',event=>{
+    if(event.source===invitation.contentWindow && event.origin==='null' && event.data?.type==='makeyourstory:rsvp') location.assign(invitation.dataset.invitationRsvp);
+  });
 })();

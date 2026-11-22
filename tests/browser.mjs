@@ -14,8 +14,8 @@ const config = configFrom({ APP_MODE:'test',APP_URL:origin,MEDIA_DIR:media,ADMIN
 const { app,db } = await createApp(config);
 const server = app.listen(3143,'127.0.0.1');
 const pixel = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jOqwAAAAASUVORK5CYII=','base64');
-const archive = zipSync({ 'index.html':strToU8('<!doctype html><h1 id="title">Aperçu</h1><script src="invitation.js"></script>'),
-  'invitation.js':strToU8('document.querySelector("#title").textContent="Invitation personnalisée vérifiée";') });
+const archive = zipSync({ 'index.html':strToU8('<!doctype html><html lang="fr"><head><title>Création de test</title><style>:root{--accent:#abcdef}h2{color:var(--accent)}</style></head><body><h1 id="title" data-mys-lock>Aperçu</h1><h2>Texte du studio</h2><img src="photo.png" alt="Photographie"><button type="button" data-mys-rsvp>Nous répondre</button><script src="invitation.js"></script></body></html>'),
+  'photo.png':new Uint8Array(pixel),'invitation.js':strToU8('document.querySelector("#title").textContent="Invitation personnalisée vérifiée";') });
 let browser;
 try {
   browser=await chromium.launch({ executablePath:process.env.MYS_CHROMIUM_EXECUTABLE || undefined, headless:true });
@@ -58,6 +58,7 @@ try {
   await customer.getByRole('link',{name:'Mes éléments',exact:true}).click();
   await customer.getByLabel('Prénom de la première personne').fill('Camille');
   await customer.getByLabel('Prénom de la deuxième personne').fill('Julien');
+  await customer.getByLabel('Date du mariage',{exact:true}).fill('2027-06-29');
   await customer.getByRole('button',{name:'Enregistrer les informations'}).click();
   await customer.getByLabel('Fichier',{exact:true}).setInputFiles({ name:'portrait.png',mimeType:'image/png',buffer:pixel });
   await customer.getByRole('button',{name:'Importer le fichier'}).click();
@@ -77,7 +78,31 @@ try {
   await admin.getByLabel('Nom de la version').fill('Version indépendante');
   await admin.getByLabel('Dossier de création au format ZIP').setInputFiles({ name:'invitation.zip',mimeType:'application/zip',buffer:Buffer.from(archive) });
   await admin.getByRole('button',{name:'Importer la version'}).click();
-  await admin.getByRole('button',{name:'Proposer pour validation'}).click();
+  await admin.getByRole('link',{name:'Studio de création',exact:true}).click();
+  await admin.getByLabel('H2 · Texte du studio',{exact:true}).fill('Notre création personnalisée');
+  await admin.frameLocator('iframe[title="Aperçu du studio"]').getByRole('heading',{name:'Notre création personnalisée'}).waitFor();
+  await admin.getByRole('tab',{name:'Couleurs',exact:true}).click();
+  await admin.getByLabel('--accent · inline:0',{exact:true}).fill('#990066');
+  await admin.getByRole('tab',{name:'Animations',exact:true}).click();
+  await admin.getByLabel('1 · H2 · Texte du studio',{exact:true}).selectOption('rise');
+  await admin.getByRole('button',{name:'Mobile',exact:true}).click();
+  // Retouch upload navigates away: first retain the visual settings as a version.
+  await admin.getByLabel('Nom de la nouvelle version',{exact:true}).fill('Version du studio');
+  await admin.getByRole('button',{name:'Enregistrer une nouvelle version',exact:true}).click();
+  await admin.getByText('Nouvelle version enregistrée. Vous pouvez la vérifier avant de la proposer au client.',{exact:true}).waitFor();
+  await admin.getByLabel('Photographie retouchée',{exact:true}).setInputFiles({name:'retouche.png',mimeType:'image/png',buffer:pixel});
+  await admin.getByRole('button',{name:'Importer la retouche',exact:true}).click();
+  await admin.getByRole('tab',{name:'Images',exact:true}).click();
+  const retouchFile=await one(db,"select id from files where name='retouche.png'");
+  await admin.getByLabel('Image · photo.png',{exact:true}).selectOption(retouchFile.id);
+  await admin.getByLabel('Nom de la nouvelle version',{exact:true}).fill('Version avec photo retouchée');
+  await admin.getByRole('button',{name:'Enregistrer une nouvelle version',exact:true}).click();
+  await admin.getByText('Nouvelle version enregistrée. Vous pouvez la vérifier avant de la proposer au client.',{exact:true}).waitFor();
+  const exportDownload=admin.waitForEvent('download');
+  await admin.getByRole('link',{name:'Télécharger le dossier ZIP',exact:true}).click();
+  assert.match((await exportDownload).suggestedFilename(),/-creation\.zip$/);
+  await admin.locator('summary').filter({hasText:'Proposer cette version au client'}).click();
+  await admin.getByRole('button',{name:'Proposer cette version au client',exact:true}).click();
   await admin.getByRole('link',{name:'Ouvrir l’aperçu privé'}).waitFor();
   await customer.getByRole('link',{name:'Ma création',exact:true}).click();
   await customer.getByRole('link',{name:'Ouvrir l’aperçu privé'}).click();
@@ -87,20 +112,25 @@ try {
   await customer.getByRole('button',{name:'Valider cette version'}).click();
   await customer.getByRole('link',{name:'Mes invités',exact:true}).click();
   await customer.getByLabel('Accepter les réponses publiques').check();
+  await customer.getByLabel('Proposer les informations alimentaires facultatives').check();
   await customer.getByRole('button',{name:'Enregistrer les paramètres'}).click();
   await admin.reload();
   await admin.getByRole('button',{name:'Publier la version validée'}).click();
   await admin.getByText('Lien de partage',{exact:true}).waitFor();
   const publicLink=await admin.getByRole('link',{name:/^http:\/\/127.0.0.1:3143\/invitation\//}).getAttribute('href');
   await guest.goto(publicLink);
-  await guest.getByRole('link',{name:'Répondre à l’invitation',exact:true}).first().click();
+  await guest.frameLocator('iframe[title="Invitation personnalisée"]').getByRole('button',{name:'Nous répondre',exact:true}).click();
   await guest.getByLabel('Prénom et nom').fill('Invité de test');
   await guest.getByLabel('Votre présence').selectOption('yes');
   await guest.getByLabel('Adultes',{exact:true}).fill('2');
+  await guest.getByLabel('Informations alimentaires (facultatif)',{exact:true}).fill('Sans noix');
+  await guest.getByLabel(/J’accepte expressément/).check();
+  await guest.getByLabel('Message aux organisateurs (facultatif)',{exact:true}).fill('Merci pour cette invitation');
   await guest.getByRole('button',{name:'Envoyer ma réponse'}).click();
   await guest.getByRole('heading',{name:'Votre réponse est enregistrée'}).waitFor();
   await customer.reload();
   await customer.getByText('Invité de test',{exact:true}).waitFor();
+  await customer.getByText(/Sans noix/).waitFor();
   const download=customer.waitForEvent('download');
   await customer.getByRole('link',{name:'Exporter pour Excel'}).click();
   assert.match((await download).suggestedFilename(),/-invites\.csv$/);

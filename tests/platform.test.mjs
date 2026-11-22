@@ -3,7 +3,8 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
-import { zipSync, strToU8 } from 'fflate';
+import { randomUUID } from 'node:crypto';
+import { zipSync, strToU8, unzipSync, strFromU8 } from 'fflate';
 import { createApp } from '../server/app.mjs';
 import { configFrom } from '../server/common.mjs';
 import { customerByEmail, ensureProject, one } from '../server/db.mjs';
@@ -18,12 +19,13 @@ const archive = zipSync({
 
 function client() {
   const cookies = new Map();
-  async function send(path, body, originHeader = origin, referer) {
+  async function send(path, body, originHeader = origin, referer, json = false) {
     const headers = { Cookie: [...cookies].map(([k,v])=>`${k}=${v}`).join('; ') };
     if (body !== undefined) headers.Origin = originHeader;
     if (referer) headers.Referer = referer;
+    if (json) headers['Content-Type']='application/json';
     const response = await fetch(origin+path,{method:body===undefined?'GET':'POST',redirect:'manual',headers,
-      body:body===undefined || body instanceof FormData?body:new URLSearchParams(body)});
+      body:json?JSON.stringify(body):body===undefined || body instanceof FormData?body:new URLSearchParams(body)});
     for(const cookie of response.headers.getSetCookie()) {
       const kv=cookie.split(';',1)[0];
       const pos=kv.indexOf('=');
@@ -31,7 +33,7 @@ function client() {
     }
     return response;
   }
-  return { get:(path)=>send(path), post:send };
+  return { get:(path)=>send(path), post:send, json:(path,body,originHeader)=>send(path,body,originHeader,undefined,true) };
 }
 async function expectStatus(response, code) {
   assert.equal(response.status,code,`HTTP ${response.status} à ${new URL(response.url).pathname}${response.status!==code ? '\n'+(await response.clone().text()).replace(/<[^>]+>/g,' ').trim().slice(0,600):''}`);
@@ -188,6 +190,76 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     await expectStatus(await second.post(answers,{name:'Retard',attending:'no'}),410);
     await expectStatus(await admin.post(`${manage}/creation/depublier`,{}),303);
     await expectStatus(await anon.get(publicPath),404);
+  });
+  await t.test('studio privé : réglages, retouches, export, versions immuables et isolation',async()=>{
+    const studio=`${manage}/studio`;
+    const custom=zipSync({
+      'index.html':strToU8('<!doctype html><html lang="fr"><head><title>Création personnalisée</title><link rel="stylesheet" href="design.css"></head><body><h1>Notre événement</h1><p>Bonjour <strong>à tous</strong> !</p><img src="photo.png" alt="Image du projet"><script src="custom.js"></script></body></html>'),
+      'design.css':strToU8(':root{--accent:#abcdef}h1{color:var(--accent)}'),
+      'custom.js':strToU8('document.body.dataset.custom="preserve";'),
+      'photo.png':new Uint8Array(samplePhoto)
+    });
+    await expectStatus(await admin.post(`${manage}/creation/importer`,upload(custom,'personnalisee.zip',{label:'Base studio'})),303);
+    const base=await one(db,"select id from versions where label='Base studio'");
+    await expectStatus(await anon.get('/admin/studio'),303);
+    await expectStatus(await alice.get(studio),403);
+    await expectStatus(await bob.get(`${studio}/export.zip?version=${base.id}`),403);
+    await expectStatus(await admin.get(`/admin/commandes/${b.id}/studio?version=${base.id}`),404);
+    const view=await html(await admin.get(`${studio}?version=${base.id}`),200,/Studio de création/);
+    const model=JSON.parse(view.match(/<script type="application\/json" id="mys-studio-data">(.*?)<\/script>/s)[1]);
+    assert.match(model.preview,/^\/contenus\/studio\//);
+    await expectStatus(await anon.get(model.preview),200);
+    const text=model.texts.find(f=>f.label.startsWith('H1'));
+    const image=model.images.find(f=>f.path==='photo.png');
+    assert.ok(text && image && model.colors.length===1);
+    await expectStatus(await admin.post(`${studio}/retouches`,upload(samplePhoto,'invalide.png',{source:b.id,version:base.id})),404);
+    const retouched=Buffer.concat([samplePhoto,Buffer.from('retouche de test')]);
+    await expectStatus(await admin.post(`${studio}/retouches`,upload(retouched,'retouche-studio.png',{source:photo,version:base.id})),303);
+    const retouch=await one(db,"select * from files where name='retouche-studio.png'");
+    assert.equal(retouch.source_file_id,photo);
+    await expectStatus(await alice.get(`${order}/fichiers/${retouch.id}`),404);
+    await expectStatus(await bob.get(`${studio}/medias/${retouch.id}`),403);
+    await expectStatus(await admin.get(`/admin/commandes/${b.id}/studio/medias/${retouch.id}`),404);
+    assert.deepEqual(Buffer.from(await (await expectStatus(await admin.get(`${manage}/fichiers/${photo}`),200)).arrayBuffer()),samplePhoto);
+    const settings={texts:{[text.key]:'Camille <script>alert(1)</script>'},colors:{[model.colors[0].key]:'#123456'},images:{[image.key]:retouch.id},motions:{[model.motions[0].key]:{mode:'rise',duration:1.5}}};
+    await expectStatus(await admin.json(`${studio}/apercu`,{version:base.id,settings:{colors:{c0:'red;bad'}}}),400);
+    await expectStatus(await admin.json(`${studio}/apercu`,{version:base.id,settings:{texts:{stale:'inconnu'}}}),400);
+    await expectStatus(await admin.json(`${studio}/apercu`,{version:base.id,settings},'https://example.org'),403);
+    await expectStatus(await bob.post(`/espace/commandes/${b.id}/fichiers`,upload(samplePhoto,'autre-client.png',{category:'photos'})),303);
+    await expectStatus(await bob.post(`/espace/commandes/${b.id}/elements/transmettre`,{}),303);
+    const foreign=await one(db,"select id from files where name='autre-client.png'");
+    await expectStatus(await admin.json(`${studio}/apercu`,{version:base.id,settings:{images:{[image.key]:foreign.id}}}),404);
+    const previewResult=await (await expectStatus(await admin.json(`${studio}/apercu`,{version:base.id,settings}),200)).json();
+    const rendered=await html(await anon.get(previewResult.url),200,/Camille &lt;script&gt;alert\(1\)&lt;\/script&gt;/);
+    assert.match(rendered,/data-mys-motion="rise"/);
+    assert.match(rendered,/>Bonjour <strong>à tous<\/strong> !</);
+    assert.match(await html(await anon.get(previewResult.url.replace('index.html','design.css')),200,/#123456/),/--accent/);
+    assert.deepEqual(Buffer.from(await (await expectStatus(await anon.get(previewResult.url.replace('index.html','photo.png')),200)).arrayBuffer()),retouched);
+    await expectStatus(await admin.post(`${manage}/creation/publier`,{}),303);
+    const before=await one(db,'select selected_version,approved_version,published_version,share_key,share_available_until from projects where order_id=$1',[a.id]);
+    const mails=Number((await one(db,'select count(*) as n from notifications')).n);
+    const versions=Number((await one(db,'select count(*) as n from versions')).n);
+    const payload={version:base.id,label:'Version studio enregistrée',settings,request_id:randomUUID()};
+    const saved=await (await expectStatus(await admin.json(`${studio}/enregistrer`,payload),200)).json();
+    const replay=await (await expectStatus(await admin.json(`${studio}/enregistrer`,payload),200)).json();
+    assert.equal(saved.url,replay.url);
+    assert.equal(Number((await one(db,'select count(*) as n from versions')).n),versions+1);
+    assert.equal(Number((await one(db,'select count(*) as n from notifications')).n),mails,'Un enregistrement studio ne doit envoyer aucune notification');
+    assert.deepEqual(await one(db,'select selected_version,approved_version,published_version,share_key,share_available_until from projects where order_id=$1',[a.id]),before);
+    const savedVersion=new URL(origin+saved.url).searchParams.get('version');
+    const download=await expectStatus(await admin.get(`${studio}/export.zip?version=${savedVersion}`),200);
+    const exported=unzipSync(new Uint8Array(await download.arrayBuffer()));
+    assert.match(strFromU8(exported['index.html']),/Camille &lt;script&gt;/);
+    assert.match(strFromU8(exported['design.css']),/#123456/);
+    assert.equal(strFromU8(exported['custom.js']),'document.body.dataset.custom="preserve";');
+    assert.deepEqual(Buffer.from(exported['photo.png']),retouched);
+    const original=unzipSync(new Uint8Array(await (await admin.get(`${studio}/export.zip?version=${base.id}`)).arrayBuffer()));
+    assert.match(strFromU8(original['index.html']),/Notre événement/);
+    assert.deepEqual(Buffer.from(original['photo.png']),samplePhoto);
+    await expectStatus(await admin.post(`${manage}/creation/importer`,upload(zipSync(exported),'reimporte.zip',{label:'Dossier réimporté'})),303);
+    const realNow=Date.now;
+    try {const later=realNow()+16*60000;Date.now=()=>later;await expectStatus(await anon.get(previewResult.url),404);}
+    finally {Date.now=realNow;}
   });
   await t.test('note unique et changement de titulaire journalisé',async()=>{
     await expectStatus(await admin.post('/admin/parametres',{business_name:'Exploitant de test',business_siret:'00000000000001',business_address:'1 rue Exemple',publication_months:'12'}),303);

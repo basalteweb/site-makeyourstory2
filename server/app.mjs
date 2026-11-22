@@ -14,6 +14,7 @@ import { guestRsvp } from './rsvp.mjs';
 import { invitationRoutes } from './invitations.mjs';
 import { mediaStore } from './media.mjs';
 import { companySettings } from './projects.mjs';
+import { studioRoutes } from './studio.mjs';
 import { escapeHtml as e, formProblem, mediationDetails } from './ui.mjs';
 import { flushMail, pruneData } from './mail.mjs';
 
@@ -74,13 +75,14 @@ export async function createApp(config = configFrom()) {
     next();
   });
   app.use(express.urlencoded({extended:false,limit:'110kb',parameterLimit:125}));
-  app.use(express.json({limit:'24kb'}));
+  app.use(express.json({limit:'110kb'}));
   app.use(['/espace','/admin','/retractation'],auth.load);
   auth.register(app);
   const ctx = { db, auth, config, stripe, storage };
   commerce(app,ctx);
   clientPortal(app,ctx);
   adminPortal(app,ctx);
+  studioRoutes(app,ctx);
   guestRsvp(app,ctx);
   invitationRoutes(app,ctx);
   app.get('/access.html',(req,res)=>res.redirect(302,'/espace/'));
@@ -138,7 +140,7 @@ export async function createApp(config = configFrom()) {
       status===404 || error.code==='ENOENT' ? new HttpError(404,'Ce fichier ou cette page est introuvable.') :
       status===400 ? new HttpError(400,'Vérifiez les informations saisies.') : new HttpError(503,'Service indisponible.');
     privatePage(res);
-    if(req.get('x-upload')==='1') return res.status(normalized.status).json({error:normalized.status===503?'Le service est momentanément indisponible.':normalized.message});
+    if(req.get('x-upload')==='1' || req.get('x-studio')==='1') return res.status(normalized.status).json({error:normalized.status===503?'Le service est momentanément indisponible.':normalized.message});
     const referer = req.get('referer');
     const retryLogin = /^\/espace\/ouvrir\/?$/i.test(req.path);
     let back = retryLogin ? '/espace/connexion' : req.user ? '/espace/' : '/';

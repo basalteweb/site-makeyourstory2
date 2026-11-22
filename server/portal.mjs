@@ -10,7 +10,7 @@ import { area, badge, btn, check, day, dateInputValue, empty, escapeHtml as e, e
 export const clientBase = '/espace/commandes';
 export const adminBase = '/admin/commandes';
 const navFor = (base, o, selected) => {
-  const entries = [['Commande', ''], ...(o.project_id ? [['Ma création','creation'],['Informations et photos','elements'],['Échanges','messages'],['Mes invités','invites']] : [])];
+  const entries = [['Commande', ''], ...(o.project_id ? [['Ma création','creation'],...(base===adminBase?[['Studio de création','studio']]:[]),['Informations et photos','elements'],['Échanges','messages'],['Mes invités','invites']] : [])];
   return links(entries.map(([text,sub])=>[text,`${base}/${o.id}${sub ? `/${sub}` : ''}`,sub===selected]));
 };
 export const clientNav = (o, selected = '') => navFor(clientBase,o,selected);
@@ -100,7 +100,8 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
     if (publicLink) controls += `<div class="px-share"><h3>Lien de partage</h3><p class="px-text"><a class="px-link" href="${e(publicLink)}">${e(publicLink)}</a></p><div class="button-row">
       <button class="button button--ghost" type="button" data-copy="${e(publicLink)}">Copier le lien</button>
       <button class="button button--ghost" type="button" data-share="${e(publicLink)}">Partager</button>
-      ${btn('Télécharger le QR code',href(o,'qr.png'),true)}</div></div>`;
+      ${btn('Télécharger le QR code',href(o,'qr.png'),true)}</div><p class="px-quiet">Partagez ce lien autant de fois que vous le souhaitez par message, e-mail ou QR code.${p.share_available_until?` Invitation accessible jusqu’au ${day(p.share_available_until)}.`:''} Toute personne qui reçoit le lien peut consulter l’invitation et le transmettre.</p></div>`;
+    controls += `<details><summary>Livraison et réponses des invités</summary><p>Après votre validation et sa publication par MakeYourStory, votre création est livrée sous forme d’un lien de consultation et d’un QR code. Le partage ne nécessite aucun compte invité.</p><p>Les invités répondent depuis l’invitation : présence ou refus, adultes, enfants, accompagnants, message et informations alimentaires facultatives selon vos réglages. Les réponses sont consultables dans Mes invités ; votre espace privé reste réservé à votre compte.</p><p>Chaque invité reçoit à l’écran un lien personnel de modification de sa réponse. Le champ message est joint à cette réponse ; il ne s’agit pas d’une conversation instantanée.</p></details>`;
     let edit = '';
     if (admin && acceptsChanges(o,p)) {
       const versionList = versions.length ? '<ul class="px-list">'+versions.map(v=>`<li>${e(v.label)} · ${e(time(v.created_at))}
@@ -216,7 +217,7 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
 
   router.get(`${route}/elements`, ...guard, async (req,res) => {
     const {order:o,project:p} = await read(req);
-    const files = await many(db,`select * from files where project_id=$1 and message_id is null and category<>'facture'${admin ? ' and confirmed_at is not null' : ''} order by created_at desc`,[p.id]);
+    const files = await many(db,`select * from files where project_id=$1 and message_id is null and category not in ('facture','retouche')${admin ? ' and confirmed_at is not null' : ''} order by created_at desc`,[p.id]);
     const canEdit = !admin && acceptsChanges(o,p);
     const fileUI = (f) => `<li><div><strong>${e(f.name)}</strong><p>${e(fileCategories[f.category])} · ${(f.size / 1024).toFixed(0)} Ko ${f.confirmed_at ? badge('Transmis') : badge('Brouillon')}</p></div>
       <div class="button-row">${btn('Télécharger',href(o,`fichiers/${f.id}`),true)}
@@ -266,7 +267,7 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
   }
   router.get(`${route}/fichiers/:file`, ...guard, async (req,res)=>{
     const {project:p} = await read(req);
-    const file = assert(await one(db,`select * from files where id=$1 and project_id=$2${admin?" and (confirmed_at is not null or category='facture')":''}`,
+    const file = assert(await one(db,`select * from files where id=$1 and project_id=$2${admin?" and (confirmed_at is not null or category='facture')":" and category<>'retouche'"}`,
       [uuid(req.params.file),p.id]),404,'Fichier introuvable.');
     await sendPrivateFile(res,storage,file);
   });

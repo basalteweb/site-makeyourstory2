@@ -4,7 +4,7 @@ import { adminBase, adminNav, clientBase, historyPanel, orderDocuments, orderOve
 import { companySettings, orderFor } from './projects.mjs';
 import { area, badge, btn, check, empty, escapeHtml as e, euro, field, hidden, links, page, panel, paymentNames, post, projectNames, ref, select, submit, time } from './ui.mjs';
 
-const entries = [['Tableau de bord','/admin/'],['Commandes',adminBase],['Clients','/admin/clients'],['Demandes','/admin/demandes'],['Notifications','/admin/notifications'],['Paramètres','/admin/parametres']];
+const entries = [['Tableau de bord','/admin/'],['Commandes',adminBase],['Studio de création','/admin/studio'],['Clients','/admin/clients'],['Demandes','/admin/demandes'],['Notifications','/admin/notifications'],['Paramètres','/admin/parametres']];
 const menu = (route) => links(entries.map(([title,path])=>[title,path,route===path]));
 const resultLimit = 200;
 

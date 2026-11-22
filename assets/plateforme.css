@@ -96,6 +96,32 @@
 .px-upload-error { color: #ffb5ca; }
 .px-upload-progress { margin-left: 12px; width: min(160px,100%); accent-color: #d77d9f; }
 .px-cart-link { margin-top: 8px; }
+.px-studio { display: grid; grid-template-columns: minmax(260px, 340px) minmax(0,1fr); gap: 18px; align-items: start; margin-bottom: 20px; }
+.px-studio-tools,.px-studio-canvas { background:#191015; border:1px solid var(--portal-border); border-radius:16px; min-width:0; overflow:hidden; }
+.px-studio-tools [role=tabpanel] { padding:18px; max-height:740px; overflow-y:auto; scrollbar-gutter:stable; }
+.px-studio-tools h2 { font-size:29px; }
+.px-studio-tabs { display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--portal-border); }
+.px-studio-tabs button { font:inherit;font-size:14px;padding:14px 4px;min-height:48px;border:0;background:#23151e;color:#f8eaf0;cursor:pointer; }
+.px-studio-tabs button[aria-selected=true] { background:#6c2c48;color:white;box-shadow:inset 0 -3px #efa1bd; }
+.px-studio-toolbar { padding:14px; }
+.px-studio-toolbar .button { padding:9px 11px; }
+.px-studio-toolbar p { margin:10px 0 0;font-size:14px; }
+.px-studio-frame { max-width:100%;margin:auto;transition:width .15s ease;width:100%; }
+.px-studio-frame.px-studio-mobile { width:393px; }
+.px-studio-frame iframe { border-radius:0;border:0;border-top:1px solid var(--portal-border);height:720px;min-height:0; }
+.px-studio-image,.px-studio-motion { border-top:1px solid var(--portal-border);padding:14px 0; }
+.px-studio-image img { display:block;max-height:150px;max-width:100%;object-fit:contain;background:#100a0d;border-radius:8px; }
+.px-studio-gallery { display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:18px;margin-bottom:24px; }
+.px-studio-gallery article { min-width:0; }
+.px-studio-gallery img { display:block;width:100%;height:150px;object-fit:contain;background:#100a0d;border-radius:9px; }
+.px-studio-gallery p { overflow-wrap:anywhere; }
+.px-studio-tools input[type=color] { padding:5px;height:48px;cursor:pointer; }
+@media(max-width:900px) {
+  .px-studio { grid-template-columns:1fr; }
+  .px-studio-tools [role=tabpanel] { max-height:420px; }
+  .px-studio-frame iframe { height:650px; }
+}
+@media(prefers-reduced-motion:reduce) { .px-studio-frame { transition:none; } }
 @media (max-width: 660px) {
   .px-top { padding: 10px 0; row-gap: 4px; }
   .px-body main { padding: 27px 0 46px; }
