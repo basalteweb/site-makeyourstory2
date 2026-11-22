@@ -15,8 +15,10 @@ export const hidden = (name, value) => `<input type="hidden" name="${e(name)}" v
 export const field = (label, name, v = '', type = 'text', attr = '') => `<label class="px-field"><span>${e(label)}</span><input type="${type}" name="${e(name)}" value="${e(v)}" ${attr}></label>`;
 export const area = (label, name, v = '', attr = '') => `<label class="px-field"><span>${e(label)}</span><textarea name="${e(name)}" ${attr}>${e(v)}</textarea></label>`;
 export const check = (label, name, yes = false, attr = '') => `<label class="px-check"><input type="checkbox" name="${e(name)}" ${yes ? 'checked' : ''} ${attr}><span>${label}</span></label>`;
+let selectSequence=0;
 export function select(label, name, options, selected) {
-  return `<label class="px-field"><span>${e(label)}</span><select name="${e(name)}">${Object.entries(options).map(([key,text]) =>
+  const id=`px-select-${++selectSequence}`;
+  return `<label class="px-field" for="${id}"><span id="${id}-label">${e(label)}</span><select id="${id}" aria-labelledby="${id}-label" name="${e(name)}">${Object.entries(options).map(([key,text]) =>
     `<option value="${e(key)}" ${String(selected) === key ? 'selected' : ''}>${e(text)}</option>`).join('')}</select></label>`;
 }
 export const badge = (text) => `<span class="px-badge">${e(text)}</span>`;
