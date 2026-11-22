@@ -46,9 +46,9 @@ export function page(title, content, options = {}) {
   <footer class="px-footer"><div class="px-wrap"><span>MakeYourStory · BASALTE-WEB</span><a href="/contact.html">Contact</a><a href="/mentions-legales.html">Mentions légales</a><a href="/cgv.html">CGV</a><a href="/confidentialite.html">Confidentialité</a></div></footer></body></html>`;
 }
 
-export function formProblem(res, error, back, user) {
+export function formProblem(res, error, back, user, backLabel = 'Revenir') {
   const status = error.status && error.status < 500 ? error.status : 503;
   const message = status < 500 ? error.message : 'Le service est momentanément indisponible. Réessayez dans quelques instants.';
   return res.status(status).send(page(status === 404 ? 'Page introuvable' : 'Vérifiez votre demande',
-    `<div class="px-panel"><p role="alert">${e(message)}</p>${btn('Revenir', back, true)}</div>`, { user, compact: true }));
+    `<div class="px-panel"><p role="alert">${e(message)}</p>${btn(backLabel, back, true)}</div>`, { user, compact: true }));
 }

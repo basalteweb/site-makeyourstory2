@@ -18,9 +18,10 @@ const archive = zipSync({
 
 function client() {
   const cookies = new Map();
-  async function send(path, body, originHeader = origin) {
+  async function send(path, body, originHeader = origin, referer) {
     const headers = { Cookie: [...cookies].map(([k,v])=>`${k}=${v}`).join('; ') };
     if (body !== undefined) headers.Origin = originHeader;
+    if (referer) headers.Referer = referer;
     const response = await fetch(origin+path,{method:body===undefined?'GET':'POST',redirect:'manual',headers,
       body:body===undefined || body instanceof FormData?body:new URLSearchParams(body)});
     for(const cookie of response.headers.getSetCookie()) {
@@ -101,7 +102,7 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     await expectStatus(await anon.get(order),303);
     await expectStatus(await anon.get('/admin/'),303);
     const used=await login(db,alice,'alice.mys@example.com');
-    await expectStatus(await anon.post('/espace/ouvrir',{token:used}),400);
+    await html(await anon.post('/espace/ouvrir',{token:used},origin,`${origin}/espace/ouvrir`),400,/href="\/espace\/connexion">Recevoir un nouveau lien<\/a>/);
     await login(db,bob,'bob.mys@example.com');
     await login(db,admin,'admin.mys@example.com');
     await html(await alice.get('/espace/'),200,/Alice Test/);
@@ -114,7 +115,7 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     await expectStatus(await anon.post('/espace/connexion',{email:'alice.mys@example.com'}),200);
     const expired=await one(db,"select content from notifications where recipient='alice.mys@example.com' and kind='login' order by id desc limit 1");
     await db.query("update login_tokens set expires_at=now()-interval '1 minute'");
-    await expectStatus(await anon.post('/espace/ouvrir',{token:new URL(expired.content.link).hash.slice(1)}),400);
+    await html(await anon.post('/espace/ouvrir',{token:new URL(expired.content.link).hash.slice(1)},origin,`${origin}/espace/ouvrir`),400,/href="\/espace\/connexion">Recevoir un nouveau lien<\/a>/);
   });
   await t.test('collecte, fichiers privés, notification et échanges',async()=>{
     await expectStatus(await alice.post(`${order}/elements`,{first:'Camille',second:'Julien',date:'2027-06-29',deadline:'2027-05-31',colors:'Rose'}),303);

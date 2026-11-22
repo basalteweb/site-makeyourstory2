@@ -139,14 +139,15 @@ export async function createApp(config = configFrom()) {
     privatePage(res);
     if(req.get('x-upload')==='1') return res.status(normalized.status).json({error:normalized.status===503?'Le service est momentanément indisponible.':normalized.message});
     const referer = req.get('referer');
-    let back = req.user ? '/espace/' : '/';
-    if (referer) {
+    const retryLogin = /^\/espace\/ouvrir\/?$/i.test(req.path);
+    let back = retryLogin ? '/espace/connexion' : req.user ? '/espace/' : '/';
+    if (referer && !retryLogin) {
       try {
         const url = new URL(referer);
         if (url.origin===config.origin && !url.pathname.startsWith('/contenus/')) back=url.pathname+url.search;
       } catch { /* Ignore malformed referer. */ }
     }
-    formProblem(res,normalized,back,req.user);
+    formProblem(res,normalized,back,req.user,retryLogin ? 'Recevoir un nouveau lien' : undefined);
   });
   let working=false;
   const work = async()=>{
