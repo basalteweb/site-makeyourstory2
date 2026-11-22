@@ -84,7 +84,8 @@ try {
   await admin.getByRole('tab',{name:'Couleurs',exact:true}).click();
   await admin.getByLabel('--accent · inline:0',{exact:true}).fill('#990066');
   await admin.getByRole('tab',{name:'Animations',exact:true}).click();
-  await admin.getByLabel('1 · H2 · Texte du studio',{exact:true}).selectOption('rise');
+  console.log('Champs animations :',await admin.locator('[data-studio-panel="motions"]').innerText());
+  await admin.getByRole('combobox',{name:/1 · H2 · Texte du studio/}).selectOption('rise');
   await admin.getByRole('button',{name:'Mobile',exact:true}).click();
   // Retouch upload navigates away: first retain the visual settings as a version.
   await admin.getByLabel('Nom de la nouvelle version',{exact:true}).fill('Version du studio');
