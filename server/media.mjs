@@ -86,8 +86,11 @@ export async function deployArchive(tx, storage, projectId, label, file, cleanup
       }
       const key = randomUUID();
       cleanup.push(key);
-      await storage.put(key, Buffer.concat(chunks, size));
-      await tx.query('insert into version_assets (version_id,path,storage_key,media_type) values ($1,$2,$3,$4)', [version.id,path,key,type]);
+      const bytes=Buffer.concat(chunks,size);
+      const detected=type.startsWith('image/')?(await fileTypeFromBuffer(bytes).catch(()=>null))?.mime:null;
+      const imageType=detected?.startsWith('image/')?detected:type;
+      await storage.put(key, bytes);
+      await tx.query('insert into version_assets (version_id,path,storage_key,media_type) values ($1,$2,$3,$4)', [version.id,path,key,imageType]);
       paths.add(path);
     }
   } finally {

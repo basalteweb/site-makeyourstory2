@@ -84,8 +84,7 @@ try {
   await admin.getByRole('tab',{name:'Couleurs',exact:true}).click();
   await admin.getByLabel('--accent · inline:0',{exact:true}).fill('#990066');
   await admin.getByRole('tab',{name:'Animations',exact:true}).click();
-  console.log('Champs animations :',await admin.locator('[data-studio-panel="motions"]').innerText());
-  await admin.getByRole('combobox',{name:/1 · H2 · Texte du studio/}).selectOption('rise');
+  await admin.getByRole('combobox',{name:'1 · H2 · Texte du studio',exact:true}).selectOption('rise');
   await admin.getByRole('button',{name:'Mobile',exact:true}).click();
   // Retouch upload navigates away: first retain the visual settings as a version.
   await admin.getByLabel('Nom de la nouvelle version',{exact:true}).fill('Version du studio');
@@ -93,6 +92,7 @@ try {
   await admin.getByText('Nouvelle version enregistrée. Vous pouvez la vérifier avant de la proposer au client.',{exact:true}).waitFor();
   await admin.getByLabel('Photographie retouchée',{exact:true}).setInputFiles({name:'retouche.png',mimeType:'image/png',buffer:pixel});
   await admin.getByRole('button',{name:'Importer la retouche',exact:true}).click();
+  await admin.getByRole('img',{name:'retouche.png',exact:true}).waitFor();
   await admin.getByRole('tab',{name:'Images',exact:true}).click();
   const retouchFile=await one(db,"select id from files where name='retouche.png'");
   await admin.getByLabel('Image · photo.png',{exact:true}).selectOption(retouchFile.id);

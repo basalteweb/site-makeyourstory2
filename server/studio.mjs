@@ -82,7 +82,7 @@ export function studioRoutes(router,ctx) {
     const introduction='<p class="px-lead">Travaillez sur votre code personnalisé, essayez vos réglages, puis enregistrez une nouvelle version.</p>';
     if(p.status==='archived') return res.send(page('Studio de création',adminNav(o,'studio')+panel('Création archivée',`<p>Ce projet est conservé en lecture seule. Les versions restent téléchargeables.</p><ul class="px-list">${versions.map(v=>`<li>${e(v.label)} ${btn('Télécharger le ZIP',`${studioBase(o)}/export.zip?version=${v.id}`,true)}</li>`).join('')}</ul>`),{user:req.user,wide:true}));
     if(!versions.length) return res.send(page('Studio de création',adminNav(o,'studio')+introduction+panel('Commencer une création',`<p>Importez votre propre dossier HTML, CSS, JavaScript et médias au format ZIP, avec index.html à la racine. Le studio conserve vos animations et votre mise en page.</p>${btn('Importer mon dossier de création',`/admin/commandes/${o.id}/creation`)}`),{user:req.user,wide:true,eyebrow:ref(o)}));
-    const base=await loadVersion(db,storage,p,req.query.version || p.selected_version || versions[0].id);
+    const base=await loadVersion(db,storage,p,req.query.version || versions[0].id);
     const photos=await many(db,"select id,name,media_type,size,source_file_id from files where project_id=$1 and confirmed_at is not null and media_type like 'image/%' order by created_at desc",[p.id]);
     const settings={texts:{},colors:{},images:{},motions:{}};
     const src=previewUrl(p,base,await prepareSettings(db,p,base,settings));

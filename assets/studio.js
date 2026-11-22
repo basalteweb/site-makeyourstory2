@@ -13,6 +13,7 @@
     const title=document.createElement('span');title.textContent=label;wrapper.append(title);
     const control=document.createElement(type==='textarea'?'textarea':type==='select'?'select':'input');
     control.id=`studio-field-${section}-${key.replaceAll('.','-')}`;wrapper.htmlFor=control.id;
+    title.id=`${control.id}-label`;control.setAttribute('aria-labelledby',title.id);
     if(type==='select') for(const [value,text] of options) {
       const option=document.createElement('option');option.value=value;option.textContent=text;control.append(option);
     }
