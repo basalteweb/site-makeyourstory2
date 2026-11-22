@@ -5,7 +5,7 @@ Le studio interne est accessible dans l’administration, puis dans chaque comma
 ## Préparer une création
 
 1. Ouvrir la commande et consulter les informations et photos transmises.
-2. Choisir « Créer ma composition » dans un studio encore vide, avec l’une des trois ambiances. Les informations et jusqu’à six photos confirmées sont copiées dans une version indépendante. Autre possibilité : programmer la création avec `index.html` à la racine et importer le dossier ZIP dans « Ma création ».
+2. Choisir « Créer ma composition » dans un studio encore vide, avec l’une des trois ambiances. Les informations et jusqu’à vingt photos de la sélection transmise sont copiées dans une version indépendante (32 Mo de photos au total maximum). Autre possibilité : programmer la création avec `index.html` à la racine et importer le dossier ZIP dans « Ma création ».
 3. Ouvrir « Studio de création » et choisir la version de travail.
 4. Ajuster les textes statiques de `index.html`, les variables de couleur CSS au format `#RRGGBB`, les fichiers image et les animations proposées sur les titres et images.
 5. Vérifier l’aperçu en largeur mobile puis ordinateur. Les essais sont privés et temporaires, pendant 15 minutes au maximum. « Actualiser l’aperçu » les recrée au besoin.
@@ -38,9 +38,15 @@ Sur l’invitation publiée, la fonction commune ouvre le formulaire associé à
 
 ## Livraison et invités
 
+Après le règlement, le client est guidé dans « Ma préparation », avec un accueil adapté à son offre. Pour un mariage, il renseigne les noms et prénoms, puis raconte sa rencontre, ses débuts, ses étapes et sa complicité, avant les informations pratiques et les photos. Les autres catégories ont leurs propres questions. Le récit reste facultatif ; une information encore inconnue peut être signalée lorsque cette option est proposée. Chaque étape se sauvegarde, avec un bouton pour faire une pause et reprendre. Les brouillons restent privés jusqu’à la validation du récapitulatif et l’envoi explicite. Le studio reçoit alors les informations et la sélection confirmée, sans remplacer une version déjà publiée.
+
+Les repères photos suivent l’offre : cinq photos de couple conseillées, avec portraits individuels facultatifs ; trois à cinq photos conseillées pour naissance ou anniversaire ; un portrait peut suffire pour un hommage. Ces créations peuvent aussi être réalisées sans photo. Les albums acceptent respectivement une à dix photos (Mini) et dix à vingt photos (Complet). Le client peut transmettre ses photos plus tard. Les fichiers JPG, PNG et WebP sont limités à 12 Mo chacun ; retirer une photo de la sélection conserve l’original et permet de la remettre. La navigation privée ne contient pas « Tarifs » et son historique n’affiche que des informations compréhensibles par le client.
+
 Après validation puis publication, le client retrouve le lien et un QR code dans « Ma création », et reçoit la notification de publication. Le lien se partage sans quota de diffusion prévu par l’application. Il reste soumis à la durée de publication de la commande, actuellement 12 mois par défaut ; ce n’est pas un hébergement perpétuel. Toute personne possédant ce lien peut consulter la création et le transmettre.
 
 Les invités n’accèdent jamais à l’espace privé du client. Le formulaire recueille présence ou refus, adultes, enfants, accompagnants si activés, message et informations alimentaires facultatives si activées avec consentement séparé. Un lien personnel permet de modifier la réponse jusqu’à la clôture. Le client retrouve les réponses, messages, statistiques et export CSV dans « Mes invités ».
+
+Le tableau de bord sépare Vue d’ensemble, Réponses, Messages, Liste des invités et Réglages. Le taux est le nombre d’invitations personnelles ayant reçu une réponse (présence ou refus), divisé par le nombre de personnes ou foyers de la liste. Sans liste, aucun pourcentage n’est affiché. Les réponses du lien général comptent dans les participants et restent consultables, sans augmenter ce taux. Le compteur de conversations à lire inclut les messages initiaux et les nouvelles questions ; seule l’ouverture d’une conversation les marque comme lus.
 
 Jusqu’à cinq questions facultatives peuvent être ajoutées : oui/non, choix parmi 2 à 8 propositions, ou texte libre. Le libellé et la réponse sont conservés ensemble et inclus dans l’export Excel. Ne pas utiliser ces questions pour remplacer le champ alimentaire et son consentement.
 
@@ -60,4 +66,4 @@ Les réglages sont contrôlés côté serveur, y compris l’appartenance des fi
 
 La migration `003-studio.sql` est additive : provenance des retouches et identifiant d’enregistrement des versions. Elle ne modifie aucun paiement, propriétaire ou statut de publication.
 
-La migration additive `004-guest-experience.sql` ajoute les informations pratiques, les questions, les réponses complémentaires et les conversations invitées. `sudo bash bin/deployer-studio.sh` conserve l’image précédente, sauvegarde PostgreSQL, construit l’application, applique les migrations et attend une application saine. Les médias et les paiements restent dans leurs volumes et services existants. Les données de démonstration du script `tests/preview.mjs` sont isolées en mémoire et ne font jamais partie du démarrage de production.
+La migration additive `004-guest-experience.sql` ajoute les informations pratiques, les questions, les réponses complémentaires et les conversations invitées. `005-guided-preparation.sql` ajoute la préparation guidée, l’identifiant d’envoi des photos et les marqueurs de lecture. `sudo bash bin/deployer-studio.sh` conserve l’image précédente, sauvegarde PostgreSQL, construit l’application, applique les migrations et attend une application saine. Les médias et les paiements restent dans leurs volumes et services existants. Les données de démonstration du script `tests/preview.mjs` sont isolées en mémoire et ne font jamais partie du démarrage de production.

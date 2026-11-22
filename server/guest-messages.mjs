@@ -37,6 +37,7 @@ export function guestConversations(router,{db,config,auth}) {
     privatePage(res);
     const {event,response,key}=await guestContext(req);
     const rows=await many(db,'select * from guest_messages where response_id=$1 order by created_at,id',[response.id]);
+    await db.query('update guest_messages set read_at=now() where response_id=$1 and from_organizer and read_at is null',[response.id]);
     const base=`/invitation/${event.share_key}/reponse/`;
     res.send(page('Un mot aux organisateurs',`<p class="px-lead">Bonjour ${e(response.name)}. Seuls les organisateurs et vous avez accès à cet échange avec votre lien personnel.</p>`+
       panel('Votre réponse',`<p>${badge(response.attending?'Présence confirmée':'Absence signalée')}</p>${response.message?`<p class="px-text">${e(response.message)}</p>`:''}${answerList(response.answers)}`)+
@@ -68,6 +69,10 @@ export function guestConversations(router,{db,config,auth}) {
     router.get(path,...guard,async(req,res)=>{
       const {order,project,response}=await context(req);
       const rows=await many(db,'select * from guest_messages where response_id=$1 order by created_at,id',[response.id]);
+      await db.transaction(async tx=>{
+        await tx.query('update guest_messages set read_at=now() where response_id=$1 and not from_organizer and read_at is null',[response.id]);
+        await tx.query('update responses set organizer_read_at=now() where id=$1',[response.id]);
+      });
       const canWrite=order.paid_at && order.payment_status!=='refunded' && project.status!=='archived';
       res.send(page(`Échange avec ${response.name}`,(admin?adminNav:clientNav)(order,'invites')+panel('Réponse de l’invité',`<p>${badge(response.attending?'Présent':'Absent')}</p><p class="px-text">${e(response.message)}</p>${answerList(response.answers)}`)+
         panel('Conversation privée',thread(rows)+(canWrite?composer(`${base}/${order.id}/invites/messages`,hidden('response',response.id)):'')+`<p class="px-quiet">L’invité retrouve votre réponse avec son lien personnel. Il peut actualiser la conversation pour la lire.</p>`)+

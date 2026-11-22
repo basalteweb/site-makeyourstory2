@@ -4,7 +4,7 @@ import { many, one } from './db.mjs';
 import { clientMail, editableProject, orderFor, projectFor } from './projects.mjs';
 import { limited } from './auth.mjs';
 import { answerText, parseAnswers, parseQuestions, questionEditor, questionFields } from './experience.mjs';
-import { area, badge, btn, check, dateInputValue, day, empty, escapeHtml as e, field, hidden, page, panel, post, select, submit, time } from './ui.mjs';
+import { area, badge, btn, check, dateInputValue, day, empty, escapeHtml as e, field, hidden, links, page, panel, post, select, submit, time } from './ui.mjs';
 
 export async function publicProject(db, key, withLock = false) {
   assert(validToken(key), 404, 'Cette invitation est introuvable ou a été dépubliée.');
@@ -132,7 +132,7 @@ export function guestRsvp(router, { db, config }) {
       assert(event.enabled && event.accepting,410,'La date limite de réponse est dépassée ou le formulaire est fermé.');
       const fields = parseResponse(req.body,event);
       assert(await one(tx, `update responses set name=$3,attending=$4,adults=$5,children=$6,companions=$7,message=$8,dietary=$9,answers=$10::jsonb,
-        dietary_consent_at=case when $9::text is not null then coalesce(dietary_consent_at,now()) end,updated_at=now()
+        dietary_consent_at=case when $9::text is not null then coalesce(dietary_consent_at,now()) end,updated_at=now(),organizer_read_at=null
         where event_id=$1 and edit_digest=$2 returning id`, [event.event_id,digest(edit),...fields]),404,'Réponse introuvable.');
       return event;
     });
@@ -150,10 +150,12 @@ export function guestManagement(router, { db, config }, base, guard, admin = fal
   };
   const stats = (eventId) => one(db, `select count(*) as replies,count(*) filter(where attending) as confirmations,
     count(*) filter(where not attending) as declines,coalesce(sum(adults),0) as adults,coalesce(sum(children),0) as children,
-    (select count(*) from invitees i where i.event_id=$1 and not exists(select 1 from responses r where r.event_id=$1 and r.invitee_id=i.id)) as missing
+    (select count(*) from invitees i where i.event_id=$1 and not exists(select 1 from responses r where r.event_id=$1 and r.invitee_id=i.id)) as missing,
+    (select count(*) from responses rr where rr.event_id=$1 and ((rr.message<>'' and rr.organizer_read_at is null) or exists(select 1 from guest_messages gm where gm.response_id=rr.id and not gm.from_organizer and gm.read_at is null))) as unread
     from responses where event_id=$1`, [eventId]);
   router.get(path, ...guard, async (req, res) => {
     const {order,project,event} = await get(req);
+    const view=['reponses','messages','liste','reglages'].includes(req.query.vue)?req.query.vue:'apercu';
     const q = value(req.query.q, 100);
     const filter = ['yes','no'].includes(req.query.statut) ? req.query.statut : '';
     const [summary,invitees,rows] = await Promise.all([
@@ -161,16 +163,22 @@ export function guestManagement(router, { db, config }, base, guard, admin = fal
       many(db, `select * from responses where event_id=$1 and strpos(lower(name),lower($2))>0
         and ($3='' or attending=($3='yes')) order by updated_at desc`, [event.id,q,filter])
     ]);
+    const conversations=await many(db,`select r.id,r.name,r.message,r.updated_at,m.content as last_message,m.created_at as last_date,m.from_organizer,
+      ((r.message<>'' and r.organizer_read_at is null) or exists(select 1 from guest_messages gm where gm.response_id=r.id and not gm.from_organizer and gm.read_at is null)) as unread
+      from responses r left join lateral (select content,created_at,from_organizer from guest_messages where response_id=r.id order by created_at desc,id desc limit 1) m on true
+      where r.event_id=$1 and (r.message<>'' or m.content is not null) order by coalesce(m.created_at,r.updated_at) desc limit 200`,[event.id]);
     let editor = '';
     if (req.query.editer) {
       const row = assert(await one(db,'select * from responses where event_id=$1 and id=$2',[event.id,uuid(req.query.editer)]),404,'Réponse introuvable.');
       editor = panel('Modifier la réponse', post(`${href(order)}/reponses`,hidden('id',row.id)+responseFields(event,row,true,invitees)+submit('Enregistrer la modification'), 'data-rsvp'));
     }
-    const cards = [['Réponses',summary.replies],['Présences',summary.confirmations],['Refus',summary.declines],['Adultes',summary.adults],['Enfants',summary.children],
-      ['Participants',Number(summary.adults)+Number(summary.children)], ...(invitees.length ? [['En attente',summary.missing]] : [])];
+    const answered=invitees.length-Number(summary.missing);
+    const rate=invitees.length?Math.round(answered/invitees.length*100):null;
+    const unread=Number(summary.unread);
+    const cards = [['Participants',Number(summary.adults)+Number(summary.children)],['Foyers présents',summary.confirmations],['En attente',invitees.length?summary.missing:'—'],['Conversations à lire',unread]];
     const table = rows.length ? `<div class="px-table-wrap"><table><thead><tr><th>Invité</th><th>Présence</th><th>Participants</th><th>Dernière réponse</th><th>Notes</th><th>Gérer</th></tr></thead><tbody>
       ${rows.map((r)=>`<tr><td>${e(r.name)}</td><td>${badge(r.attending?'Présent':'Décline')}</td><td>${r.adults} adulte(s), ${r.children} enfant(s)</td><td>${e(time(r.updated_at))}</td>
-        <td class="px-text">${e([r.companions,r.message,r.dietary,answerText(r.answers)].filter(Boolean).join('\n')) || '—'}</td><td><div class="button-row">${btn('Échanger',`${href(order)}/messages?reponse=${r.id}`,true)}${btn('Modifier',`${href(order)}?editer=${r.id}`,true)}</div>
+        <td class="px-text">${e([r.companions,r.message,r.dietary,answerText(r.answers)].filter(Boolean).join('\n')) || '—'}</td><td><div class="button-row">${btn('Échanger',`${href(order)}/messages?reponse=${r.id}`,true)}${btn('Modifier',`${href(order)}?vue=reponses&editer=${r.id}`,true)}</div>
         <details><summary>Supprimer</summary>${post(`${href(order)}/reponses/supprimer`,hidden('id',r.id)+check('Confirmer la suppression','confirm',false,'required')+submit('Supprimer la réponse',true))}</details></td></tr>`).join('')}
       </tbody></table></div>` : empty('Aucune réponse à afficher.');
     const share = project.published_version && project.share_key ? inviteRoute(project) : '';
@@ -187,14 +195,17 @@ export function guestManagement(router, { db, config }, base, guard, admin = fal
       <details><summary>Questions personnalisées aux invités</summary>${questionEditor(event.questions||[])}</details>${submit('Enregistrer les paramètres')}`);
     const names = invitees.map(i=>`<li><span>${e(i.name)}</span>${badge(i.response_id?'Réponse reçue':'En attente')} ${share ? `<button type="button" class="px-link" data-copy="${e(`${config.origin}${share}?invite=${inviteeKey(config,i.id)}`)}">Copier l’invitation personnelle</button>` : ''}
       ${post(`${href(order)}/liste/supprimer`,hidden('id',i.id)+submit('Retirer de la liste',true))}</li>`).join('');
-    res.send(page('Mes invités', nav(order,'invites') + `<p class="px-lead">Toutes leurs réponses. Tous vos petits détails.</p><div class="px-metrics">${cards.map(([label,n])=>`<div class="px-panel"><strong>${e(n)}</strong><span>${e(label)}</span></div>`).join('')}</div>`
-    + panel('Réponses des invités', `<p>Date limite · ${day(event.deadline)} ${event.enabled ? badge('RSVP activé') : badge('RSVP désactivé')}</p>
-      <form action="${href(order)}" method="get" class="px-filter">${field('Rechercher un invité','q',q,'search','maxlength="100"')}${select('Présence','statut',{'':'Toutes',yes:'Présents',no:'Refus'},filter)}${submit('Filtrer')}${btn('Exporter pour Excel',`${href(order)}/export.csv`,true)}</form>${table}`)
-    + editor + panel('Ajouter une réponse', `<details><summary>Saisir une réponse manuellement</summary>${post(`${href(order)}/reponses`,responseFields(event,{},true,invitees)+submit('Ajouter la réponse'), 'data-rsvp')}</details>`)
-    + panel('Liste facultative des invités', `${names ? `<ul class="px-list">${names}</ul>` : empty('Ajoutez des invités si vous souhaitez suivre les réponses en attente.')}
+    const tabs=links([['Vue d’ensemble',href(order),view==='apercu'],['Réponses',`${href(order)}?vue=reponses`,view==='reponses'],[`Messages${unread?` (${unread})`:''}`,`${href(order)}?vue=messages`,view==='messages'],['Liste des invités',`${href(order)}?vue=liste`,view==='liste'],['Réglages',`${href(order)}?vue=reglages`,view==='reglages']]);
+    const ratePanel=panel('Les réponses à votre invitation',`<div class="px-guest-rate"><div><strong>${rate===null?'—':rate+' %'}</strong><p>${rate===null?'Votre taux de réponse apparaîtra ici.':`${answered} invitation${answered>1?'s':''} répondue${answered>1?'s':''} sur ${invitees.length}`}</p></div><div>${rate!==null?`<progress max="100" value="${rate}" aria-label="Taux de réponse des invitations personnelles"></progress><p class="px-quiet">${summary.missing} invitation(s) en attente. Le taux porte sur les personnes ou foyers de votre liste. Les réponses reçues avec le lien général apparaissent aussi ci-dessous.</p>`:`<p>Ajoutez vos invités et partagez leur invitation personnelle pour suivre précisément qui a répondu.</p>${btn('Préparer ma liste',`${href(order)}?vue=liste`,true)}`}</div></div>`);
+    const messagePanel=panel(view==='messages'?'Les messages de vos invités':'Les derniers messages',conversations.length?`<div class="px-guest-messages">${conversations.slice(0,view==='messages'?200:3).map(c=>`<a href="${href(order)}/messages?reponse=${c.id}"><div><strong>${e(c.name)}</strong>${c.unread?badge('À lire'):''}<time>${e(time(c.last_date||c.updated_at))}</time></div><p>${e((c.last_message||c.message).slice(0,240))}</p><span class="px-quiet">${c.last_message&&c.from_organizer?'Votre dernier message':'Message de l’invité'}</span></a>`).join('')}</div>`:empty('Les petits mots et les questions de vos invités apparaîtront ici.'));
+    const responsesPanel=panel('Qui vient ?',`<p>${summary.adults} adulte(s) · ${summary.children} enfant(s) · ${summary.declines} foyer(s) ne pourront pas venir.</p><p class="px-quiet">Réponses ${event.enabled?'ouvertes':'fermées'}${event.deadline?` jusqu’au ${day(event.deadline)}`:''}.</p><form action="${href(order)}" method="get" class="px-filter">${hidden('vue','reponses')}${field('Rechercher un invité','q',q,'search','maxlength="100"')}${select('Présence','statut',{'':'Toutes',yes:'Présents',no:'Refus'},filter)}${submit('Filtrer')}${btn('Exporter pour Excel',`${href(order)}/export.csv`,true)}</form>${table}`);
+    const listPanel=panel('Votre liste d’invités', `${names ? `<ul class="px-list">${names}</ul>` : empty('Ajoutez une personne ou un foyer par invitation. Vous saurez ensuite qui a répondu et qui attend encore.')}
       ${post(`${href(order)}/liste`,field('Prénom et nom','name','','text','required maxlength="120"')+submit('Ajouter à la liste'))}
-      <details><summary>Ajouter plusieurs invités</summary>${post(`${href(order)}/liste/lot`,area('Un invité ou foyer par ligne','names','','required maxlength="8000"')+'<p class="px-quiet">Jusqu’à 100 noms à la fois. Chaque personne ou foyer reçoit son propre lien de réponse, que vous partagez vous-même.</p>'+submit('Ajouter les invités'))}</details>`)
-    + panel('Paramètres RSVP',settingsForm), { user:req.user,wide:true }));
+      <details><summary>Ajouter plusieurs invités</summary>${post(`${href(order)}/liste/lot`,area('Un invité ou foyer par ligne','names','','required maxlength="8000"')+'<p class="px-quiet">Jusqu’à 100 noms à la fois. Chaque personne ou foyer dispose de son propre lien de réponse, que vous partagez vous-même.</p>'+submit('Ajouter les invités'))}</details>`);
+    const manual=panel('Une réponse reçue autrement ?',`<details><summary>Saisir une réponse manuellement</summary>${post(`${href(order)}/reponses`,responseFields(event,{},true,invitees)+submit('Ajouter la réponse'),'data-rsvp')}</details>`);
+    res.send(page('Mes invités',nav(order,'invites')+'<p class="px-lead">Qui vient ? Qui vous a écrit ? Tout est ici.</p>'+tabs+
+      (view==='apercu'?ratePanel+`<div class="px-metrics">${cards.map(([label,n])=>`<div class="px-panel"><strong>${e(n)}</strong><span>${e(label)}</span></div>`).join('')}</div>`+messagePanel+responsesPanel:
+       view==='messages'?messagePanel:view==='liste'?listPanel:view==='reglages'?panel('Vos préférences de réponse',settingsForm):responsesPanel+editor+manual),{user:req.user,wide:true}));
   });
   router.get(`${path}/export.csv`, ...guard, async (req, res) => {
     const {event,order} = await get(req);
@@ -210,7 +221,7 @@ export function guestManagement(router, { db, config }, base, guard, admin = fal
       await fn(tx,state,req);
       return state.order;
     });
-    res.redirect(303,href(order));
+    res.redirect(303,`${href(order)}?vue=${url==='parametres'?'reglages':url.startsWith('liste')?'liste':'reponses'}`);
   });
   mutate('parametres', async (tx,{event},req) => {
     const date = dateValue(req.body.event_date);

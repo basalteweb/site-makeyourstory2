@@ -4,20 +4,21 @@ import { queueMail } from './mail.mjs';
 import { projectNames, ref } from './ui.mjs';
 
 const wedding = [
-  ['first', 'Prénom de la première personne'], ['second', 'Prénom de la deuxième personne'], ['date', 'Date du mariage', 'date'],
+  ['first', 'Prénom de la première personne'], ['first_last','Nom de la première personne'], ['second', 'Prénom de la deuxième personne'], ['second_last','Nom de la deuxième personne'], ['date', 'Date du mariage', 'date'],
   ['times', 'Horaires'], ['places', 'Lieux'], ['addresses', 'Adresses'], ['agenda', 'Programme', 'long'],
+  ['reception_place','Lieu de la réception'], ['reception_address','Adresse de la réception'], ['reception_time','Horaire de la réception'],
   ['deadline', 'Date limite de réponse', 'date'], ['contact', 'Coordonnées de contact'], ['story', 'Histoire du couple', 'long'],
   ['copy', 'Textes personnalisés', 'long'], ['mood', 'Ambiance souhaitée'], ['colors', 'Couleurs'],
   ['details', 'Informations pratiques', 'long'], ['dress', 'Consignes vestimentaires'], ['rsvp', 'Paramètres et consignes pour les réponses', 'long']
 ];
-const birthday = [['person', 'Prénom et âge'], ['date', 'Date de la fête', 'date'], ['times', 'Horaires'], ['places', 'Lieu et adresse'],
+const birthday = [['person', 'Prénom et âge'], ['person_last','Nom'], ['age','Âge à célébrer'], ['story','Son histoire','long'], ['date', 'Date de la fête', 'date'], ['times', 'Horaires'], ['places', 'Lieu et adresse'],
   ['deadline', 'Date limite de réponse', 'date'], ['agenda', 'Programme et informations pratiques', 'long'], ['contact', 'Coordonnées de contact'], ['copy', 'Texte d’invitation', 'long'], ['mood', 'Ambiance souhaitée'], ['colors', 'Couleurs']];
 const birth = [['person', 'Prénom de l’enfant'], ['date', 'Date de naissance', 'date'], ['times', 'Heure de naissance'], ['measures', 'Taille et poids'],
-  ['family', 'Prénoms de la famille à afficher'], ['copy', 'Texte de votre annonce', 'long'], ['mood', 'Ambiance souhaitée'], ['colors', 'Couleurs']];
+  ['family', 'Prénoms de la famille à afficher'], ['story','Les premiers moments','long'], ['copy', 'Texte de votre annonce', 'long'], ['mood', 'Ambiance souhaitée'], ['colors', 'Couleurs']];
 const tribute = [['person', 'Nom et prénom'], ['dates', 'Dates à afficher'], ['date', 'Date de la cérémonie', 'date'], ['times', 'Horaire'],
-  ['places', 'Lieu et adresse'], ['copy', 'Annonce et texte d’hommage', 'long'], ['details', 'Informations pratiques', 'long']];
+  ['places', 'Lieu et adresse'], ['story','Les souvenirs confiés','long'], ['copy', 'Annonce et texte d’hommage', 'long'], ['details', 'Informations pratiques', 'long']];
 const album = [['title', 'Titre ou prénom à afficher'], ['date', 'Date à mettre en avant', 'date'], ['copy', 'Textes, légendes et ordre des photos', 'long'],
-  ['mood', 'Ambiance souhaitée'], ['colors', 'Couleurs']];
+  ['story','Le fil de l’album','long'], ['mood', 'Ambiance souhaitée'], ['colors', 'Couleurs']];
 export const briefFields = { mariage: wedding, anniversaire: birthday, naissance: birth, hommage: tribute, album };
 export const fileCategories = { couple: 'Photos du couple', portraits: 'Portraits individuels', photos: 'Photos complémentaires', videos: 'Vidéos', documents: 'Documents' };
 

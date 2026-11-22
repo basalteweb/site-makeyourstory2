@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { createApp } from '../server/app.mjs';
-import { configFrom,digest,token } from '../server/common.mjs';
+import { configFrom,digest,mac,token } from '../server/common.mjs';
 import { customerByEmail,ensureProject,one } from '../server/db.mjs';
 import { compositionArchive } from '../server/studio-composition.mjs';
 import { deployArchive,mediaStore } from '../server/media.mjs';
@@ -40,15 +40,21 @@ await db.query("update projects set selected_version=$2,approved_version=$2,publ
 await db.query("update events set enabled=true,event_date='2027-06-19',deadline='2027-05-01',title='Camille & Julien',location='Clermont-Ferrand',practical='Cérémonie à 16 h, suivie du cocktail et du dîner.',questions=$2 where project_id=$1",[project.id,JSON.stringify([{id:'q1',label:'Serez-vous au brunch du dimanche ?',kind:'yesno',options:[]}])]);
 const event=await one(db,'select id from events where project_id=$1',[project.id]);
 for(const [name,adults,children,attending,message] of [['Émilie & Antoine',2,1,true,'On a tellement hâte !'],['Laura',1,0,true,'Présente pour ce grand jour.'],['Thomas',0,0,false,'De tout cœur avec vous.']]) await db.query("insert into responses (event_id,name,attending,adults,children,message) values ($1,$2,$3,$4,$5,$6)",[event.id,name,attending,adults,children,message]);
+for(const name of ['Émilie & Antoine','Sophie & Maxime']) {const id=randomUUID();await db.query('insert into invitees (id,event_id,name,key_digest) values ($1,$2,$3,$4)',[id,event.id,name,digest(mac(cfg.secret,`invitee:${id}`))]);}
+await db.query("update responses set invitee_id=(select id from invitees where event_id=$1 and name='Émilie & Antoine') where event_id=$1 and name='Émilie & Antoine'",[event.id]);
 const sessions={};
-for(const [role,user] of [['client',client],['studio',admin]]) {const key=token();sessions[role]=key;await db.query("insert into sessions (digest,customer_id,expires_at) values ($1,$2,now()+interval '4 hours')",[digest(key),user.id]);}
+const guide=await customerByEmail(db,'guide.preview@example.com');
+await db.query('update customers set verified_at=now() where id=$1',[guide.id]);
+const guideOrder=await one(db,`insert into orders (customer_id,product_id,product_name,category,amount,client_name,buyer_email,source,payment_status,paid_at,captured_amount) select $1,id,name,category,amount,'Camille & Julien',$2,'admin','paid',now(),amount from products where id='mariage' returning *`,[guide.id,guide.email]);
+await ensureProject(db,guideOrder.id);
+for(const [role,user] of [['client',client],['studio',admin],['guide',guide]]) {const key=token();sessions[role]=key;await db.query("insert into sessions (digest,customer_id,expires_at) values ($1,$2,now()+interval '4 hours')",[digest(key),user.id]);}
 const outer=express();
 outer.get('/__preview/:role',(req,res)=>{
   if(!sessions[req.params.role]) return res.redirect('/');
   res.cookie('mys_session',sessions[req.params.role],{httpOnly:true,sameSite:'lax',path:'/'});
-  res.redirect(req.params.role==='client'?'/espace/':`/admin/commandes/${order.id}/studio`);
+  res.redirect(req.params.role==='studio'?`/admin/commandes/${order.id}/studio`:'/espace/');
 });
-outer.get('/__preview',(req,res)=>res.type('html').send(`<html lang="fr"><title>Prévisualisation MakeYourStory</title><h1>MakeYourStory · Démonstration privée</h1><p>Données fictives uniquement.</p><p><a href="/__preview/client">Espace client</a></p><p><a href="/__preview/studio">Studio de création</a></p><p><a href="/invitation/${share}/">Invitation</a></p></html>`));
+outer.get('/__preview',(req,res)=>res.type('html').send(`<html lang="fr"><title>Prévisualisation MakeYourStory</title><h1>MakeYourStory · Démonstration privée</h1><p>Données fictives uniquement.</p><p><a href="/__preview/guide">Préparation guidée</a></p><p><a href="/__preview/client">Espace client</a></p><p><a href="/__preview/studio">Studio de création</a></p><p><a href="/invitation/${share}/">Invitation</a></p></html>`));
 outer.use(app);
 const server=outer.listen(port,host,()=>console.log(`MakeYourStory preview http://${host}:${port}/__preview`));
 const close=()=>server.close(async()=>{await db.close();await rm(media,{recursive:true,force:true});process.exit(0);});

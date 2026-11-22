@@ -108,8 +108,9 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     await html(await anon.post('/espace/ouvrir',{token:used},origin,`${origin}/espace/ouvrir`),400,/href="\/espace\/connexion">Recevoir un nouveau lien<\/a>/);
     await login(db,bob,'bob.mys@example.com');
     await login(db,admin,'admin.mys@example.com');
-    await html(await alice.get('/espace/'),200,/Alice Test/);
-    await html(await alice.get(order),200,/Reçu de paiement Stripe/);
+    await expectStatus(await alice.get('/espace/'),303);
+    await html(await alice.get('/espace/?accueil=1'),200,/Alice Test/);
+    await html(await alice.get(order+'?details=1'),200,/Reçu de paiement Stripe/);
     await expectStatus(await alice.get('/admin/'),403);
     await expectStatus(await bob.get(order),404);
     await expectStatus(await bob.get(`${order}/invites`),404);
@@ -300,7 +301,7 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     assert.match(ics,/SUMMARY:Les 40 ans de Camille/);
     assert.ok(ics.split('\r\n').every(line=>Buffer.byteLength(line)<=75));
     const name=await one(db,"select * from invitees where event_id=$1 and name='Famille Martin'",[event.id]);
-    const list=await html(await alice.get(`${customer}/invites`),200,/Copier l’invitation personnelle/);
+    const list=await html(await alice.get(`${customer}/invites?vue=liste`),200,/Copier l’invitation personnelle/);
     const inviteKey=mac(cfg.secret,`invitee:${name.id}`);
     const personal=publicUrl+'?invite='+inviteKey;
     assert.ok(list.includes(personal));
@@ -315,6 +316,13 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     const key=new URL(origin+conversation).searchParams.get('cle');
     const response=await one(db,'select * from responses where event_id=$1 and invitee_id=$2',[event.id,name.id]);
     assert.equal(response.answers[1].answer,'Végétarien');
+    let dashboard=await html(await alice.get(`${customer}/invites`),200,/50 %/);
+    assert.match(dashboard,/1 invitation répondue sur 2/);
+    assert.match(dashboard,/Messages \(1\)/);
+    assert.doesNotMatch(dashboard,/Proposer les informations alimentaires facultatives/,'Les réglages restent dans leur onglet.');
+    await expectStatus(await client().post(rsvp,{name:'Un proche hors liste',attending:'no'}),200);
+    dashboard=await html(await alice.get(`${customer}/invites`),200,/50 %/);
+    assert.match(dashboard,/1 invitation répondue sur 2/,'Une réponse du lien général ne gonfle pas le taux de la liste.');
     await html(await guest.get(conversation),200,/Serez-vous au brunch/);
     await expectStatus(await anon.get(conversation.replace(key,'x'.repeat(43))),404);
     await expectStatus(await bob.get(`${customer}/invites/messages?reponse=${response.id}`),404);
@@ -322,7 +330,13 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     await expectStatus(await guest.post(rsvp+'conversation',message),303);
     await expectStatus(await guest.post(rsvp+'conversation',message),303);
     assert.equal(Number((await one(db,'select count(*) as n from guest_messages where response_id=$1',[response.id])).n),1);
+    await html(await alice.get(`${customer}/invites?vue=messages`),200,/Peut-on arriver à 17 h/);
+    assert.equal((await one(db,'select organizer_read_at from responses where id=$1',[response.id])).organizer_read_at,null,'Ouvrir la liste ne marque pas la conversation lue.');
     await html(await alice.get(`${customer}/invites/messages?reponse=${response.id}`),200,/Peut-on arriver à 17 h/);
+    assert.ok((await one(db,'select organizer_read_at from responses where id=$1',[response.id])).organizer_read_at);
+    assert.ok((await one(db,'select read_at from guest_messages where response_id=$1',[response.id])).read_at);
+    dashboard=await html(await alice.get(`${customer}/invites`),200,/50 %/);
+    assert.doesNotMatch(dashboard,/Messages \(1\)/);
     await expectStatus(await alice.post(`${customer}/invites/messages`,{response:response.id,content:'Bien sûr, avec plaisir.',request_key:randomUUID()}),303);
     await html(await guest.get(conversation),200,/Bien sûr, avec plaisir/);
     await expectStatus(await guest.post(rsvp+'conversation',{...message,request_key:randomUUID()},'https://example.com'),403);
@@ -337,6 +351,93 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     await expectStatus(await guest.get(conversation),404);
     await expectStatus(await anon.get(publicUrl+'calendrier.ics'),404);
     await expectStatus(await alice.post(`${customer}/invites/messages`,{response:response.id,content:'Clôturé',request_key:randomUUID()}),409);
+  });
+  await t.test('préparation guidée : récit, reprise, photos privées, validation et envoi unique',async()=>{
+    const c=await fixtureOrder(db,'alice.mys@example.com','Camille et Julien','mariage');
+    const project=await one(db,'select * from projects where order_id=$1',[c.id]);
+    const path=`/espace/commandes/${c.id}/preparer`;
+    const current=()=>one(db,'select * from projects where id=$1',[project.id]);
+    const save=async(step,data={},status=303)=>{
+      const p=await current();return expectStatus(await alice.post(path,{step,revision:p.intake.revision||0,...data}),status);
+    };
+    await expectStatus(await anon.get(path),303);
+    await expectStatus(await bob.get(path),404);
+    const welcome=await html(await alice.get(path),200,/Félicitations pour votre commande/);
+    assert.doesNotMatch(welcome,/>Tarifs<|Paiement Stripe|avant ouverture de Stripe/);
+    await save('bienvenue');
+    await save('vous',{first:'Camille',second:'Julien'},400);
+    await save('vous',{first:'Camille',first_last:'Martin',second:'Julien',second_last:'Durand'});
+    const revision=(await current()).intake.revision;
+    await save('rencontre',{story_meeting:'Un concert <script> partagé.'});
+    await save('debuts',{story_beginnings:'Une escapade en Auvergne',direction:'quit'});
+    const resumed=await html(await alice.get(path),200,/Une escapade en Auvergne/);
+    assert.match(resumed,/Le souvenir de vos débuts/);
+    await expectStatus(await alice.post(path,{step:'debuts',revision,story_beginnings:'Version obsolète'}),409);
+    assert.equal((await current()).intake.draft.story_beginnings,'Une escapade en Auvergne');
+    assert.deepEqual((await current()).brief,{},'Une réponse brouillon ne doit pas remplacer les éléments transmis au studio.');
+    await save('debuts',{story_beginnings:'Une escapade en Auvergne'});
+    await save('etapes',{story_milestones:'Notre emménagement'});
+    await save('complicite',{story_personality:'Nos fous rires'});
+    await save('date',{date:'2027-08-20'});
+    await save('ceremonie',{places:'Mairie',addresses:'Clermont-Ferrand',times:'15 h'});
+    await save('reception',{reception_place:'Un jardin',reception_time:'18 h',agenda:'Cocktail puis dîner'});
+    await save('proches',{deadline:'2027-09-01'},400);
+    await save('proches',{deadline:'2027-08-01',contact:'Camille'});
+    await save('univers',{mood:'Chaleureux',colors:'Rose'});
+    const uploadKey=randomUUID();
+    await expectStatus(await alice.post(path+'/photos',upload(samplePhoto,'notre-couple.png',{upload_key:uploadKey,category:'couple'})),303);
+    await expectStatus(await alice.post(path+'/photos',upload(samplePhoto,'notre-couple.png',{upload_key:uploadKey,category:'couple'})),303);
+    const files=(await db.query('select * from files where project_id=$1',[project.id])).rows;
+    assert.equal(files.length,1);assert.equal(files[0].confirmed_at,null);
+    await expectStatus(await bob.get(path+'/media/'+files[0].id),404);
+    await expectStatus(await admin.get(`/admin/commandes/${c.id}/fichiers/${files[0].id}`),404);
+    await expectStatus(await alice.get(path+'/media/'+files[0].id),200);
+    let p0=await current();
+    await expectStatus(await alice.post(path+'/selection',{file:files[0].id,include:'off',revision:p0.intake.revision}),303);
+    await save('photos',{photo_mode:'photos'});
+    const key=randomUUID();p0=await current();
+    await expectStatus(await alice.post(path+'/envoyer',{revision:p0.intake.revision,request_key:key,confirm:'on'}),400);
+    await expectStatus(await alice.post(path+'/selection',{file:files[0].id,include:'on',revision:p0.intake.revision}),303);
+    await save('photos',{photo_mode:'photos'});
+    const review=await html(await alice.get(path+'?etape=recap'),200,/Un concert &lt;script&gt; partagé/);
+    assert.match(review,/Notre emménagement/);
+    assert.match(review,/href="[^"]+etape=photos"[^>]*>Précédent<\/a>/);
+    p0=await current();const payload={revision:p0.intake.revision,request_key:key,confirm:'on'};
+    await expectStatus(await alice.post(path+'/envoyer',payload,'https://example.com'),403);
+    await expectStatus(await alice.post(path+'/envoyer',payload),303);
+    const mails=Number((await one(db,'select count(*) as n from notifications where order_id=$1',[c.id])).n);
+    await expectStatus(await alice.post(path+'/envoyer',payload),303);
+    assert.equal(Number((await one(db,'select count(*) as n from notifications where order_id=$1',[c.id])).n),mails);
+    const submitted=await current();assert.equal(submitted.status,'received');
+    assert.deepEqual(submitted.intake.photo_ids,[files[0].id]);
+    assert.match(submitted.brief.story,/Nos débuts/);
+    assert.equal(submitted.brief.first_last,'Martin');
+    await expectStatus(await admin.get(`/admin/commandes/${c.id}/fichiers/${files[0].id}`),200);
+    await html(await admin.get(`/admin/commandes/${c.id}/elements`),200,/Notre emménagement/);
+    await html(await alice.get(path+'/merci'),200,/Votre histoire est entre nos mains/);
+    await db.query("insert into timeline (order_id,kind,summary) values ($1,'checkout','Commande enregistrée avant ouverture de Stripe'),($1,'stripe_sync','Paiement Stripe · 0,00 € remboursés')",[c.id]);
+    const dashboard=await html(await alice.get('/espace/?accueil=1'),200,/Camille/);
+    assert.doesNotMatch(dashboard,/avant ouverture de Stripe|Paiement Stripe|0,00.*remboursés|>Tarifs<|>Mes éléments</);
+  });
+  await t.test('préparations adaptées aux offres et limites réelles des photos d’album',async()=>{
+    for(const [product,expected] of [['naissance','petit bonheur'],['hommage','Nous sommes à vos côtés'],['album-mini','Vos souvenirs'],['album-complet','Vos souvenirs'],['anniversaire','belle fête']]) {
+      const c=await fixtureOrder(db,'alice.mys@example.com','Offre de test',product);
+      const path=`/espace/commandes/${c.id}/preparer`;
+      await html(await alice.get(path),200,new RegExp(expected));
+      const photoView=await html(await alice.get(path+'?etape=photos'),200,/Place à vos photos/);
+      if(product==='album-mini'||product==='album-complet') {
+        assert.doesNotMatch(photoView,/Je préfère une création sans photo/);
+        assert.match(photoView,product==='album-mini'?/1 à 10/:/10 à 20/);
+      }
+      if(product==='album-mini') {
+        const project=await one(db,'select * from projects where order_id=$1',[c.id]);
+        for(let i=0;i<10;i++) await expectStatus(await alice.post(path+'/photos',upload(samplePhoto,`album-${i}.png`,{category:'photos',upload_key:randomUUID()})),303);
+        await expectStatus(await alice.post(path+'/photos',upload(samplePhoto,'photo-en-trop.png',{category:'photos',upload_key:randomUUID()})),409);
+        assert.equal(Number((await one(db,'select count(*) as n from files where project_id=$1',[project.id])).n),10);
+        const p0=await one(db,'select * from projects where id=$1',[project.id]);
+        await expectStatus(await alice.post(path,{step:'photos',revision:p0.intake.revision,photo_mode:'none'}),400);
+      }
+    }
   });
   await t.test('note unique et changement de titulaire journalisé',async()=>{
     await expectStatus(await admin.post('/admin/parametres',{business_name:'Exploitant de test',business_siret:'00000000000001',business_address:'1 rue Exemple',publication_months:'12'}),303);

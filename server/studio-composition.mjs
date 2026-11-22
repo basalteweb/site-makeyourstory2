@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { strToU8, zipSync } from 'fflate';
 import { day, escapeHtml as e } from './ui.mjs';
+import { assert } from './common.mjs';
 
 export const compositionStyles={editorial:'Éditorial · prune et rose',garden:'Jardin · vert et ivoire',cinema:'Cinéma · nuit et or'};
 const palettes={editorial:['#2c1725','#f6edf0','#b65e7b','#e4bdca'],garden:['#243c32','#f4f3e9','#7f987c','#c5d0b9'],cinema:['#141d2e','#f9f4e8','#bd9856','#ded0ad']};
@@ -15,9 +16,9 @@ export async function compositionArchive(order,project,photos,storage,style) {
   const invitation=['mariage','anniversaire','hommage'].includes(order.category);
   const files=Object.create(null);
   const paths=[];let bytes=0;
-  for(const [i,photo] of photos.slice(0,6).entries()) {
+  for(const [i,photo] of photos.slice(0,20).entries()) {
     const image=await readFile(storage.get(photo.id));bytes+=image.length;
-    if(bytes>32*1024*1024) break;
+    assert(bytes<=32*1024*1024,413,'La sélection de photos dépasse 32 Mo pour une composition directe. Optimisez les images dans un dossier de création puis importez-le : les originaux client restent conservés.');
     const ext={'image/jpeg':'jpg','image/png':'png','image/webp':'webp'}[photo.media_type];
     if(!ext) continue;
     const path=`images/photo-${i+1}.${ext}`;files[path]=image;paths.push(path);

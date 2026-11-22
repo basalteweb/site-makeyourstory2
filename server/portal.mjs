@@ -6,12 +6,13 @@ import { adminMail, briefFields, clientMail, companySettings, editableProject, f
 import { guestManagement } from './rsvp.mjs';
 import { limited } from './auth.mjs';
 import { creationSteps, dashboardCards, nextAction, shareActive, shareMessage } from './portal-experience.mjs';
+import { intakeRoutes } from './intake.mjs';
 import { area, badge, btn, check, day, dateInputValue, empty, escapeHtml as e, euro, field, hidden, links, page, panel, paymentNames, post, projectNames, ref, select, submit, time } from './ui.mjs';
 
 export const clientBase = '/espace/commandes';
 export const adminBase = '/admin/commandes';
 const navFor = (base, o, selected) => {
-  const entries = [['Commande', ''], ...(o.project_id ? [['Ma création','creation'],...(base===adminBase?[['Studio de création','studio']]:[]),['Informations et photos','elements'],['Échanges','messages'],['Mes invités','invites']] : [])];
+  const entries = [['Commande', ''], ...(o.project_id ? [['Ma création','creation'],...(base===adminBase?[['Studio de création','studio']]:[]),['Ma préparation',base===adminBase?'elements':'preparer'],['Échanges','messages'],['Mes invités','invites']] : [])];
   return links(entries.map(([text,sub])=>[text,`${base}/${o.id}${sub ? `/${sub}` : ''}`,sub===selected]));
 };
 export const clientNav = (o, selected = '') => navFor(clientBase,o,selected);
@@ -24,7 +25,7 @@ export function orderOverview(o, documents, base, admin) {
   const { note, invoices } = documents;
   const dl = `<dl class="px-facts"><dt>Référence</dt><dd>${e(ref(o))}</dd><dt>Date</dt><dd>${e(time(o.created_at))}</dd>
     <dt>Création</dt><dd>${e(o.product_name)}</dd><dt>Montant TTC</dt><dd>${euro(o.amount)}</dd><dt>Paiement</dt><dd>${statusBadge(o.payment_status)}</dd>
-    <dt>Encaissé</dt><dd>${euro(o.captured_amount)}</dd>${o.refunded_amount ? `<dt>Remboursé</dt><dd>${euro(o.refunded_amount)}</dd>` : ''}
+    ${admin?`<dt>Encaissé</dt><dd>${euro(o.captured_amount)}</dd>`:''}${o.refunded_amount ? `<dt>Remboursé</dt><dd>${euro(o.refunded_amount)}</dd>` : ''}
     <dt>Client</dt><dd>${e(o.client_name)}</dd><dt>E-mail d’accès</dt><dd>${e(o.access_email)}</dd>
     ${o.billing_address ? `<dt>Adresse de facturation</dt><dd>${e(o.billing_address)}</dd>` : ''}
     ${o.initial_brief ? `<dt>Précisions initiales</dt><dd class="px-text">${e(o.initial_brief)}</dd>` : ''}
@@ -41,23 +42,36 @@ export async function orderDocuments(db, o) {
 export function historyPanel(records, title = 'Historique') {
   return panel(title,records.length ? `<ul class="px-history">${records.map(r=>`<li><span class="px-text">${e(r.summary)}</span><time>${e(time(r.created_at))}</time>${r.internal ? badge('Interne') : ''}</li>`).join('')}</ul>` : empty('Aucun événement enregistré.'));
 }
+export function clientHistoryPanel(records,title='Les dernières nouvelles') {
+  const labels={checkout:'Votre commande est confirmée. Merci pour votre confiance.',billing_document:'Votre justificatif de commande est disponible.',details_sent:'Nous avons bien reçu votre préparation.',message:'Un échange a été ajouté à votre conversation.',confirmed:'Votre commande est confirmée.',waiting_details:'Quelques informations restent à compléter.',received:'Votre histoire et vos photos ont bien été reçues.',in_progress:'Votre création prend forme.',first_version:'Votre premier aperçu est prêt à découvrir.',awaiting_approval:'Votre création vous attend pour validation.',revisions:'Nous peaufinons votre création.',finalized:'Votre création est validée.',published:'Votre création est prête à être partagée.',new_version:'Un nouvel aperçu est disponible.',archived:'Votre création a été archivée.',withdrawal:'Votre demande a bien été reçue.'};
+  const seen=new Set();
+  const rows=records.flatMap(r=>{
+    if(r.internal) return [];
+    const summary=labels[r.kind] || (/^(checkout\.session\.(completed|async_payment_succeeded)|payment_intent\.succeeded)$/.test(r.kind)?'Votre paiement a été confirmé.':/^(charge\.refunded|refund\.(created|updated))$/.test(r.kind)?'Votre remboursement a été pris en compte.':null);
+    if(!summary||seen.has(summary)) return [];seen.add(summary);return [{...r,summary}];
+  });
+  return rows.length?historyPanel(rows,title):'';
+}
 
 export function clientPortal(router, ctx) {
   const {db,auth} = ctx;
   router.get('/espace/', auth.require, async (req,res) => {
-    const orders = await many(db,`select o.*,p.status,p.missing_details,p.brief,p.share_key,p.published_version,p.share_available_until,
+    const orders = await many(db,`select o.*,p.status,p.missing_details,p.brief,p.intake,p.share_key,p.published_version,p.share_available_until,
       exists(select 1 from files f where f.project_id=p.id and f.category in ('photos','couple','portraits') and f.media_type like 'image/%') as has_photo,
-      (select count(*) from messages m where m.project_id=p.id and m.from_admin and m.read_at is null) as unread
+      (select count(*) from messages m where m.project_id=p.id and m.from_admin and m.read_at is null) as unread,
+      (select count(*) from responses r join events ev on ev.id=r.event_id where ev.project_id=p.id and r.message<>'' and r.organizer_read_at is null)
+       +(select count(*) from guest_messages gm join responses r on r.id=gm.response_id join events ev on ev.id=r.event_id where ev.project_id=p.id and not gm.from_organizer and gm.read_at is null) as guest_unread
       from orders o left join projects p on o.id=p.order_id where o.customer_id=$1 order by o.created_at desc`,[req.user.id]);
+    if(!req.user.admin && req.query.accueil!=='1' && orders.length===1 && orders[0].paid_at && orders[0].payment_status!=='refunded' && ['confirmed','waiting_details'].includes(orders[0].status) && !orders[0].intake?.submitted_at) return res.redirect(303,`${clientBase}/${orders[0].id}/preparer`);
     const history = await many(db,`select t.* from timeline t join orders o on o.id=t.order_id
       where o.customer_id=$1 and not t.internal order by t.created_at desc limit 6`, [req.user.id]);
     const cards=dashboardCards(orders);
-    const unread=orders.reduce((n,o)=>n+Number(o.unread),0);
+    const unread=orders.reduce((n,o)=>n+Number(o.unread)+Number(o.guest_unread),0);
     const live=orders.filter(shareActive).length;
     res.send(page('Mon tableau de bord', `<section class="px-welcome"><div><p class="eyebrow">VOTRE ESPACE PERSONNEL</p><h2>Les belles histoires<br>commencent ici.</h2><p>Bienvenue${orders[0]?.client_name?`, ${e(orders[0].client_name)}`:''}. Vos souvenirs, votre création et les réponses de vos proches, réunis au même endroit.</p></div><div class="px-welcome-art" aria-hidden="true"><span>pour vous</span><b>♡</b><em>Make your story</em></div></section>
       <div class="px-dashboard-counts"><span><strong>${orders.length}</strong> création${orders.length>1?'s':''}</span><span><strong>${live}</strong> lien${live>1?'s':''} à partager</span><span><strong>${unread}</strong> message${unread>1?'s':''} à lire</span></div>
       ${cards?`<div class="px-section-heading"><h2>Vos histoires</h2><p>Un souvenir qui devient une expérience.</p></div><div class="px-card-grid">${cards}</div>`:panel('Votre première histoire',empty('Votre commande apparaîtra ici avec tous ses éléments dès qu’elle sera associée à votre adresse e-mail.')+btn('Découvrir les créations','/exemples.html',true))}
-      ${historyPanel(history,'Les dernières nouvelles')}`, { user:req.user,wide:true }));
+      ${clientHistoryPanel(history)}`, { user:req.user,wide:true }));
   });
   router.get(`${clientBase}/:id/vignette`,auth.require,async(req,res)=>{
     const order=await orderFor(db,req.params.id,req.user);
@@ -68,11 +82,13 @@ export function clientPortal(router, ctx) {
   });
   router.get(`${clientBase}/:id`, auth.require, async (req,res) => {
     const o = await orderFor(db,req.params.id,req.user);
+    if(o.project_id && o.paid_at && o.payment_status!=='refunded' && ['confirmed','waiting_details'].includes(o.project_status) && req.query.details!=='1') return res.redirect(303,`${clientBase}/${o.id}/preparer`);
     const [history,docs] = await Promise.all([many(db,'select * from timeline where order_id=$1 and not internal order by created_at desc limit 100',[o.id]),orderDocuments(db,o)]);
-    res.send(page(`${o.product_name} · ${ref(o)}`, clientNav(o)+orderOverview(o,docs,clientBase,false)+historyPanel(history)
+    res.send(page(`${o.product_name} · ${ref(o)}`, clientNav(o)+orderOverview(o,docs,clientBase,false)+clientHistoryPanel(history)
       +(o.source==='checkout'&&o.paid_at?`<p>${btn('Demander une rétractation','/retractation/',true)}</p>`:''), { user:req.user, wide:true }));
   });
   projectRoutes(router,ctx,clientBase,[auth.require],false,clientNav);
+  intakeRoutes(router,ctx,clientNav);
 }
 
 export function projectRoutes(router, ctx, base, guard, admin, nav) {
@@ -234,6 +250,7 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
 
   router.get(`${route}/elements`, ...guard, async (req,res) => {
     const {order:o,project:p} = await read(req);
+    if(!admin) return res.redirect(303,`${base}/${o.id}/preparer`);
     const files = await many(db,`select * from files where project_id=$1 and message_id is null and category not in ('facture','retouche')${admin ? ' and confirmed_at is not null' : ''} order by created_at desc`,[p.id]);
     const canEdit = !admin && acceptsChanges(o,p);
     const fileUI = (f) => `<li><div><strong>${e(f.name)}</strong><p>${e(fileCategories[f.category])} · ${(f.size / 1024).toFixed(0)} Ko ${f.confirmed_at ? badge('Transmis') : badge('Brouillon')}</p></div>

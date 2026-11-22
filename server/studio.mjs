@@ -84,7 +84,7 @@ export function studioRoutes(router,ctx) {
     if(p.status==='archived') return res.send(page('Studio de création',adminNav(o,'studio')+panel('Création archivée',`<p>Ce projet est conservé en lecture seule. Les versions restent téléchargeables.</p><ul class="px-list">${versions.map(v=>`<li>${e(v.label)} ${btn('Télécharger le ZIP',`${studioBase(o)}/export.zip?version=${v.id}`,true)}</li>`).join('')}</ul>`),{user:req.user,wide:true}));
     if(!versions.length) return res.send(page('Studio de création',adminNav(o,'studio')+introduction+`<div class="px-card-grid">`+panel('Composer une première version',`<p>Une base soignée, préparée avec les informations et les photos reçues. Vous pouvez ensuite modifier chaque texte, couleur, image et animation.</p>`+(canEdit?post(`${studioBase(o)}/composer`,hidden('request_id',randomUUID())+select('Ambiance de départ','style',compositionStyles,'editorial')+submit('Créer ma composition')):''))+panel('Utiliser ma création sur mesure',`<p>Importez votre propre dossier HTML, CSS, JavaScript et médias au format ZIP. Votre mise en page et vos animations restent libres.</p>${btn('Importer mon dossier de création',`/admin/commandes/${o.id}/creation`,true)}`)+`</div>`,{user:req.user,wide:true,eyebrow:ref(o)}));
     const base=await loadVersion(db,storage,p,req.query.version || versions[0].id);
-    const photos=await many(db,"select id,name,media_type,size,source_file_id from files where project_id=$1 and confirmed_at is not null and media_type like 'image/%' order by created_at desc",[p.id]);
+    const photos=await many(db,"select id,name,media_type,size,source_file_id from files where project_id=$1 and confirmed_at is not null and media_type like 'image/%' and ($2::uuid[] is null or id=any($2::uuid[]) or source_file_id=any($2::uuid[])) order by created_at desc",[p.id,Array.isArray(p.intake?.photo_ids)?p.intake.photo_ids:null]);
     const settings={texts:{},colors:{},images:{},motions:{}};
     const src=previewUrl(p,base,await prepareSettings(db,p,base,settings));
     const data={base:studioBase(o),version:base.version.id,preview:src,
@@ -124,7 +124,7 @@ export function studioRoutes(router,ctx) {
         if(existing) return {order,version:existing};
         assert(!await one(tx,'select id from versions where project_id=$1',[project.id]),409,'Ce projet possède déjà une version. Ouvrez-la pour continuer votre création.');
         assert(Object.hasOwn(compositionStyles,req.body.style),400,'Choisissez une ambiance de départ.');
-        const photos=await many(tx,"select id,media_type from files where project_id=$1 and confirmed_at is not null and category in ('couple','portraits','photos') and media_type in ('image/jpeg','image/png','image/webp') order by case when category='couple' then 0 else 1 end,created_at limit 6",[project.id]);
+        const photos=await many(tx,"select id,media_type from files where project_id=$1 and confirmed_at is not null and category in ('couple','portraits','photos') and media_type in ('image/jpeg','image/png','image/webp') and ($2::uuid[] is null or id=any($2::uuid[])) order by case when category='couple' then 0 else 1 end,created_at limit 20",[project.id,Array.isArray(project.intake?.photo_ids)?project.intake.photo_ids:null]);
         const buffer=await compositionArchive(order,project,photos,storage,req.body.style);
         const version=await deployArchive(tx,storage,project.id,'Première composition',{buffer,size:buffer.length},cleanup);
         await tx.query('update versions set studio_save_key=$2 where id=$1',[version.id,requestId]);
