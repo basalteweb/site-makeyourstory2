@@ -69,8 +69,9 @@
     });
   }
   document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
-  const invitation=document.querySelector('iframe[data-invitation-rsvp]');
+  const invitation=document.querySelector('iframe[data-invitation-frame]');
   if(invitation) window.addEventListener('message',event=>{
-    if(event.source===invitation.contentWindow && event.origin==='null' && event.data?.type==='makeyourstory:rsvp') location.assign(invitation.dataset.invitationRsvp);
+    if(event.source!==invitation.contentWindow || event.origin!=='null') return;
+    if(event.data?.type==='makeyourstory:rsvp' && invitation.dataset.invitationRsvp) location.assign(invitation.dataset.invitationRsvp);
   });
 })();

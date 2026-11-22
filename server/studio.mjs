@@ -4,11 +4,12 @@ import { zipSync } from 'fflate';
 import { assert, privatePage, token, uuid, validToken, value } from './common.mjs';
 import { addHistory, many, one } from './db.mjs';
 import { limited } from './auth.mjs';
-import { mediaUpload, storeCustomerFile } from './media.mjs';
+import { deployArchive, mediaUpload, storeCustomerFile } from './media.mjs';
 import { briefFields, editableProject, orderFor, projectFor } from './projects.mjs';
 import { adminNav } from './portal.mjs';
 import { invitationHeaders } from './invitations.mjs';
 import { applyDocument, inspectDocument } from './studio-document.mjs';
+import { compositionArchive, compositionStyles } from './studio-composition.mjs';
 import { area, badge, btn, empty, escapeHtml as e, field, hidden, page, panel, post, ref, select, submit, time } from './ui.mjs';
 
 const MB=1024*1024;
@@ -81,7 +82,7 @@ export function studioRoutes(router,ctx) {
     const canEdit=Boolean(o.paid_at && o.payment_status!=='refunded' && p.status!=='archived');
     const introduction='<p class="px-lead">Travaillez sur votre code personnalisé, essayez vos réglages, puis enregistrez une nouvelle version.</p>';
     if(p.status==='archived') return res.send(page('Studio de création',adminNav(o,'studio')+panel('Création archivée',`<p>Ce projet est conservé en lecture seule. Les versions restent téléchargeables.</p><ul class="px-list">${versions.map(v=>`<li>${e(v.label)} ${btn('Télécharger le ZIP',`${studioBase(o)}/export.zip?version=${v.id}`,true)}</li>`).join('')}</ul>`),{user:req.user,wide:true}));
-    if(!versions.length) return res.send(page('Studio de création',adminNav(o,'studio')+introduction+panel('Commencer une création',`<p>Importez votre propre dossier HTML, CSS, JavaScript et médias au format ZIP, avec index.html à la racine. Le studio conserve vos animations et votre mise en page.</p>${btn('Importer mon dossier de création',`/admin/commandes/${o.id}/creation`)}`),{user:req.user,wide:true,eyebrow:ref(o)}));
+    if(!versions.length) return res.send(page('Studio de création',adminNav(o,'studio')+introduction+`<div class="px-card-grid">`+panel('Composer une première version',`<p>Une base soignée, préparée avec les informations et les photos reçues. Vous pouvez ensuite modifier chaque texte, couleur, image et animation.</p>`+(canEdit?post(`${studioBase(o)}/composer`,hidden('request_id',randomUUID())+select('Ambiance de départ','style',compositionStyles,'editorial')+submit('Créer ma composition')):''))+panel('Utiliser ma création sur mesure',`<p>Importez votre propre dossier HTML, CSS, JavaScript et médias au format ZIP. Votre mise en page et vos animations restent libres.</p>${btn('Importer mon dossier de création',`/admin/commandes/${o.id}/creation`,true)}`)+`</div>`,{user:req.user,wide:true,eyebrow:ref(o)}));
     const base=await loadVersion(db,storage,p,req.query.version || versions[0].id);
     const photos=await many(db,"select id,name,media_type,size,source_file_id from files where project_id=$1 and confirmed_at is not null and media_type like 'image/%' order by created_at desc",[p.id]);
     const settings={texts:{},colors:{},images:{},motions:{}};
@@ -108,8 +109,30 @@ export function studioRoutes(router,ctx) {
     res.send(page('Studio de création',adminNav(o,'studio')+introduction+(req.query.enregistre==='1'?'<p class="px-note" role="status">Nouvelle version enregistrée. Vous pouvez la vérifier avant de la proposer au client.</p>':'')
       +panel('Votre version de travail',choose)+workbench+exportPanel+panel('Photographies du projet',gallery+retouch)
       +panel('Informations du client',brief?`<details><summary>Consulter les informations transmises</summary><dl class="px-facts">${brief}</dl></details>`:empty('Aucune information enregistrée.'))
-      +panel('Comment travailler',`<p>Les textes proviennent de index.html. Les couleurs proposées sont les variables CSS au format hexadécimal. Les animations se règlent sur les titres et images ; les autres animations de votre code restent conservées.</p><p>L’onglet Images remplace un fichier image de la création par une photographie du projet, y compris s’il sert de fond. Pour ajouter un emplacement, recadrer une image ou retoucher votre code, exportez le dossier puis réimportez votre nouvelle version.</p><p>Pour relier un bouton de votre code au véritable formulaire RSVP, ajoutez l’attribut <code>data-mys-rsvp</code> à un bouton ou un lien. Il ouvrira les réponses de cet événement une fois la création publiée et les RSVP activés. Les boutons de réponse communs entourent également l’invitation.</p><p>Vous pouvez donner un libellé à un bloc avec <code>data-mys-label</code> ou exclure une zone pilotée par vos scripts avec <code>data-mys-lock</code>.</p><p>${btn('Validation et publication',`/admin/commandes/${o.id}/creation`,true)} ${btn('Retour au studio','/admin/studio',true)}</p>`)
+      +panel('Livrer cette création',`<p>Enregistrez votre version puis proposez-la au client. Il la retrouve dans son espace, peut demander des ajustements et la valider. La publication lui donne ensuite son lien et son QR code.</p><p>${btn('Validation et publication',`/admin/commandes/${o.id}/creation`)} ${btn('Retour au studio','/admin/studio',true)}</p><details><summary>Conseils pour mes créations programmées</summary><p>Les textes proviennent de index.html. Les couleurs proposées sont les variables CSS au format hexadécimal. Pour ajouter un emplacement, recadrer une photo ou retoucher le code, exportez puis réimportez votre dossier.</p><p>Ajoutez <code>data-mys-rsvp</code> à un bouton pour le relier au formulaire de l’événement publié. <code>data-mys-label</code> donne un nom à un bloc et <code>data-mys-lock</code> protège une zone pilotée par vos scripts.</p></details>`)
       +`<script type="application/json" id="mys-studio-data">${json(data)}</script><script defer src="/assets/studio.js"></script>`,{user:req.user,wide:true,eyebrow:ref(o)}));
+  });
+
+  router.post(`${path}/composer`,...guard,editable,async(req,res)=>{
+    const cleanup=[];
+    let result;
+    try {
+      result=await db.transaction(async tx=>{
+        const {order,project}=await context(req,tx,true);
+        const requestId=uuid(req.body.request_id);
+        const existing=await one(tx,'select id from versions where project_id=$1 and studio_save_key=$2',[project.id,requestId]);
+        if(existing) return {order,version:existing};
+        assert(!await one(tx,'select id from versions where project_id=$1',[project.id]),409,'Ce projet possède déjà une version. Ouvrez-la pour continuer votre création.');
+        assert(Object.hasOwn(compositionStyles,req.body.style),400,'Choisissez une ambiance de départ.');
+        const photos=await many(tx,"select id,media_type from files where project_id=$1 and confirmed_at is not null and category in ('couple','portraits','photos') and media_type in ('image/jpeg','image/png','image/webp') order by case when category='couple' then 0 else 1 end,created_at limit 6",[project.id]);
+        const buffer=await compositionArchive(order,project,photos,storage,req.body.style);
+        const version=await deployArchive(tx,storage,project.id,'Première composition',{buffer,size:buffer.length},cleanup);
+        await tx.query('update versions set studio_save_key=$2 where id=$1',[version.id,requestId]);
+        await addHistory(tx,order.id,'studio_composition','Composition personnalisable créée dans le studio',req.user.id,true);
+        return {order,version};
+      });
+    }catch(error){await Promise.allSettled(cleanup.map(storage.remove));throw error;}
+    res.redirect(303,`${studioBase(result.order)}?version=${result.version.id}`);
   });
 
   router.post(`${path}/apercu`,...guard,editable,async(req,res)=>{

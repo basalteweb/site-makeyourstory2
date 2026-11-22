@@ -1,10 +1,11 @@
 import QRCode from 'qrcode';
 import { addHistory, many, one } from './db.mjs';
-import { assert, checked, token, uuid, value } from './common.mjs';
+import { assert, checked, privatePage, token, uuid, value } from './common.mjs';
 import { archiveUpload, deployArchive, mediaUpload, sendPrivateFile, storeCustomerFile } from './media.mjs';
 import { adminMail, briefFields, clientMail, companySettings, editableProject, fileCategories, markProject, orderFor, parseBrief, projectFor } from './projects.mjs';
 import { guestManagement } from './rsvp.mjs';
 import { limited } from './auth.mjs';
+import { creationSteps, dashboardCards, nextAction, shareActive, shareMessage } from './portal-experience.mjs';
 import { area, badge, btn, check, day, dateInputValue, empty, escapeHtml as e, euro, field, hidden, links, page, panel, paymentNames, post, projectNames, ref, select, submit, time } from './ui.mjs';
 
 export const clientBase = '/espace/commandes';
@@ -15,7 +16,7 @@ const navFor = (base, o, selected) => {
 };
 export const clientNav = (o, selected = '') => navFor(clientBase,o,selected);
 export const adminNav = (o, selected = '') => navFor(adminBase,o,selected);
-const activeShare = (p) => p.share_key && p.published_version && (!p.share_available_until || new Date(p.share_available_until).getTime()>Date.now());
+const activeShare = shareActive;
 const statusBadge = (status) => badge(projectNames[status] || paymentNames[status] || status);
 const acceptsChanges = (o, p) => Boolean(o.paid_at && o.payment_status !== 'refunded' && p.status !== 'archived');
 
@@ -44,19 +45,26 @@ export function historyPanel(records, title = 'Historique') {
 export function clientPortal(router, ctx) {
   const {db,auth} = ctx;
   router.get('/espace/', auth.require, async (req,res) => {
-    const orders = await many(db,`select o.*,p.status,p.missing_details,
+    const orders = await many(db,`select o.*,p.status,p.missing_details,p.brief,p.share_key,p.published_version,p.share_available_until,
+      exists(select 1 from files f where f.project_id=p.id and f.category in ('photos','couple','portraits') and f.media_type like 'image/%') as has_photo,
       (select count(*) from messages m where m.project_id=p.id and m.from_admin and m.read_at is null) as unread
       from orders o left join projects p on o.id=p.order_id where o.customer_id=$1 order by o.created_at desc`,[req.user.id]);
     const history = await many(db,`select t.* from timeline t join orders o on o.id=t.order_id
       where o.customer_id=$1 and not t.internal order by t.created_at desc limit 6`, [req.user.id]);
-    const cards = orders.map(o=>`<article class="px-panel"><p class="eyebrow">${e(ref(o))}</p><h2>${e(o.product_name)}</h2>
-      <p>${e(time(o.created_at))} · ${euro(o.amount)}</p><p>${statusBadge(o.status || o.payment_status)}</p>
-      ${o.missing_details?`<p><strong>À transmettre</strong><br><span class="px-text">${e(o.missing_details)}</span></p>`:''}
-      ${Number(o.unread)?`<p>${btn(`${o.unread} message(s)`,`${clientBase}/${o.id}/messages`,true)}</p>`:''}
-      <div class="button-row">${btn('Ouvrir ma commande',`${clientBase}/${o.id}`)}${o.status?btn('Mes éléments',`${clientBase}/${o.id}/elements`,true):''}</div></article>`).join('');
-    res.send(page('Mon tableau de bord', `<p class="px-lead">Bienvenue${orders[0]?.client_name ? `, ${e(orders[0].client_name)}` : ''}.</p>
-      ${cards?`<h2>Mes commandes</h2><div class="px-card-grid">${cards}</div>`:panel('Mes commandes',empty('Aucune commande n’est associée à cet espace.'))}
-      ${historyPanel(history,'Dernières notifications')}`, { user:req.user,wide:true }));
+    const cards=dashboardCards(orders);
+    const unread=orders.reduce((n,o)=>n+Number(o.unread),0);
+    const live=orders.filter(shareActive).length;
+    res.send(page('Mon tableau de bord', `<section class="px-welcome"><div><p class="eyebrow">VOTRE ESPACE PERSONNEL</p><h2>Les belles histoires<br>commencent ici.</h2><p>Bienvenue${orders[0]?.client_name?`, ${e(orders[0].client_name)}`:''}. Vos souvenirs, votre création et les réponses de vos proches, réunis au même endroit.</p></div><div class="px-welcome-art" aria-hidden="true"><span>pour vous</span><b>♡</b><em>Make your story</em></div></section>
+      <div class="px-dashboard-counts"><span><strong>${orders.length}</strong> création${orders.length>1?'s':''}</span><span><strong>${live}</strong> lien${live>1?'s':''} à partager</span><span><strong>${unread}</strong> message${unread>1?'s':''} à lire</span></div>
+      ${cards?`<div class="px-section-heading"><h2>Vos histoires</h2><p>Un souvenir qui devient une expérience.</p></div><div class="px-card-grid">${cards}</div>`:panel('Votre première histoire',empty('Votre commande apparaîtra ici avec tous ses éléments dès qu’elle sera associée à votre adresse e-mail.')+btn('Découvrir les créations','/exemples.html',true))}
+      ${historyPanel(history,'Les dernières nouvelles')}`, { user:req.user,wide:true }));
+  });
+  router.get(`${clientBase}/:id/vignette`,auth.require,async(req,res)=>{
+    const order=await orderFor(db,req.params.id,req.user);
+    const p=await projectFor(db,order);
+    const image=assert(await one(db,"select id,media_type from files where project_id=$1 and category in ('photos','couple','portraits') and media_type like 'image/%' order by created_at limit 1",[p.id]),404,'Photographie indisponible.');
+    privatePage(res);res.set('Content-Security-Policy',"default-src 'none'; sandbox");
+    res.type(image.media_type).sendFile(ctx.storage.get(image.id),{cacheControl:false});
   });
   router.get(`${clientBase}/:id`, auth.require, async (req,res) => {
     const o = await orderFor(db,req.params.id,req.user);
@@ -92,16 +100,21 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
     const publicLink = activeShare(p) ? `${config.origin}/invitation/${p.share_key}/` : '';
     const preview = p.selected_version && (admin || ['first_version','awaiting_approval','revisions','finalized','published'].includes(p.status));
     const canApprove = ['first_version','awaiting_approval'].includes(p.status) && p.selected_version;
-    const stages = Object.entries(projectNames).filter(([k])=>k!=='archived').map(([k,text])=>`<li${k===p.status?' aria-current="step"':''}>${e(text)}</li>`).join('');
+    const action=nextAction(o,p);
     let controls = preview ? `<div class="button-row">${btn('Ouvrir l’aperçu privé',href(o,'apercu'))}</div>` : empty('Votre aperçu apparaîtra ici quand il sera prêt.');
     if (!admin && canApprove && acceptsChanges(o,p)) controls += `<div class="px-actions">
       ${post(href(o,'creation/valider'),hidden('version',p.selected_version)+check('Je valide cette version de ma création.','confirm',false,'required')+submit('Valider cette version'))}
       <details><summary>Demander des ajustements</summary>${post(href(o,'creation/ajustements'),hidden('version',p.selected_version)+area('Ajustements à apporter','content','','required maxlength="4500"')+submit('Envoyer ma demande'))}</details></div>`;
-    if (publicLink) controls += `<div class="px-share"><h3>Lien de partage</h3><p class="px-text"><a class="px-link" href="${e(publicLink)}">${e(publicLink)}</a></p><div class="button-row">
+    if (publicLink) {
+      const message=shareMessage(o,p,publicLink);
+      controls += `<div class="px-share"><div class="px-delivery"><div><p class="eyebrow">PRÊTE À PARTAGER</p><h3>Lien de partage</h3><p class="px-text"><a class="px-link" href="${e(publicLink)}">${e(publicLink)}</a></p><div class="button-row">
       <button class="button button--ghost" type="button" data-copy="${e(publicLink)}">Copier le lien</button>
       <button class="button button--ghost" type="button" data-share="${e(publicLink)}">Partager</button>
-      ${btn('Télécharger le QR code',href(o,'qr.png'),true)}</div><p class="px-quiet">Partagez ce lien autant de fois que vous le souhaitez par message, e-mail ou QR code.${p.share_available_until?` Invitation accessible jusqu’au ${day(p.share_available_until)}.`:''} Toute personne qui reçoit le lien peut consulter l’invitation et le transmettre.</p></div>`;
-    controls += `<details><summary>Livraison et réponses des invités</summary><p>Après votre validation et sa publication par MakeYourStory, votre création est livrée sous forme d’un lien de consultation et d’un QR code. Le partage ne nécessite aucun compte invité.</p><p>Les invités répondent depuis l’invitation : présence ou refus, adultes, enfants, accompagnants, message et informations alimentaires facultatives selon vos réglages. Les réponses sont consultables dans Mes invités ; votre espace privé reste réservé à votre compte.</p><p>Chaque invité reçoit à l’écran un lien personnel de modification de sa réponse. Le champ message est joint à cette réponse ; il ne s’agit pas d’une conversation instantanée.</p></details>`;
+      ${btn('Télécharger le QR code',href(o,'qr.png'),true)}</div></div><img class="px-delivery-qr" src="${href(o,'qr.png')}" alt="QR code de votre création" width="160" height="160"></div>
+      <label class="px-field"><span>Votre message prêt à envoyer</span><textarea readonly rows="4">${e(message)}</textarea></label><div class="button-row"><button type="button" class="button button--ghost" data-copy="${e(message)}">Copier le message</button><a class="button button--ghost" href="https://wa.me/?text=${e(encodeURIComponent(message))}" target="_blank" rel="noopener noreferrer">WhatsApp</a><a class="button button--ghost" href="mailto:?subject=${e(encodeURIComponent(o.product_name))}&amp;body=${e(encodeURIComponent(message))}">E-mail</a>${btn('Voir mes invités',href(o,'invites'),true)}</div>
+      <p class="px-quiet">Partagez ce lien autant de fois que vous le souhaitez.${p.share_available_until?` Votre création est accessible jusqu’au ${day(p.share_available_until)}.`:''} Toute personne qui reçoit le lien peut le consulter et le transmettre. Votre espace client reste privé.</p></div>`;
+    }
+    controls += `<details><summary>Comment mes proches peuvent-ils interagir ?</summary><p>Vos invités découvrent votre création depuis son lien, sans créer de compte. Selon vos réglages, ils peuvent indiquer leur présence, leurs accompagnants, leurs besoins alimentaires et répondre à vos questions.</p><p>Un lien personnel leur permet de modifier leur réponse et d’échanger avec vous en privé. Retrouvez les présences, messages et exports dans Mes invités. Vous seul accédez à votre espace client.</p></details>`;
     let edit = '';
     if (admin && acceptsChanges(o,p)) {
       const versionList = versions.length ? '<ul class="px-list">'+versions.map(v=>`<li>${e(v.label)} · ${e(time(v.created_at))}
@@ -118,7 +131,11 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
       edit += panel('Publication et archivage',`<p>${p.approved_version?'Une version a été validée par le client.':'La publication devient disponible après validation par le client.'}</p>
         <div class="button-row">${available}${update}${unpublish}</div><details><summary>Archiver la création</summary>${post(href(o,'creation/archiver'),check('Confirmer l’archivage et retirer le lien public','confirm',false,'required')+submit('Archiver',true))}</details>`);
     }
-    render(req,res,o,'creation','Ma création',panel('Avancement',`<p>${statusBadge(p.status)}</p><ol class="px-steps">${stages}</ol>`)+panel('Aperçu et partage',controls)+edit);
+    if(preview && !admin) {
+      const {signPreview}=await import('./invitations.mjs');
+      controls=`<iframe title="Votre création en un coup d’œil" class="px-preview px-client-preview" sandbox="allow-scripts" src="${e(signPreview(config,p.selected_version))}"></iframe>`+controls;
+    }
+    render(req,res,o,'creation','Ma création',panel('Votre histoire, étape par étape',`<p>${statusBadge(p.status)}</p>${creationSteps(p)}<div class="px-next"><h3>${e(action.title)}</h3><p>${e(action.text)}</p>${['confirmed','waiting_details'].includes(p.status)?btn('Compléter mes informations',href(o,'elements'),true):''}</div>`)+panel(publicLink?'Votre création est livrée':'Votre création',controls)+edit);
   });
 
   router.get(`${route}/apercu`, ...guard, async (req,res) => {

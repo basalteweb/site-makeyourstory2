@@ -15,6 +15,7 @@ import { invitationRoutes } from './invitations.mjs';
 import { mediaStore } from './media.mjs';
 import { companySettings } from './projects.mjs';
 import { studioRoutes } from './studio.mjs';
+import { guestConversations } from './guest-messages.mjs';
 import { escapeHtml as e, formProblem, mediationDetails } from './ui.mjs';
 import { flushMail, pruneData } from './mail.mjs';
 
@@ -84,6 +85,7 @@ export async function createApp(config = configFrom()) {
   adminPortal(app,ctx);
   studioRoutes(app,ctx);
   guestRsvp(app,ctx);
+  guestConversations(app,ctx);
   invitationRoutes(app,ctx);
   app.get('/access.html',(req,res)=>res.redirect(302,'/espace/'));
   app.get('/{*site}', async (req,res)=>{

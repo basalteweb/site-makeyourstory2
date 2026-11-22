@@ -14,8 +14,8 @@ const config = configFrom({ APP_MODE:'test',APP_URL:origin,MEDIA_DIR:media,ADMIN
 const { app,db } = await createApp(config);
 const server = app.listen(3143,'127.0.0.1');
 const pixel = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jOqwAAAAASUVORK5CYII=','base64');
-const archive = zipSync({ 'index.html':strToU8('<!doctype html><html lang="fr"><head><title>Création de test</title><style>:root{--accent:#abcdef}h2{color:var(--accent)}</style></head><body><h1 id="title" data-mys-lock>Aperçu</h1><h2>Texte du studio</h2><img src="photo.png" alt="Photographie"><button type="button" data-mys-rsvp>Nous répondre</button><script src="invitation.js"></script></body></html>'),
-  'photo.png':new Uint8Array(pixel),'invitation.js':strToU8('document.querySelector("#title").textContent="Invitation personnalisée vérifiée";') });
+const archive = zipSync({ 'index.html':strToU8('<!doctype html><html lang="fr"><head><title>Création de test</title><style>:root{--accent:#abcdef}</style><link rel="stylesheet" href="design.css"></head><body><h1 id="title" data-mys-lock>Aperçu</h1><h2>Texte du studio</h2><img src="photo.png" alt="Photographie"><button type="button" data-mys-rsvp>Nous répondre</button><script src="invitation.js"></script></body></html>'),
+  'photo.png':new Uint8Array(pixel),'design.css':strToU8('h2{color:var(--accent)}'),'invitation.js':strToU8('document.querySelector("#title").textContent="Invitation personnalisée vérifiée";') });
 let browser;
 try {
   browser=await chromium.launch({ executablePath:process.env.MYS_CHROMIUM_EXECUTABLE || undefined, headless:true });
@@ -108,12 +108,18 @@ try {
   await customer.getByRole('link',{name:'Ma création',exact:true}).click();
   await customer.getByRole('link',{name:'Ouvrir l’aperçu privé'}).click();
   await customer.frameLocator('iframe[title="Aperçu de la création"]').getByRole('heading',{name:'Invitation personnalisée vérifiée'}).waitFor();
+  assert.equal(await customer.frameLocator('iframe[title="Aperçu de la création"]').locator('h2').evaluate(el=>getComputedStyle(el).color),'rgb(153, 0, 102)');
+  await customer.frameLocator('iframe[title="Aperçu de la création"]').locator('img').evaluate(img=>img.decode());
   await customer.getByRole('link',{name:'Ma création',exact:true}).click();
   await customer.getByLabel('Je valide cette version de ma création.').check();
   await customer.getByRole('button',{name:'Valider cette version'}).click();
   await customer.getByRole('link',{name:'Mes invités',exact:true}).click();
   await customer.getByLabel('Accepter les réponses publiques').check();
   await customer.getByLabel('Proposer les informations alimentaires facultatives').check();
+  await customer.getByLabel('Titre de l’événement',{exact:true}).fill('Camille & Julien');
+  await customer.getByLabel('Lieu et adresse de l’événement',{exact:true}).fill('Clermont-Ferrand');
+  await customer.locator('summary').filter({hasText:'Questions personnalisées aux invités'}).click();
+  await customer.getByLabel('Votre question',{exact:true}).first().fill('Serez-vous au brunch ?');
   await customer.getByRole('button',{name:'Enregistrer les paramètres'}).click();
   await admin.reload();
   await admin.getByRole('button',{name:'Publier la version validée'}).click();
@@ -125,6 +131,7 @@ try {
   await guest.getByLabel('Votre présence').selectOption('yes');
   await guest.getByLabel('Adultes',{exact:true}).fill('2');
   await guest.getByLabel('Informations alimentaires (facultatif)',{exact:true}).fill('Sans noix');
+  await guest.getByLabel('Serez-vous au brunch ? (facultatif)',{exact:true}).selectOption('Oui');
   await guest.getByLabel(/J’accepte expressément/).check();
   await guest.getByLabel('Message aux organisateurs (facultatif)',{exact:true}).fill('Merci pour cette invitation');
   await guest.getByRole('button',{name:'Envoyer ma réponse'}).click();
@@ -137,6 +144,17 @@ try {
   assert.match((await download).suggestedFilename(),/-invites\.csv$/);
   const fits=await customer.evaluate(()=>document.documentElement.scrollWidth<=innerWidth);
   assert.equal(fits,true,'Le tableau RSVP doit défiler à l’intérieur de l’interface mobile');
+  await guest.getByRole('link',{name:'Écrire aux organisateurs',exact:true}).click();
+  await guest.getByLabel('Votre message',{exact:true}).fill('Pouvons-nous arriver plus tôt ?');
+  await guest.getByRole('button',{name:'Envoyer le message',exact:true}).click();
+  await guest.getByText('Pouvons-nous arriver plus tôt ?',{exact:true}).waitFor();
+  await customer.getByRole('link',{name:'Échanger',exact:true}).click();
+  await customer.getByText('Pouvons-nous arriver plus tôt ?',{exact:true}).waitFor();
+  await customer.getByLabel('Votre message',{exact:true}).fill('Oui, à partir de 17 h.');
+  await customer.getByRole('button',{name:'Envoyer le message',exact:true}).click();
+  await guest.reload();
+  await guest.getByText('Oui, à partir de 17 h.',{exact:true}).waitFor();
+  assert.equal(await guest.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,'La conversation doit tenir sur mobile');
   console.log('Parcours navigateur administrateur, client mobile et invité vérifiés.');
 } finally {
   if(browser) await browser.close();

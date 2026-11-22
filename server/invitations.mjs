@@ -1,9 +1,10 @@
-import { assert, mac, privatePage, sameToken, uuid } from './common.mjs';
+import { assert, digest, mac, privatePage, sameToken, uuid, validToken } from './common.mjs';
 import { readFile } from 'node:fs/promises';
 import { parse, serialize, defaultTreeAdapter as tree } from 'parse5';
 import { one } from './db.mjs';
 import { publicProject } from './rsvp.mjs';
-import { btn, escapeHtml as e, page } from './ui.mjs';
+import { btn, day, escapeHtml as e, page } from './ui.mjs';
+import { calendarFile } from './experience.mjs';
 
 const prefix = '/contenus';
 export function invitationHeaders(res,config) {
@@ -45,8 +46,16 @@ export function invitationRoutes(router,{db,config,storage}) {
     privatePage(res);
     const p = await publicProject(db,req.params.share);
     const src = `${prefix}/invitation/${p.share_key}/${p.published_version}/index.html`;
-    const actions = p.enabled ? `<p>${btn(p.accepting?'Répondre à l’invitation':'Voir les informations RSVP',`/invitation/${p.share_key}/reponse/`)}</p>` : '';
-    res.send(page('Votre invitation',`${actions}<iframe sandbox="allow-scripts" title="Invitation personnalisée" class="px-preview px-invitation" src="${e(src)}"${p.enabled?` data-invitation-rsvp="/invitation/${e(p.share_key)}/reponse/"`:''}></iframe>${actions}`,{wide:true}));
+    const invite=req.query.invite;
+    if(invite) assert(validToken(invite) && await one(db,'select id from invitees where event_id=$1 and key_digest=$2',[p.event_id,digest(invite)]),404,'Ce lien d’invitation personnel est invalide.');
+    const response=`/invitation/${p.share_key}/reponse/${invite?`?invite=${invite}`:''}`;
+    const actions=`<div class="px-invitation-dock" aria-label="Votre invitation"><span>${e(p.title||'Un moment à partager')}${p.event_date?`<small>${e(day(p.event_date))}</small>`:''}</span><div class="button-row">${p.enabled?btn(p.accepting?'Répondre à l’invitation':'Informations RSVP',response):''}${p.event_date?btn('Ajouter au calendrier',`/invitation/${p.share_key}/calendrier.ics`,true):''}${p.location?`<a class="button button--ghost" href="https://www.google.com/maps/search/?api=1&amp;query=${e(encodeURIComponent(p.location))}" target="_blank" rel="noopener noreferrer">Itinéraire</a>`:''}</div></div>`;
+    res.send(page(p.title||'Votre invitation',`<iframe sandbox="allow-scripts" title="Invitation personnalisée" class="px-preview px-invitation" src="${e(src)}" data-invitation-frame${p.enabled?` data-invitation-rsvp="${e(response)}"`:''}></iframe>${p.practical?`<section class="px-invitation-practical"><h2>Les petits détails</h2><p class="px-text">${e(p.practical)}</p></section>`:''}${actions}`,{wide:true,immersive:true}));
+  });
+  router.get('/invitation/:share/calendrier.ics',async(req,res)=>{
+    const event=await publicProject(db,req.params.share);
+    assert(event.event_date,404,'La date de cet événement n’est pas encore renseignée.');
+    privatePage(res);res.attachment('mon-evenement.ics').type('text/calendar; charset=utf-8').send(calendarFile(event,config.origin));
   });
   router.get(`${prefix}/invitation/:share/:version/*asset`,async(req,res)=>{
     const p = await publicProject(db,req.params.share);
