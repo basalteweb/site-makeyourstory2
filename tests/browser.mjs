@@ -17,6 +17,7 @@ const pixel = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQ
 const archive = zipSync({ 'index.html':strToU8('<!doctype html><html lang="fr"><head><title>Création de test</title><style>:root{--accent:#abcdef}</style><link rel="stylesheet" href="design.css"></head><body><h1 id="title" data-mys-lock>Aperçu</h1><h2>Texte du studio</h2><img src="photo.png" alt="Photographie"><button type="button" data-mys-rsvp>Nous répondre</button><script src="invitation.js"></script></body></html>'),
   'photo.png':new Uint8Array(pixel),'design.css':strToU8('h2{color:var(--accent)}'),'invitation.js':strToU8('document.querySelector("#title").textContent="Invitation personnalisée vérifiée";') });
 let browser;
+const browserPages=[];
 try {
   browser=await chromium.launch({ executablePath:process.env.MYS_CHROMIUM_EXECUTABLE || undefined, headless:true });
   const desktop = await browser.newContext({ viewport:{ width:1360,height:870 } });
@@ -25,6 +26,7 @@ try {
   const admin=await desktop.newPage();
   const customer=await mobile.newPage();
   const guest=await guests.newPage();
+  browserPages.push(admin,customer,guest);
   for (const ctx of [desktop,mobile,guests]) {
     ctx.setDefaultTimeout(8500);
     await ctx.route('https://fonts.googleapis.com/**',route=>route.abort());
@@ -66,7 +68,10 @@ try {
   await customer.getByRole('button',{name:'Enregistrer et continuer',exact:true}).click();
   await customer.getByLabel('Le souvenir de vos débuts',{exact:true}).fill('Notre première escapade à la mer.');
   await customer.getByRole('button',{name:'Enregistrer et faire une pause',exact:true}).click();
+  await customer.getByRole('heading',{name:'Mon tableau de bord',exact:true}).waitFor();
+  assert.equal((await one(db,'select intake from projects where order_id=$1',[order.id])).intake.step,'debuts');
   await customer.getByRole('link',{name:'Reprendre ma préparation',exact:true}).click();
+  await customer.getByRole('heading',{name:'Et vos premiers moments à deux ?',exact:true}).waitFor();
   assert.equal(await customer.getByLabel('Le souvenir de vos débuts',{exact:true}).inputValue(),'Notre première escapade à la mer.');
   await customer.getByRole('button',{name:'Enregistrer et continuer',exact:true}).click();
   await customer.getByRole('button',{name:'Enregistrer et continuer',exact:true}).click();
@@ -183,6 +188,9 @@ try {
   await guest.getByText('Oui, à partir de 17 h.',{exact:true}).waitFor();
   assert.equal(await guest.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,'La conversation doit tenir sur mobile');
   console.log('Parcours navigateur administrateur, client mobile et invité vérifiés.');
+} catch(error) {
+  for(const page of browserPages) console.error('État du navigateur de test',page.url(),(await page.locator('body').innerText()).slice(0,10000));
+  throw error;
 } finally {
   if(browser) await browser.close();
   await new Promise(resolve=>server.close(resolve));
