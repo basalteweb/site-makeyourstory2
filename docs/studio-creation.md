@@ -14,6 +14,8 @@ Le studio interne est accessible dans l’administration, puis dans chaque comma
 
 Les effets visuels du studio respectent la préférence de réduction des animations. Les animations JavaScript et les textes générés par un script se retouchent dans le code. `data-mys-label` donne un libellé explicite à un bloc et `data-mys-lock` exclut une zone gérée par des scripts de l’édition visuelle. Le studio affiche au maximum 120 fragments de texte, 60 variables de couleur et 30 blocs animables. Ces limites ne suppriment aucun élément du dossier.
 
+Le panneau « Réponses du client » reste accessible à côté des réglages et s’ouvre automatiquement à l’étape Textes sur ordinateur. Il reprend les questions de l’offre commandée, avec l’histoire, les noms, les dates, les lieux et les préférences transmis. La recherche et la copie d’une réponse permettent de rédiger sans quitter le studio. Sur mobile, le panneau repliable reste à portée pendant l’édition. Les brouillons de préparation que le client n’a pas envoyés n’y figurent pas ; la copie ne remplace aucun texte automatiquement.
+
 ## Photos originales et retouchées
 
 La bibliothèque contient la sélection confirmée par le client et les photos ajoutées dans le studio. Le sélecteur accepte jusqu’à 20 photos à la fois, envoyées séparément avec reprise et identifiant évitant les doublons. Chaque photo JPG, PNG ou WebP est limitée à 12 Mo, dans les limites de stockage du projet. Pour une retouche externe, sélectionner la photo de départ puis importer sa version retouchée. L’original reste inchangé. Les ajouts du studio et les retouches intermédiaires sont réservés à l’administration jusqu’à leur incorporation dans une création livrée.

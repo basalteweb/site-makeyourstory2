@@ -361,6 +361,8 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
   await t.test('studio guidé : plusieurs photos, emplacements indépendants, galerie et brouillon privé',async()=>{
     const c=await fixtureOrder(db,'alice.mys@example.com','Studio guidé','mariage');
     const customer=`/espace/commandes/${c.id}`,studio=`/admin/commandes/${c.id}/studio`;
+    const transmitted={first:'Camille',date:'2027-06-29',story_meeting:'Une rencontre au concert <souvenir>',story:'Une rencontre au concert <souvenir>',reception_place:'Domaine des Lilas'};
+    await db.query('update projects set brief=$2,intake=$3 where order_id=$1',[c.id,transmitted,{draft:{story_meeting:'Brouillon privé non transmis'}}]);
     await expectStatus(await admin.get('/espace/'),303);
     assert.equal((await admin.get('/espace/')).headers.get('location'),'/admin/');
     assert.equal((await admin.get(customer)).headers.get('location'),`/admin/commandes/${c.id}`);
@@ -378,6 +380,10 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     const custom=zipSync({'index.html':strToU8('<!doctype html><html><head><title>Emplacements</title></head><body><header><img src="photo.png" alt="Couverture"></header><section class="story"><p>Le récit.</p><picture><source srcset="photo.png"><img src="photo.png" srcset="photo.png 2x" alt="Souvenir"></picture></section><section class="details"><p>Informations.</p></section><img src="photo.png" data-mys-lock alt="Logo protégé"><footer>Signature</footer></body></html>'),'photo.png':new Uint8Array(samplePhoto)});
     await expectStatus(await admin.post(`/admin/commandes/${c.id}/creation/importer`,upload(custom,'emplacements.zip',{label:'Base des emplacements'})),303);
     const view=await html(await admin.get(studio),200,/Photos et emplacements/);
+    assert.match(view,/aria-label="Réponses du client"/);assert.match(view,/Votre rencontre/);
+    assert.match(view,/Une rencontre au concert &lt;souvenir&gt;/);assert.match(view,/29\/06\/2027/);assert.match(view,/Domaine des Lilas/);
+    assert.doesNotMatch(view,/Brouillon privé non transmis/);
+    await expectStatus(await alice.get(studio),403);
     const model=JSON.parse(view.match(/<script type="application\/json" id="mys-studio-data">(.*?)<\/script>/s)[1]);
     assert.equal(model.placements.length,2);assert.doesNotMatch(view,/>Mon espace<|>Ma création<|>Ma préparation</);
     const settings={placements:{p0:{photo:photos[0].id,fit:'cover',position:'top'},p1:{photo:photos[1].id,fit:'contain',position:'center'}},gallery:{items:[{photo:photos[1].id,caption:'Un souvenir <script>'},{photo:photos[0].id,caption:'La famille'}],location:'before_details',columns:2}};
@@ -394,7 +400,7 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     assert.equal((await (await admin.json(`${studio}/brouillon`,draft)).json()).revision,1);
     await expectStatus(await admin.json(`${studio}/brouillon`,{...draft,request_id:randomUUID()}),409);
     await expectStatus(await alice.json(`${studio}/brouillon`,draft),403);
-    const current=await one(db,'select * from projects where id=$1',[p.id]);assert.equal(current.published_version,null);assert.deepEqual(current.brief,{});
+    const current=await one(db,'select * from projects where id=$1',[p.id]);assert.equal(current.published_version,null);assert.deepEqual(current.brief,transmitted);
     const resumed=await html(await admin.get(studio),200,/Notre brouillon/);assert.ok(resumed.includes(photos[1].id));
     const payload={version:model.version,settings,label:'Version aux deux photos',request_id:randomUUID(),revision:1};
     const saved=await (await expectStatus(await admin.json(`${studio}/enregistrer`,payload),200)).json();

@@ -52,6 +52,31 @@
   }
   if(!root)return;
   const status=root.querySelector('[data-studio-status]'),frame=root.querySelector('iframe');
+  const reference=root.querySelector('[data-studio-reference]'),referenceDetails=reference.querySelector('[data-studio-reference-details]');
+  const referenceStatus=reference.querySelector('[data-studio-reference-status]');
+  let referenceStep;
+  const normalize=text=>text.toLocaleLowerCase('fr').normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  reference.querySelector('[data-studio-reference-search]')?.addEventListener('input',event=>{
+    const term=normalize(event.target.value.trim());let matches=0;
+    for(const group of reference.querySelectorAll('[data-studio-reference-group]')) {
+      let visible=0;
+      for(const answer of group.querySelectorAll('[data-studio-reference-answer]')) {
+        answer.hidden=!normalize(group.querySelector('h3').textContent+' '+answer.textContent).includes(term);
+        if(!answer.hidden)visible++;
+      }
+      group.hidden=!visible;matches+=visible;
+    }
+    reference.querySelector('[data-studio-reference-empty]').hidden=matches>0;
+    referenceStatus.textContent='';
+  });
+  for(const button of reference.querySelectorAll('[data-studio-reference-copy]'))button.addEventListener('click',async()=>{
+    const value=button.closest('[data-studio-reference-answer]').querySelector('[data-studio-reference-value]');
+    try{await navigator.clipboard.writeText(value.textContent);referenceStatus.textContent='Réponse copiée. Collez-la dans le texte de votre choix.';}
+    catch{
+      const range=document.createRange();range.selectNodeContents(value);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);
+      referenceStatus.textContent='La réponse est sélectionnée. Utilisez la commande Copier de votre appareil.';
+    }
+  });
   const panels=Object.fromEntries([...root.querySelectorAll('[data-studio-fields]')].map(p=>[p.dataset.studioFields,p]));
   const fields=[];let timer,draftTimer,pending,sequence=0,saving=false,saveKey=crypto.randomUUID(),revision=data.draft.revision||0;
   let step=data.draft.step||'photos',lastSaved='',draftChain=Promise.resolve(),draftConflict=false;
@@ -159,6 +184,7 @@
     for(const button of document.querySelectorAll('[data-studio-step]'))button.setAttribute('aria-current',button.dataset.studioStep===key?'step':'false');
     for(const section of document.querySelectorAll('[data-studio-section]'))section.hidden=section.dataset.studioSection!==key;
     root.hidden=key==='projet';root.classList.toggle('px-studio-review',key==='validation');root.querySelector('.px-studio-tools').hidden=key==='validation';
+    if(referenceStep!==key){referenceDetails.open=key==='textes'&&window.matchMedia('(min-width:901px)').matches;referenceStep=key;}
     const allowed=key==='photos'?['images']:key==='textes'?['texts']:['colors','motions'];for(const tab of tabs)tab.hidden=!allowed.includes(tab.dataset.studioTab);activate(tabs.find(t=>t.dataset.studioTab===allowed[0]));
     document.querySelector('[data-studio-previous]').disabled=steps.indexOf(key)===0;document.querySelector('[data-studio-next]').disabled=steps.indexOf(key)===steps.length-1;
     if(persist){clearTimeout(draftTimer);draftTimer=setTimeout(()=>flushDraft().catch(()=>{}),150);}
