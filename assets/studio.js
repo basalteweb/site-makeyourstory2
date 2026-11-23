@@ -20,7 +20,7 @@
       if(!data.version) {const label=el('label',undefined,'px-check');const check=el('input');check.type='checkbox';check.name='photos';check.value=p.id;check.setAttribute('form','studio-compose');check.checked=chosen.has(p.id)||!known.has(p.id);label.append(check,el('span','Utiliser cette photo'));card.append(label);}
       library.append(card);
     }
-    for(const s of photoSelects) options(s,photoOptions());
+    for(const s of photoSelects) options(s,s.dataset.newGallery?[['','Choisir une photo'],...photoOptions().slice(1)]:photoOptions());
     const cover=document.querySelector('#studio-compose select[name=cover]');if(cover)options(cover,[['','Première photo sélectionnée'],...data.photos.map(p=>[p.id,p.name])]);
   }
   renderLibrary();
@@ -95,15 +95,15 @@
   let galleryItems=(data.draft.settings?.gallery?.items||[]).map(p=>({...p}));
   const gallery=el('section',undefined,'px-studio-add-gallery');gallery.append(el('h3','Ajouter une galerie de photos'));
   note(gallery,'Choisissez les photos, leur ordre, leurs légendes et la place de cette nouvelle galerie. Les emplacements déjà présents restent indépendants.');
-  const location=input('gallery','location','Emplacement de la nouvelle galerie','select',data.draft.settings?.gallery?.location||'after_story',[['after_cover','Après la couverture'],['after_story','Après le récit'],['before_details','Avant les informations pratiques'],['end','À la fin, avant la signature']],false);
+  const galleryLocation=input('gallery','location','Emplacement de la nouvelle galerie','select',data.draft.settings?.gallery?.location||'after_story',[['after_cover','Après la couverture'],['after_story','Après le récit'],['before_details','Avant les informations pratiques'],['end','À la fin, avant la signature']],false);
   const columns=input('gallery','columns','Disposition de la nouvelle galerie','select',data.draft.settings?.gallery?.columns||2,[[1,'Une photo par ligne'],[2,'Deux photos par ligne'],[3,'Trois photos par ligne']],false);
-  const galleryList=el('div');gallery.append(location,columns,galleryList);const add=el('button','Ajouter un emplacement','button button--ghost');add.type='button';gallery.append(add);panels.images.append(gallery);
+  const galleryList=el('div');gallery.append(galleryLocation,columns,galleryList);const add=el('button','Ajouter un emplacement','button button--ghost');add.type='button';gallery.append(add);panels.images.append(gallery);
   function renderGallery() {
     for(const select of galleryList.querySelectorAll('select'))photoSelects.delete(select);
     galleryList.replaceChildren();
     galleryItems.forEach((item,i)=>{
       const row=el('article',undefined,'px-studio-gallery-row');row.append(el('h4',`Nouvel emplacement ${i+1}`));
-      const photo=input('new-gallery',`${i}-photo`,`Photo du nouvel emplacement ${i+1}`,'select',item.photo,[['','Choisir une photo'],...photoOptions().slice(1)],false);const select=photo.querySelector('select');select.required=true;photoSelects.add(select);
+      const photo=input('new-gallery',`${i}-photo`,`Photo du nouvel emplacement ${i+1}`,'select',item.photo,[['','Choisir une photo'],...photoOptions().slice(1)],false);const select=photo.querySelector('select');select.required=true;select.dataset.newGallery='1';photoSelects.add(select);
       const caption=input('new-gallery',`${i}-caption`,`Légende du nouvel emplacement ${i+1}`,'text',item.caption||'',null,false);caption.querySelector('input').maxLength=160;
       select.addEventListener('input',()=>item.photo=select.value);caption.querySelector('input').addEventListener('input',event=>item.caption=event.target.value);row.append(photo,caption);
       const actions=el('div',undefined,'button-row');
@@ -120,7 +120,7 @@
       if(['motions','placements'].includes(f.section)){const key=f.key.split('.')[0];result[f.section][key]=Object.fromEntries(fields.filter(x=>x.section===f.section&&x.key.startsWith(key+'.')).map(x=>[x.key.split('.')[1],x.control.value]));}
       else result[f.section][f.key]=f.control.value;
     }
-    if(galleryItems.some(i=>i.photo))result.gallery={items:galleryItems.filter(i=>i.photo).map(i=>({...i})),location:location.querySelector('select').value,columns:Number(columns.querySelector('select').value)};
+    if(galleryItems.some(i=>i.photo))result.gallery={items:galleryItems.filter(i=>i.photo).map(i=>({...i})),location:galleryLocation.querySelector('select').value,columns:Number(columns.querySelector('select').value)};
     return result;
   }
   const versionDirty=()=>Object.values(settings()).some(section=>Object.keys(section).length>0);
@@ -178,13 +178,13 @@
     for(const f of fields)if(!f.control.checkValidity()){activateStep(f.section==='texts'?'textes':f.section==='placements'||f.section==='images'?'photos':'style');if(f.section==='motions')activate(tabs.find(t=>t.dataset.studioTab==='motions'));f.control.reportValidity();return;}
     for(const select of galleryList.querySelectorAll('select'))if(!select.checkValidity()){activateStep('photos');select.reportValidity();return;}
     saving=true;const button=form.querySelector('button[type=submit]');button.disabled=true;clearTimeout(timer);
-    try{await flushDraft();feedback('Enregistrement de la nouvelle version…');const result=await request('/enregistrer',{version:data.version,label:form.elements.label.value,settings:settings(),request_id:saveKey,revision});lastSaved=snapshot();location.assign(result.url);}
+    try{await flushDraft();feedback('Enregistrement de la nouvelle version…');const result=await request('/enregistrer',{version:data.version,label:form.elements.label.value,settings:settings(),request_id:saveKey,revision});lastSaved=snapshot();window.location.assign(result.url);}
     catch(error){feedback(error.message,true);saving=false;button.disabled=false;}
   });
   document.querySelector('[data-studio-propose]')?.addEventListener('submit',event=>{if(versionDirty()||galleryItems.some(i=>!i.photo)){event.preventDefault();feedback('Enregistrez une nouvelle version avant de la proposer au client.',true);status.scrollIntoView({block:'center'});}});
   document.querySelector('[data-studio-retouch]')?.addEventListener('submit',async event=>{
     event.preventDefault();if(uploadBusy)return;const form=event.currentTarget;const button=form.querySelector('button[type=submit]');button.disabled=true;
-    try{await flushDraft();const response=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{'X-Upload':'1'}});if(!response.ok){let r;try{r=await response.json();}catch{}throw Error(r?.error||'Impossible d’importer la retouche.');}lastSaved=snapshot();location.assign(response.url);}
+    try{await flushDraft();const response=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{'X-Upload':'1'}});if(!response.ok){let r;try{r=await response.json();}catch{}throw Error(r?.error||'Impossible d’importer la retouche.');}lastSaved=snapshot();window.location.assign(response.url);}
     catch(error){feedback(error.message,true);button.disabled=false;}
   });
   window.addEventListener('beforeunload',event=>{if(uploadBusy||snapshot()!==lastSaved){event.preventDefault();event.returnValue='';}});
