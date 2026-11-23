@@ -38,7 +38,7 @@ export function intakeSpec(order) {
     step('reception','Et pour la suite de cette belle journée ?','Cocktail, dîner, brunch… Où retrouverez-vous vos proches après la cérémonie ?',[
       field('reception_place','Lieu de la réception'),field('reception_address','Adresse de la réception'),field('reception_time','Horaire de la réception'),text('agenda','Le programme que vous imaginez')],{optional:true}),
     step('proches','Les petits détails pour vos invités','Une tenue conseillée, une date limite pour répondre ou un contact à indiquer ? Aidez vos proches à préparer cette journée.',[
-      field('deadline','Date limite de réponse',{type:'date'}),field('contact','Coordonnées de contact à afficher'),field('dress','Une tenue ou un thème à prévoir ?'),text('details','Autres informations pratiques')],{optional:true})
+      field('deadline','Date limite de réponse',{type:'date'}),field('contact','Contact pour les invités (facultatif)'),field('dress','Une tenue ou un thème à prévoir ?'),text('details','Autres informations pratiques')],{optional:true})
   );
   if(kind==='anniversaire') steps.push(
     step('vous','Qui allons-nous célébrer ?','Présentez-nous la personne à l’honneur : qui est-elle et quel âge va-t-elle fêter ?',[
@@ -46,7 +46,7 @@ export function intakeSpec(order) {
     step('souvenirs','Quel souvenir la raconte le mieux ?','Une aventure, une passion, une anecdote drôle ou touchante… Racontez-nous ce qui la rend unique.',[text('story_personality','Son histoire, avec vos mots')],{optional:true}),
     step('intention','Quel esprit voulez-vous donner à cette fête ?','Une grande surprise, une soirée pleine d’humour ou des retrouvailles en famille ? Racontez-nous ce que vous imaginez.',[text('story_beginnings','La fête que vous imaginez')],{optional:true}),
     step('date','Quand aura lieu la fête ?','Choisissons la date à faire apparaître sur votre invitation.',[field('date','Date de la fête',{type:'date',required:true})],{unknown:'La date reste à confirmer'}),
-    step('lieu','Où retrouver vos invités ?','Le lieu, son adresse et l’heure d’arrivée aideront vos proches à s’organiser.',[field('places','Lieu et adresse de la fête',{required:true}),field('times','À quelle heure ?'),field('deadline','Date limite de réponse',{type:'date'}),field('contact','Contact à indiquer')],{unknown:'Le lieu et l’horaire restent à confirmer'})
+    step('lieu','Où retrouver vos invités ?','Le lieu, son adresse et l’heure d’arrivée aideront vos proches à s’organiser.',[field('places','Lieu et adresse de la fête',{required:true}),field('times','À quelle heure ?'),field('deadline','Date limite de réponse',{type:'date'}),field('contact','Contact pour les invités (facultatif)')],{unknown:'Le lieu et l’horaire restent à confirmer'})
   );
   if(kind==='naissance') steps.push(
     step('vous','Comment s’appelle votre petit bonheur ?','Indiquez son prénom et les prénoms de la famille qui l’accueille. Si vous gardez encore la surprise, vous pourrez le préciser plus tard.',[field('person','Prénom de bébé',{required:true}),field('family','Prénoms des parents, frères et sœurs à afficher')],{unknown:'Le prénom reste encore une surprise, je le préciserai plus tard'}),

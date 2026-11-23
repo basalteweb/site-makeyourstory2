@@ -70,6 +70,10 @@
   }
   document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
   const invitation=document.querySelector('iframe[data-invitation-frame]');
+  document.addEventListener('keydown',event=>{
+    if(event.key!=='Escape')return;
+    const help=event.target.closest('[data-field-help]');if(help?.open){help.open=false;help.querySelector('summary').focus();}
+  });
   if(invitation) window.addEventListener('message',event=>{
     if(event.source!==invitation.contentWindow || event.origin!=='null') return;
     if(event.data?.type==='makeyourstory:rsvp' && invitation.dataset.invitationRsvp) location.assign(invitation.dataset.invitationRsvp);

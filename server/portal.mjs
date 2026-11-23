@@ -12,7 +12,8 @@ import { area, badge, btn, check, day, dateInputValue, empty, escapeHtml as e, e
 export const clientBase = '/espace/commandes';
 export const adminBase = '/admin/commandes';
 const navFor = (base, o, selected) => {
-  const entries = [['Commande', ''], ...(o.project_id ? [['Ma création','creation'],...(base===adminBase?[['Studio de création','studio']]:[]),['Ma préparation',base===adminBase?'elements':'preparer'],['Échanges','messages'],['Mes invités','invites']] : [])];
+  const admin=base===adminBase;
+  const entries = [['Commande', ''], ...(o.project_id ? [[admin?'Création du client':'Ma création','creation'],...(admin?[['Ouvrir le studio','studio']]:[]),[admin?'Éléments du client':'Ma préparation',admin?'elements':'preparer'],[admin?'Messages du client':'Échanges','messages'],[admin?'Invités du client':'Mes invités','invites']] : [])];
   return links(entries.map(([text,sub])=>[text,`${base}/${o.id}${sub ? `/${sub}` : ''}`,sub===selected]));
 };
 export const clientNav = (o, selected = '') => navFor(clientBase,o,selected);
@@ -55,6 +56,15 @@ export function clientHistoryPanel(records,title='Les dernières nouvelles') {
 
 export function clientPortal(router, ctx) {
   const {db,auth} = ctx;
+  router.use('/espace',(req,res,next)=>{
+    if(!req.user?.admin) return next();
+    if(!['GET','HEAD'].includes(req.method)) return res.status(403).send(page('Utilisez votre administration',panel('Votre compte est administrateur','<p>Ouvrez la commande dans l’administration pour la modifier.</p>'+btn('Ouvrir l’administration','/admin/')),{user:req.user,compact:true}));
+    if(req.path.startsWith('/commandes/')) {
+      const target=req.originalUrl.replace(/^\/espace\//,'/admin/');
+      return res.redirect(303,target.includes('/preparer')?target.split('/preparer')[0]+'/elements':target);
+    }
+    res.redirect(303,'/admin/');
+  });
   router.get('/espace/', auth.require, async (req,res) => {
     const orders = await many(db,`select o.*,p.status,p.missing_details,p.brief,p.intake,p.share_key,p.published_version,p.share_available_until,
       exists(select 1 from files f where f.project_id=p.id and f.category in ('photos','couple','portraits') and f.media_type like 'image/%') as has_photo,
@@ -218,6 +228,7 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
       assert(p.approved_version && p.approved_version===p.selected_version,409,'Le client doit d’abord valider cette version.');
       const { publication_months } = await companySettings(tx);
       const months = o.publication_months || Number(publication_months || 12);
+      if(!p.published_version && ['mariage','anniversaire'].includes(o.category)) await tx.query('update events set enabled=true where project_id=$1 and settings_saved_at is null',[p.id]);
       await tx.query(`update projects set published_version=approved_version,share_key=coalesce(share_key,$2),
         share_available_until=now()+($3::int*interval '1 month') where id=$1`,[p.id,token(),months]);
       await markProject(tx,config,o,p,'published',req.user);
@@ -251,7 +262,7 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
   router.get(`${route}/elements`, ...guard, async (req,res) => {
     const {order:o,project:p} = await read(req);
     if(!admin) return res.redirect(303,`${base}/${o.id}/preparer`);
-    const files = await many(db,`select * from files where project_id=$1 and message_id is null and category not in ('facture','retouche')${admin ? ' and confirmed_at is not null' : ''} order by created_at desc`,[p.id]);
+    const files = await many(db,`select * from files where project_id=$1 and message_id is null and category not in ('facture','retouche','studio')${admin ? ' and confirmed_at is not null' : ''} order by created_at desc`,[p.id]);
     const canEdit = !admin && acceptsChanges(o,p);
     const fileUI = (f) => `<li><div><strong>${e(f.name)}</strong><p>${e(fileCategories[f.category])} · ${(f.size / 1024).toFixed(0)} Ko ${f.confirmed_at ? badge('Transmis') : badge('Brouillon')}</p></div>
       <div class="button-row">${btn('Télécharger',href(o,`fichiers/${f.id}`),true)}
@@ -301,7 +312,7 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
   }
   router.get(`${route}/fichiers/:file`, ...guard, async (req,res)=>{
     const {project:p} = await read(req);
-    const file = assert(await one(db,`select * from files where id=$1 and project_id=$2${admin?" and (confirmed_at is not null or category='facture')":" and category<>'retouche'"}`,
+    const file = assert(await one(db,`select * from files where id=$1 and project_id=$2${admin?" and (confirmed_at is not null or category='facture')":" and category not in ('retouche','studio')"}`,
       [uuid(req.params.file),p.id]),404,'Fichier introuvable.');
     await sendPrivateFile(res,storage,file);
   });

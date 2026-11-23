@@ -6,9 +6,9 @@ Le studio interne est accessible dans l’administration, puis dans chaque comma
 
 1. Ouvrir la commande et consulter les informations et photos transmises.
 2. Choisir « Créer ma composition » dans un studio encore vide, avec l’une des trois ambiances. Les informations et jusqu’à vingt photos de la sélection transmise sont copiées dans une version indépendante (32 Mo de photos au total maximum). Autre possibilité : programmer la création avec `index.html` à la racine et importer le dossier ZIP dans « Ma création ».
-3. Ouvrir « Studio de création » et choisir la version de travail.
-4. Ajuster les textes statiques de `index.html`, les variables de couleur CSS au format `#RRGGBB`, les fichiers image et les animations proposées sur les titres et images.
-5. Vérifier l’aperçu en largeur mobile puis ordinateur. Les essais sont privés et temporaires, pendant 15 minutes au maximum. « Actualiser l’aperçu » les recrée au besoin.
+3. Suivre les cinq étapes : projet, photos et emplacements, textes, style, vérification et livraison. Les administrateurs ouvrent uniquement l’administration ; leurs rubriques distinguent clairement la création, les éléments, les messages et les invités du client.
+4. Ajuster les textes statiques, les couleurs, chaque emplacement de photo et les animations proposées. Le brouillon, son étape et son nom se sauvegardent automatiquement. La protection de révision empêche deux onglets d’écraser leurs changements. Le brouillon reste distinct des versions proposées et publiées.
+5. Vérifier l’aperçu en largeur mobile puis ordinateur. Chaque URL d’aperçu expire après 15 minutes ; « Actualiser l’aperçu » la recrée depuis les réglages conservés dans le brouillon.
 6. Enregistrer une nouvelle version. Cette action n’envoie aucun e-mail et ne change ni la version proposée au client, ni celle publiée.
 7. Après vérification, proposer explicitement la version au client pour validation. Publier ensuite depuis « Ma création », une fois la version validée.
 
@@ -16,9 +16,11 @@ Les effets visuels du studio respectent la préférence de réduction des animat
 
 ## Photos originales et retouchées
 
-La galerie contient les photos confirmées par le client. Chaque original est téléchargeable. Pour une retouche externe, sélectionner la photo de départ puis importer un JPG, PNG ou WebP jusqu’à 12 Mo. La relation avec la photo de départ est conservée ; l’original reste inchangé. Les retouches intermédiaires sont réservées à l’administration.
+La bibliothèque contient la sélection confirmée par le client et les photos ajoutées dans le studio. Le sélecteur accepte jusqu’à 20 photos à la fois, envoyées séparément avec reprise et identifiant évitant les doublons. Chaque photo JPG, PNG ou WebP est limitée à 12 Mo, dans les limites de stockage du projet. Pour une retouche externe, sélectionner la photo de départ puis importer sa version retouchée. L’original reste inchangé. Les ajouts du studio et les retouches intermédiaires sont réservés à l’administration jusqu’à leur incorporation dans une création livrée.
 
-Dans l’onglet Images, choisir un original ou une retouche pour remplacer un fichier image de la création. Ce remplacement fonctionne également pour un fichier employé en fond CSS. Si un fichier est utilisé à plusieurs endroits, tous ces usages prendront la nouvelle image. Pour ajouter un emplacement ou modifier le cadrage, retoucher le dossier de code.
+À l’étape Photos et emplacements, chaque image HTML non protégée reçoit un emplacement indépendant, même si plusieurs emplacements utilisaient le même fichier. Choisir sa photo, conserver son cadrage ou sélectionner « Remplir le cadre » / « Voir toute la photo », puis son centrage. Les images d’arrière-plan restent proposées séparément comme remplacement de fichier.
+
+Une nouvelle galerie peut contenir jusqu’à 20 photos, avec légendes et ordre modifiables, en une, deux ou trois colonnes sur ordinateur et une colonne sur mobile. Elle se place après la couverture, après le récit, avant les informations ou avant la signature. Dans un dossier sur mesure qui ne possède pas de section `cover`, `story` ou `details`, elle est insérée avant le pied de page. Après enregistrement, ses images deviennent à leur tour des emplacements indépendants. Le studio inspecte jusqu’à 60 emplacements de photo, sans modifier les zones `data-mys-lock`.
 
 Les médias choisis sont copiés dans la nouvelle version autonome. Une modification ou suppression ultérieure du fichier de travail ne remplace donc pas silencieusement la photographie de la version validée.
 
@@ -48,6 +50,10 @@ Les invités n’accèdent jamais à l’espace privé du client. Le formulaire 
 
 Le tableau de bord sépare Vue d’ensemble, Réponses, Messages, Liste des invités et Réglages. Le taux est le nombre d’invitations personnelles ayant reçu une réponse (présence ou refus), divisé par le nombre de personnes ou foyers de la liste. Sans liste, aucun pourcentage n’est affiché. Les réponses du lien général comptent dans les participants et restent consultables, sans augmenter ce taux. Le compteur de conversations à lire inclut les messages initiaux et les nouvelles questions ; seule l’ouverture d’une conversation les marque comme lus.
 
+La rubrique Réservations regroupe les réponses pratiques des participants. Une question de quantité accepte de 0 à 30 unités et totalise les demandes ; les choix oui/non ou de menu sont comptés, avec le détail de chaque foyer. Ce sont les demandes transmises aux organisateurs, sans encaissement ni gestion d’un stock de places. Les libellés et types des réponses sont conservés pour ne pas mélanger des questions renommées. Toutes les réponses restent dans l’export CSV. Une première publication d’invitation de mariage ou d’anniversaire active le RSVP si aucun réglage explicite n’a encore été enregistré ; un choix de désactivation est respecté.
+
+Les petits « ? » de la préparation et des champs de configuration expliquent l’usage et montrent un exemple. Ils s’ouvrent au clic ou au clavier, dans le formulaire, et se referment avec Échap. Le contact demandé dans la préparation est facultatif et destiné aux invités, avec indication claire de sa diffusion sur la création.
+
 Jusqu’à cinq questions facultatives peuvent être ajoutées : oui/non, choix parmi 2 à 8 propositions, ou texte libre. Le libellé et la réponse sont conservés ensemble et inclus dans l’export Excel. Ne pas utiliser ces questions pour remplacer le champ alimentaire et son consentement.
 
 Chaque invité ayant répondu dispose aussi d’une conversation privée avec les organisateurs, accessible uniquement par son lien personnel. Le client ouvre « Échanger » sur la réponse concernée. Les formulaires sont idempotents, limités en fréquence et plafonnés à 100 messages par réponse. L’invité peut actualiser la conversation pour lire la réponse ; aucune notification par e-mail n’est envoyée à l’invité, qui n’a pas à fournir d’adresse. Les organisateurs peuvent recevoir une notification si leur option est active. La conversation reste disponible après la date limite RSVP tant que les interactions et la publication sont actives. Dépublier, archiver ou désactiver les interactions ferme l’accès invité.
@@ -67,3 +73,5 @@ Les réglages sont contrôlés côté serveur, y compris l’appartenance des fi
 La migration `003-studio.sql` est additive : provenance des retouches et identifiant d’enregistrement des versions. Elle ne modifie aucun paiement, propriétaire ou statut de publication.
 
 La migration additive `004-guest-experience.sql` ajoute les informations pratiques, les questions, les réponses complémentaires et les conversations invitées. `005-guided-preparation.sql` ajoute la préparation guidée, l’identifiant d’envoi des photos et les marqueurs de lecture. `sudo bash bin/deployer-studio.sh` conserve l’image précédente, sauvegarde PostgreSQL, construit l’application, applique les migrations et attend une application saine. Les médias et les paiements restent dans leurs volumes et services existants. Les données de démonstration du script `tests/preview.mjs` sont isolées en mémoire et ne font jamais partie du démarrage de production.
+
+La migration `006-guided-studio.sql` ajoute le brouillon de conception et le repère de configuration explicite des RSVP. Le moteur de réglages et les étapes de conception sont séparés de l’autorisation administrative pour être réutilisables ultérieurement dans un espace partenaire. Aucun rôle partenaire, abonnement ni accès supplémentaire aux projets n’est créé par cette évolution : une future intégration devra appliquer son propre périmètre de projets avant d’appeler ce moteur.

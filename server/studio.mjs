@@ -1,20 +1,21 @@
 import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { zipSync } from 'fflate';
-import { assert, privatePage, token, uuid, validToken, value } from './common.mjs';
+import { assert, integer, privatePage, token, uuid, validToken, value } from './common.mjs';
 import { addHistory, many, one } from './db.mjs';
 import { limited } from './auth.mjs';
 import { deployArchive, mediaUpload, storeCustomerFile } from './media.mjs';
-import { briefFields, editableProject, orderFor, projectFor } from './projects.mjs';
+import { editableProject, orderFor, projectFor } from './projects.mjs';
 import { adminNav } from './portal.mjs';
 import { invitationHeaders } from './invitations.mjs';
-import { applyDocument, inspectDocument } from './studio-document.mjs';
+import { inspectDocument } from './studio-document.mjs';
+import { prepareStudioSettings as prepareSettings, studioAssets, studioSteps } from './studio-settings.mjs';
 import { compositionArchive, compositionStyles } from './studio-composition.mjs';
-import { area, badge, btn, empty, escapeHtml as e, field, hidden, page, panel, post, ref, select, submit, time } from './ui.mjs';
+import { studioPage } from './studio-view.mjs';
+import { btn, empty, escapeHtml as e, field, hidden, page, panel, post, ref, submit } from './ui.mjs';
 
 const MB=1024*1024;
 const studioBase=(o)=>`/admin/commandes/${o.id}/studio`;
-const json=(data)=>JSON.stringify(data).replaceAll('<','\\u003c').replaceAll('\u2028','\\u2028').replaceAll('\u2029','\\u2029');
 
 async function loadVersion(db,storage,project,chosen) {
   const version=assert(await one(db,`select * from versions where project_id=$1 ${chosen?'and id=$2':''} order by created_at desc limit 1`,chosen?[project.id,uuid(chosen)]:[project.id]),404,'Importez un dossier de création pour ouvrir le studio.');
@@ -31,16 +32,9 @@ async function loadVersion(db,storage,project,chosen) {
   return {version,assets,model,images:assets.filter(a=>a.media_type.startsWith('image/')).map((a,i)=>({...a,key:`i${i}`}))};
 }
 
-async function prepareSettings(db,project,base,settings) {
-  const patches=applyDocument(base.model,settings,base.images.map(i=>i.key));
-  const replacements=new Map();
-  for(const [key,id] of Object.entries(settings.images||{})) {
-    if(id==='') continue;
-    const file=assert(await one(db,"select * from files where id=$1 and project_id=$2 and confirmed_at is not null and media_type like 'image/%'",[uuid(id),project.id]),404,'Cette photographie n’est pas disponible pour ce projet.');
-    replacements.set(base.images.find(i=>i.key===key).path,file);
-  }
-  return {patches,replacements};
-}
+const studioPhotos=(db,p)=>many(db,"select id,name,category,media_type,size,source_file_id from files where project_id=$1 and confirmed_at is not null and media_type in ('image/jpeg','image/png','image/webp') and (category='studio' or $2::uuid[] is null or id=any($2::uuid[]) or source_file_id=any($2::uuid[]) or source_file_id in (select id from files where project_id=$1 and category='studio')) order by created_at desc",[p.id,Array.isArray(p.intake?.photo_ids)?p.intake.photo_ids:null]);
+const photoData=photos=>photos.map(({id,name,source_file_id,category})=>({id,name,retouched:Boolean(source_file_id),operator:category==='studio'}));
+const photoUpload=o=>post(`${studioBase(o)}/photos`,hidden('upload_key',randomUUID())+field('Ajouter des photos à la bibliothèque','file','','file','accept="image/jpeg,image/png,image/webp" multiple required data-studio-files',{text:'Choisissez plusieurs photos à la fois. Elles rejoignent la bibliothèque privée de ce projet ; vous déciderez ensuite où les placer. JPG, PNG ou WebP, 12 Mo maximum par photo.',example:'Un portrait pour la couverture, puis plusieurs souvenirs pour la galerie.'})+submit('Ajouter mes photos')+'<p role="status" data-studio-upload-status></p><progress hidden data-studio-upload-progress max="100" aria-label="Envoi des photos du studio"></progress>','enctype="multipart/form-data" data-studio-upload');
 
 export function studioRoutes(router,ctx) {
   const {db,config,storage,auth}=ctx;
@@ -54,7 +48,7 @@ export function studioRoutes(router,ctx) {
     while(same.length>=4) previews.delete(same.shift()[0]);
     while(previews.size>=40) previews.delete(previews.keys().next().value);
     const key=token();
-    previews.set(key,{...prepared,project:project.id,version:base.version.id,assets:base.assets,expires:Date.now()+15*60000});
+    previews.set(key,{...prepared,project:project.id,version:base.version.id,assets:studioAssets(base,prepared),expires:Date.now()+15*60000});
     return `/contenus/studio/${key}/index.html`;
   };
   const context=async(req,database=db,write=false)=>{
@@ -64,7 +58,7 @@ export function studioRoutes(router,ctx) {
   };
   const editable=async(req,res,next)=>{
     await db.transaction(tx=>context(req,tx,true));
-    await limited(db,req,config,'studio',180,900,req.user.id);next();
+    await limited(db,req,config,'studio',360,900,req.user.id);next();
   };
 
   router.get('/admin/studio',...guard,async(req,res)=>{
@@ -80,37 +74,18 @@ export function studioRoutes(router,ctx) {
     const versions=await many(db,'select id,label,created_at from versions where project_id=$1 order by created_at desc',[p.id]);
     if(req.query.version) assert(versions.some(v=>v.id===req.query.version),404,'Version introuvable.');
     const canEdit=Boolean(o.paid_at && o.payment_status!=='refunded' && p.status!=='archived');
-    const introduction='<p class="px-lead">Travaillez sur votre code personnalisé, essayez vos réglages, puis enregistrez une nouvelle version.</p>';
-    if(p.status==='archived') return res.send(page('Studio de création',adminNav(o,'studio')+panel('Création archivée',`<p>Ce projet est conservé en lecture seule. Les versions restent téléchargeables.</p><ul class="px-list">${versions.map(v=>`<li>${e(v.label)} ${btn('Télécharger le ZIP',`${studioBase(o)}/export.zip?version=${v.id}`,true)}</li>`).join('')}</ul>`),{user:req.user,wide:true}));
-    if(!versions.length) return res.send(page('Studio de création',adminNav(o,'studio')+introduction+`<div class="px-card-grid">`+panel('Composer une première version',`<p>Une base soignée, préparée avec les informations et les photos reçues. Vous pouvez ensuite modifier chaque texte, couleur, image et animation.</p>`+(canEdit?post(`${studioBase(o)}/composer`,hidden('request_id',randomUUID())+select('Ambiance de départ','style',compositionStyles,'editorial')+submit('Créer ma composition')):''))+panel('Utiliser ma création sur mesure',`<p>Importez votre propre dossier HTML, CSS, JavaScript et médias au format ZIP. Votre mise en page et vos animations restent libres.</p>${btn('Importer mon dossier de création',`/admin/commandes/${o.id}/creation`,true)}`)+`</div>`,{user:req.user,wide:true,eyebrow:ref(o)}));
-    const base=await loadVersion(db,storage,p,req.query.version || versions[0].id);
-    const photos=await many(db,"select id,name,media_type,size,source_file_id from files where project_id=$1 and confirmed_at is not null and media_type like 'image/%' and ($2::uuid[] is null or id=any($2::uuid[]) or source_file_id=any($2::uuid[])) order by created_at desc",[p.id,Array.isArray(p.intake?.photo_ids)?p.intake.photo_ids:null]);
-    const settings={texts:{},colors:{},images:{},motions:{}};
-    const src=previewUrl(p,base,await prepareSettings(db,p,base,settings));
-    const data={base:studioBase(o),version:base.version.id,preview:src,
-      texts:base.model.texts.map(({key,label,text})=>({key,label,text})),colors:base.model.colors.map(({key,label,color,path})=>({key,label,color,path})),
-      images:base.images.map(({key,path})=>({key,path})),motions:base.model.motions.map(({key,label,mode,duration})=>({key,label,mode,duration})),
-      photos:photos.map(({id,name,source_file_id})=>({id,name,retouched:Boolean(source_file_id)})),canEdit};
-    const choose=`<form method="get" action="${studioBase(o)}" class="px-filter">${select('Version de travail','version',Object.fromEntries(versions.map(v=>[v.id,`${v.label} · ${time(v.created_at)}`])),base.version.id)}${submit('Ouvrir la version')}</form>`;
-    const tools=`<section class="px-studio-tools" aria-label="Réglages de la création"><div class="px-studio-tabs" role="tablist" aria-label="Outils du studio">
-      ${[['texts','Textes'],['colors','Couleurs'],['images','Images'],['motions','Animations']].map(([key,label],i)=>`<button type="button" role="tab" id="studio-tab-${key}" aria-controls="studio-${key}" aria-selected="${i===0}" tabindex="${i===0?0:-1}" data-studio-tab="${key}">${label}</button>`).join('')}</div>
-      ${[['texts','Textes'],['colors','Couleurs'],['images','Images'],['motions','Animations']].map(([key,label],i)=>`<div role="tabpanel" id="studio-${key}" aria-labelledby="studio-tab-${key}" ${i?'hidden':''} data-studio-panel="${key}"><h2>${label}</h2><div data-studio-fields="${key}"></div></div>`).join('')}
-      <noscript><p>Activez JavaScript pour utiliser les réglages et l’aperçu du studio. L’export du dossier reste disponible.</p></noscript></section>`;
-    const workbench=`<div class="px-studio" data-studio>${tools}<section class="px-studio-canvas" aria-label="Aperçu de travail"><div class="px-studio-toolbar">
-      <div class="button-row"><button class="button button--ghost" type="button" data-studio-width="mobile" aria-pressed="false">Mobile</button><button class="button button--ghost" type="button" data-studio-width="desktop" aria-pressed="true">Ordinateur</button><button class="button button--ghost" type="button" data-studio-refresh>Actualiser l’aperçu</button></div>
-      <p role="status" data-studio-status>Aperçu privé · essais non enregistrés</p></div><div class="px-studio-frame" data-studio-frame><iframe title="Aperçu du studio" sandbox="allow-scripts" class="px-preview" src="${e(src)}"></iframe></div></section></div>`;
-    const save=canEdit?`<form data-studio-save>${field('Nom de la nouvelle version','label',`${base.version.label.slice(0,60)} · retouche`,'text','required maxlength="80"')}
-      <div class="button-row">${submit('Enregistrer une nouvelle version')}<button type="button" class="button button--ghost" data-studio-reset>Annuler les essais</button></div><p class="px-quiet">Enregistrer conserve la version précédente. Aucun envoi au client et aucune modification du lien publié. ${versions.length}/20 versions enregistrées ; dossier jusqu’à 40 Mo dans le studio.</p></form>`:empty('Ce projet est en lecture seule.');
-    const exportPanel=panel('Enregistrer et poursuivre',save+`<div class="button-row">${btn('Télécharger le dossier ZIP',`${studioBase(o)}/export.zip?version=${base.version.id}`,true)}${btn('Réimporter mon dossier retouché',`/admin/commandes/${o.id}/creation`,true)}</div><p class="px-quiet">L’export contient la version enregistrée ouverte ci-dessus, avec ses fichiers. Les réglages non enregistrés ne sont pas exportés.</p>`
-      +(canEdit?`<details><summary>Proposer cette version au client</summary><p>Le client recevra une notification pour consulter et valider cette version. Sa publication restera une action distincte.</p>${post(`/admin/commandes/${o.id}/creation/proposer`,hidden('version',base.version.id)+submit('Proposer cette version au client'),'data-studio-propose')}</details>`:''));
-    const gallery=photos.length?`<div class="px-studio-gallery">${photos.map(f=>`<article><img loading="lazy" src="${studioBase(o)}/medias/${f.id}" alt="${e(f.name)}"><p>${e(f.name)} ${f.source_file_id?badge('Retouche'):badge('Original client')}</p>${btn('Télécharger',`/admin/commandes/${o.id}/fichiers/${f.id}`,true)}</article>`).join('')}</div>`:empty('Aucune photographie transmise. Les fichiers confirmés par le client apparaîtront ici.');
-    const retouch=canEdit && photos.length?post(`${studioBase(o)}/retouches`,hidden('version',base.version.id)+select('Photo de départ','source',Object.fromEntries(photos.map(f=>[f.id,f.name])))+'<label class="px-field"><span>Photographie retouchée</span><input type="file" name="file" accept="image/jpeg,image/png,image/webp" required></label><p class="px-quiet">JPG, PNG ou WebP, jusqu’à 12 Mo. L’original reste conservé et la retouche devient disponible dans l’onglet Images.</p>'+submit('Importer la retouche'),'enctype="multipart/form-data" data-upload'):'';
-    const brief=briefFields[o.category].filter(([key])=>p.brief[key]).map(([key,label])=>`<dt>${e(label)}</dt><dd class="px-text">${e(p.brief[key])}</dd>`).join('');
-    res.send(page('Studio de création',adminNav(o,'studio')+introduction+(req.query.enregistre==='1'?'<p class="px-note" role="status">Nouvelle version enregistrée. Vous pouvez la vérifier avant de la proposer au client.</p>':'')
-      +panel('Votre version de travail',choose)+workbench+exportPanel+panel('Photographies du projet',gallery+retouch)
-      +panel('Informations du client',brief?`<details><summary>Consulter les informations transmises</summary><dl class="px-facts">${brief}</dl></details>`:empty('Aucune information enregistrée.'))
-      +panel('Livrer cette création',`<p>Enregistrez votre version puis proposez-la au client. Il la retrouve dans son espace, peut demander des ajustements et la valider. La publication lui donne ensuite son lien et son QR code.</p><p>${btn('Validation et publication',`/admin/commandes/${o.id}/creation`)} ${btn('Retour au studio','/admin/studio',true)}</p><details><summary>Conseils pour mes créations programmées</summary><p>Les textes proviennent de index.html. Les couleurs proposées sont les variables CSS au format hexadécimal. Pour ajouter un emplacement, recadrer une photo ou retoucher le code, exportez puis réimportez votre dossier.</p><p>Ajoutez <code>data-mys-rsvp</code> à un bouton pour le relier au formulaire de l’événement publié. <code>data-mys-label</code> donne un nom à un bloc et <code>data-mys-lock</code> protège une zone pilotée par vos scripts.</p></details>`)
-      +`<script type="application/json" id="mys-studio-data">${json(data)}</script><script defer src="/assets/studio.js?v=20261122-studio"></script>`,{user:req.user,wide:true,eyebrow:ref(o)}));
+    if(p.status==='archived') return res.send(page('Studio de création',adminNav(o,'studio')+panel('Création archivée',`<p>Ce projet est conservé en lecture seule.</p><ul class="px-list">${versions.map(v=>`<li>${e(v.label)} ${btn('Télécharger le ZIP',`${studioBase(o)}/export.zip?version=${v.id}`,true)}</li>`).join('')}</ul>`),{user:req.user,wide:true}));
+    const photos=await studioPhotos(db,p);
+    const selected=req.query.version || (versions.some(v=>v.id===p.studio_draft?.version)?p.studio_draft.version:versions[0]?.id);
+    const base=selected?await loadVersion(db,storage,p,selected):null;
+    const draft={...(p.studio_draft?.version===base?.version.id?p.studio_draft:{}),revision:Number(p.studio_draft?.revision||0)};
+    const src=base?previewUrl(p,base,await prepareSettings(db,p,base,draft.settings||{})):'';
+    const event=await one(db,'select enabled,settings_saved_at from events where project_id=$1',[p.id]);
+    const data={base:studioBase(o),version:base?.version.id,preview:src,user:req.user,draft,event,
+      texts:base?.model.texts.map(({key,label,text})=>({key,label,text}))||[],colors:base?.model.colors.map(({key,label,color,path})=>({key,label,color,path}))||[],
+      images:base?.images.map(({key,path})=>({key,path}))||[],placements:base?.model.placements.map(({key,label,src,fit,position})=>({key,label,src,fit,position}))||[],motions:base?.model.motions.map(({key,label,mode,duration})=>({key,label,mode,duration}))||[],
+      photos:photoData(photos),canEdit};
+    res.send(studioPage({order:o,project:p,versions,base,photos,data,canEdit,upload:photoUpload(o),saved:req.query.enregistre==='1'}));
   });
 
   router.post(`${path}/composer`,...guard,editable,async(req,res)=>{
@@ -124,7 +99,16 @@ export function studioRoutes(router,ctx) {
         if(existing) return {order,version:existing};
         assert(!await one(tx,'select id from versions where project_id=$1',[project.id]),409,'Ce projet possède déjà une version. Ouvrez-la pour continuer votre création.');
         assert(Object.hasOwn(compositionStyles,req.body.style),400,'Choisissez une ambiance de départ.');
-        const photos=await many(tx,"select id,media_type from files where project_id=$1 and confirmed_at is not null and category in ('couple','portraits','photos') and media_type in ('image/jpeg','image/png','image/webp') and ($2::uuid[] is null or id=any($2::uuid[])) order by case when category='couple' then 0 else 1 end,created_at limit 20",[project.id,Array.isArray(project.intake?.photo_ids)?project.intake.photo_ids:null]);
+        let photos=await studioPhotos(tx,project);
+        if(req.body.photo_selection==='selected') {
+          const ids=(Array.isArray(req.body.photos)?req.body.photos:req.body.photos?[req.body.photos]:[]).map(uuid);
+          assert(ids.length<=20 && ids.every(id=>photos.some(f=>f.id===id)),400,'Choisissez jusqu’à 20 photos dans la bibliothèque de ce projet.');
+          photos=ids.map(id=>photos.find(f=>f.id===id));
+        }else photos=photos.slice(0,20);
+        if(req.body.cover) {
+          const cover=uuid(req.body.cover);assert(photos.some(f=>f.id===cover),400,'Sélectionnez la photo de couverture dans la bibliothèque.');
+          photos.sort((a,b)=>a.id===cover?-1:b.id===cover?1:0);
+        }
         const buffer=await compositionArchive(order,project,photos,storage,req.body.style);
         const version=await deployArchive(tx,storage,project.id,'Première composition',{buffer,size:buffer.length},cleanup);
         await tx.query('update versions set studio_save_key=$2 where id=$1',[version.id,requestId]);
@@ -141,6 +125,38 @@ export function studioRoutes(router,ctx) {
     const prepared=await prepareSettings(db,project,base,req.body.settings || {});
     res.json({url:previewUrl(project,base,prepared)});
   });
+  router.post(`${path}/brouillon`,...guard,editable,async(req,res)=>{
+    const saved=await db.transaction(async tx=>{
+      const {project}=await context(req,tx,true);
+      const requestKey=req.body.request_id?uuid(req.body.request_id):null;
+      if(requestKey && project.studio_draft?.last_request_key===requestKey)return project.studio_draft;
+      const revision=integer(req.body.revision,0,1000000);
+      assert(revision===Number(project.studio_draft?.revision||0),409,'Ce brouillon a été modifié dans un autre onglet. Rechargez le studio avant de continuer.');
+      assert(studioSteps.includes(req.body.step),400,'Étape de conception inconnue.');
+      const base=await loadVersion(tx,storage,project,req.body.version);
+      await prepareSettings(tx,project,base,req.body.settings||{});
+      const draft={version:base.version.id,settings:req.body.settings||{},step:req.body.step,label:value(req.body.label,80),revision:revision+1,last_request_key:requestKey,saved_at:new Date().toISOString()};
+      await tx.query('update projects set studio_draft=$2,updated_at=now() where id=$1',[project.id,draft]);
+      return draft;
+    });res.json({revision:saved.revision,saved_at:saved.saved_at});
+  });
+  router.post(`${path}/photos`,...guard,editable,mediaUpload,async(req,res)=>{
+    const cleanup=[];let result;
+    try {
+      result=await db.transaction(async tx=>{
+        const {order,project}=await context(req,tx,true);
+        const key=uuid(req.body.upload_key);
+        if(!await one(tx,'select id from files where project_id=$1 and client_upload_key=$2',[project.id,key])) {
+          const f=await storeCustomerFile(tx,storage,project,req.file,'studio',req.user,null,cleanup);
+          assert(['image/jpeg','image/png','image/webp'].includes(f.media_type),400,'Choisissez une photographie JPG, PNG ou WebP.');
+          await tx.query('update files set confirmed_at=now(),client_upload_key=$2 where id=$1',[f.id,key]);
+        }
+        return {order,photos:await studioPhotos(tx,project)};
+      });
+    }catch(error){await Promise.allSettled(cleanup.map(storage.remove));throw error;}
+    if(req.get('x-upload')==='1') return res.json({photos:photoData(result.photos)});
+    res.redirect(303,studioBase(result.order));
+  });
   router.post(`${path}/enregistrer`,...guard,editable,async(req,res)=>{
     const cleanup=[];
     let result;
@@ -150,13 +166,16 @@ export function studioRoutes(router,ctx) {
         const requestId=uuid(req.body.request_id);
         const previous=await one(tx,'select * from versions where project_id=$1 and studio_save_key=$2',[project.id,requestId]);
         if(previous) return {order,version:previous};
+        if(req.body.revision!==undefined) assert(integer(req.body.revision,0,1000000)===Number(project.studio_draft?.revision||0),409,'Le brouillon a changé dans un autre onglet. Rechargez le studio avant d’enregistrer.');
         const count=await one(tx,'select count(*)::int as n from versions where project_id=$1',[project.id]);
         assert(count.n<20,409,'Ce projet contient déjà 20 versions. Contactez le support avant d’en ajouter.');
         const base=await loadVersion(tx,storage,project,req.body.version);
         const prepared=await prepareSettings(tx,project,base,req.body.settings || {});
         const version=await one(tx,'insert into versions (project_id,label,studio_save_key) values ($1,$2,$3) returning *',[project.id,value(req.body.label,80,true),requestId]);
         let bytes=0;
-        for(const asset of base.assets) {
+        const assets=studioAssets(base,prepared);
+        assert(assets.length<=140,413,'Cette création dépasse 140 fichiers. Réduisez les médias avant d’enregistrer.');
+        for(const asset of assets) {
           const replacement=prepared.replacements.get(asset.path);
           const data=replacement?await readFile(storage.get(replacement.id)):prepared.patches.get(asset.path)||await readFile(storage.get(asset.storage_key));
           bytes+=data.length;
@@ -164,7 +183,7 @@ export function studioRoutes(router,ctx) {
           const key=randomUUID();cleanup.push(key);await storage.put(key,data);
           await tx.query('insert into version_assets (version_id,path,storage_key,media_type) values ($1,$2,$3,$4)',[version.id,asset.path,key,replacement?.media_type || asset.media_type]);
         }
-        await tx.query('update projects set updated_at=now() where id=$1',[project.id]);
+        await tx.query('update projects set studio_draft=$2,updated_at=now() where id=$1',[project.id,{version:version.id,settings:{},step:'validation',revision:Number(project.studio_draft?.revision||0)+1,saved_at:new Date().toISOString()}]);
         await addHistory(tx,order.id,'studio_version',`Version enregistrée dans le studio · ${version.label}`,req.user.id,true);
         return {order,version};
       });

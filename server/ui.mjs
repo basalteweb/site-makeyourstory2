@@ -12,16 +12,25 @@ export const projectNames = { confirmed: 'Commande confirmée', waiting_details:
 export const btn = (label, href, ghost = false) => `<a class="button ${ghost ? 'button--ghost' : 'button--pink'}" href="${e(href)}">${e(label)}</a>`;
 export const submit = (label, ghost = false) => `<button class="button ${ghost ? 'button--ghost' : 'button--pink'}" type="submit">${e(label)}</button>`;
 export const hidden = (name, value) => `<input type="hidden" name="${e(name)}" value="${e(value)}">`;
-export const field = (label, name, v = '', type = 'text', attr = '') => `<label class="px-field"><span>${e(label)}</span><input type="${type}" name="${e(name)}" value="${e(v)}" ${attr}></label>`;
+let fieldSequence=0;
+export const helpControl=(label,help)=>help?`<details class="px-field-help" data-field-help><summary aria-label="Aide : ${e(label)}" title="En savoir plus"><span aria-hidden="true">?</span></summary><div class="px-help-content" role="note"><p>${e(help.text)}</p>${help.example?`<p><strong>Exemple :</strong> ${e(help.example)}</p>`:''}</div></details>`:'';
+const fieldHeading=(id,label,help)=>`<div class="px-field-heading"><label id="${id}-label" for="${id}">${e(label)}</label>${helpControl(label,help)}</div>`;
+export const field = (label, name, v = '', type = 'text', attr = '', help) => {
+  if(!help) return `<label class="px-field"><span>${e(label)}</span><input type="${type}" name="${e(name)}" value="${e(v)}" ${attr}></label>`;
+  const id=`px-field-${++fieldSequence}`;
+  return `<div class="px-field">${fieldHeading(id,label,help)}<input id="${id}" aria-labelledby="${id}-label" type="${type}" name="${e(name)}" value="${e(v)}" ${attr}></div>`;
+};
 let areaSequence=0;
-export const area = (label, name, v = '', attr = '') => {
+export const area = (label, name, v = '', attr = '', help) => {
   const id=`px-area-${++areaSequence}`;
+  if(help) return `<div class="px-field">${fieldHeading(id,label,help)}<textarea id="${id}" aria-labelledby="${id}-label" name="${e(name)}" ${attr}>${e(v)}</textarea></div>`;
   return `<label class="px-field" for="${id}"><span id="${id}-label">${e(label)}</span><textarea id="${id}" aria-labelledby="${id}-label" name="${e(name)}" ${attr}>${e(v)}</textarea></label>`;
 };
 export const check = (label, name, yes = false, attr = '') => `<label class="px-check"><input type="checkbox" name="${e(name)}" ${yes ? 'checked' : ''} ${attr}><span>${label}</span></label>`;
 let selectSequence=0;
-export function select(label, name, options, selected) {
+export function select(label, name, options, selected, help) {
   const id=`px-select-${++selectSequence}`;
+  if(help) return `<div class="px-field">${fieldHeading(id,label,help)}<select id="${id}" aria-labelledby="${id}-label" name="${e(name)}">${Object.entries(options).map(([key,text])=>`<option value="${e(key)}" ${String(selected)===key?'selected':''}>${e(text)}</option>`).join('')}</select></div>`;
   return `<label class="px-field" for="${id}"><span id="${id}-label">${e(label)}</span><select id="${id}" aria-labelledby="${id}-label" name="${e(name)}">${Object.entries(options).map(([key,text]) =>
     `<option value="${e(key)}" ${String(selected) === key ? 'selected' : ''}>${e(text)}</option>`).join('')}</select></label>`;
 }
@@ -43,10 +52,10 @@ export function page(title, content, options = {}) {
   const { eyebrow = '', user, wide = false, compact = false, immersive = false } = options;
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive"><title>${e(title)} · MakeYourStory</title>
-  <link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/plateforme.css?v=20261122-guide"><script defer src="/assets/plateforme.js?v=20261122-guide"></script></head>
+  <link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/plateforme.css?v=20261123-studio"><script defer src="/assets/plateforme.js?v=20261123-studio"></script></head>
   <body class="px-body${immersive?' px-invitation-body':''}"><a class="skip" href="#contenu">Aller au contenu</a>${immersive?'':`<header class="px-header"><div class="px-wrap px-top">
   <a href="/" class="wordmark" aria-label="MakeYourStory, accueil"><span class="mark" aria-hidden="true">M</span><span><span class="wordmark-title">MAKE YOUR STORY</span><span class="wordmark-sub">VOS HISTOIRES PERSONNALISÉES</span></span></a>
-  <nav class="px-nav" aria-label="Navigation principale">${user?'':'<a href="/tarifs.html">Tarifs</a>'}<a href="/espace/?accueil=1">Mon espace</a>${user?.admin ? '<a href="/admin/">Administration</a>' : ''}${user ? post('/espace/deconnexion', '<button class="px-link" type="submit">Déconnexion</button>') : ''}</nav>
+  <nav class="px-nav" aria-label="Navigation principale">${user?'':'<a href="/tarifs.html">Tarifs</a>'}${user?.admin?'<a href="/admin/">Administration</a>':'<a href="/espace/?accueil=1">Mon espace</a>'}${user ? post('/espace/deconnexion', '<button class="px-link" type="submit">Déconnexion</button>') : ''}</nav>
   </div></header>`}<main id="contenu" class="px-wrap ${wide ? 'px-wide' : ''} ${compact ? 'px-compact' : ''}">
   ${immersive?'':`<div class="px-intro">${eyebrow ? `<p class="eyebrow">${e(eyebrow)}</p>` : ''}<h1>${e(title)}</h1></div>`}${content}</main>
   <footer class="px-footer"><div class="px-wrap"><span>Une histoire signée MakeYourStory</span><a href="/contact.html">Contact</a><a href="/mentions-legales.html">Mentions légales</a>${immersive?'':'<a href="/cgv.html">CGV</a>'}<a href="/confidentialite.html">Confidentialité</a></div></footer></body></html>`;

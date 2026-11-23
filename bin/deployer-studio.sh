@@ -27,7 +27,8 @@ try {
   await one(db,'select questions,title,location from events limit 1');
   await one(db,'select answers from responses limit 1');
   await one(db,'select id from guest_messages limit 1');
-  await one(db,'select intake from projects limit 1');
+  await one(db,'select intake,studio_draft from projects limit 1');
+  await one(db,'select settings_saved_at from events limit 1');
   await one(db,'select client_upload_key from files limit 1');
   await one(db,'select read_at from guest_messages limit 1');
   console.log('Migrations du studio et des invités vérifiées.');

@@ -15,10 +15,11 @@ const motionCss = '@keyframes mys-studio-fade{from{opacity:0}to{opacity:1}}@keyf
 export function inspectDocument(source, styles = []) {
   assert(Buffer.byteLength(source) <= 2*1024*1024, 413, 'Le fichier index.html dépasse 2 Mo. Réduisez-le avant l’édition visuelle.');
   const document = parse(source);
-  const texts = [], motions = [], colors = [];
+  const texts = [], motions = [], colors = [], placements = [];
   const nodes = [];
   function visit(node, blocked = false) {
     const hidden = blocked || ignored.has(node.tagName) || attr(node,'data-mys-lock') !== undefined || attr(node,'hidden') !== undefined;
+    if(!hidden && node.tagName==='img' && placements.length<60) placements.push({key:`p${placements.length}`,label:attr(node,'data-mys-label')||attr(node,'alt')||`Photographie ${placements.length+1}`,src:attr(node,'src')||'',fit:attr(node,'data-mys-fit')||'original',position:attr(node,'data-mys-position')||'center',node});
     if (!hidden && node.tagName && ['h1','h2','img','figure'].includes(node.tagName) && motions.length<30) {
       motions.push({key:`a${motions.length}`,label:attr(node,'data-mys-label') || attr(node,'alt') || node.tagName.toUpperCase()+' · '+(node.childNodes?.filter(n=>n.nodeName==='#text').map(n=>n.value).join(' ').trim().slice(0,55) || attr(node,'id') || 'Image'),
         mode:attr(node,'data-mys-motion') || 'original',duration:attr(node,'data-mys-duration') || '1',node});
@@ -40,14 +41,15 @@ export function inspectDocument(source, styles = []) {
       colors.push(entry);sheet.entries.push(entry);
     }
   }
-  return {document,texts,motions,colors,sheets};
+  return {document,texts,motions,colors,sheets,placements};
 }
 
 export function applyDocument(model, settings = {}, imageKeys = []) {
   assert(settings && typeof settings==='object' && !Array.isArray(settings),400,'Réglages invalides.');
-  const sections = {texts:model.texts,colors:model.colors,images:imageKeys.map(key=>({key})),motions:model.motions};
+  const sections = {texts:model.texts,colors:model.colors,images:imageKeys.map(key=>({key})),motions:model.motions,placements:model.placements,gallery:[]};
   for(const key of Object.keys(settings)) assert(Object.hasOwn(sections,key),400,'Réglage inconnu.');
   for(const [key,fields] of Object.entries(sections)) {
+    if(key==='gallery') continue;
     const data=settings[key] || {};
     assert(data && typeof data==='object' && !Array.isArray(data),400,'Réglages invalides.');
     for(const field of Object.keys(data)) assert(fields.some(f=>f.key===field),400,'Ce réglage ne correspond plus à la version ouverte. Rechargez le studio.');
@@ -90,6 +92,27 @@ export function applyDocument(model, settings = {}, imageKeys = []) {
   }
   const html=model.document.childNodes.find(n=>n.tagName==='html');
   const head=html.childNodes.find(n=>n.tagName==='head');
+  const photoCss=[];
+  for(const slot of model.placements) {
+    const setting=settings.placements?.[slot.key];
+    if(setting) {
+      assert(setting && typeof setting==='object' && !Array.isArray(setting) && Object.keys(setting).every(k=>['photo','fit','position'].includes(k)),400,'Emplacement de photo invalide.');
+      assert(['original','cover','contain'].includes(setting.fit) && ['center','top','bottom','left','right'].includes(setting.position),400,'Cadrage de photo invalide.');
+      if(setting.photo) {
+        assert(/^[-\w/]+\.(?:jpg|png|webp)$/.test(setting.photo),400,'Photographie invalide.');
+        setAttr(slot.node,'src',setting.photo);setAttr(slot.node,'srcset',null);
+        if(slot.node.parentNode?.tagName==='picture') slot.node.parentNode.childNodes=slot.node.parentNode.childNodes.filter(n=>n.tagName!=='source');
+      }
+      setAttr(slot.node,'data-mys-fit',setting.fit);setAttr(slot.node,'data-mys-position',setting.position);
+    }
+    setAttr(slot.node,'data-mys-image',slot.key);
+    const fit=attr(slot.node,'data-mys-fit');
+    if(fit && fit!=='original') photoCss.push(`[data-mys-image="${slot.key}"]{object-fit:${fit}!important;object-position:${attr(slot.node,'data-mys-position')||'center'}!important}`);
+  }
+  head.childNodes=head.childNodes.filter(n=>!(n.tagName==='style' && attr(n,'id')==='mys-studio-photos'));
+  if(photoCss.length) {
+    const style=tree.createElement('style','http://www.w3.org/1999/xhtml',[{name:'id',value:'mys-studio-photos'}]);tree.insertText(style,photoCss.join(''));tree.appendChild(head,style);
+  }
   head.childNodes=head.childNodes.filter(n=>!(n.tagName==='style' && attr(n,'id')==='mys-studio-motion'));
   if(hasMotion) {
     const style=tree.createElement('style','http://www.w3.org/1999/xhtml',[{name:'id',value:'mys-studio-motion'}]);

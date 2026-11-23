@@ -5,7 +5,8 @@ import { limited } from './auth.mjs';
 import { mediaUpload, storeCustomerFile } from './media.mjs';
 import { adminMail, clientMail, editableProject, markProject, orderFor, projectFor } from './projects.mjs';
 import { assembledBrief, intakeSpec } from './intake-content.mjs';
-import { area, badge, btn, check, day, escapeHtml as e, field, hidden, page, panel, post, ref, submit, time } from './ui.mjs';
+import { intakeGuidance } from './intake-guidance.mjs';
+import { area, badge, btn, check, day, escapeHtml as e, field, hidden, page, panel, post, ref, select, submit, time } from './ui.mjs';
 
 const base=o=>`/espace/commandes/${o.id}/preparer`;
 const url=(o,key)=>base(o)+(key?`?etape=${encodeURIComponent(key)}`:'');
@@ -18,15 +19,16 @@ const selectedPhotos=(p,photos)=>photos.filter(f=>!(p.intake?.excluded||[]).incl
 function progress(spec,index) {
   return `<div class="px-intake-progress"><div><span>Votre préparation</span><strong>Étape ${index+1} sur ${spec.steps.length}</strong></div><progress max="${spec.steps.length}" value="${index+1}" aria-label="Avancement de votre préparation"></progress></div>`;
 }
-function fieldsFor(step,p,input) {
+function fieldsFor(order,step,p,input) {
   const b={...merged(p),...input};
   const unknown=input?checked(input.unknown):Boolean(p.intake?.unknown?.[step.key]);
   const simple=input?checked(input.simple_names):Boolean(p.intake?.simpleNames);
   return (step.simpleNames?check('Nous souhaitons utiliser uniquement nos prénoms.','simple_names',simple,'data-simple-names'):'')+
     `<div class="px-intake-fields${step.fields.length>1?' px-form-grid':''}">${step.fields.map(f=>{
       const attrs=`${f.required && !unknown && !(simple&&f.key.endsWith('_last'))?'required ':''}maxlength="${f.type==='long'?3000:260}"${f.placeholder?` placeholder="${e(f.placeholder)}"`:''}`;
-      const control=f.type==='long'?area(f.label,f.key,b[f.key],attrs):field(f.label,f.key,b[f.key],f.type==='date'?'date':'text',attrs);
-      return `<div${f.type==='long'?' class="px-span"':''} data-intake-field="${e(f.key)}">${control}${f.help?`<p class="px-quiet">${e(f.help)}</p>`:''}</div>`;
+      const help=intakeGuidance(order,step,f);
+      const control=f.type==='long'?area(f.label,f.key,b[f.key],attrs,help):field(f.label,f.key,b[f.key],f.type==='date'?'date':'text',attrs,help);
+      return `<div${f.type==='long'?' class="px-span"':''} data-intake-field="${e(f.key)}">${control}</div>`;
     }).join('')}</div>`+
     (step.unknown?check(e(step.unknown),'unknown',unknown,'data-intake-unknown'):'')+
     (step.optional?'<p class="px-quiet">Cette étape est facultative. Quelques mots suffisent ; vous pouvez aussi la passer.</p>':'');
@@ -94,13 +96,13 @@ export function intakeRoutes(router,ctx,nav) {
     const photos=await currentPhotos(db,p);
     const canEdit=writable(o,p);
     const intro=s.intro?`<div class="px-intake-welcome"><span aria-hidden="true">${o.category==='hommage'?'✧':'♡'}</span><p class="eyebrow">${e(o.product_name)}</p><p>Vos réponses sont enregistrées à chaque étape. Vous pourrez faire une pause et reprendre ici, quand vous le souhaitez.</p><p class="px-quiet">Les questions de récit sont facultatives. Racontez seulement ce que vous avez envie de partager.</p></div>`:'';
-    let body=fieldsFor(s,p,input);
+    let body=fieldsFor(o,s,p,input);
     if(s.photos) {
       const mode=input?.photo_mode || p.intake?.photoMode || 'photos';
       body=`<div class="px-photo-guide"><h3>${e(spec.photos.title)}</h3><div data-intake-count>${photoHelp(o,p,photos,spec)}</div><p class="px-quiet">Choisissez des fichiers JPG, PNG ou WebP de bonne qualité, jusqu’à 12 Mo chacun. Évitez les captures d’écran et les photos déjà très compressées. Votre sélection reste privée.</p></div><fieldset class="px-photo-choice"><legend>Comment souhaitez-vous procéder ?</legend>${[['photos','Je choisis mes photos maintenant'],['later','Je vous transmettrai mes photos plus tard'],...(!spec.photos.album?[['none','Je préfère une création sans photo']]:[])].map(([v,label])=>`<label class="px-check"><input type="radio" name="photo_mode" value="${v}" ${mode===v?'checked':''} form="intake-step"><span>${label}</span></label>`).join('')}</fieldset>`;
       const category=Object.keys(spec.photos.categories)[0];
-      body+=post(`${base(o)}/photos`,hidden('upload_key',randomUUID())+`<label class="px-field"><span>Quelles photos souhaitez-vous ajouter ?</span><input type="file" name="file" accept="image/jpeg,image/png,image/webp" required data-intake-files></label>`+
-        (Object.keys(spec.photos.categories).length>1?`<label class="px-field"><span>Ces photos représentent</span><select name="category">${Object.entries(spec.photos.categories).map(([v,l])=>`<option value="${v}">${e(l)}</option>`).join('')}</select></label>`:hidden('category',category))+
+      body+=post(`${base(o)}/photos`,hidden('upload_key',randomUUID())+field('Quelles photos souhaitez-vous ajouter ?','file','','file','accept="image/jpeg,image/png,image/webp" required data-intake-files',{text:'Choisissez une ou plusieurs photos sur votre appareil. Elles restent privées pendant votre préparation. Vous pourrez les retirer de la sélection avant l’envoi.',example:'Choisissez des photos nettes, avec les visages visibles, plutôt que des captures d’écran.'})+
+        (Object.keys(spec.photos.categories).length>1?select('Ces photos représentent','category',spec.photos.categories,category,{text:'Ce classement nous aide à retrouver les photos de couple et les portraits individuels. Vous pouvez ajouter les photos de chaque catégorie en plusieurs fois.',example:'« Photos de nous deux » pour vos photos de couple ; « Portraits individuels » pour une photo de chacun.'}):hidden('category',category))+
         submit('Ajouter mes photos')+'<p role="status" data-intake-upload-status></p><progress hidden data-intake-upload-progress max="100" aria-label="Envoi de vos photos"></progress>','enctype="multipart/form-data" data-intake-upload');
       body+=`<div data-intake-gallery>${photoGallery(o,p,photos)}</div>`;
     }
