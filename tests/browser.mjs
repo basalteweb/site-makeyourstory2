@@ -168,7 +168,12 @@ try {
   assert.equal(await customer.frameLocator('iframe[title="Aperçu de la création"]').locator('h2').evaluate(el=>getComputedStyle(el).color),'rgb(153, 0, 102)');
   const publicPhotos=await customer.frameLocator('iframe[title="Aperçu de la création"]').locator('img').all();
   assert.equal(publicPhotos.length,3);
-  for(const image of publicPhotos)await image.evaluate(img=>img.decode());
+  for(const image of publicPhotos){
+    await image.scrollIntoViewIfNeeded();
+    let timeout;
+    try{await Promise.race([image.evaluate(img=>img.decode()),new Promise((_,reject)=>{timeout=setTimeout(()=>reject(Error('Une photo de la création ne se charge pas.')),6000);})]);}
+    finally{clearTimeout(timeout);}
+  }
   await customer.getByRole('link',{name:'Ma création',exact:true}).click();
   await customer.getByLabel('Je valide cette version de ma création.').check();
   await customer.getByRole('button',{name:'Valider cette version'}).click();

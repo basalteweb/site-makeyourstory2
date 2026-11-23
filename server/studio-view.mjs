@@ -9,7 +9,7 @@ const json=data=>JSON.stringify(data).replaceAll('<','\\u003c').replaceAll('\u20
 
 export function studioPage({order:o,project:p,versions,base,photos,data,canEdit,upload,saved}) {
   const url=`/admin/commandes/${o.id}/studio`;
-  const scripts=`<script type="application/json" id="mys-studio-data">${json(data)}</script><script defer src="/assets/studio.js?v=20261123-guide"></script>`;
+  const scripts=`<script type="application/json" id="mys-studio-data">${json(data)}</script><script defer src="/assets/studio.js?v=20261123-guide2"></script>`;
   const brief=briefFields[o.category].filter(([key])=>p.brief[key]).map(([key,label])=>`<dt>${e(label)}</dt><dd class="px-text">${e(p.brief[key])}</dd>`).join('');
   const project=panel('Le projet de '+o.client_name,`<p>${e(o.product_name)} · ${e(ref(o))}</p>${brief?`<details><summary>Consulter les informations transmises</summary><dl class="px-facts">${brief}</dl></details>`:empty('Le client n’a pas encore transmis sa préparation. Vous pouvez commencer une ébauche et retrouver ses éléments ici plus tard.')}<p>${btn('Ouvrir les éléments du client',`/admin/commandes/${o.id}/elements`,true)}</p>`);
   const outline=`<ol class="px-studio-steps" aria-label="Étapes de conception">${steps.map(([key,label],i)=>`<li>${base?`<button type="button" data-studio-step="${key}"><span>${i+1}</span>${label}</button>`:`<span${i===0?' aria-current="step"':''}>${i+1}. ${label}</span>`}</li>`).join('')}</ol>`;
