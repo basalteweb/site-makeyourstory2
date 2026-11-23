@@ -16,6 +16,7 @@ import { mediaStore } from './media.mjs';
 import { companySettings } from './projects.mjs';
 import { studioRoutes } from './studio.mjs';
 import { guestConversations } from './guest-messages.mjs';
+import { professionalPortal, adminProfessionals } from './professionals.mjs';
 import { escapeHtml as e, formProblem, mediationDetails } from './ui.mjs';
 import { flushMail, pruneData } from './mail.mjs';
 
@@ -77,13 +78,15 @@ export async function createApp(config = configFrom()) {
   });
   app.use(express.urlencoded({extended:false,limit:'110kb',parameterLimit:125}));
   app.use(express.json({limit:'110kb'}));
-  app.use(['/espace','/admin','/retractation'],auth.load);
+  app.use(['/espace','/admin','/pro','/retractation'],auth.load);
   auth.register(app);
   const ctx = { db, auth, config, stripe, storage };
   commerce(app,ctx);
   clientPortal(app,ctx);
   adminPortal(app,ctx);
   studioRoutes(app,ctx);
+  professionalPortal(app,ctx);
+  adminProfessionals(app,ctx);
   guestRsvp(app,ctx);
   guestConversations(app,ctx);
   invitationRoutes(app,ctx);

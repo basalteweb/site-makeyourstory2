@@ -43,16 +43,20 @@ for(const [name,adults,children,attending,message] of [['Émilie & Antoine',2,1,
 for(const name of ['Émilie & Antoine','Sophie & Maxime']) {const id=randomUUID();await db.query('insert into invitees (id,event_id,name,key_digest) values ($1,$2,$3,$4)',[id,event.id,name,digest(mac(cfg.secret,`invitee:${id}`))]);}
 await db.query("update responses set invitee_id=(select id from invitees where event_id=$1 and name='Émilie & Antoine') where event_id=$1 and name='Émilie & Antoine'",[event.id]);
 const sessions={};
+const professional=await customerByEmail(db,'professional.preview@example.com');
+await db.query('update customers set verified_at=now() where id=$1',[professional.id]);
+const proAccount=await one(db,"insert into professional_accounts (owner_id,company_name,contact_name,activity,status,approved_at) values ($1,'Atelier Lumière','Camille Photographe','Photographe','active',now()) returning id",[professional.id]);
+await db.query("insert into professional_projects (order_id,professional_id,request_key) values ($1,$2,$3)",[order.id,proAccount.id,randomUUID()]);
 const guide=await customerByEmail(db,'guide.preview@example.com');
 await db.query('update customers set verified_at=now() where id=$1',[guide.id]);
 const guideOrder=await one(db,`insert into orders (customer_id,product_id,product_name,category,amount,client_name,buyer_email,source,payment_status,paid_at,captured_amount) select $1,id,name,category,amount,'Camille & Julien',$2,'admin','paid',now(),amount from products where id='mariage' returning *`,[guide.id,guide.email]);
 await ensureProject(db,guideOrder.id);
-for(const [role,user] of [['client',client],['studio',admin],['guide',guide]]) {const key=token();sessions[role]=key;await db.query("insert into sessions (digest,customer_id,expires_at) values ($1,$2,now()+interval '4 hours')",[digest(key),user.id]);}
+for(const [role,user] of [['client',client],['studio',admin],['guide',guide],['pro',professional]]) {const key=token();sessions[role]=key;await db.query("insert into sessions (digest,customer_id,expires_at) values ($1,$2,now()+interval '4 hours')",[digest(key),user.id]);}
 const outer=express();
 outer.get('/__preview/:role',(req,res)=>{
   if(!sessions[req.params.role]) return res.redirect('/');
   res.cookie('mys_session',sessions[req.params.role],{httpOnly:true,sameSite:'lax',path:'/'});
-  res.redirect(req.params.role==='studio'?`/admin/commandes/${order.id}/studio`:'/espace/');
+  res.redirect(req.params.role==='studio'?`/admin/commandes/${order.id}/studio`:req.params.role==='pro'?'/pro/':'/espace/');
 });
 outer.get('/__preview',(req,res)=>res.type('html').send(`<html lang="fr"><title>Prévisualisation MakeYourStory</title><h1>MakeYourStory · Démonstration privée</h1><p>Données fictives uniquement.</p><p><a href="/__preview/guide">Préparation guidée</a></p><p><a href="/__preview/client">Espace client</a></p><p><a href="/__preview/studio">Studio de création</a></p><p><a href="/invitation/${share}/">Invitation</a></p></html>`));
 outer.use(app);

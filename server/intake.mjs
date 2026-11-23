@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { assert, checked, dateValue, HttpError, integer, privatePage, uuid, value } from './common.mjs';
+import { assert, checked, dateValue, HttpError, integer, privatePage, uuid, value, readyOrder } from './common.mjs';
 import { addHistory, many, one } from './db.mjs';
 import { limited } from './auth.mjs';
 import { mediaUpload, storeCustomerFile } from './media.mjs';
@@ -12,7 +12,7 @@ const base=o=>`/espace/commandes/${o.id}/preparer`;
 const url=(o,key)=>base(o)+(key?`?etape=${encodeURIComponent(key)}`:'');
 const merged=p=>({...p.brief,...p.intake?.draft});
 const revision=p=>Number(p.intake?.revision||0);
-const writable=(o,p)=>o.paid_at && o.payment_status!=='refunded' && p.status!=='archived';
+const writable=(o,p)=>readyOrder(o) && p.status!=='archived';
 const currentPhotos=async(db,p)=>many(db,"select id,name,category,media_type,confirmed_at from files where project_id=$1 and message_id is null and category in ('photos','couple','portraits') and media_type in ('image/jpeg','image/png','image/webp') order by created_at,id",[p.id]);
 const selectedPhotos=(p,photos)=>photos.filter(f=>!(p.intake?.excluded||[]).includes(f.id));
 

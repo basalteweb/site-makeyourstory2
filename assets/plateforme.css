@@ -193,6 +193,7 @@
 .px-studio-reference details[open]>summary::after{content:'−'}
 .px-studio-reference summary:focus-visible{outline:3px solid #e8afcc;outline-offset:-4px;border-radius:14px}
 .px-studio-reference-count{margin-left:auto;font-size:13px;font-weight:400;color:#e6b6cf;white-space:nowrap}
+.px-pro-intro{padding:30px 0 38px;max-width:780px}.px-pro-intro h2{font-size:clamp(38px,5vw,66px);line-height:1.08;margin:0 0 22px}.px-pro-intro>p:not(.eyebrow){font-size:18px;line-height:1.7;color:#dec9d7}.px-pro-intro .button{margin-top:10px}.px-pro-client{border:1px solid var(--portal-border);border-radius:15px;padding:22px;background:#251b27}.px-pro-client h3{font-size:30px;margin:0 0 15px}.px-pro-client p{overflow-wrap:anywhere}.px-pro-delegation{border-top:1px solid var(--portal-border);padding:24px 0}.px-pro-delegation h3{font-size:29px;line-height:1.25}
 .px-studio-reference-content{padding:0 20px 18px;max-height:430px;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
 .px-studio-reference-content>p{font-size:14px;line-height:1.6;margin:0 0 14px}
 .px-studio-reference-content .px-field{margin-bottom:16px}
@@ -214,3 +215,5 @@
   .px-studio-reference-count{font-size:12px}
   .px-studio-reference-content{padding:0 15px 15px;max-height:45vh}
 }
+
+.px-pro-readonly{border:0;padding:0;margin:0;min-width:0}

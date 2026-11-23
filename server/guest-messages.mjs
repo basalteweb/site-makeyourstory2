@@ -1,10 +1,10 @@
 import { randomUUID } from 'node:crypto';
-import { assert, digest, privatePage, uuid, validToken, value } from './common.mjs';
+import { assert, digest, privatePage, uuid, validToken, value, readyOrder } from './common.mjs';
 import { one, many } from './db.mjs';
 import { limited } from './auth.mjs';
 import { publicProject } from './rsvp.mjs';
 import { clientMail, editableProject, orderFor, projectFor } from './projects.mjs';
-import { adminNav, clientNav } from './portal.mjs';
+import { adminNav, clientNav, professionalNav } from './portal.mjs';
 import { answerList } from './experience.mjs';
 import { area, badge, btn, empty, escapeHtml as e, hidden, page, panel, post, ref, submit, time } from './ui.mjs';
 
@@ -55,12 +55,13 @@ export function guestConversations(router,{db,config,auth}) {
     res.redirect(303,`/invitation/${saved.event.share_key}/reponse/conversation?cle=${saved.key}`);
   });
 
-  for(const admin of [false,true]) {
-    const base=admin?'/admin/commandes':'/espace/commandes';
+  for(const scope of [false,true,'professional']) {
+    const admin=scope!==false;
+    const base=scope==='professional'?'/pro/projets':admin?'/admin/commandes':'/espace/commandes';
     const path=`${base}/:id/invites/messages`;
-    const guard=admin?[auth.require,auth.admin]:[auth.require];
+    const guard=scope==='professional'?[auth.require,auth.professional]:admin?[auth.require,auth.admin]:[auth.require];
     const context=async(req,tx=db,write=false)=>{
-      const order=await orderFor(tx,req.params.id,req.user,admin);
+      const order=await orderFor(tx,req.params.id,req.user,scope);
       const project=write?await editableProject(tx,order,true):await projectFor(tx,order);
       const responseId=uuid(req.method==='POST'?req.body.response:req.query.reponse);
       const response=assert(await one(tx,'select r.* from responses r join events e on r.event_id=e.id where e.project_id=$1 and r.id=$2',[project.id,responseId]),404,'Conversation introuvable.');
@@ -73,8 +74,8 @@ export function guestConversations(router,{db,config,auth}) {
         await tx.query('update guest_messages set read_at=now() where response_id=$1 and not from_organizer and read_at is null',[response.id]);
         await tx.query('update responses set organizer_read_at=now() where id=$1',[response.id]);
       });
-      const canWrite=order.paid_at && order.payment_status!=='refunded' && project.status!=='archived';
-      res.send(page(`Échange avec ${response.name}`,(admin?adminNav:clientNav)(order,'invites')+panel('Réponse de l’invité',`<p>${badge(response.attending?'Présent':'Absent')}</p><p class="px-text">${e(response.message)}</p>${answerList(response.answers)}`)+
+      const canWrite=readyOrder(order) && (!order.professional_mode||order.professional_mode==='autonomous') && project.status!=='archived';
+      res.send(page(`Échange avec ${response.name}`,(scope==='professional'?professionalNav:admin?adminNav:clientNav)(order,'invites')+panel('Réponse de l’invité',`<p>${badge(response.attending?'Présent':'Absent')}</p><p class="px-text">${e(response.message)}</p>${answerList(response.answers)}`)+
         panel('Conversation privée',thread(rows)+(canWrite?composer(`${base}/${order.id}/invites/messages`,hidden('response',response.id)):'')+`<p class="px-quiet">L’invité retrouve votre réponse avec son lien personnel. Il peut actualiser la conversation pour la lire.</p>`)+
         btn('Revenir à mes invités',`${base}/${order.id}/invites`,true),{user:req.user,wide:true,eyebrow:ref(order)}));
     });

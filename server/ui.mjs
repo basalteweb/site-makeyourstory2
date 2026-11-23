@@ -6,7 +6,7 @@ export const time = (value) => value ? new Intl.DateTimeFormat('fr-FR', { dateSt
 export const day = (value) => value ? String(value instanceof Date ? value.toISOString() : value).slice(0, 10).split('-').reverse().join('/') : '—';
 export const dateInputValue = (value) => value instanceof Date ? value.toISOString().slice(0, 10) : value || '';
 export const ref = (order) => `MYS-${order.number}`;
-export const paymentNames = { pending: 'En attente', failed: 'Refusé', abandoned: 'Abandonné', paid: 'Payé', partial_refund: 'Remboursé en partie', refunded: 'Remboursé' };
+export const paymentNames = { pending: 'En attente', failed: 'Refusé', abandoned: 'Abandonné', paid: 'Payé', partial_refund: 'Remboursé en partie', refunded: 'Remboursé', included:'Accompagnement professionnel' };
 export const projectNames = { confirmed: 'Commande confirmée', waiting_details: 'En attente de vos éléments', received: 'Éléments reçus', in_progress: 'Création en cours', first_version: 'Première version disponible', awaiting_approval: 'En attente de votre validation', revisions: 'Ajustements en cours', finalized: 'Création finalisée', published: 'Création publiée', archived: 'Création archivée' };
 
 export const btn = (label, href, ghost = false) => `<a class="button ${ghost ? 'button--ghost' : 'button--pink'}" href="${e(href)}">${e(label)}</a>`;
@@ -52,10 +52,10 @@ export function page(title, content, options = {}) {
   const { eyebrow = '', user, wide = false, compact = false, immersive = false } = options;
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive"><title>${e(title)} · MakeYourStory</title>
-  <link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/plateforme.css?v=20261123-reponses"><script defer src="/assets/plateforme.js?v=20261123-studio"></script></head>
+  <link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/plateforme.css?v=20261123-pro"><script defer src="/assets/plateforme.js?v=20261123-studio"></script></head>
   <body class="px-body${immersive?' px-invitation-body':''}"><a class="skip" href="#contenu">Aller au contenu</a>${immersive?'':`<header class="px-header"><div class="px-wrap px-top">
   <a href="/" class="wordmark" aria-label="MakeYourStory, accueil"><span class="mark" aria-hidden="true">M</span><span><span class="wordmark-title">MAKE YOUR STORY</span><span class="wordmark-sub">VOS HISTOIRES PERSONNALISÉES</span></span></a>
-  <nav class="px-nav" aria-label="Navigation principale">${user?'':'<a href="/tarifs.html">Tarifs</a>'}${user?.admin?'<a href="/admin/">Administration</a>':'<a href="/espace/?accueil=1">Mon espace</a>'}${user ? post('/espace/deconnexion', '<button class="px-link" type="submit">Déconnexion</button>') : ''}</nav>
+   <nav class="px-nav" aria-label="Navigation principale">${user?'':'<a href="/tarifs.html">Tarifs</a>'}${user?.admin?'<a href="/admin/">Administration</a>':user?.space==='pro'?'<a href="/pro/">Espace professionnel</a>':'<a href="/espace/?accueil=1">Mon espace</a>'}${user ? post('/espace/deconnexion', '<button class="px-link" type="submit">Déconnexion</button>') : ''}</nav>
   </div></header>`}<main id="contenu" class="px-wrap ${wide ? 'px-wide' : ''} ${compact ? 'px-compact' : ''}">
   ${immersive?'':`<div class="px-intro">${eyebrow ? `<p class="eyebrow">${e(eyebrow)}</p>` : ''}<h1>${e(title)}</h1></div>`}${content}</main>
   <footer class="px-footer"><div class="px-wrap"><span>Une histoire signée MakeYourStory</span><a href="/contact.html">Contact</a><a href="/mentions-legales.html">Mentions légales</a>${immersive?'':'<a href="/cgv.html">CGV</a>'}<a href="/confidentialite.html">Confidentialité</a></div></footer></body></html>`;

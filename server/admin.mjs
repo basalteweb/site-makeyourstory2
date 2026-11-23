@@ -4,7 +4,7 @@ import { adminBase, adminNav, clientBase, historyPanel, orderDocuments, orderOve
 import { companySettings, orderFor } from './projects.mjs';
 import { area, badge, btn, check, empty, escapeHtml as e, euro, field, hidden, links, page, panel, paymentNames, post, projectNames, ref, select, submit, time } from './ui.mjs';
 
-const entries = [['Tableau de bord','/admin/'],['Commandes',adminBase],['Studio de création','/admin/studio'],['Clients','/admin/clients'],['Demandes','/admin/demandes'],['Notifications','/admin/notifications'],['Paramètres','/admin/parametres']];
+const entries = [['Tableau de bord','/admin/'],['Commandes',adminBase],['Studio de création','/admin/studio'],['Professionnels','/admin/professionnels'],['Clients','/admin/clients'],['Demandes','/admin/demandes'],['Notifications','/admin/notifications'],['Paramètres','/admin/parametres']];
 const menu = (route) => links(entries.map(([title,path])=>[title,path,route===path]));
 const resultLimit = 200;
 
@@ -13,7 +13,7 @@ export function adminPortal(router,ctx) {
   const guard = [auth.require,auth.admin];
   const dashboard = (req,res,title,route,content) => res.send(page(title,menu(route)+content,{user:req.user,wide:true}));
   const ordersTable = (orders) => orders.length ? `<div class="px-table-wrap"><table><thead><tr><th>Référence</th><th>Client</th><th>Création</th><th>Montant</th><th>Paiement</th><th>Avancement</th></tr></thead><tbody>
-    ${orders.map(o=>`<tr><td><a class="px-link" href="${adminBase}/${o.id}">${e(ref(o))}</a><br>${e(time(o.created_at))}</td><td>${e(o.client_name)}<br>${e(o.email || o.buyer_email)}</td><td>${e(o.product_name)}</td><td>${euro(o.amount)}</td><td>${badge(paymentNames[o.payment_status])}</td><td>${e(projectNames[o.project_status])||'—'}</td></tr>`).join('')}</tbody></table></div>` : empty('Aucune commande à afficher.');
+    ${orders.map(o=>`<tr><td><a class="px-link" href="${adminBase}/${o.id}">${e(ref(o))}</a><br>${e(time(o.created_at))}</td><td>${e(o.client_name)}<br>${e(o.email || o.buyer_email)}</td><td>${e(o.product_name)}</td><td>${o.source==='professional'?'Projet PRO':euro(o.amount)}</td><td>${badge(paymentNames[o.payment_status])}</td><td>${e(projectNames[o.project_status])||'—'}</td></tr>`).join('')}</tbody></table></div>` : empty('Aucune commande à afficher.');
   const products = () => many(db,'select * from products order by amount,name');
   const choices = (p) => Object.fromEntries(p.map(o=>[o.id,`${o.name} · ${euro(o.amount)}`]));
   router.get('/admin/',...guard,async(req,res)=>{
@@ -85,7 +85,7 @@ export function adminPortal(router,ctx) {
     ]);
     const path = `${adminBase}/${o.id}`;
     const existing = o.stripe_session_id || o.stripe_pi_id;
-    const sync = post(`${path}/stripe`,existing ? submit('Vérifier auprès de Stripe') : field('Référence de la transaction MakeYourStory','payment','','text','required maxlength="160"')+check('J’ai vérifié le produit, le client et le paiement.','confirm',false,'required')+submit('Associer un paiement'));
+    const sync = o.source==='professional'?'':post(`${path}/stripe`,existing ? submit('Vérifier auprès de Stripe') : field('Référence de la transaction MakeYourStory','payment','','text','required maxlength="160"')+check('J’ai vérifié le produit, le client et le paiement.','confirm',false,'required')+submit('Associer un paiement'));
     const eventList = events.length?`<ul class="px-history">${events.map(event=>`<li>${e(event.kind)} <time>${e(time(event.occurred_at))}</time></li>`).join('')}</ul>`:empty('Aucune notification Stripe liée à la commande.');
     const billing = o.paid_at && o.project_id && !o.external_invoice_url && !docs.note && docs.invoices.length===0 ? `<details><summary>Document de facturation</summary>
       ${post(`${path}/note`,check('J’ai vérifié qu’aucune note ou facture n’a déjà été émise.','confirm',false,'required')+submit('Émettre la note de prestation'))}
@@ -102,6 +102,7 @@ export function adminPortal(router,ctx) {
   });
   router.post(`${adminBase}/:id/stripe`,...guard,async(req,res)=>{
     const o = await orderFor(db,req.params.id,req.user,true);
+    assert(o.source!=='professional',409,'Un projet professionnel ne doit pas être rapproché d’un paiement client.');
     let payment = o.stripe_session_id || o.stripe_pi_id;
     if (!payment) {
       assert(checked(req.body.confirm),400,'Vérifiez les informations de la transaction.');

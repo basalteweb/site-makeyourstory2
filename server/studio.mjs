@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { zipSync } from 'fflate';
-import { assert, integer, privatePage, token, uuid, validToken, value } from './common.mjs';
+import { assert, integer, privatePage, token, uuid, validToken, value, readyOrder } from './common.mjs';
 import { addHistory, many, one } from './db.mjs';
 import { limited } from './auth.mjs';
 import { deployArchive, mediaUpload, storeCustomerFile } from './media.mjs';
@@ -15,7 +15,6 @@ import { studioPage } from './studio-view.mjs';
 import { btn, empty, escapeHtml as e, field, hidden, page, panel, post, ref, submit } from './ui.mjs';
 
 const MB=1024*1024;
-const studioBase=(o)=>`/admin/commandes/${o.id}/studio`;
 
 async function loadVersion(db,storage,project,chosen) {
   const version=assert(await one(db,`select * from versions where project_id=$1 ${chosen?'and id=$2':''} order by created_at desc limit 1`,chosen?[project.id,uuid(chosen)]:[project.id]),404,'Importez un dossier de création pour ouvrir le studio.');
@@ -34,25 +33,27 @@ async function loadVersion(db,storage,project,chosen) {
 
 const studioPhotos=(db,p)=>many(db,"select id,name,category,media_type,size,source_file_id from files where project_id=$1 and confirmed_at is not null and media_type in ('image/jpeg','image/png','image/webp') and (category='studio' or $2::uuid[] is null or id=any($2::uuid[]) or source_file_id=any($2::uuid[]) or source_file_id in (select id from files where project_id=$1 and category='studio')) order by created_at desc",[p.id,Array.isArray(p.intake?.photo_ids)?p.intake.photo_ids:null]);
 const photoData=photos=>photos.map(({id,name,source_file_id,category})=>({id,name,retouched:Boolean(source_file_id),operator:category==='studio'}));
-const photoUpload=o=>post(`${studioBase(o)}/photos`,hidden('upload_key',randomUUID())+field('Ajouter des photos à la bibliothèque','file','','file','accept="image/jpeg,image/png,image/webp" multiple required data-studio-files',{text:'Choisissez plusieurs photos à la fois. Elles rejoignent la bibliothèque privée de ce projet ; vous déciderez ensuite où les placer. JPG, PNG ou WebP, 12 Mo maximum par photo.',example:'Un portrait pour la couverture, puis plusieurs souvenirs pour la galerie.'})+submit('Ajouter mes photos')+'<p role="status" data-studio-upload-status></p><progress hidden data-studio-upload-progress max="100" aria-label="Envoi des photos du studio"></progress>','enctype="multipart/form-data" data-studio-upload');
+const photoUpload=(o,base)=>post(`${base}/photos`,hidden('upload_key',randomUUID())+field('Ajouter des photos à la bibliothèque','file','','file','accept="image/jpeg,image/png,image/webp" multiple required data-studio-files',{text:'Choisissez plusieurs photos à la fois. Elles rejoignent la bibliothèque privée de ce projet ; vous déciderez ensuite où les placer. JPG, PNG ou WebP, 12 Mo maximum par photo.',example:'Un portrait pour la couverture, puis plusieurs souvenirs pour la galerie.'})+submit('Ajouter mes photos')+'<p role="status" data-studio-upload-status></p><progress hidden data-studio-upload-progress max="100" aria-label="Envoi des photos du studio"></progress>','enctype="multipart/form-data" data-studio-upload');
 
-export function studioRoutes(router,ctx) {
+export function studioRoutes(router,ctx,options={}) {
   const {db,config,storage,auth}=ctx;
-  const guard=[auth.require,auth.admin];
-  const path='/admin/commandes/:id/studio';
+  const {scope=true,nav=adminNav,ordersBase='/admin/commandes',home='/admin/studio'}=options;
+  const guard=options.guard||[auth.require,auth.admin];
+  const studioBase=o=>`${ordersBase}/${o.id}/studio`;
+  const path=`${ordersBase}/:id/studio`;
   // Short-lived, bounded previews contain no durable files or customer notification.
-  const previews=new Map();
-  const previewUrl=(project,base,prepared)=>{
+  const previews=ctx.studioPreviews||(ctx.studioPreviews=new Map());
+  const previewUrl=(project,base,prepared,professional=null)=>{
     for(const [key,item] of previews) if(item.expires<=Date.now()) previews.delete(key);
     const same=[...previews].filter(([,item])=>item.project===project.id);
     while(same.length>=4) previews.delete(same.shift()[0]);
     while(previews.size>=40) previews.delete(previews.keys().next().value);
     const key=token();
-    previews.set(key,{...prepared,project:project.id,version:base.version.id,assets:studioAssets(base,prepared),expires:Date.now()+15*60000});
+    previews.set(key,{...prepared,project:project.id,professional,version:base.version.id,assets:studioAssets(base,prepared),expires:Date.now()+15*60000});
     return `/contenus/studio/${key}/index.html`;
   };
   const context=async(req,database=db,write=false)=>{
-    const order=await orderFor(database,req.params.id,req.user,true);
+    const order=await orderFor(database,req.params.id,req.user,scope);
     const project=write?await editableProject(database,order,true):await projectFor(database,order);
     return {order,project};
   };
@@ -61,31 +62,32 @@ export function studioRoutes(router,ctx) {
     await limited(db,req,config,'studio',360,900,req.user.id);next();
   };
 
-  router.get('/admin/studio',...guard,async(req,res)=>{
+  router.get(home,...guard,async(req,res)=>{
     const rows=await many(db,`select o.id,o.number,o.client_name,o.product_name,p.status,
       (select count(*) from versions v where v.project_id=p.id) as versions
-      from projects p join orders o on o.id=p.order_id where p.status<>'archived' and o.paid_at is not null and o.payment_status<>'refunded'
-      order by p.updated_at desc limit 200`);
-    res.send(page('Studio de création',`<p class="px-lead">Vos créations sur mesure, leurs médias et leurs versions, au même endroit.</p><p>${btn('Revenir au centre de contrôle','/admin/',true)}</p>`
-      +panel('Choisir un projet',rows.length?`<div class="px-card-grid">${rows.map(o=>`<article><p class="eyebrow">${e(ref(o))}</p><h3>${e(o.client_name)}</h3><p>${e(o.product_name)} · ${e(o.versions)} version(s)</p>${btn('Ouvrir le studio',studioBase(o))}</article>`).join('')}</div>`:empty('Aucune commande réglée à préparer. Les futurs projets apparaîtront ici après confirmation du paiement.')),{user:req.user,wide:true}));
+      from projects p join orders o on o.id=p.order_id left join professional_projects pp on pp.order_id=o.id
+      where p.status<>'archived' and (o.paid_at is not null or o.source='professional') and o.payment_status<>'refunded'
+      and ($1::uuid is null or (pp.professional_id=$1 and pp.mode='autonomous')) order by p.updated_at desc limit 200`,[scope==='professional'?req.user.professional_id:null]);
+    res.send(page('Studio de création',`<p class="px-lead">Vos créations sur mesure, leurs médias et leurs versions, au même endroit.</p><p>${btn(scope==='professional'?'Revenir à mes projets':'Revenir au centre de contrôle',scope==='professional'?'/pro/':'/admin/',true)}</p>`
+      +panel('Choisir un projet',rows.length?`<div class="px-card-grid">${rows.map(o=>`<article><p class="eyebrow">${e(ref(o))}</p><h3>${e(o.client_name)}</h3><p>${e(o.product_name)} · ${e(o.versions)} version(s)</p>${btn('Ouvrir le studio',studioBase(o))}</article>`).join('')}</div>`:empty(scope==='professional'?'Créez un projet en autonomie pour le retrouver dans votre studio. Les créations confiées à MakeYourStory restent accessibles depuis Mes projets.':'Aucune commande réglée à préparer. Les futurs projets apparaîtront ici après confirmation du paiement.')),{user:req.user,wide:true}));
   });
   router.get(path,...guard,async(req,res)=>{
     const {order:o,project:p}=await context(req);
     const versions=await many(db,'select id,label,created_at from versions where project_id=$1 order by created_at desc',[p.id]);
     if(req.query.version) assert(versions.some(v=>v.id===req.query.version),404,'Version introuvable.');
-    const canEdit=Boolean(o.paid_at && o.payment_status!=='refunded' && p.status!=='archived');
-    if(p.status==='archived') return res.send(page('Studio de création',adminNav(o,'studio')+panel('Création archivée',`<p>Ce projet est conservé en lecture seule.</p><ul class="px-list">${versions.map(v=>`<li>${e(v.label)} ${btn('Télécharger le ZIP',`${studioBase(o)}/export.zip?version=${v.id}`,true)}</li>`).join('')}</ul>`),{user:req.user,wide:true}));
+    const canEdit=Boolean(readyOrder(o) && (!o.professional_mode||o.professional_mode==='autonomous') && p.status!=='archived');
+    if(p.status==='archived') return res.send(page('Studio de création',nav(o,'studio')+panel('Création archivée',`<p>Ce projet est conservé en lecture seule.</p><ul class="px-list">${versions.map(v=>`<li>${e(v.label)} ${btn('Télécharger le ZIP',`${studioBase(o)}/export.zip?version=${v.id}`,true)}</li>`).join('')}</ul>`),{user:req.user,wide:true}));
     const photos=await studioPhotos(db,p);
     const selected=req.query.version || (versions.some(v=>v.id===p.studio_draft?.version)?p.studio_draft.version:versions[0]?.id);
     const base=selected?await loadVersion(db,storage,p,selected):null;
     const draft={...(p.studio_draft?.version===base?.version.id?p.studio_draft:{}),revision:Number(p.studio_draft?.revision||0)};
-    const src=base?previewUrl(p,base,await prepareSettings(db,p,base,draft.settings||{})):'';
+    const src=base?previewUrl(p,base,await prepareSettings(db,p,base,draft.settings||{}),scope==='professional'?req.user.professional_id:null):'';
     const event=await one(db,'select enabled,settings_saved_at from events where project_id=$1',[p.id]);
     const data={base:studioBase(o),version:base?.version.id,preview:src,user:req.user,draft,event,
       texts:base?.model.texts.map(({key,label,text})=>({key,label,text}))||[],colors:base?.model.colors.map(({key,label,color,path})=>({key,label,color,path}))||[],
       images:base?.images.map(({key,path})=>({key,path}))||[],placements:base?.model.placements.map(({key,label,src,fit,position})=>({key,label,src,fit,position}))||[],motions:base?.model.motions.map(({key,label,mode,duration})=>({key,label,mode,duration}))||[],
       photos:photoData(photos),canEdit};
-    res.send(studioPage({order:o,project:p,versions,base,photos,data,canEdit,upload:photoUpload(o),saved:req.query.enregistre==='1'}));
+    res.send(studioPage({order:o,project:p,versions,base,photos,data,canEdit,upload:photoUpload(o,studioBase(o)),nav,orderBase:ordersBase,saved:req.query.enregistre==='1'}));
   });
 
   router.post(`${path}/composer`,...guard,editable,async(req,res)=>{
@@ -123,7 +125,7 @@ export function studioRoutes(router,ctx) {
     const {project}=await context(req);
     const base=await loadVersion(db,storage,project,req.body.version);
     const prepared=await prepareSettings(db,project,base,req.body.settings || {});
-    res.json({url:previewUrl(project,base,prepared)});
+    res.json({url:previewUrl(project,base,prepared,scope==='professional'?req.user.professional_id:null)});
   });
   router.post(`${path}/brouillon`,...guard,editable,async(req,res)=>{
     const saved=await db.transaction(async tx=>{
@@ -225,6 +227,7 @@ export function studioRoutes(router,ctx) {
     assert(validToken(req.params.key),404,'Aperçu introuvable.');
     const item=previews.get(req.params.key);
     assert(item && item.expires>Date.now(),404,'Cet aperçu a expiré. Actualisez-le depuis le studio.');
+    if(item.professional) assert(await one(db,"select id from professional_accounts where id=$1 and status='active' and (access_until is null or access_until>now())",[item.professional]),404,'Cet aperçu professionnel n’est plus disponible.');
     assert(await one(db,'select id from projects where id=$1 and status<>\'archived\'',[item.project]),404,'Ce projet est archivé.');
     const name=req.params.asset.join('/');
     const asset=assert(item.assets.find(a=>a.path===name),404,'Fichier introuvable.');

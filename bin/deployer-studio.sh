@@ -31,6 +31,9 @@ try {
   await one(db,'select settings_saved_at from events limit 1');
   await one(db,'select client_upload_key from files limit 1');
   await one(db,'select read_at from guest_messages limit 1');
+  await one(db,'select id,status,access_until from professional_accounts limit 1');
+  await one(db,'select professional_id,mode from professional_projects limit 1');
+  await one(db,'select destination from login_tokens limit 1');
   console.log('Migrations du studio et des invités vérifiées.');
 } catch(error) {
   console.error('Migration interrompue',error.code||error.name);

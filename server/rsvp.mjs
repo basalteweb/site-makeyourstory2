@@ -140,11 +140,11 @@ export function guestRsvp(router, { db, config }) {
   });
 }
 
-export function guestManagement(router, { db, config }, base, guard, admin = false, nav = () => '') {
+export function guestManagement(router, { db, config }, base, guard, admin = false, nav = () => '', scope=admin) {
   const path = `${base}/:id/invites`;
   const href = (o) => `${base}/${o.id}/invites`;
   const get = async (req, database = db, write = false) => {
-    const order = await orderFor(database, req.params.id, req.user, admin);
+    const order = await orderFor(database, req.params.id, req.user, scope);
     const project = write ? await editableProject(database, order, true) : await projectFor(database, order);
     return { order, project, event: await readEvent(database, project.id) };
   };
@@ -155,6 +155,8 @@ export function guestManagement(router, { db, config }, base, guard, admin = fal
     from responses where event_id=$1`, [eventId]);
   router.get(path, ...guard, async (req, res) => {
     const {order,project,event} = await get(req);
+    const readOnly=order.professional_mode==='delegated';
+    const writePost=(action,body,attr)=>post(action,readOnly?`<fieldset disabled class="px-pro-readonly">${body}</fieldset>`:body,attr);
     const view=['reponses','messages','liste','reglages','besoins'].includes(req.query.vue)?req.query.vue:'apercu';
     const q = value(req.query.q, 100);
     const filter = ['yes','no'].includes(req.query.statut) ? req.query.statut : '';
@@ -170,7 +172,7 @@ export function guestManagement(router, { db, config }, base, guard, admin = fal
     let editor = '';
     if (req.query.editer) {
       const row = assert(await one(db,'select * from responses where event_id=$1 and id=$2',[event.id,uuid(req.query.editer)]),404,'Réponse introuvable.');
-      editor = panel('Modifier la réponse', post(`${href(order)}/reponses`,hidden('id',row.id)+responseFields(event,row,true,invitees)+submit('Enregistrer la modification'), 'data-rsvp'));
+      editor = panel('Modifier la réponse', writePost(`${href(order)}/reponses`,hidden('id',row.id)+responseFields(event,row,true,invitees)+submit('Enregistrer la modification'), 'data-rsvp'));
     }
     const answered=invitees.length-Number(summary.missing);
     const rate=invitees.length?Math.round(answered/invitees.length*100):null;
@@ -179,10 +181,10 @@ export function guestManagement(router, { db, config }, base, guard, admin = fal
     const table = rows.length ? `<div class="px-table-wrap"><table><thead><tr><th>Invité</th><th>Présence</th><th>Participants</th><th>Dernière réponse</th><th>Notes</th><th>Gérer</th></tr></thead><tbody>
       ${rows.map((r)=>`<tr><td>${e(r.name)}</td><td>${badge(r.attending?'Présent':'Décline')}</td><td>${r.adults} adulte(s), ${r.children} enfant(s)</td><td>${e(time(r.updated_at))}</td>
         <td class="px-text">${e([r.companions,r.message,r.dietary,answerText(r.answers)].filter(Boolean).join('\n')) || '—'}</td><td><div class="button-row">${btn('Échanger',`${href(order)}/messages?reponse=${r.id}`,true)}${btn('Modifier',`${href(order)}?vue=reponses&editer=${r.id}`,true)}</div>
-        <details><summary>Supprimer</summary>${post(`${href(order)}/reponses/supprimer`,hidden('id',r.id)+check('Confirmer la suppression','confirm',false,'required')+submit('Supprimer la réponse',true))}</details></td></tr>`).join('')}
+        <details><summary>Supprimer</summary>${writePost(`${href(order)}/reponses/supprimer`,hidden('id',r.id)+check('Confirmer la suppression','confirm',false,'required')+submit('Supprimer la réponse',true))}</details></td></tr>`).join('')}
       </tbody></table></div>` : empty('Aucune réponse à afficher.');
     const share = project.published_version && project.share_key ? inviteRoute(project) : '';
-    const settingsForm = post(`${href(order)}/parametres`, `<div class="px-form-grid">${check('Accepter les réponses publiques','enabled',event.enabled)}
+    const settingsForm = writePost(`${href(order)}/parametres`, `<div class="px-form-grid">${check('Accepter les réponses publiques','enabled',event.enabled)}
       ${check('Recevoir un e-mail à chaque nouvelle réponse','notify',event.notify)}${check('Recueillir les noms des accompagnants','companions',event.companions)}
       ${check('Proposer les informations alimentaires facultatives','dietary',event.dietary)}
       ${field('Date de l’événement','event_date',dateInputValue(event.event_date),'date','',{text:'Le jour de l’événement. Cette date sert au calendrier des invités et à la clôture des réponses après l’événement.',example:'La date du mariage ou de la fête.'})}${field('Date limite de réponse','deadline',dateInputValue(event.deadline),'date','',{text:'Le dernier jour où vos invités pourront transmettre ou modifier leur réponse. Choisissez une date avant l’événement.',example:'Pour un mariage le 20 août, demander les réponses avant le 1er août.'})}
@@ -194,7 +196,7 @@ export function guestManagement(router, { db, config }, base, guard, admin = fal
       <p class="px-quiet">Ces informations accompagnent le calendrier et l’itinéraire. Indiquez les horaires et les consignes utiles dans les informations pratiques.</p>
       <details><summary>Questions personnalisées aux invités</summary>${questionEditor(event.questions||[])}</details>${submit('Enregistrer les paramètres')}`);
     const names = invitees.map(i=>`<li><span>${e(i.name)}</span>${badge(i.response_id?'Réponse reçue':'En attente')} ${share ? `<button type="button" class="px-link" data-copy="${e(`${config.origin}${share}?invite=${inviteeKey(config,i.id)}`)}">Copier l’invitation personnelle</button>` : ''}
-      ${post(`${href(order)}/liste/supprimer`,hidden('id',i.id)+submit('Retirer de la liste',true))}</li>`).join('');
+      ${writePost(`${href(order)}/liste/supprimer`,hidden('id',i.id)+submit('Retirer de la liste',true))}</li>`).join('');
     const tabs=links([['Vue d’ensemble',href(order),view==='apercu'],['Réponses',`${href(order)}?vue=reponses`,view==='reponses'],[`Messages${unread?` (${unread})`:''}`,`${href(order)}?vue=messages`,view==='messages'],['Réservations',`${href(order)}?vue=besoins`,view==='besoins'],['Liste des invités',`${href(order)}?vue=liste`,view==='liste'],['Réglages',`${href(order)}?vue=reglages`,view==='reglages']]);
     const groups=view==='besoins'?requestGroups(event.questions||[],await many(db,'select name,attending,answers from responses where event_id=$1 order by name',[event.id])):[];
     const needsPanel=panel('Besoins et réservations',`<p>Les demandes des participants, regroupées pour vous aider à préparer l’événement. Chaque ligne correspond à la réponse d’une personne ou d’un foyer.</p>${groups.length?groups.map(g=>`<section class="px-request-group"><h3>${e(g.label)}</h3>${g.kind==='quantity'?`<p><strong>${g.total}</strong> au total demandé(s)</p>`:Object.entries(g.choices).length?`<p>${Object.entries(g.choices).map(([label,n])=>`${e(label)} : ${n}`).join(' · ')}</p>`:''}<details><summary>Voir les ${g.rows.length} réponse(s)</summary><dl class="px-facts">${g.rows.map(r=>`<dt>${e(r.name)}</dt><dd>${e(r.answer)}</dd>`).join('')}</dl></details></section>`).join(''):empty('Les réponses à vos questions pratiques apparaîtront ici. Ajoutez vos questions dans Réglages pour préparer un brunch, une navette ou d’autres besoins.')}<p>${btn('Configurer les questions',`${href(order)}?vue=reglages`,true)} ${btn('Exporter toutes les réponses',`${href(order)}/export.csv`,true)}</p>`);
@@ -202,10 +204,10 @@ export function guestManagement(router, { db, config }, base, guard, admin = fal
     const messagePanel=panel(view==='messages'?'Les messages de vos invités':'Les derniers messages',conversations.length?`<div class="px-guest-messages">${conversations.slice(0,view==='messages'?200:3).map(c=>`<a href="${href(order)}/messages?reponse=${c.id}"><div><strong>${e(c.name)}</strong>${c.unread?badge('À lire'):''}<time>${e(time(c.last_date||c.updated_at))}</time></div><p>${e((c.last_message||c.message).slice(0,240))}</p><span class="px-quiet">${c.last_message&&c.from_organizer?'Votre dernier message':'Message de l’invité'}</span></a>`).join('')}</div>`:empty('Les petits mots et les questions de vos invités apparaîtront ici.'));
     const responsesPanel=panel('Qui vient ?',`<p>${summary.adults} adulte(s) · ${summary.children} enfant(s) · ${summary.declines} foyer(s) ne pourront pas venir.</p><p class="px-quiet">Réponses ${event.enabled?'ouvertes':'fermées'}${event.deadline?` jusqu’au ${day(event.deadline)}`:''}.</p><form action="${href(order)}" method="get" class="px-filter">${hidden('vue','reponses')}${field('Rechercher un invité','q',q,'search','maxlength="100"')}${select('Présence','statut',{'':'Toutes',yes:'Présents',no:'Refus'},filter)}${submit('Filtrer')}${btn('Exporter pour Excel',`${href(order)}/export.csv`,true)}</form>${table}`);
     const listPanel=panel('Votre liste d’invités', `${names ? `<ul class="px-list">${names}</ul>` : empty('Ajoutez une personne ou un foyer par invitation. Vous saurez ensuite qui a répondu et qui attend encore.')}
-      ${post(`${href(order)}/liste`,field('Prénom et nom','name','','text','required maxlength="120"',{text:'Ajoutez une personne ou un foyer qui donnera une seule réponse. Son lien personnel permettra de suivre sa réponse dans le taux affiché.',example:'Famille Martin, ou Camille Martin pour une réponse individuelle.'})+submit('Ajouter à la liste'))}
-      <details><summary>Ajouter plusieurs invités</summary>${post(`${href(order)}/liste/lot`,area('Un invité ou foyer par ligne','names','','required maxlength="8000"',{text:'Copiez votre liste en mettant une personne ou un foyer sur chaque ligne. Vous pourrez ensuite partager chaque lien personnel.',example:'Famille Martin\nCamille Durand\nJulien et Emma'})+'<p class="px-quiet">Jusqu’à 100 noms à la fois. Chaque personne ou foyer dispose de son propre lien de réponse, que vous partagez vous-même.</p>'+submit('Ajouter les invités'))}</details>`);
-    const manual=panel('Une réponse reçue autrement ?',`<details><summary>Saisir une réponse manuellement</summary>${post(`${href(order)}/reponses`,responseFields(event,{},true,invitees)+submit('Ajouter la réponse'),'data-rsvp')}</details>`);
-    res.send(page(admin?'Invités du client':'Mes invités',nav(order,'invites')+`<p class="px-lead">${admin?`Présences, réponses et messages des invités de ${e(order.client_name)}.`:'Qui vient ? Qui vous a écrit ? Tout est ici.'}</p>`+tabs+
+      ${writePost(`${href(order)}/liste`,field('Prénom et nom','name','','text','required maxlength="120"',{text:'Ajoutez une personne ou un foyer qui donnera une seule réponse. Son lien personnel permettra de suivre sa réponse dans le taux affiché.',example:'Famille Martin, ou Camille Martin pour une réponse individuelle.'})+submit('Ajouter à la liste'))}
+      <details><summary>Ajouter plusieurs invités</summary>${writePost(`${href(order)}/liste/lot`,area('Un invité ou foyer par ligne','names','','required maxlength="8000"',{text:'Copiez votre liste en mettant une personne ou un foyer sur chaque ligne. Vous pourrez ensuite partager chaque lien personnel.',example:'Famille Martin\nCamille Durand\nJulien et Emma'})+'<p class="px-quiet">Jusqu’à 100 noms à la fois. Chaque personne ou foyer dispose de son propre lien de réponse, que vous partagez vous-même.</p>'+submit('Ajouter les invités'))}</details>`);
+    const manual=panel('Une réponse reçue autrement ?',`<details><summary>Saisir une réponse manuellement</summary>${writePost(`${href(order)}/reponses`,responseFields(event,{},true,invitees)+submit('Ajouter la réponse'),'data-rsvp')}</details>`);
+    res.send(page(admin?'Invités du client':'Mes invités',nav(order,'invites')+(readOnly?'<p class="px-note">Projet confié à MakeYourStory : vous consultez les réponses et les réglages en lecture seule.</p>':'')+`<p class="px-lead">${admin?`Présences, réponses et messages des invités de ${e(order.client_name)}.`:'Qui vient ? Qui vous a écrit ? Tout est ici.'}</p>`+tabs+
       (view==='apercu'?ratePanel+`<div class="px-metrics">${cards.map(([label,n])=>`<div class="px-panel"><strong>${e(n)}</strong><span>${e(label)}</span></div>`).join('')}</div>`+messagePanel+responsesPanel:
        view==='messages'?messagePanel:view==='besoins'?needsPanel:view==='liste'?listPanel:view==='reglages'?panel('Vos préférences de réponse',settingsForm):responsesPanel+editor+manual),{user:req.user,wide:true}));
   });

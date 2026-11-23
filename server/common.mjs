@@ -1,6 +1,8 @@
 import { createHash, createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 import { resolve } from 'node:path';
 
+export const readyOrder=order=>Boolean((order.paid_at || order.source==='professional' && order.payment_status==='included') && order.payment_status!=='refunded');
+
 export class HttpError extends Error {
   constructor(status, message) {
     super(message);

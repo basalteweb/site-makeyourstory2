@@ -1,6 +1,6 @@
 import QRCode from 'qrcode';
 import { addHistory, many, one } from './db.mjs';
-import { assert, checked, privatePage, token, uuid, value } from './common.mjs';
+import { assert, checked, privatePage, token, uuid, value, readyOrder } from './common.mjs';
 import { archiveUpload, deployArchive, mediaUpload, sendPrivateFile, storeCustomerFile } from './media.mjs';
 import { adminMail, briefFields, clientMail, companySettings, editableProject, fileCategories, markProject, orderFor, parseBrief, projectFor } from './projects.mjs';
 import { guestManagement } from './rsvp.mjs';
@@ -11,21 +11,23 @@ import { area, badge, btn, check, day, dateInputValue, empty, escapeHtml as e, e
 
 export const clientBase = '/espace/commandes';
 export const adminBase = '/admin/commandes';
+export const professionalBase='/pro/projets';
 const navFor = (base, o, selected) => {
-  const admin=base===adminBase;
-  const entries = [['Commande', ''], ...(o.project_id ? [[admin?'Création du client':'Ma création','creation'],...(admin?[['Ouvrir le studio','studio']]:[]),[admin?'Éléments du client':'Ma préparation',admin?'elements':'preparer'],[admin?'Messages du client':'Échanges','messages'],[admin?'Invités du client':'Mes invités','invites']] : [])];
+  const admin=base===adminBase||base===professionalBase;
+  const entries = [[base===professionalBase?'Projet':'Commande', ''], ...(o.project_id ? [[admin?'Création du client':'Ma création','creation'],...(admin?[['Ouvrir le studio','studio']]:[]),[admin?'Éléments du client':'Ma préparation',admin?'elements':'preparer'],[admin?'Messages du client':'Échanges','messages'],[admin?'Invités du client':'Mes invités','invites']] : [])];
   return links(entries.map(([text,sub])=>[text,`${base}/${o.id}${sub ? `/${sub}` : ''}`,sub===selected]));
 };
 export const clientNav = (o, selected = '') => navFor(clientBase,o,selected);
 export const adminNav = (o, selected = '') => navFor(adminBase,o,selected);
+export const professionalNav=(o,selected='')=>navFor(professionalBase,o,selected);
 const activeShare = shareActive;
 const statusBadge = (status) => badge(projectNames[status] || paymentNames[status] || status);
-const acceptsChanges = (o, p) => Boolean(o.paid_at && o.payment_status !== 'refunded' && p.status !== 'archived');
+const acceptsChanges = (o, p) => Boolean(readyOrder(o) && (!o.professional_mode||o.professional_mode==='autonomous') && p.status !== 'archived');
 
 export function orderOverview(o, documents, base, admin) {
   const { note, invoices } = documents;
   const dl = `<dl class="px-facts"><dt>Référence</dt><dd>${e(ref(o))}</dd><dt>Date</dt><dd>${e(time(o.created_at))}</dd>
-    <dt>Création</dt><dd>${e(o.product_name)}</dd><dt>Montant TTC</dt><dd>${euro(o.amount)}</dd><dt>Paiement</dt><dd>${statusBadge(o.payment_status)}</dd>
+    <dt>Création</dt><dd>${e(o.product_name)}</dd><dt>${o.source==='professional'?'Accompagnement':'Montant TTC'}</dt><dd>${o.source==='professional'?'Projet confié par votre professionnel':euro(o.amount)}</dd><dt>Paiement</dt><dd>${statusBadge(o.payment_status)}</dd>
     ${admin?`<dt>Encaissé</dt><dd>${euro(o.captured_amount)}</dd>`:''}${o.refunded_amount ? `<dt>Remboursé</dt><dd>${euro(o.refunded_amount)}</dd>` : ''}
     <dt>Client</dt><dd>${e(o.client_name)}</dd><dt>E-mail d’accès</dt><dd>${e(o.access_email)}</dd>
     ${o.billing_address ? `<dt>Adresse de facturation</dt><dd>${e(o.billing_address)}</dd>` : ''}
@@ -72,7 +74,7 @@ export function clientPortal(router, ctx) {
       (select count(*) from responses r join events ev on ev.id=r.event_id where ev.project_id=p.id and r.message<>'' and r.organizer_read_at is null)
        +(select count(*) from guest_messages gm join responses r on r.id=gm.response_id join events ev on ev.id=r.event_id where ev.project_id=p.id and not gm.from_organizer and gm.read_at is null) as guest_unread
       from orders o left join projects p on o.id=p.order_id where o.customer_id=$1 order by o.created_at desc`,[req.user.id]);
-    if(!req.user.admin && req.query.accueil!=='1' && orders.length===1 && orders[0].paid_at && orders[0].payment_status!=='refunded' && ['confirmed','waiting_details'].includes(orders[0].status) && !orders[0].intake?.submitted_at) return res.redirect(303,`${clientBase}/${orders[0].id}/preparer`);
+    if(!req.user.admin && req.query.accueil!=='1' && orders.length===1 && readyOrder(orders[0]) && ['confirmed','waiting_details'].includes(orders[0].status) && !orders[0].intake?.submitted_at) return res.redirect(303,`${clientBase}/${orders[0].id}/preparer`);
     const history = await many(db,`select t.* from timeline t join orders o on o.id=t.order_id
       where o.customer_id=$1 and not t.internal order by t.created_at desc limit 6`, [req.user.id]);
     const cards=dashboardCards(orders);
@@ -92,7 +94,7 @@ export function clientPortal(router, ctx) {
   });
   router.get(`${clientBase}/:id`, auth.require, async (req,res) => {
     const o = await orderFor(db,req.params.id,req.user);
-    if(o.project_id && o.paid_at && o.payment_status!=='refunded' && ['confirmed','waiting_details'].includes(o.project_status) && req.query.details!=='1') return res.redirect(303,`${clientBase}/${o.id}/preparer`);
+    if(o.project_id && readyOrder(o) && ['confirmed','waiting_details'].includes(o.project_status) && req.query.details!=='1') return res.redirect(303,`${clientBase}/${o.id}/preparer`);
     const [history,docs] = await Promise.all([many(db,'select * from timeline where order_id=$1 and not internal order by created_at desc limit 100',[o.id]),orderDocuments(db,o)]);
     res.send(page(`${o.product_name} · ${ref(o)}`, clientNav(o)+orderOverview(o,docs,clientBase,false)+clientHistoryPanel(history)
       +(o.source==='checkout'&&o.paid_at?`<p>${btn('Demander une rétractation','/retractation/',true)}</p>`:''), { user:req.user, wide:true }));
@@ -101,12 +103,12 @@ export function clientPortal(router, ctx) {
   intakeRoutes(router,ctx,clientNav);
 }
 
-export function projectRoutes(router, ctx, base, guard, admin, nav) {
+export function projectRoutes(router, ctx, base, guard, admin, nav, scope=admin) {
   const { db, config, storage } = ctx;
   const route = `${base}/:id`;
   const href = (o, tab) => `${base}/${o.id}/${tab}`;
   const read = async (req, database = db, write = false) => {
-    const order = await orderFor(database,req.params.id,req.user,admin);
+    const order = await orderFor(database,req.params.id,req.user,scope);
     const project = write ? await editableProject(database,order,true) : await projectFor(database,order);
     return {order,project};
   };
@@ -321,7 +323,7 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
     await limited(db,req,config,'upload',50,3600,req.user.id);
     next();
   };
-  router.post(`${route}/fichiers`, ...guard,checkUpload,mediaUpload,async (req,res)=>{
+  router.post(`${route}/fichiers`, ...guard,(req,res,next)=>{assert(scope!=='professional',403,'Les justificatifs de facturation sont gérés par MakeYourStory.');next();},checkUpload,mediaUpload,async (req,res)=>{
     const cleanup = [];
     let record;
     try {
@@ -353,10 +355,10 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
 
   router.get(`${route}/messages`, ...guard, async (req,res) => {
     const {order:o,project:p} = await read(req);
-    const rows = await many(db,`select m.*,f.id as file_id,f.name as file_name from messages m left join files f on f.message_id=m.id
+    const rows = await many(db,`select m.*,f.id as file_id,f.name as file_name,pa.company_name as operator_name from messages m left join files f on f.message_id=m.id left join professional_accounts pa on pa.owner_id=m.sender_id
       where m.project_id=$1 order by m.created_at`,[p.id]);
     await db.query('update messages set read_at=now() where project_id=$1 and from_admin=$2 and read_at is null',[p.id,!admin]);
-    const conversation = rows.length?`<div class="px-messages">${rows.map(m=>`<article class="${m.from_admin===admin?'px-own':''}"><header><strong>${m.from_admin?'MakeYourStory':'Client'}</strong><time>${e(time(m.created_at))}</time></header><p class="px-text">${e(m.content)}</p>${m.file_id?btn(m.file_name,href(o,`fichiers/${m.file_id}`),true):''}</article>`).join('')}</div>`:empty('Aucun échange pour cette commande.');
+    const conversation = rows.length?`<div class="px-messages">${rows.map(m=>`<article class="${m.from_admin===admin?'px-own':''}"><header><strong>${m.from_admin?e(m.operator_name||'MakeYourStory'):'Client'}</strong><time>${e(time(m.created_at))}</time></header><p class="px-text">${e(m.content)}</p>${m.file_id?btn(m.file_name,href(o,`fichiers/${m.file_id}`),true):''}</article>`).join('')}</div>`:empty('Aucun échange pour cette commande.');
     const form = acceptsChanges(o,p) ? post(href(o,'messages'),area('Votre message','content','','required maxlength="4500"')
       +'<label class="px-field"><span>Pièce jointe (facultatif)</span><input type="file" name="file" accept="image/jpeg,image/png,image/webp,application/pdf,video/mp4"></label>'
       +submit('Envoyer le message'),'enctype="multipart/form-data" data-upload'):'';
@@ -371,8 +373,8 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
         const message = await one(tx,'insert into messages (project_id,from_admin,sender_id,content) values ($1,$2,$3,$4) returning id',
           [project.id,admin,req.user.id,value(req.body.content,4500,true)]);
         if (req.file) await storeCustomerFile(tx,storage,project,req.file,'documents',req.user,message.id,cleanup);
-        await addHistory(tx,order.id,'message',admin?'Nouveau message de MakeYourStory':'Message envoyé à MakeYourStory',req.user.id);
-        if (admin) await clientMail(tx,config,order,'new_message','Un nouveau message de MakeYourStory','Consultez le message dans votre espace privé.','messages');
+        await addHistory(tx,order.id,'message',admin?(scope==='professional'?'Nouveau message de votre professionnel':'Nouveau message de MakeYourStory'):'Message envoyé à votre interlocuteur',req.user.id);
+        if (admin) await clientMail(tx,config,order,'new_message',scope==='professional'?'Un nouveau message de votre professionnel':'Un nouveau message de MakeYourStory','Consultez le message dans votre espace privé.','messages');
         else await adminMail(tx,config,order,'new_message','Nouveau message d’un client','Consultez la conversation dans le centre de contrôle.','messages');
         return order;
       });
@@ -382,5 +384,5 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
     }
     res.redirect(303,href(o,'messages'));
   });
-  guestManagement(router,ctx,base,guard,admin,nav);
+  guestManagement(router,ctx,base,guard,admin,nav,scope);
 }

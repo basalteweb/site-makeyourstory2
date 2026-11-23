@@ -1,4 +1,4 @@
-import { assert, dateValue, value, uuid } from './common.mjs';
+import { assert, dateValue, value, uuid, readyOrder } from './common.mjs';
 import { addHistory, many, one } from './db.mjs';
 import { queueMail } from './mail.mjs';
 import { projectNames, ref } from './ui.mjs';
@@ -24,9 +24,15 @@ export const fileCategories = { couple: 'Photos du couple', portraits: 'Portrait
 
 export async function orderFor(db, id, actor, admin = false) {
   uuid(id);
-  return assert(await one(db, `select o.*,c.email as access_email,c.verified_at,p.id as project_id,p.status as project_status
+  const professional=admin==='professional';
+  if(professional) assert(actor.professional_id&&actor.professional_active&&!actor.admin,403,'Accès professionnel actif requis.');
+  return assert(await one(db, `select o.*,c.email as access_email,c.verified_at,p.id as project_id,p.status as project_status,
+    case when $4::uuid is not null then pp.mode end as professional_mode
     from orders o join customers c on c.id=o.customer_id left join projects p on p.order_id=o.id
-    where o.id=$1 and ($2::boolean or o.customer_id=$3)`, [id,admin,actor.id]), 404, 'Commande introuvable.');
+    left join professional_projects pp on pp.order_id=o.id
+    where o.id=$1 and ($2::boolean or ($4::uuid is null and o.customer_id=$3) or ($4::uuid is not null and pp.professional_id=$4
+      and exists(select 1 from professional_accounts pa where pa.id=$4 and pa.owner_id=$3 and pa.status='active' and (pa.access_until is null or pa.access_until>now()))))`,
+    [id,admin===true,actor.id,professional?actor.professional_id:null]), 404, 'Commande introuvable.');
 }
 
 export async function projectFor(db, order, lock = false) {
@@ -35,7 +41,8 @@ export async function projectFor(db, order, lock = false) {
 }
 
 export async function editableProject(db, order, lock = false) {
-  assert(order.paid_at && order.payment_status !== 'refunded', 409, 'Le règlement de cette commande doit être confirmé.');
+  assert(readyOrder(order), 409, 'Le règlement ou la prise en charge de cette commande doit être confirmé.');
+  assert(!order.professional_mode||order.professional_mode==='autonomous',409,'Cette création est confiée à MakeYourStory. Retrouvez son suivi dans votre projet.');
   const project = await projectFor(db, order, lock);
   assert(project.status !== 'archived', 409, 'Ce projet est archivé.');
   return project;
@@ -51,7 +58,10 @@ export async function clientMail(tx, config, order, kind, title, message, sectio
 }
 
 export async function adminMail(tx, config, order, kind, title, message, section = '') {
-  await queueMail(tx, config.adminNotify, kind, { title, message, link: `${config.origin}/admin/commandes/${order.id}${section ? `/${section}` : ''}`, button: 'Ouvrir la commande' }, order.id);
+  const partner=await one(tx,`select c.email from professional_projects pp join professional_accounts pa on pa.id=pp.professional_id
+    join customers c on c.id=pa.owner_id where pp.order_id=$1 and pp.mode='autonomous' and pa.status='active' and (pa.access_until is null or pa.access_until>now())`,[order.id]);
+  await queueMail(tx, partner?.email||config.adminNotify, kind, { title, message,
+    link: `${config.origin}${partner?'/pro/projets':'/admin/commandes'}/${order.id}${section ? `/${section}` : ''}`, button: 'Ouvrir le projet' }, order.id);
 }
 
 export async function markProject(tx, config, order, project, status, actor, notify = true) {
