@@ -161,7 +161,7 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
       const {signPreview}=await import('./invitations.mjs');
       controls=`<iframe title="Votre création en un coup d’œil" class="px-preview px-client-preview" sandbox="allow-scripts" src="${e(signPreview(config,p.selected_version))}"></iframe>`+controls;
     }
-    render(req,res,o,'creation','Ma création',panel('Votre histoire, étape par étape',`<p>${statusBadge(p.status)}</p>${creationSteps(p)}<div class="px-next"><h3>${e(action.title)}</h3><p>${e(action.text)}</p>${['confirmed','waiting_details'].includes(p.status)?btn('Compléter mes informations',href(o,'elements'),true):''}</div>`)+panel(publicLink?'Votre création est livrée':'Votre création',controls)+edit);
+    render(req,res,o,'creation',admin?'Création du client':'Ma création',panel('Votre histoire, étape par étape',`<p>${statusBadge(p.status)}</p>${creationSteps(p)}<div class="px-next"><h3>${e(action.title)}</h3><p>${e(action.text)}</p>${['confirmed','waiting_details'].includes(p.status)?btn('Compléter mes informations',href(o,'elements'),true):''}</div>`)+panel(publicLink?'Votre création est livrée':'Votre création',controls)+edit);
   });
 
   router.get(`${route}/apercu`, ...guard, async (req,res) => {
@@ -278,7 +278,7 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
       + (canEdit?post(href(o,'fichiers'),`<div class="px-form-grid">${select('Catégorie','category',categories)}${fileInput()}</div><p class="px-quiet">Images ou PDF jusqu’à 12 Mo. Vidéo MP4 jusqu’à 35 Mo lorsque proposée.</p>${submit('Importer le fichier')}`, 'enctype="multipart/form-data" data-upload'):'');
     const transmit = canEdit?panel('Transmettre mes éléments',`<p>Enregistrez vos informations et importez vos fichiers avant de transmettre l’ensemble.</p>
       ${post(href(o,'elements/transmettre'),submit('Confirmer l’envoi des éléments'))}`):'';
-    render(req,res,o,'elements','Mes informations et photographies',details+panel('Informations pour la création',form)+panel('Fichiers privés',docs)+transmit);
+    render(req,res,o,'elements',admin?'Éléments du client':'Mes informations et photographies',details+panel('Informations pour la création',form)+panel('Fichiers privés',docs)+transmit);
   });
   const fileInput = () => '<label class="px-field"><span>Fichier</span><input name="file" type="file" accept="image/jpeg,image/png,image/webp,application/pdf,video/mp4" required></label>';
   if (!admin) {
@@ -360,7 +360,7 @@ export function projectRoutes(router, ctx, base, guard, admin, nav) {
     const form = acceptsChanges(o,p) ? post(href(o,'messages'),area('Votre message','content','','required maxlength="4500"')
       +'<label class="px-field"><span>Pièce jointe (facultatif)</span><input type="file" name="file" accept="image/jpeg,image/png,image/webp,application/pdf,video/mp4"></label>'
       +submit('Envoyer le message'),'enctype="multipart/form-data" data-upload'):'';
-    render(req,res,o,'messages','Mes échanges',panel('Conversation',conversation+form));
+    render(req,res,o,'messages',admin?'Messages du client':'Mes échanges',panel('Conversation',conversation+form));
   });
   router.post(`${route}/messages`, ...guard,checkUpload,mediaUpload,async (req,res)=>{
     const cleanup = [];
