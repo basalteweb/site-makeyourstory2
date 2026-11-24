@@ -34,6 +34,10 @@ try {
   await one(db,'select id,status,access_until from professional_accounts limit 1');
   await one(db,'select professional_id,mode from professional_projects limit 1');
   await one(db,'select destination from login_tokens limit 1');
+  await one(db,'select active,stripe_price_id from professional_plans limit 1');
+  await one(db,'select allowance_id from professional_projects limit 1');
+  await one(db,'select quantity,valid_until from professional_allowances limit 1');
+  await one(db,'select status,risk_hold from professional_subscriptions limit 1');
   console.log('Migrations du studio et des invités vérifiées.');
 } catch(error) {
   console.error('Migration interrompue',error.code||error.name);

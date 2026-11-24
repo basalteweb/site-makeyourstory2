@@ -46,6 +46,8 @@ const sessions={};
 const professional=await customerByEmail(db,'professional.preview@example.com');
 await db.query('update customers set verified_at=now() where id=$1',[professional.id]);
 const proAccount=await one(db,"insert into professional_accounts (owner_id,company_name,contact_name,activity,status,approved_at) values ($1,'Atelier Lumière','Camille Photographe','Photographe','active',now()) returning id",[professional.id]);
+await db.query("insert into professional_allowances (professional_id,kind,quantity,note) values ($1,'gift',5,'Démonstration fictive')",[proAccount.id]);
+await db.query("update professional_plans set active=true,stripe_price_id='price_preview_'||id");
 await db.query("insert into professional_projects (order_id,professional_id,request_key) values ($1,$2,$3)",[order.id,proAccount.id,randomUUID()]);
 const guide=await customerByEmail(db,'guide.preview@example.com');
 await db.query('update customers set verified_at=now() where id=$1',[guide.id]);

@@ -266,8 +266,17 @@ try {
   await admin.goto(`${origin}/admin/professionnels/${professionalAccount.id}`);
   await admin.getByLabel('Statut de l’accès',{exact:true}).selectOption('active');
   await admin.getByRole('button',{name:'Enregistrer l’accès',exact:true}).click();
+  await admin.getByLabel('Nombre de créations offertes',{exact:true}).fill('2');
+  await admin.getByLabel('Motif de ce geste commercial',{exact:true}).fill('Test navigateur, données fictives uniquement.');
+  await admin.getByRole('button',{name:'Offrir ces créations',exact:true}).click();
   await login(professionalPage,'professional.browser@example.com','Mes projets');
   assert.equal(await professionalPage.getByRole('link',{name:'Administration',exact:true}).count(),0);
+  await db.query("update professional_plans set active=true,stripe_price_id='price_browser_'||id");
+  await professionalPage.getByRole('link',{name:'Mes offres',exact:true}).click();
+  await professionalPage.getByRole('heading',{name:'Mes offres',exact:true}).waitFor();
+  await professionalPage.getByRole('heading',{name:'Création à l’unité',exact:true}).waitFor();
+  await professionalPage.getByRole('heading',{name:'Abonnement PRO',exact:true}).waitFor();
+  assert.equal(await professionalPage.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,'Les offres professionnelles tiennent sur mobile.');
   await professionalPage.getByRole('link',{name:'Créer un projet client',exact:true}).click();
   await professionalPage.getByLabel('Nom du client',{exact:true}).fill('Famille Pro Test');
   await professionalPage.getByLabel('E-mail du client',{exact:true}).fill('client.professional.browser@example.com');

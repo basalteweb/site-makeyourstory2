@@ -6,12 +6,13 @@ import { orderFor, projectFor } from './projects.mjs';
 import { professionalBase, professionalNav, projectRoutes } from './portal.mjs';
 import { studioRoutes } from './studio.mjs';
 import { queueMail } from './mail.mjs';
+import { creationAllowance, creationBalance } from './professional-billing.mjs';
+import { accountBillingPanel, professionalMenu as menu } from './professional-billing-view.mjs';
 import { area, badge, btn, check, day, empty, escapeHtml as e, field, hidden, links, page, panel, post, projectNames, ref, select, submit, time } from './ui.mjs';
 
 const states={pending:'Activation à venir',active:'Accès actif',suspended:'Accès suspendu'};
 const modes={autonomous:'Je réalise la création',delegated:'Je confie la création à MakeYourStory'};
 const delegationStates={none:'Création autonome',requested:'Prise en charge demandée',accepted:'Prise en charge confirmée',declined:'Demande non retenue · création autonome'};
-const menu=selected=>links([['Mes projets','/pro/'],['Mes clients','/pro/clients'],['Studio de création','/pro/studio'],['Mon activité','/pro/compte']].map(([label,url])=>[label,url,url===selected]));
 const profileFields=p=>`<div class="px-form-grid">${field('Nom de votre activité','company',p?.company_name,'text','required maxlength="160" autocomplete="organization"')}${field('Votre prénom et nom','name',p?.contact_name,'text','required maxlength="160" autocomplete="name"')}${field('Téléphone professionnel (facultatif)','phone',p?.phone,'tel','maxlength="40" autocomplete="tel"')}${field('SIREN ou SIRET (facultatif)','business',p?.business_id,'text','maxlength="30" inputmode="numeric"')}${select('Votre métier','activity',{'Photographe':'Photographe','Wedding planner':'Wedding planner','Lieu de réception':'Lieu de réception','Événementiel':'Événementiel','Autre activité':'Autre activité'},p?.activity||'Photographe')}</div>`;
 function profileInput(data) {
   const business=value(data.business,30).replace(/\s/g,'');
@@ -50,7 +51,8 @@ export function professionalPortal(router,ctx) {
     if(req.user.admin) return res.redirect(303,'/admin/professionnels');
     if(!req.user.professional_id) return res.redirect(303,'/pro/inscription');
     const p=await profile(req);
-    if(!req.user.professional_active) return res.send(page('Mon espace professionnel',panel(p.company_name,`<p>${badge(p.status==='active'?'Accès arrivé à échéance':states[p.status])}</p><p>${p.status==='pending'?'Votre e-mail est vérifié. Nous allons confirmer les modalités de votre accès avant de vous ouvrir les projets et le studio.':'Votre espace est conservé. Contactez MakeYourStory pour faire le point sur votre accès.'}</p>${btn('Contacter MakeYourStory','/contact.html',true)}`),{user:req.user,compact:true}));
+    if(!req.user.professional_active) return res.send(page('Mon espace professionnel',panel(p.company_name,`<p>${badge(p.status==='active'?'Accès arrivé à échéance':states[p.status])}</p><p>${p.status==='pending'?'Votre e-mail est vérifié. Nous allons confirmer les modalités de votre accès avant de vous ouvrir les projets et le studio.':'Votre espace est conservé. Contactez MakeYourStory pour faire le point sur votre accès.'}</p>${btn('Contacter MakeYourStory','/contact.html',true)} ${btn('Gérer mes achats','/pro/offres',true)}`),{user:req.user,compact:true}));
+    const balance=await creationBalance(db,p.id);
     const q=value(req.query.q,130);
     const rows=await many(db,`select o.*,p.status,pp.mode,pp.delegation_status,
       (select count(*) from messages m where m.project_id=p.id and not m.from_admin and m.read_at is null) as unread
@@ -60,9 +62,10 @@ export function professionalPortal(router,ctx) {
     const counts=await one(db,`select count(*) as total,count(*) filter(where p.status='published') as published,
       count(*) filter(where p.status='awaiting_approval') as approval,count(*) filter(where pp.delegation_status='requested') as delegated
       from professional_projects pp join projects p on p.order_id=pp.order_id where pp.professional_id=$1`,[p.id]);
-    render(req,res,'Mes projets','/pro/',`<section class="px-pro-intro"><p class="eyebrow">${e(p.company_name)}</p><h2>Chaque client,<br>une histoire à créer.</h2><p>Retrouvez vos préparations, vos créations et les retours de vos clients.</p>${btn('Créer un projet client','/pro/projets/nouveau')}</section><div class="px-metrics">${[['Projets',counts.total],['À valider par le client',counts.approval],['Créations livrées',counts.published],['Prises en charge demandées',counts.delegated]].map(([label,n])=>`<div class="px-panel"><strong>${e(n)}</strong><span>${label}</span></div>`).join('')}</div>${panel('Vos projets',`<form class="px-filter" method="get" action="/pro/">${field('Rechercher un client ou un projet','q',q,'search')}${submit('Rechercher')}</form>`+projectTable(rows))}`);
+    render(req,res,'Mes projets','/pro/',`<section class="px-pro-intro"><p class="eyebrow">${e(p.company_name)}</p><h2>Chaque client,<br>une histoire à créer.</h2><p>Retrouvez vos préparations, vos créations et les retours de vos clients.</p>${btn('Créer un projet client','/pro/projets/nouveau')}<p class="px-quiet">${e(balance.remaining)} création(s) disponible(s) · <a class="px-link" href="/pro/offres">Mes offres et mon abonnement</a></p></section><div class="px-metrics">${[['Projets',counts.total],['À valider par le client',counts.approval],['Créations livrées',counts.published],['Prises en charge demandées',counts.delegated]].map(([label,n])=>`<div class="px-panel"><strong>${e(n)}</strong><span>${label}</span></div>`).join('')}</div>${panel('Vos projets',`<form class="px-filter" method="get" action="/pro/">${field('Rechercher un client ou un projet','q',q,'search')}${submit('Rechercher')}</form>`+projectTable(rows))}`);
   });
   router.get('/pro/projets/nouveau',...guard,async(req,res)=>{
+    if(!(await creationBalance(db,req.user.professional_id)).remaining)return res.redirect(303,'/pro/offres?besoin=1');
     const offers=await many(db,"select id,name from products where active order by case when id='mariage' then 0 else 1 end,amount,name");
     render(req,res,'Nouveau projet client','/pro/',panel('Commençons par votre client',post('/pro/projets',hidden('request_key',randomUUID())+`<div class="px-form-grid">${field('Nom du client','name','','text','required maxlength="160"')}${field('E-mail du client','email','','email','required maxlength="254"',{text:'Son espace personnel sera lié à cette adresse. Vous pourrez lui envoyer son accès après avoir préparé le projet.',example:'L’adresse du couple ou de la personne qui validera la création.'})}${select('Création à préparer','product',Object.fromEntries(offers.map(p=>[p.id,p.name])))}${select('Qui réalise la création ?','mode',modes,'autonomous',{text:'En autonomie, vous utilisez le studio. En délégation, vous transmettez une demande à MakeYourStory ; sa prise en charge et ses modalités restent à confirmer.',example:'Créez une invitation vous-même, ou confiez-nous la réalisation après la préparation du client.'})}</div>${area('Votre intention pour ce projet (facultatif)','brief','','maxlength="1200"')}${check('Mon client m’a confié ce projet et l’utilisation de ses coordonnées pour le préparer.','confirm',false,'required')}${submit('Créer le projet')}`)));
   });
@@ -75,6 +78,7 @@ export function professionalPortal(router,ctx) {
       const request=uuid(req.body.request_key);
       const previous=await one(tx,'select order_id from professional_projects where professional_id=$1 and request_key=$2',[req.user.professional_id,request]);
       if(previous) return {id:previous.order_id};
+      const allowance=await creationAllowance(tx,req.user.professional_id);
       const email=emailAddress(req.body.email);
       assert(email!==req.user.email,400,'Utilisez l’adresse du client pour lui réserver son propre espace.');
       const client=await customerByEmail(tx,email);
@@ -84,8 +88,8 @@ export function professionalPortal(router,ctx) {
         values ($1,$2,$3,$4,$5,$6,$7,'professional','included',$8) returning *`,[client.id,product.id,product.name,product.category,product.amount,value(req.body.name,160,true),email,value(req.body.brief,1200)]);
       await ensureProject(tx,order.id);
       const delegated=req.body.mode==='delegated';
-      await tx.query(`insert into professional_projects (order_id,professional_id,mode,delegation_status,delegated_at,delegation_note,request_key)
-        values ($1,$2,$3,$4,case when $5::boolean then now() end,$6,$7)`,[order.id,req.user.professional_id,req.body.mode,delegated?'requested':'none',delegated,value(req.body.brief,1200),request]);
+      await tx.query(`insert into professional_projects (order_id,professional_id,mode,delegation_status,delegated_at,delegation_note,request_key,allowance_id)
+        values ($1,$2,$3,$4,case when $5::boolean then now() end,$6,$7,$8)`,[order.id,req.user.professional_id,req.body.mode,delegated?'requested':'none',delegated,value(req.body.brief,1200),request,allowance]);
       await addHistory(tx,order.id,'professional_created','Projet créé par un professionnel',req.user.id,true);
       if(delegated) await queueMail(tx,config.adminNotify,'delegation_request',{title:'Une création vous est confiée',message:'Un professionnel demande une prise en charge. Confirmez les modalités avant de commencer.',link:`${config.origin}/admin/professionnels/${req.user.professional_id}`,button:'Voir la demande'},order.id);
       return order;
@@ -141,7 +145,7 @@ export function professionalPortal(router,ctx) {
 
 export function adminProfessionals(router,ctx) {
   const {db,auth,config}=ctx,guard=[auth.require,auth.admin];
-  const render=(req,res,title,body)=>res.send(page(title,`<p>${btn('Centre de contrôle','/admin/',true)} ${btn('Tous les professionnels','/admin/professionnels',true)}</p>`+body,{user:req.user,wide:true,eyebrow:'MAKE YOUR STORY PRO'}));
+  const render=(req,res,title,body)=>res.send(page(title,`<p>${btn('Centre de contrôle','/admin/',true)} ${btn('Tous les professionnels','/admin/professionnels',true)} ${btn('Offres et abonnements','/admin/offres-pro',true)}</p>`+body,{user:req.user,wide:true,eyebrow:'MAKE YOUR STORY PRO'}));
   router.get('/admin/professionnels',...guard,async(req,res)=>{
     const rows=await many(db,`select pa.*,c.email,(select count(*) from professional_projects pp where pp.professional_id=pa.id) as projects,
       (select count(*) from professional_projects pp where pp.professional_id=pa.id and pp.delegation_status='requested') as requests
@@ -161,7 +165,7 @@ export function adminProfessionals(router,ctx) {
     const p=assert(await one(db,'select pa.*,c.email from professional_accounts pa join customers c on c.id=pa.owner_id where pa.id=$1',[uuid(req.params.professional)]),404,'Professionnel introuvable.');
     const rows=await many(db,`select o.*,p.status,pp.mode,pp.delegation_status,pp.delegation_note from professional_projects pp
       join orders o on o.id=pp.order_id join projects p on p.order_id=o.id where pp.professional_id=$1 order by o.created_at desc limit 200`,[p.id]);
-    render(req,res,p.company_name,panel('Compte professionnel',`<dl class="px-facts"><dt>Contact</dt><dd>${e(p.contact_name)}</dd><dt>E-mail</dt><dd>${e(p.email)}</dd><dt>Métier</dt><dd>${e(p.activity)}</dd><dt>Téléphone</dt><dd>${e(p.phone)||'—'}</dd><dt>SIREN / SIRET déclaré</dt><dd>${e(p.business_id)||'—'}</dd></dl>${post(`/admin/professionnels/${p.id}/acces`,select('Statut de l’accès','status',states,p.status)+field('Fin d’accès (facultatif)','until',p.access_until?new Date(p.access_until).toISOString().slice(0,10):'','date','',{text:'Laissez vide pour un accès sans date de fin convenue. Une date passée bloque les nouvelles connexions aux projets et les modifications du professionnel.',example:'La fin de la période de collaboration ou de l’accès convenu.'})+submit('Enregistrer l’accès'))}`)+panel('Projets et prises en charge',rows.length?rows.map(o=>`<article class="px-pro-delegation"><h3>${e(o.client_name)} · ${e(o.product_name)}</h3><p>${badge(projectNames[o.status])} ${badge(delegationStates[o.delegation_status])}</p>${o.delegation_note?`<p class="px-text">${e(o.delegation_note)}</p>`:''}<p>${btn('Ouvrir la commande',`/admin/commandes/${o.id}`,true)} ${btn('Ouvrir le studio',`/admin/commandes/${o.id}/studio`,true)}</p>${o.delegation_status==='requested'?post(`/admin/professionnels/${p.id}/delegations/${o.id}`,area('Réponse et modalités confirmées au professionnel','reply','','required maxlength="2000"')+select('Décision','decision',{accepted:'Confirmer la prise en charge',declined:'Rendre la création au professionnel'})+submit('Envoyer la décision')):''}</article>`).join(''):empty('Aucun projet pour le moment.')));
+    render(req,res,p.company_name,panel('Compte professionnel',`<dl class="px-facts"><dt>Contact</dt><dd>${e(p.contact_name)}</dd><dt>E-mail</dt><dd>${e(p.email)}</dd><dt>Métier</dt><dd>${e(p.activity)}</dd><dt>Téléphone</dt><dd>${e(p.phone)||'—'}</dd><dt>SIREN / SIRET déclaré</dt><dd>${e(p.business_id)||'—'}</dd></dl>${post(`/admin/professionnels/${p.id}/acces`,select('Statut de l’accès','status',states,p.status)+field('Fin d’accès (facultatif)','until',p.access_until?new Date(p.access_until).toISOString().slice(0,10):'','date','',{text:'Laissez vide pour un accès sans date de fin convenue. Une date passée bloque les nouvelles connexions aux projets et les modifications du professionnel.',example:'La fin de la période de collaboration ou de l’accès convenu.'})+submit('Enregistrer l’accès'))}`)+await accountBillingPanel(db,p)+panel('Projets et prises en charge',rows.length?rows.map(o=>`<article class="px-pro-delegation"><h3>${e(o.client_name)} · ${e(o.product_name)}</h3><p>${badge(projectNames[o.status])} ${badge(delegationStates[o.delegation_status])}</p>${o.delegation_note?`<p class="px-text">${e(o.delegation_note)}</p>`:''}<p>${btn('Ouvrir la commande',`/admin/commandes/${o.id}`,true)} ${btn('Ouvrir le studio',`/admin/commandes/${o.id}/studio`,true)}</p>${o.delegation_status==='requested'?post(`/admin/professionnels/${p.id}/delegations/${o.id}`,area('Réponse et modalités confirmées au professionnel','reply','','required maxlength="2000"')+select('Décision','decision',{accepted:'Confirmer la prise en charge',declined:'Rendre la création au professionnel'})+submit('Envoyer la décision')):''}</article>`).join(''):empty('Aucun projet pour le moment.')));
   });
   router.post('/admin/professionnels/:professional/acces',...guard,async(req,res)=>{
     assert(Object.hasOwn(states,req.body.status),400,'Statut inconnu.');

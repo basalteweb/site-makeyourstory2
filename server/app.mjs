@@ -17,6 +17,7 @@ import { companySettings } from './projects.mjs';
 import { studioRoutes } from './studio.mjs';
 import { guestConversations } from './guest-messages.mjs';
 import { professionalPortal, adminProfessionals } from './professionals.mjs';
+import { professionalBillingRoutes } from './professional-billing-view.mjs';
 import { escapeHtml as e, formProblem, mediationDetails } from './ui.mjs';
 import { flushMail, pruneData } from './mail.mjs';
 
@@ -85,6 +86,7 @@ export async function createApp(config = configFrom()) {
   clientPortal(app,ctx);
   adminPortal(app,ctx);
   studioRoutes(app,ctx);
+  professionalBillingRoutes(app,ctx);
   professionalPortal(app,ctx);
   adminProfessionals(app,ctx);
   guestRsvp(app,ctx);

@@ -545,6 +545,17 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     await expectStatus(await p1.get('/pro/projets/nouveau'),403);
     await expectStatus(await p1.post(`/admin/professionnels/${account.id}/acces`,{status:'active'}),403);
     for(const pa of [account,second])await expectStatus(await admin.post(`/admin/professionnels/${pa.id}/acces`,{status:'active',until:''}),303);
+    await html(await p1.get('/pro/offres'),200,/Les achats ouvrent prochainement/);
+    assert.equal((await p1.get('/pro/projets/nouveau')).headers.get('location'),'/pro/offres?besoin=1');
+    await expectStatus(await p1.post('/pro/projets',{name:'Projet non réglé',email:'unpaid.pro@example.com',product:'mariage',mode:'autonomous',confirm:'on',request_key:randomUUID()}),402);
+    const grant={quantity:'2',note:'Recette isolée uniquement',request_key:randomUUID()};
+    await expectStatus(await p1.post(`/admin/professionnels/${account.id}/offrir`,grant),403);
+    for(const pa of [account,second]) {
+      const body={...grant,request_key:randomUUID()};
+      await expectStatus(await admin.post(`/admin/professionnels/${pa.id}/offrir`,body),303);
+      await expectStatus(await admin.post(`/admin/professionnels/${pa.id}/offrir`,body),303);
+      assert.equal(Number((await one(db,'select sum(quantity) as n from professional_allowances where professional_id=$1',[pa.id])).n),2);
+    }
     const home=await html(await p1.get('/pro/'),200,/Créer un projet client/);
     assert.doesNotMatch(home,/>Administration<|>Tarifs<|href="\/admin\//);
     const payload={name:'Camille et Morgan',email:'pro-client.mys@example.com',product:'mariage',mode:'autonomous',confirm:'on',request_key:randomUUID()};
@@ -553,6 +564,7 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     assert.equal((await p1.post('/pro/projets',payload)).headers.get('location'),path,'La relance conserve le même projet.');
     const order=await one(db,'select * from orders where id=$1',[id]);
     assert.equal(order.source,'professional');assert.equal(order.payment_status,'included');assert.equal(order.paid_at,null);assert.equal(order.captured_amount,0);
+    assert.ok((await one(db,'select allowance_id from professional_projects where order_id=$1',[id])).allowance_id);
     await html(await p1.get(path),200,/Camille et Morgan/);
     await expectStatus(await p2.get(path),404);await expectStatus(await p2.get(studio),404);await expectStatus(await p1.get('/admin/'),403);
     await expectStatus(await p1.post(path+'/envoyer-acces',{}),303);await expectStatus(await p1.post(path+'/envoyer-acces',{}),303);
@@ -610,6 +622,16 @@ test('plateforme MakeYourStory avec une base PostgreSQL isolée',async(t)=>{
     await expectStatus(await admin.post(`/admin/professionnels/${second.id}/delegations/${delegatedId}`,{decision:'accepted',reply:'Prise en charge convenue.'}),303);
     await expectStatus(await p2.post(delegatedPath+'/reprendre',{}),409);
     await html(await p2.get(delegatedPath),200,/Prise en charge convenue/);
+    const billingAttempt=await one(db,"insert into professional_checkouts (professional_id,plan_id,stripe_price_id,amount,quantity,request_key,terms_version) values ($1,'monthly','price_recipe',2990,5,$2,'recipe') returning id",[account.id,randomUUID()]);
+    await db.query("insert into professional_subscriptions (id,professional_id,checkout_id,stripe_price_id,amount,quantity,status,risk_hold) values ('sub_recipe',$1,$2,'price_recipe',2990,5,'active',true)",[account.id,billingAttempt.id]);
+    const review={subscription:'sub_recipe',note:'Vérification fictive de recette',confirm:'on',request_key:randomUUID()};
+    await expectStatus(await p1.post(`/admin/professionnels/${account.id}/paiements/verifier`,review),403);
+    await expectStatus(await admin.post(`/admin/professionnels/${second.id}/paiements/verifier`,review),404);
+    await expectStatus(await admin.post(`/admin/professionnels/${account.id}/paiements/verifier`,review),303);
+    assert.equal((await one(db,"select risk_hold from professional_subscriptions where id='sub_recipe'")).risk_hold,false);
+    await db.query("update professional_subscriptions set risk_hold=true where id='sub_recipe'");
+    await expectStatus(await admin.post(`/admin/professionnels/${account.id}/paiements/verifier`,review),303);
+    assert.equal((await one(db,"select risk_hold from professional_subscriptions where id='sub_recipe'")).risk_hold,true,'Rejouer une ancienne clôture ne lève pas un nouvel incident.');
     await expectStatus(await admin.post(`/admin/professionnels/${account.id}/acces`,{status:'suspended',until:''}),303);
     await expectStatus(await p1.get(studio),403);await expectStatus(await p1.post('/pro/projets',{...payload,request_key:randomUUID()}),403);
     await expectStatus(await anon.get(model.preview),404);

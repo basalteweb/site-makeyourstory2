@@ -3,6 +3,7 @@ import { addHistory, customerByEmail, ensureProject, one } from './db.mjs';
 import { assert, emailAddress, httpsUrl } from './common.mjs';
 import { queueMail } from './mail.mjs';
 import { euro, ref } from './ui.mjs';
+import { professionalBilling } from './professional-billing.mjs';
 
 const integration = 'makeyourstory';
 const sessionTypes = new Set(['checkout.session.completed', 'checkout.session.async_payment_succeeded', 'checkout.session.async_payment_failed', 'checkout.session.expired']);
@@ -15,7 +16,8 @@ const stripeUrl = (value) => {
 const billAddress = (address) => [address?.line1, address?.line2, [address?.postal_code, address?.city].filter(Boolean).join(' '), address?.country].filter(Boolean).join(', ');
 
 export function stripePayments(db, config) {
-  const stripe = config.stripeKey && new Stripe(config.stripeKey, { timeout: 12000, maxNetworkRetries: 1, httpClient: Stripe.createFetchHttpClient() });
+  const stripe = config.stripeKey && new Stripe(config.stripeKey, { apiVersion:'2026-11-18.endive', timeout: 12000, maxNetworkRetries: 1, httpClient: Stripe.createFetchHttpClient() });
+  const professional=professionalBilling(db,config,stripe);
   const isLive = (resource) => resource.livemode === config.live;
   async function getSession(id) {
     const result = await stripe.checkout.sessions.retrieve(id, { expand: ['payment_intent.latest_charge','invoice'] });
@@ -124,6 +126,7 @@ export function stripePayments(db, config) {
     try { event = stripe.webhooks.constructEvent(body, signature, config.stripeWebhookSecret); }
     catch { assert(false, 400, 'Signature Stripe invalide.'); }
     assert(isLive(event), 400, 'Environnement Stripe incompatible.');
+    if(await professional.handle(event))return;
     if (!sessionTypes.has(event.type) && !intentTypes.has(event.type)) return;
     if (await one(db, 'select id from stripe_events where id=$1', [event.id])) return;
     const object = event.data.object;
@@ -208,5 +211,5 @@ export function stripePayments(db, config) {
     else assert(session.status === 'expired', 409, 'Le paiement a déjà été transmis à Stripe.');
     await db.query("update orders set payment_status='abandoned' where id=$1 and paid_at is null", [order.id]);
   }
-  return { begin, webhook, syncExisting, abandon };
+  return { begin, webhook, syncExisting, abandon, professional };
 }

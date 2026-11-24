@@ -8,7 +8,7 @@ Une inscription crée un compte en attente et envoie un lien de vérification à
 
 Dans Administration → Professionnels, MakeYourStory peut ajouter un compte, examiner ses informations déclarées, l’activer, le suspendre et convenir d’une date de fin d’accès. La suspension ou l’échéance bloque immédiatement les prochaines requêtes du professionnel, y compris les fichiers, le studio et les écritures provenant d’un onglet déjà ouvert. Les clients conservent leur accès et les créations publiées restent disponibles jusqu’à leur échéance normale. Les aperçus temporaires émis au professionnel sont également bloqués.
 
-L’activation est administrée pour cette première version. Aucun abonnement Stripe, tarif mensuel, prélèvement ou forfait de création déléguée n’est créé automatiquement. Ces paramètres commerciaux devront être convenus avant d’automatiser la facturation.
+L’activation du compte professionnel reste administrée. Les achats sont configurés séparément dans Administration → Professionnels → Offres et abonnements. La création déléguée est toujours sur devis, en supplément.
 
 ## Projet autonome
 
@@ -33,3 +33,25 @@ Pour un projet délégué, le professionnel consulte les informations et les ver
 Les dossiers professionnels portent la source `professional` et le statut `included`. Ils n’ont ni encaissement Stripe ni `paid_at` artificiel. Le montant catalogue reste une référence interne ; l’interface client présente un accompagnement professionnel. Aucun justificatif de paiement n’est émis et le rapprochement Stripe est bloqué pour ces dossiers. Les encaissements et remboursements existants restent calculés sur les montants réellement enregistrés.
 
 La migration conserve les données existantes. Le script de déploiement sauvegarde PostgreSQL, conserve l’image précédente et contrôle les nouvelles tables avant le redémarrage.
+
+## Achats à l’unité et abonnement
+
+La migration `008-professional-billing.sql` ajoute le catalogue PRO, les tentatives Checkout, les abonnements, les droits de création et le journal des notifications Stripe. Les deux tarifs de lancement proposés (19,90 € à l’unité ; 29,90 €/mois pour cinq créations) sont **fermés à l’achat par défaut**. L’administrateur peut modifier le prix et le quota puis ouvrir chaque formule depuis `/admin/offres-pro`. Un tarif fermé ne produit aucun produit ou prélèvement Stripe. Une ouverture vérifie la présence de toutes les notifications de facturation requises ; les prix Stripe sont créés uniquement à cette activation. Le tarif et le quota des abonnements existants sont conservés lors d’un changement du catalogue.
+
+Après activation du compte, le professionnel choisit sa formule dans `/pro/offres`. Le paiement unique achète une création à utiliser une fois, sans abonnement. Le forfait est un abonnement mensuel fixe : cinq nouvelles créations par période payée au tarif proposé, quota non reportable. Ce n’est pas de la facturation à l’usage : aucun dépassement n’est prélevé automatiquement. Après épuisement, le professionnel peut acheter une création à l’unité. La création déléguée consomme également une place et sa réalisation nécessite toujours un devis distinct.
+
+Les droits sont attribués exclusivement après réception d’une notification Stripe signée et vérification du titulaire, du montant, de la devise, de la formule et de l’encaissement. Le retour du navigateur ne donne aucun droit. Une facture d’abonnement simplement marquée payée manuellement, sans PaymentIntent encaissé, n’ouvre pas de quota. Les notifications sont idempotentes. La consommation d’une place et la création du projet partagent une transaction sous verrou du compte professionnel, empêchant les créations simultanées au-delà du quota. Les projets déjà ouverts sont préservés lorsque les droits expirent.
+
+Le portail de facturation Stripe permet de consulter les factures, de mettre à jour le moyen de paiement et d’arrêter le renouvellement à la fin de la période. Il n’autorise ni changement libre de produit ni modification des quantités. Ce portail reste accessible au professionnel suspendu pour qu’il puisse gérer son abonnement. La fin d’abonnement, les impayés, remboursements et alertes de fraude bloquent les nouvelles créations concernées ; les clients et leurs invitations déjà livrées sont préservés. Un incident est signalé à MakeYourStory. L’administrateur peut clore la vérification pour les prochaines périodes réglées, sans rétablir de droits remboursés, et offrir des créations avec un motif journalisé.
+
+Les encaissements PRO sont séparés des commandes des clients : le professionnel est l’acheteur de son outil, le client ne reçoit aucune fausse facture de la plateforme. Les factures et reçus Stripe sont accessibles dans « Mes offres ». La mention de TVA configurée pour MakeYourStory est affichée ; aucune collecte de TVA ni Stripe Tax n’est activée par cette modification.
+
+### Événements requis sur le webhook existant
+
+Conserver les événements de paiement existants et ajouter :
+
+- `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`
+- `invoice.paid`, `invoice.payment_failed`, `invoice.payment_action_required`
+- `charge.dispute.created`, `radar.early_fraud_warning.created`
+
+Le webhook conserve son URL et son secret. Pour un remboursement, litige ou signalement, le PaymentIntent est relié à ses InvoicePayments, puis à l’Invoice et à sa Subscription. Les nouveaux achats doivent rester fermés tant que les tarifs proposés ne sont pas validés.
